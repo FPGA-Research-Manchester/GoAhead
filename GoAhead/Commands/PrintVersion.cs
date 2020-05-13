@@ -7,9 +7,11 @@ namespace GoAhead.Commands
 {
     class PrintVersion : Command
     {
+        private const string version = "2.0.6";
+
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput("GoAhead Version 1.810");
+            OutputManager.WriteOutput("GoAhead Version " + version);
             OutputManager.WriteOutput("Latest changes:");
 
             OutputManager.WriteOutput("Override arguments for alias commands, e.g. MySelection UpperLeftX=34000;");
