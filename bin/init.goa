@@ -1,0 +1,371 @@
+MuteCommandTrace;
+
+##################################################################################################################################################### 
+#
+# UltraScale
+#
+#####################################################################################################################################################
+
+# do not do anything for VCC_WIRE and GND_WIRE as we might need constant '1' and '0'
+# SS\d+_END.* seems to be some mid pip whose usage results in some driver conflicts
+AddBlockerPortFilter FamilyRegexp=UltraScale Regexp=(CLK)|(VCC_W)|(GND_WIRE)|(SS\d\d_END.*)|(BOUNCE);
+
+#AddBlockerPath FamilyRegexp=UltraScale DriverRegexp=END HopRegexp=^INT_NODE SinkRegexp=(BEG)|(IMUX);
+#AddBlockerPath FamilyRegexp=UltraScale DriverRegexp=LOGIC_OUTS_ HopRegexp=^INT_NODE SinkRegexp=(BEG)|(IMUX);
+#AddBlockerPath FamilyRegexp=UltraScale DriverRegexp=^Q HopRegexp=^INT_NODE SinkRegexp=
+
+# end pip blocking
+AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=END 		SinkRegexp=SDN 			ConnectAll=True EndPip=True;
+AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=END 		SinkRegexp=INT_NODE 	ConnectAll=True EndPip=True;
+AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=LOGIC_OUTS SinkRegexp=INT_NODE 	ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=BYPASS     SinkRegexp=INT_NODE 	ConnectAll=False EndPip=False;
+
+AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=INT_NODE   SinkRegexp=SDN 			ConnectAll=True  EndPip=True;
+
+
+#bug AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp= SinkRegexp=.* ConnectAll=True EndPip=False;
+
+
+##################################################################################################################################################### 
+#
+# Artix7
+#
+#####################################################################################################################################################
+AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=RAMB18_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;
+
+# do not do anything for tiles that match ...
+AddBlockerPortFilter FamilyRegexp=Artix7 Regexp=(CLK)|(END_(N|S)\d_\d);
+
+# connect longlines to begin pips first, as otherwise begin pips might get rare
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;	
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=LOGIC_OUTS_L\d+ SinkRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ ConnectAll=False EndPip=False;	
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=END SinkRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ ConnectAll=False EndPip=False;	
+# geht nicht: AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;	
+
+# end pip blocking
+# AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=^FAN_BOUNCE SinkRegexp=^IMUX ConnectAll=False EndPip=True; geht leider nicht BOUNCE->IMUX, und IMUX ist durch Macro belegt 
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=END_(N|S)\d_\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=END\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+
+# use LOGIC_OUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG_(S|N)\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=^BYP ConnectAll=True EndPip=False;
+
+##################################################################################################################################################### 
+#
+# Zynq
+#
+#####################################################################################################################################################
+AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=RAMB36_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\BRAM_Blocker_Zynq.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\SLICEX_Blocker_Zynq.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\DSP48_Blocker_Zynq.xdl;	
+
+# do not do anything for tiles that match ...
+AddBlockerPortFilter FamilyRegexp=Zynq Regexp=(CLK)|(N\d_3$)|(END_S\d_0);
+
+# connect longlines to begin pips first, as otherwise begin pips might get rare
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=L(H|V)\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=L(H|V)(B){0,1}_L\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=FAN_BOUNCE_S3_\d+ SinkRegexp=IMUX ConnectAll=False EndPip=False;
+
+# end pip blocking
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=BYP_BOUNCE_ SinkRegexp=IMUX ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=END_(N|S)\d_\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=END\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+
+# use LOGIC_OUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG_(S|N)\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=^BYP ConnectAll=True EndPip=False;
+
+##################################################################################################################################################### 
+#
+# Spartan6
+#
+#####################################################################################################################################################
+AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=RAMB16_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
+AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;	
+
+# do not do anything for tiles that match REGH
+AddBlockerTileFilter FamilyRegexp=Spartan6 Regexp=REGH;
+AddBlockerPortFilter FamilyRegexp=Spartan6 Regexp=(CLK)|(SR(0|1)$)|(_WIRE)|(WW2E_N3);
+
+# hard coded path to block GFAN pips
+AddBlockerPath FamilyRegexp=Spartan6 DriverRegexp=LOGIC HopRegexp=GFAN SinkRegexp=LOGIC;
+
+# single arc for each LOGICIN_
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=LOGICIN_(S|N)\d+ SinkRegexp=.* ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=.* SinkRegexp=LOGICIN\d+ ConnectAll=False EndPip=False;
+# end pip blocking (first NN2E_S0)
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=NN2E_S0 SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=NE2E_S0 SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=EL1E_S0 SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=(E\d$)|(_(S|N)\d$) SinkRegexp=.* ConnectAll=False EndPip=True;
+# use LOGICOUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=LOGICOUT\d+ SinkRegexp=\dB\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=^RTERM SinkRegexp=^RTERM ConnectAll=True EndPip=False;
+
+##################################################################################################################################################### 
+#
+# Virtex6
+#
+# Note: We could for sure share some BlockerOrders with V5, however for the sake of simplicity, we keep V5 and V6 split
+#
+#####################################################################################################################################################
+AddBlockerPrimitveRegexp FamilyRegexp=Virtex6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex6\SLICEX_Blocker_V6.xdl;
+
+# do not do anything for tiles that match REGH
+# TODO AddBlockerTileFilter FamilyRegexp=Spartan6 Regexp=REGH;
+AddBlockerPortFilter FamilyRegexp=Virtex6 Regexp=(CLK)|(FAN_)|(VCC_WIRE)|(WW2END_N0_3);
+
+# hard coded path to block GFAN pips
+AddBlockerPath FamilyRegexp=Virtex6 DriverRegexp=BYP HopRegexp=GFAN SinkRegexp=BYP;
+# TODO do we need GFAN for Virtex6?
+
+# connect longlines to begin pips first, as otherwise begin pips might get rare
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=L(H|V)\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;
+
+# end pip blocking
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=BYP_BOUNCE_ SinkRegexp=IMUX ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=END_(N|S)\d_\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=END\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+
+# use LOGIC_OUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=\dBEG_(S|N)\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=\dBEG\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=^BYP ConnectAll=True EndPip=False;
+
+##################################################################################################################################################### 
+#
+# Virtex5
+#
+# Note: We could share some BlockerOrders with V6, however for the sake of simplicity, we keep V5 and V6 split
+#
+#####################################################################################################################################################
+AddBlockerPrimitveRegexp FamilyRegexp=Virtex5 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex5\SLICEX_Blocker_V5_new.xdl;
+
+# do not do anything for tiles that match REGH
+# TODO AddBlockerTileFilter FamilyRegexp=Virtex5 Regexp=REGH;
+AddBlockerPortFilter FamilyRegexp=Virtex5 Regexp=(CLK)|(FAN_)|(CTRL)|(GCLK)|(KEEP_WIRE)|(KEEP1_WIRE)|(FAKE);
+
+# hard coded path to block GFAN pips
+# TODO do we need GFAN for Virtex5?
+
+#AddImplictBlockerOrder FamilyRegexp=Virtex5 PipInSelectedAreaRegexp=MID.* PipInSelectedAreaCanReachRegexp=L(H|V).* DriverRegexp=.*;
+#AddImplictBlockerOrder FamilyRegexp=Virtex5 PipInSelectedAreaRegexp=END.* PipInSelectedAreaCanReachRegexp=L(H|V).* DriverRegexp=.*;
+
+# connect longlines to begin pips first, as otherwise begin pips might get rare
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=L(H|V)\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;
+
+# MID pips for Virtex 5 only
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=MID_(N|S)\d+ SinkRegexp=IMUX_B\d+ ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=MID\d+ SinkRegexp=IMUX_B\d+ ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=MID\d+ SinkRegexp=.* ConnectAll=False EndPip=False;
+
+# end pip blocking
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=END_(N|S)\d_\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=END\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+
+# use LOGIC_OUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=\dBEG_(S|N)\d$ ConnectAll=False EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex5 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=\dBEG\d$ ConnectAll=False EndPip=False;
+
+##################################################################################################################################################### 
+#
+# Virtex7
+#
+# Note: We could share some BlockerOrders with V6, however for the sake of simplicity, we keep them split
+#
+#####################################################################################################################################################
+
+# do not do anything for tiles that match ...
+AddBlockerPortFilter FamilyRegexp=Virtex7 Regexp=(CLK)|(END_(N|S)\d_\d);
+
+# connect longlines to begin pips first, as otherwise begin pips might get rare
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ SinkRegexp=BEG\d ConnectAll=False EndPip=False;	
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=LOGIC_OUTS_L\d+ SinkRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ ConnectAll=False EndPip=False;	
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=END SinkRegexp=L(H|V)(B){0,1}(_L){0,1}\d+ ConnectAll=False EndPip=False;	
+
+# end pip blocking
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=END_(N|S)\d_\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=END\d$ SinkRegexp=.* ConnectAll=False EndPip=True;
+
+# use LOGIC_OUTs to block begin pips 
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG_(S|N)\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=\dBEG\d$ ConnectAll=True EndPip=False;
+AddBlockerOrder FamilyRegexp=Virtex7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp=^BYP ConnectAll=True EndPip=False;
+
+##################################################################################################################################################### 
+#
+# GoAhead needs to know which identifiers in which FPGA family identify certain tile types.
+# These tiles types are BRAM/DSP, Configurable Logic Blocks and Interconnect Tiles
+#
+#####################################################################################################################################################
+
+SetBRAMIdentifierRegexp FamilyRegexp=StratixV IdentifierRegexp="^M\d+K" Height=1 Width=1;
+SetBRAMIdentifierRegexp FamilyRegexp=CycloneIVE IdentifierRegexp="^M\d+K" Height=1 Width=1;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="^BRAM_" Height=4 Width=3;
+SetBRAMIdentifierRegexp FamilyRegexp=Spartan3 IdentifierRegexp="^BRAMR\d+C\d+" Height=1 Width=1;
+SetBRAMIdentifierRegexp FamilyRegexp=Spartan6 IdentifierRegexp="^BRAMSITE2" Height=4 Width=3;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="^BRAMR\d+C\d+" Height=1 Width=1;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex4 IdentifierRegexp="^BRAM_" Height=4 Width=3;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex5 IdentifierRegexp="^BRAM_" Height=5 Width=3;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex6 IdentifierRegexp="^BRAM_" Height=5 Width=3;
+SetBRAMIdentifierRegexp FamilyRegexp=Virtex7 IdentifierRegexp="^BRAM_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetBRAMIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="^BRAM_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetBRAMIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^BRAM_X" Height=5 Width=1;
+SetBRAMIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^BRAM_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetBRAMIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^BRAM_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+
+SetDSPIdentifierRegexp FamilyRegexp=StratixV IdentifierRegexp="^DSP_" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=CycloneIVE IdentifierRegexp="^DSP_" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Spartan3 IdentifierRegexp="^DSP_" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Spartan6 IdentifierRegexp="^MACCSITE2" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="^DSP_" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Virtex4 IdentifierRegexp="^DSP_" Height=4 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Virtex5 IdentifierRegexp="^DSP_" Height=5 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Virtex6 IdentifierRegexp="^DSP_" Height=5 Width=3;
+SetDSPIdentifierRegexp FamilyRegexp=Virtex7 IdentifierRegexp="^DSP_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetDSPIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="^DSP_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetDSPIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^DSP_X" Height=5 Width=1;
+SetDSPIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^DSP_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+SetDSPIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^DSP_(L|R)_X" Height=5 Width=3 LeftRightHandling=True ButtomLeft="_L_" ButtomRight="_R_";
+
+SetSliceIdentifierRegexp FamilyRegexp=StratixV IdentifierRegexp="todo";
+SetSliceIdentifierRegexp FamilyRegexp=CycloneIVE IdentifierRegexp="todo";
+SetSliceIdentifierRegexp FamilyRegexp=Spartan3 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Spartan6 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Virtex4 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Virtex5 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Virtex6 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Virtex7 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="SLICE_X\d+Y\d+";
+SetSliceIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="SLICE_X\d+Y\d+";
+
+SetCLBIdentifierRegexp FamilyRegexp=StratixV IdentifierRegexp="LAB";
+SetCLBIdentifierRegexp FamilyRegexp=CycloneIVE IdentifierRegexp="LAB";
+SetCLBIdentifierRegexp FamilyRegexp=Spartan3 IdentifierRegexp="^R\d+C\d+";
+SetCLBIdentifierRegexp FamilyRegexp=Spartan6 IdentifierRegexp="^CLE";
+SetCLBIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="^R\d+C\d+";
+SetCLBIdentifierRegexp FamilyRegexp=Virtex4 IdentifierRegexp="^CLB_X";
+SetCLBIdentifierRegexp FamilyRegexp=Virtex5 IdentifierRegexp="^CLB";
+SetCLBIdentifierRegexp FamilyRegexp=Virtex6 IdentifierRegexp="^CLB";
+SetCLBIdentifierRegexp FamilyRegexp=Virtex7 IdentifierRegexp="^CLB";
+SetCLBIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="^CLB";
+SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLE_M_X)|(^CLEM_X)";
+SetCLBIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^CLB";
+SetCLBIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^CLB";
+
+SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)" BlockType="clb" Orientation="left";
+
+SetProhibitExcludeFilter FamilyRegexp=Spartan6 IdentifierRegexp="^TIEOFF";
+SetProhibitExcludeFilter FamilyRegexp=Virtex6 IdentifierRegexp="^TIEOFF";
+
+SetInterconnectIdentifierRegexp FamilyRegexp=StratixV IdentifierRegexp="todo";
+SetInterconnectIdentifierRegexp FamilyRegexp=CycloneIVE IdentifierRegexp="todo";
+SetInterconnectIdentifierRegexp FamilyRegexp=Spartan3 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Spartan6 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Virtex2 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Virtex4 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Virtex5 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Virtex6 IdentifierRegexp="^INT_(BRAM_){0,1}X";
+SetInterconnectIdentifierRegexp FamilyRegexp=Virtex7 IdentifierRegexp="^INT_(L|R)";
+SetInterconnectIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="^INT_(L|R)";
+SetInterconnectIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^INT_";
+SetInterconnectIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^INT_(L|R)";
+SetInterconnectIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^INT_(L|R)";
+
+SetColorSetting FamilyRegexp=(StratixV)|(CycloneIVE) IdentifierRegexp="^LAB" Color=Cyan;
+SetColorSetting FamilyRegexp=Spartan6 IdentifierRegexp="^CLEXM" Color=DarkCyan;
+SetColorSetting FamilyRegexp=Virtex5 IdentifierRegexp="^CLBLL" Color=Cyan;
+SetColorSetting FamilyRegexp=Virtex5 IdentifierRegexp="^CLBLM" Color=DarkCyan;
+SetColorSetting FamilyRegexp=Virtex6 IdentifierRegexp="^CLBLL" Color=Cyan;
+SetColorSetting FamilyRegexp=Virtex6 IdentifierRegexp="^CLBLM" Color=DarkCyan;
+SetColorSetting FamilyRegexp=Virtex7 IdentifierRegexp="^CLBLL" Color=Cyan;
+SetColorSetting FamilyRegexp=Virtex7 IdentifierRegexp="^CLBLM" Color=DarkCyan;
+SetColorSetting FamilyRegexp=Virtex4 IdentifierRegexp="^CLB_X" Color=DarkCyan;
+SetColorSetting FamilyRegexp=Spartan3 IdentifierRegexp="^R\d+C\d+" Color=DarkCyan;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" Color=Cyan;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)" Color=DarkCyan;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTERFACE" Color=Yellow;
+SetColorSetting FamilyRegexp=Zynq IdentifierRegexp="^CLB" Color=DarkCyan;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="^INT" Color=Orange;
+
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="^M\d+K" Color=Brown;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="^IOC" Color=Orange;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="BRAM" Color=Brown;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="MACC" Color=DarkBlue;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="DSP" Color=DarkBlue;
+SetColorSetting FamilyRegexp=.* IdentifierRegexp="IOI|IOB" Color=Beige;
+#SetColorSetting FamilyRegexp=.* IdentifierRegexp="DSP|REG|INTERFACE" Color=Blue;
+
+# SLICEX can be place anywhere
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEX PossibleTargetSliceType=SLICEX;
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEX PossibleTargetSliceType=SLICEM;
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEX PossibleTargetSliceType=SLICEL;
+# SLICEL required SLICEM or SLICEL
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEL PossibleTargetSliceType=SLICEM;
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEL PossibleTargetSliceType=SLICEL;
+# SLICEM can only be placed a SLICEM
+AddCompatibleSliceTypes FamilyRegexp=Spartan6 RequiredSliceType=SLICEM PossibleTargetSliceType=SLICEM;
+
+SetColumnTypeNames ColumnTypeName=L Resources="SLICEL";
+SetColumnTypeNames ColumnTypeName=M Resources="SLICEM";
+SetColumnTypeNames ColumnTypeName=ML Resources="SLICEM,SLICEL";
+SetColumnTypeNames ColumnTypeName=INTERCONNECT Resources="TIEOFF";
+SetColumnTypeNames ColumnTypeName=BRAM Resources="FIFO18E1,RAMB18E1,RAMBFIFO36E1";
+SetColumnTypeNames ColumnTypeName=DSP Resources="DSP48E1,DSP48E1,TIEOFF";
+
+
+SetAddToSelectionByIdentifierDefaultPrefices DefaultIdentifierPrefices=INT_BRAM_BRK_,INT_BRAM_,INT_DSP_,INT_;
+
+AddAlias AliasName=DoNotBlockDoubleEastBegin Commands="";
+AddAlias AliasName=DoNotBlockDoubleEastEnd Commands=""; 
+AddAlias AliasName=DoNotBlockDoubleEast Commands="";
+AddAlias AliasName=DoNotBlockDoubleWestBegin Commands="";
+AddAlias AliasName=DoNotBlockDoubleWestEnd Commands="";
+AddAlias AliasName=DoNotBlockDoubleWest Commands="";
+AddAlias AliasName=DoNotBlockDoubleNorthBegin Commands="";
+AddAlias AliasName=DoNotBlockDoubleNorthEnd Commands="";
+AddAlias AliasName=DoNotBlockDoubleNorth Commands="";
+AddAlias AliasName=DoNotBlockDoubleSouthBegin Commands="";
+AddAlias AliasName=DoNotBlockDoubleSouthEnd Commands="";
+AddAlias AliasName=DoNotBlockDoubleSouth Commands="";
+
+
+# Wires
+#Set Variable=BEL1 Value="(?<x1>\w)FF(?<x2>\d?)";
+#Set Variable=BEL1_Outwire1 Value=".*_(?<x1>\w)(?<outpin>Q)(?<x2>\d?)";
+#
+#Set Variable=BEL2 Value="CARRY8";
+#Set Variable=BEL2_Outwire1 Value=".*_COUT";
+#Set Variable=BEL2_Inwire1 Value=".*_(?<inpin>\wX)";
+#
+#AddBELOutwireIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp_BEL=%BEL1% IdentifierRegexp_Wire=%BEL1_Outwire1%;
+#AddBELOutwireIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp_BEL=%BEL2% IdentifierRegexp_Wire=%BEL2_Outwire1%;
+#
+#AddBELInwireIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp_BEL="\wFF\d?" IdentifierRegexp_Wire=".*(?:CKEN|SRST|CLK)\d";
+#AddBELInwireIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp_BEL=%BEL2% IdentifierRegexp_Wire=%BEL2_Inwire1%;
+#
+#IncludeUTurnWires FamilyRegexp=UltraScale;
+#IncludeSingleStopoverArcs FamilyRegexp=UltraScale;
+#BlockStopoverArcPorts FamilyRegexp=UltraScale;
+#
+#AddBELRoute FamilyRegexp=UltraScale IdentifierRegexp_InBEL=%BEL2% IdentifierRegexp_OutBEL=%BEL1% ;
+#AddBELRoute FamilyRegexp=UltraScale IdentifierRegexp_InBEL=%BEL2% IdentifierRegexp_OutBEL="\wFF\d?" ;
+#
+#IncludeIncomingWires FamilyRegexp=UltraScale;
+#IncludeWiresTrajectoriesData FamilyRegexp=UltraScale;
+#IncludeBiDirectionalPips FamilyRegexp=UltraScale;
+
+#PrintCommandHelp FileName='%GOAHEAD_HOME%\Help\GoAheadHelp.html' Append=False;
+
+ColorCommandTrace;
+UnmuteCommandTrace;
