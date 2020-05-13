@@ -1,0 +1,97 @@
+﻿namespace GoAhead.GUI.AddLibraryManager
+{
+    partial class ReadDesignCtrl
+    {
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.m_btnOK = new System.Windows.Forms.Button();
+            this.m_chkBoxAllowNonExistingTiles = new System.Windows.Forms.CheckBox();
+            this.m_fileSelCtrl = new GoAhead.GUI.FileSelectionCtrl();
+            this.m_netlistContainerSelector = new GoAhead.GUI.Macros.NetlistContainerManager.NetlistContainerSelectorCtrl();
+            this.SuspendLayout();
+            // 
+            // m_btnOK
+            // 
+            this.m_btnOK.Location = new System.Drawing.Point(98, 134);
+            this.m_btnOK.Name = "m_btnOK";
+            this.m_btnOK.Size = new System.Drawing.Size(75, 23);
+            this.m_btnOK.TabIndex = 14;
+            this.m_btnOK.Text = "OK";
+            this.m_btnOK.UseVisualStyleBackColor = true;
+            this.m_btnOK.Click += new System.EventHandler(this.m_btnOK_Click);
+            // 
+            // m_chkBoxAllowNonExistingTiles
+            // 
+            this.m_chkBoxAllowNonExistingTiles.AutoSize = true;
+            this.m_chkBoxAllowNonExistingTiles.Location = new System.Drawing.Point(6, 112);
+            this.m_chkBoxAllowNonExistingTiles.Name = "m_chkBoxAllowNonExistingTiles";
+            this.m_chkBoxAllowNonExistingTiles.Size = new System.Drawing.Size(135, 17);
+            this.m_chkBoxAllowNonExistingTiles.TabIndex = 13;
+            this.m_chkBoxAllowNonExistingTiles.Text = "Allow non existing Tiles";
+            this.m_chkBoxAllowNonExistingTiles.UseVisualStyleBackColor = true;
+            // 
+            // m_fileSelCtrl
+            // 
+            this.m_fileSelCtrl.Append = true;
+            this.m_fileSelCtrl.FileName = "";
+            this.m_fileSelCtrl.Filter = "All files|*.xdl";
+            this.m_fileSelCtrl.Label = "XDL Netlist";
+            this.m_fileSelCtrl.Location = new System.Drawing.Point(3, 55);
+            this.m_fileSelCtrl.Name = "m_fileSelCtrl";
+            this.m_fileSelCtrl.Size = new System.Drawing.Size(264, 61);
+            this.m_fileSelCtrl.TabIndex = 13;
+            // 
+            // m_netlistContainerSelector
+            // 
+            this.m_netlistContainerSelector.Location = new System.Drawing.Point(3, 4);
+            this.m_netlistContainerSelector.Name = "m_netlistContainerSelector";
+            this.m_netlistContainerSelector.Size = new System.Drawing.Size(165, 45);
+            this.m_netlistContainerSelector.TabIndex = 15;
+            // 
+            // ReadDesignCtrl
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.m_netlistContainerSelector);
+            this.Controls.Add(this.m_chkBoxAllowNonExistingTiles);
+            this.Controls.Add(this.m_btnOK);
+            this.Controls.Add(this.m_fileSelCtrl);
+            this.Name = "ReadDesignCtrl";
+            this.Size = new System.Drawing.Size(267, 160);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private FileSelectionCtrl m_fileSelCtrl;
+        private System.Windows.Forms.Button m_btnOK;
+        private System.Windows.Forms.CheckBox m_chkBoxAllowNonExistingTiles;
+        private Macros.NetlistContainerManager.NetlistContainerSelectorCtrl m_netlistContainerSelector;
+    }
+}

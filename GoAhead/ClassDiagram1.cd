@@ -1,0 +1,3850 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GoAhead.Code.DesignParser" Collapsed="true">
+    <Position X="16.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Code\DesignParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.FEScript" Collapsed="true">
+    <Position X="685.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgBAAAAAIAAAAAAAAUAAAAAAAAAA=</HashCode>
+      <FileName>Code\FEScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.Instance" Collapsed="true">
+    <Position X="9.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEGgAIAAAQAQAAQAIAQAAAAAAACAAE=</HashCode>
+      <FileName>Code\Instance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.Net" Collapsed="true">
+    <Position X="14.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAAAAAAAAEAgABAgQAIAAAAAQAAAAIIAAAAAI=</HashCode>
+      <FileName>Code\Net.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.NetInpin" Collapsed="true">
+    <Position X="15.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\NetInpin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.NetlistElement" Collapsed="true">
+    <Position X="12" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAEAAAAgAAAAAABAAAg=</HashCode>
+      <FileName>Code\NetlistElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.NetOutpin" Collapsed="true">
+    <Position X="17.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\NetOutpin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.NetPin" Collapsed="true">
+    <Position X="16.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAIAAAEgAAAAAAAAgAQAIAQAAAAAAAQAAA=</HashCode>
+      <FileName>Code\NetPin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.LoadFPGAFamilyScript" Collapsed="true">
+    <Position X="286.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Code\LoadFPGAFamilyScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.ExcludePipsToBidirectionalWiresFromBlocking" Collapsed="true">
+    <Position X="84.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Data\ExcludePipsToBidirectionalWiresFromBlocking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.GenerateBinFPGAs" Collapsed="true">
+    <Position X="313.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Data\GenerateBinFPGAs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.GenerateFEScript" Collapsed="true">
+    <Position X="329.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAIAAAQAABABAAAA=</HashCode>
+      <FileName>Commands\Data\GenerateFEScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.GenerateXDL" Collapsed="true">
+    <Position X="347.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAIAAAAAAABAAAAAAEAAAAAAIAAACAAYCAAABAAAA=</HashCode>
+      <FileName>Commands\Data\GenerateXDL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.LanchNetlistInFE" Collapsed="true">
+    <Position X="363.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAABAgAAAAAAAAAAAIAAAAAAYAABAAAIAA=</HashCode>
+      <FileName>Commands\Data\LanchNetlistInFE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.OpenBinFPGA" Collapsed="true">
+    <Position X="403.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\OpenBinFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.StreamDecorator" Collapsed="true">
+    <Position X="694.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAgGAAAAABgAAAAAAAIAAAAAAGIQCA=</HashCode>
+      <FileName>Commands\Data\OpenBinFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.PartGenAll" Collapsed="true">
+    <Position X="437.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAVEAhBQAAgAACgAAAAAAAAAAAQAAAAABAAg=</HashCode>
+      <FileName>Commands\Data\PartGenAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.ReadAlteraFPGA" Collapsed="true">
+    <Position X="448.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\ReadAlteraFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.ReadVivadoFPGA" Collapsed="true">
+    <Position X="577" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAMQAAAAAABAAAAAAAAAAAgAAgAAAAAYBAAABAAAA=</HashCode>
+      <FileName>Commands\Data\ReadVivadoFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.ReadWireStatements" Collapsed="true">
+    <Position X="595" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAABAAAAAAAAAEAAAAAAAABAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\ReadWireStatements.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.ReadXDL" Collapsed="true">
+    <Position X="615.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAABAEAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\ReadXDL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.SaveAsBlocker" Collapsed="true">
+    <Position X="628.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAEAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\SaveAsBlocker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.SaveAsDesign" Collapsed="true">
+    <Position X="646.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAEAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\SaveAsDesign.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.SaveAsMacro" Collapsed="true">
+    <Position X="660.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAEAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\SaveAsMacro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Data.SaveBinFPGA" Collapsed="true">
+    <Position X="32.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Data\SaveBinFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.TCL.TCLDesignParser" Collapsed="true">
+    <Position X="15.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\TCL\TCLDesignParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.TCL.TCLInstance" Collapsed="true">
+    <Position X="11" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\TCL\TCLInstance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.TCL.TCLNet" Collapsed="true">
+    <Position X="13.25" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAASAAAAAAAAEAAAAIAAAIAgAAgAAAAAAIAAAAAA=</HashCode>
+      <FileName>Code\TCL\TCLNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.TCL.TCLRoutingTree" Collapsed="true">
+    <Position X="699.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAEAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\TCL\TCLNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.TCL.TCLRoutingTreeNode" Collapsed="true">
+    <Position X="9.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Code\TCL\TCLNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLComponent" Collapsed="true">
+    <Position X="699.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLEntity" Collapsed="true">
+    <Position X="15.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAIAAAEAAAAAAAAAAIAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLFile" Collapsed="true">
+    <Position X="701.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAAAAAAAAAAAAAAAAAAAAAAACIEAAAACAgAAgAACg=</HashCode>
+      <FileName>Code\VHDL\VHDLFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLInstantiation" Collapsed="true">
+    <Position X="678.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAEAAAAEAAAAAAAAAAAAACQAAAAAAAAIAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLParserEntity" Collapsed="true">
+    <Position X="682" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAABAQAAAAAAAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.HDLEntitySignalMetaData" Collapsed="true">
+    <Position X="682" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACBAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.HDLEntitySignal" Collapsed="true">
+    <Position X="680.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAgAACAAAAAAAAAAAAAAEAUAAAAAAAAAAwAA=</HashCode>
+      <FileName>Code\VHDL\VHDLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLParser" Collapsed="true">
+    <Position X="680.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAQAAAAABAAACAAAAAAAAEAAAAAAAECA=</HashCode>
+      <FileName>Code\VHDL\VHDLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLSignalDeclaration" Collapsed="true">
+    <Position X="17.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\VHDL\VHDLSignalDeclaration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.VHDL.VHDLSignalList" Collapsed="true">
+    <Position X="16.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAoAAAAAAAAAAAAAAAAAAAAAAAAAAAgAgRAgAAAAkAA=</HashCode>
+      <FileName>Code\VHDL\VHDLSignalList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLDeviceShapeParser" Collapsed="true">
+    <Position X="690.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLDeviceShapeParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLResourceReportParser" Collapsed="true">
+    <Position X="678.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLResourceReportParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLSliceParser" Collapsed="true">
+    <Position X="680.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLSliceParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLStreamReaderWithUndo" Collapsed="true">
+    <Position X="682" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAACAAAAAAAAAAAQAAAAAACAAAAAAAAAAAACIAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLStreamReaderWithUndo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLTileParser" Collapsed="true">
+    <Position X="683.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAARAAAAgAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLTileParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.ResourceDescription.XDLWireParser" Collapsed="true">
+    <Position X="687.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Code\XDL\ResourceDescription\XDLWireParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLContainer" Collapsed="true">
+    <Position X="0.5" Y="16.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIFAAEgAgABAAARBAAiAAJYDCAAAQKIAgCAaBAFHAA=</HashCode>
+      <FileName>Code\XDL\XDLContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLDesignParser" Collapsed="true">
+    <Position X="17.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAEIAQAAAAgAEAAAwAAAAACAAACAAAAAAAACAAAAA=</HashCode>
+      <FileName>Code\XDL\XDLDesignParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLFile" Collapsed="true">
+    <Position X="692.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQIAIAAAAAAAAAABAAAAIBAAKAgAAAAAIAAAAACACCA=</HashCode>
+      <FileName>Code\XDL\XDLFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLInstance" Collapsed="true">
+    <Position X="8.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\XDL\XDLInstance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLMacroPort" Collapsed="true">
+    <Position X="697.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAEAAAAAAAAAACAAAAAAAACAAAAAACAQAAAACgAAA=</HashCode>
+      <FileName>Code\XDL\XDLMacroPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLModule" Collapsed="true">
+    <Position X="0.5" Y="18.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAEAAAAAAAAAAEAAAAAAAAAAABAAAg=</HashCode>
+      <FileName>Code\XDL\XDLModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLNet" Collapsed="true">
+    <Position X="15.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIAAAABAogAGAAUBAIQJAAAJAAgAAAEAAAAIAAUAAA=</HashCode>
+      <FileName>Code\XDL\XDLNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLPip" Collapsed="true">
+    <Position X="699.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CgAAAAAgAAAAAAAEgAIIAAAAAAAIAIAgAQAAAAAAIAA=</HashCode>
+      <FileName>Code\XDL\XDLPip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLPort" Collapsed="true">
+    <Position X="701.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAEACAAAAAAAAAQCAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Code\XDL\XDLPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Code.XDL.XDLVirtualPort" Collapsed="true">
+    <Position X="685.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAkAAAAEAAAAAACAAAAAAAAKAAAAAAAAAQA=</HashCode>
+      <FileName>Code\XDL\XDLVirtualPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.AddAlias" Collapsed="true">
+    <Position X="289" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>Commands\AddAlias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Beep" Collapsed="true">
+    <Position X="304.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Beep.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BitstreamCompression" Collapsed="true">
+    <Position X="316" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAEAAAAAAAIAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BitstreamCompression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BitwiseOr" Collapsed="true">
+    <Position X="331.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAIAAAAEAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BitwiseOr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CheckVersion" Collapsed="true">
+    <Position X="349.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAQAAAAAAQAQ=</HashCode>
+      <FileName>Commands\CheckVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Parameter" Collapsed="true">
+    <Position X="701.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAEAAAAAAEAAAAAAAAAAAAAAAggAAAEAAAAAAA=</HashCode>
+      <FileName>Commands\Command.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandDescription" Collapsed="true">
+    <Position X="689" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Command.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionProgressInfo" Collapsed="true">
+    <Position X="694.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAACAACA=</HashCode>
+      <FileName>Commands\Command.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Command" Collapsed="true">
+    <Position X="354.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AwAIAACkCQAABAwUiIiAgAAACFAQAAAAAZAAAAAAEgA=</HashCode>
+      <FileName>Commands\Command.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecuter" Collapsed="true">
+    <Position X="690.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQQYAQMASAACAIQAAAIBgA4AIAAAAAICQAwAIAAACQE=</HashCode>
+      <FileName>Commands\CommandExecuter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionContext" Collapsed="true">
+    <Position X="692.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAQAAAAAAAAQAAAAEAAAAAAABAAAAAAAAAAAAhAA=</HashCode>
+      <FileName>Commands\CommandExecutionContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandHook" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAQAAAAAAAAAAAABAgAAAAAAAAwAAAAA=</HashCode>
+      <FileName>Commands\CommandHook.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandOutputManager" Collapsed="true">
+    <Position X="699.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUDAMAiQSCAAAEgAAAQgCAAKwBBEAFAAIACCgAACJQA=</HashCode>
+      <FileName>Commands\CommandOutputManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandStringParser" Collapsed="true">
+    <Position X="682" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAgACAAAAABADAEAAAwAIAAAAkAAgEAQAAQJQBIAAA=</HashCode>
+      <FileName>Commands\CommandStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NameValuePair" Collapsed="true">
+    <Position X="683.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAgAAAAAAEQAQAAAAAAAAAAAAgAAAAEAA=</HashCode>
+      <FileName>Commands\CommandStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Extensions" Collapsed="true">
+    <Position X="680.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandStringParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandStringParserState" Collapsed="true">
+    <Position X="683.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIACEAAAIAAAAAAAAAAAAAoAAAAAAAAg=</HashCode>
+      <FileName>Commands\CommandStringParserState.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandStringTopology" Collapsed="true">
+    <Position X="685.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAABAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandStringTopology.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandWithFileOutput" Collapsed="true">
+    <Position X="121.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAAAAABAAAA=</HashCode>
+      <FileName>Commands\CommandWithFileOutput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Evaluate" Collapsed="true">
+    <Position X="201.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Evaluate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.ExecuteAlias" Collapsed="true">
+    <Position X="230.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAABAAEAAAAAAAAAAAAAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>Commands\ExecuteAlias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Exit" Collapsed="true">
+    <Position X="241.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\Exit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Foo" Collapsed="true">
+    <Position X="259.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Foo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Fail" Collapsed="true">
+    <Position X="271" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Foo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GC" Collapsed="true">
+    <Position X="291.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GeneratePartialBitstreams" Collapsed="true">
+    <Position X="154" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABACgAAAAAAAIQAAAAAAAAQAICAAAAAA=</HashCode>
+      <FileName>Commands\GeneratePartialBitstreams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GetCommandTraceForScript" Collapsed="true">
+    <Position X="318.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\GetCommandTraceForScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GotoCommand" Collapsed="true">
+    <Position X="335.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Commands\GotoCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GotoLabel" Collapsed="true">
+    <Position X="334" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAAAAAAAAAAAAAAAAAACQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GotoLabel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GotoLabelResource" Collapsed="true">
+    <Position X="336.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAAAAAAAAAAAAAAAAAACQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GotoLabelResource.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.If" Collapsed="true">
+    <Position X="406" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAACABAAAAQAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\If.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.IfExists" Collapsed="true">
+    <Position X="426.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAABAAAAQAAAAAAAAAAAAAAAQQAAAAAAAA=</HashCode>
+      <FileName>Commands\IfExists.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PathSearchOnFPGA" Collapsed="true">
+    <Position X="120.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAAQADAAEEAAAESQAAACQAQAABQAAAAABAAI=</HashCode>
+      <FileName>Commands\Misc\PathSearchOnFPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.MonoTest" Collapsed="true">
+    <Position X="451" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\MonoTest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NOP" Collapsed="true">
+    <Position X="579.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NOP.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PowerShellDebugSession" Collapsed="true">
+    <Position X="597.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\PowerShellDebugSession.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintCommandHelp" Collapsed="true">
+    <Position X="178.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAABAAAAAAAAAAAAAAAAAIAAQAAIAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintCommandHelp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintCommandNames" Collapsed="true">
+    <Position X="631" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintCommandNames.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintCommandParameters" Collapsed="true">
+    <Position X="649" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintCommandParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintComponentWiseMaximalResourceConsumption" Collapsed="true">
+    <Position X="174.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAg=</HashCode>
+      <FileName>Commands\Print\PrintComponentWiseMaximalResourceConsumption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintExampleFiles" Collapsed="true">
+    <Position X="34.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintExampleFiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintResourceConsumptionInSelection" Collapsed="true">
+    <Position X="133.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintResourceConsumptionInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintResourceConsumptionPerModule" Collapsed="true">
+    <Position X="136" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAIAAAQAAAAIAAAA=</HashCode>
+      <FileName>Commands\Print\PrintResourceConsumptionPerModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.TreeNodeTag" Collapsed="true">
+    <Position X="687.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintResourceConsumptionPerModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.TreeNodeExtension" Collapsed="true">
+    <Position X="685.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintResourceConsumptionPerModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintResourceUtilizationScript" Collapsed="true">
+    <Position X="73" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintResourceUtilizationScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintToFile" Collapsed="true">
+    <Position X="75.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintToFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintUncommentedCommandNames" Collapsed="true">
+    <Position X="273.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintUncommentedCommandNames.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintUncoveredCommands" Collapsed="true">
+    <Position X="82" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAEAAA=</HashCode>
+      <FileName>Commands\Print\PrintUncoveredCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Print" Collapsed="true">
+    <Position X="307" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\Print.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintProfile" Collapsed="true">
+    <Position X="320.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\PrintProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.PrintVersion" Collapsed="true">
+    <Position X="338.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\PrintVersion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Reset" Collapsed="true">
+    <Position X="352" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAQAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Reset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Return" Collapsed="true">
+    <Position X="365.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Return.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RouteAll" Collapsed="true">
+    <Position X="536.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAABAAA=</HashCode>
+      <FileName>Commands\RouteAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RouteNet" Collapsed="true">
+    <Position X="538.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQABAAAAAABAAAAEAAAAIAAAAAAABIAQAAAAgDAAA=</HashCode>
+      <FileName>Commands\RouteNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LocationManager" Collapsed="true">
+    <Position X="3" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIJAAAgAAAAAAAAAAECAAQAAAACIAKAAAAAAABAAAA=</HashCode>
+      <FileName>Commands\RouteNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SortedQLocationManager" Collapsed="true">
+    <Position X="0.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAACAAIEAEAAAAAEAAAQAAAAAAQJAAAAAAABAAAA=</HashCode>
+      <FileName>Commands\RouteNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.StackLocationManager" Collapsed="true">
+    <Position X="3" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAEAABQAAAAAAAIAAAAAAABAAAA=</HashCode>
+      <FileName>Commands\RouteNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.QueueLocationManager" Collapsed="true">
+    <Position X="5.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAEAAAQAABAAAAIAAAAAAABAAAA=</HashCode>
+      <FileName>Commands\RouteNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RunScript" Collapsed="true">
+    <Position X="617.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\RunScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SetLabel" Collapsed="true">
+    <Position X="633.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\SetLabel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Sleep" Collapsed="true">
+    <Position X="651.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAIAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Sleep.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UnDo" Collapsed="true">
+    <Position X="662.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\UnDo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wait" Collapsed="true">
+    <Position X="37" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Wait.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.WatchManager" Collapsed="true">
+    <Position X="685.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAQAAAAA=</HashCode>
+      <FileName>Commands\Watch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Watch" Collapsed="true">
+    <Position X="683.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAASAABAAAAAAAAAAAAAAAAQAAIAABAAJAAAA=</HashCode>
+      <FileName>Commands\Watch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.WriteToComPort" Collapsed="true">
+    <Position X="203.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAARAAAIAAAAAAAAAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\WriteToComPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.AddPrimitvesInSelection" Collapsed="true">
+    <Position X="487" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABEAAAAAAAgAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\AddPrimitvesInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockSelection" Collapsed="true">
+    <Position X="496" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAIADAAAAAAAAAICAAAAABAQAUAAAAEAAAI=</HashCode>
+      <FileName>Commands\BlockingShared\BlockSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockVivado" Collapsed="true">
+    <Position X="142.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAACACAAAIAABABIAAYBBAgAAAKAAAAEEQAEABAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockVivado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.PortTreeNode" Collapsed="true">
+    <Position X="9.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAEQAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockVivado.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.ExcludeInstantiationSourcesFromBlocking" Collapsed="true">
+    <Position X="293.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\ExcludeInstantiationSourcesFromBlocking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.ExcludePortsFromBlocking" Collapsed="true">
+    <Position X="309.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAgBAAAAAIAAAAEAAAAAABAAQAAAAAQAAA=</HashCode>
+      <FileName>Commands\BlockingShared\ExcludePortsFromBlocking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.ExcludePortsFromBlockingInSelection" Collapsed="true">
+    <Position X="322.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAAAAEAAAAAABAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\ExcludePortsFromBlockingInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.ExcludePortsFromBlockingInSelectionByRegexp" Collapsed="true">
+    <Position X="340.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAgAAEAAAAAABAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\ExcludePortsFromBlockingInSelectionByRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.ExcludePortsFromBlockingOnTileByRegexp" Collapsed="true">
+    <Position X="354.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAgAAEAAAAAABAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\ExcludePortsFromBlockingOnTileUsedByRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.FreeAllRoutingResources" Collapsed="true">
+    <Position X="367.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\FreeAllRoutingResources.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerConfigCommand" Collapsed="true">
+    <Position X="412.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerConfigCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerOrder" Collapsed="true">
+    <Position X="408.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAEAABADAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerOrder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerPath" Collapsed="true">
+    <Position X="410.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAADAAAAAAAAAAgAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerPath.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerPortFilter" Collapsed="true">
+    <Position X="412.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerPortFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerPrimitveRegexp" Collapsed="true">
+    <Position X="415" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAABEAAAAAAAAAAAgAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerPrimitveRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.BlockerConfig.AddBlockerTileFilter" Collapsed="true">
+    <Position X="417.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\BlockerConfig\AddBlockerTileFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.ConfigureDriver" Collapsed="true">
+    <Position X="552.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAAAACAAAAgAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.S6DriverConfiguration" Collapsed="true">
+    <Position X="552.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.V4DriverConfiguration" Collapsed="true">
+    <Position X="554.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.V5DriverConfiguration" Collapsed="true">
+    <Position X="556.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.V6DriverConfiguration" Collapsed="true">
+    <Position X="547.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.BlockingShared.DriverConfig.K7DriverConfiguration" Collapsed="true">
+    <Position X="550" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\BlockingShared\DriverConfig\ConfigureDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.BreakOnError" Collapsed="true">
+    <Position X="192.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\BreakOnError.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.ColorCommandTrace" Collapsed="true">
+    <Position X="205.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\ColorCommandTrace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.DoNotExecuteCommandsAndUpdateCommandTraceOnly" Collapsed="true">
+    <Position X="232.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\DoNotExecuteCommandsAndUpdateCommandTraceOnly.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.MuteCommandTrace" Collapsed="true">
+    <Position X="244" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\MuteCommandTrace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.MuteGUIErrorMessages" Collapsed="true">
+    <Position X="262" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\MuteGUIErrorMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.MuteOutput" Collapsed="true">
+    <Position X="275.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\MuteOutput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.OnErrorContinue" Collapsed="true">
+    <Position X="295.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\OnErrorContinue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.PrintTotalProfile" Collapsed="true">
+    <Position X="86.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\PrintTotalProfile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.PrintWrappedCommands" Collapsed="true">
+    <Position X="325" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\PrintWrappedCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.ProfileAll" Collapsed="true">
+    <Position X="343" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\ProfileAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.ProfilePeakMemoryConsumption" Collapsed="true">
+    <Position X="356.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\ProfilePeakMemoryConsumption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.StopToNotExecuteCommandsAndUpdateCommandTraceOnly" Collapsed="true">
+    <Position X="370" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\StopToNotExecuteCommandsAndUpdateCommandTraceOnly.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.StopToPrintWrappedCommands" Collapsed="true">
+    <Position X="419.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAIAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\StopToPrintWrappedCommands.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.StopToProfileAll" Collapsed="true">
+    <Position X="428.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\StopToProfileAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.StopToProfilePeakMemoryConsumption" Collapsed="true">
+    <Position X="439.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\StopToProfilePeakMemoryConsumption.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.UncolorCommandTrace" Collapsed="true">
+    <Position X="453.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\UncolorCommandTrace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.UnmuteCommandTrace" Collapsed="true">
+    <Position X="581.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\UnmuteCommandTrace.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.UnmuteGUIErrorMessages" Collapsed="true">
+    <Position X="599.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\UnmuteGUIErrorMessages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.UnmuteOutput" Collapsed="true">
+    <Position X="619.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\CommandExecutionSettings\UnmuteOutput.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.CommandExecutionSettings.PrintCommandCoverage" Collapsed="true">
+    <Position X="185.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Print\PrintCommandCoverage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.UnresolvedWires" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="689" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAABBBAAAAABAAAAAAAAAIkAAAACAAQAQA=</HashCode>
+      <FileName>Commands\Data\ReadWireStatements.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.ConsoleCommandHook" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAQAAAAAAAAAAAABAgAAAAAAAAwEAAAA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.PrintOutputHook" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAQAAAAAAAAAAAABAgAAAAAAAAwEAAAA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.ProfilingHook" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAYgAQAAAAAAAAAAAABAgAAAAAAAEwAAAAA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.PrintProgressToConsoleHook" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAQAAAAAAAAAAABBAgAAAAAAAAwAAAAA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.PrintProgressToGUIHook" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgEQAQAAAAAAAAAABAgAAAAAAAAwAAACA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Program" Collapsed="true">
+    <Position X="697.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.AddDebugMenu" Collapsed="true">
+    <Position X="246.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\AddDebugMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.CheckDesignAgainstBlocker" Collapsed="true">
+    <Position X="145" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAQAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\CheckDesignAgainstBlocker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.CheckExpectedPorts" Collapsed="true">
+    <Position X="149.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAgAAAAg=</HashCode>
+      <FileName>Commands\Debug\CheckExpectedPorts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.CheckThatSelectionIsEmpty" Collapsed="true">
+    <Position X="151.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\CheckThatSelectionIsEmpty.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintAllNetsInSelection" Collapsed="true">
+    <Position X="156.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintAllNetsInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintAllVariables" Collapsed="true">
+    <Position X="327.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintAllVariables.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintAntennas" Collapsed="true">
+    <Position X="158.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAIQAAABAAAIgAAAAAAAAAAAAAAAQAAAACEAAA=</HashCode>
+      <FileName>Commands\Debug\PrintAntennas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintAverageNumberOfReachablePips" Collapsed="true">
+    <Position X="358.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintAverageNumberOfReachablePips.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintDriverConflicts" Collapsed="true">
+    <Position X="160.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintDriverConflicts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintExpectedPorts" Collapsed="true">
+    <Position X="97.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintExpectedPorts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintGoAheadInternals" Collapsed="true">
+    <Position X="430.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQABAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintGoAheadInternals.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintInstantiations" Collapsed="true">
+    <Position X="122.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintInstantiations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintLibrary" Collapsed="true">
+    <Position X="129.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintLibrary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintLUTRouting" Collapsed="true">
+    <Position X="583.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAIAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintLUTRouting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintNet" Collapsed="true">
+    <Position X="165.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintNumberOfSelectedTiles" Collapsed="true">
+    <Position X="181" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintNumberOfSelectedTiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintPrimitivesInSelection" Collapsed="true">
+    <Position X="635.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintPrimitivesInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintSelectedTilesWithBlockedPorts" Collapsed="true">
+    <Position X="653.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintSelectedTilesWithBlockedPorts.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintSelection" Collapsed="true">
+    <Position X="664.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintStatistics" Collapsed="true">
+    <Position X="131.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAACIAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintStatistics.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintTilesWithPortsExcludedFromBlocking" Collapsed="true">
+    <Position X="52.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintTilesWithPortsExcludedFromBlocking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Debug.PrintUnroutedNets" Collapsed="true">
+    <Position X="138.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Debug\PrintUnroutedNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintAllSelectedTiles" Collapsed="true">
+    <Position X="208" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintAllSelectedTiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintAllSliceTypes" Collapsed="true">
+    <Position X="235" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintAllSliceTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintAllSwitchMatrixHashCodes" Collapsed="true">
+    <Position X="248.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintAllSwitchMatrixHashCodes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintAllTileIdentifiersInSelection" Collapsed="true">
+    <Position X="77.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintAllTileIdentifiersInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintMaxXTileKey" Collapsed="true">
+    <Position X="277.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintMaxXTileKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintMaxYTileKey" Collapsed="true">
+    <Position X="298" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintMaxYTileKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.DeviceInfo.PrintWireList" Collapsed="true">
+    <Position X="88.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAIAAAgAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\DeviceInfo\PrintWireList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.AddUserButton" Collapsed="true">
+    <Position X="455.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACBAAAAAAAAAAAAAAAABQAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\AddUserButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.AddUserElement" Collapsed="true">
+    <Position X="456.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAABAwAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\AddUserElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.AddUserMenu" Collapsed="true">
+    <Position X="457.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAACBAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\AddUserMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.ClearDynamicUserMenu" Collapsed="true">
+    <Position X="460" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\ClearDynamicUserMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.ClearStaticUserMenu" Collapsed="true">
+    <Position X="462.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\ClearStaticUserMenu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.ClearUserMenuCommand" Collapsed="true">
+    <Position X="461.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAACBAAAAAAAAAAAAAEAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\ClearUserMenuCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.DrawLine" Collapsed="true">
+    <Position X="442" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAQAABAABAAAAAAAAAAAAAAAAAQAAAAAAgAA=</HashCode>
+      <FileName>Commands\GUI\DrawLine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.GUICommand" Collapsed="true">
+    <Position X="460" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\GUICommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.OpenScriptInDebugger" Collapsed="true">
+    <Position X="464.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQEAAABAAAA=</HashCode>
+      <FileName>Commands\GUI\OpenScriptInDebugger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.SaveFPGAViewAsPNG" Collapsed="true">
+    <Position X="176.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\SaveFPGAViewAsPNG.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.GUI.ShowGUI" Collapsed="true">
+    <Position X="622" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABIBgAAAAAAAAAAAAAAACAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\GUI\ShowGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.AddCompatibleSliceTypes" Collapsed="true">
+    <Position X="637.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAhAAAAAAAAIAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\AddCompatibleSliceTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetAddToSelectionByIdentifierDefaultPrefices" Collapsed="true">
+    <Position X="655.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetAddToSelectionByIdentifierDefaultPrefices.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetBRAMIdentifierRegexp" Collapsed="true">
+    <Position X="223.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAABAAAACAAAEAAAAAAAAAAAQEAAAAgAAA=</HashCode>
+      <FileName>Commands\Identifier\SetBRAMDSPIdentifierRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetDSPIdentifierRegexp" Collapsed="true">
+    <Position X="210.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAABAAAACAAAEAAAAAAAAAAAQEAAAAgAAA=</HashCode>
+      <FileName>Commands\Identifier\SetBRAMDSPIdentifierRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetCLBIdentifierRegexp" Collapsed="true">
+    <Position X="212.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetCLBIdentifierRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetColorSetting" Collapsed="true">
+    <Position X="214.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAABAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetColorSetting.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetIdentifierCommand" Collapsed="true">
+    <Position X="217" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetIdentifierCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetInterconnectIdentifierRegexp" Collapsed="true">
+    <Position X="217" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetInterconnectIdentifierRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetProhibitExcludeFilter" Collapsed="true">
+    <Position X="219.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetProhibitExcludeFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Identifier.SetSliceIdentifierRegexp" Collapsed="true">
+    <Position X="221.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Identifier\SetSliceIdentifierRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.AddSignal" Collapsed="true">
+    <Position X="280" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAQABAAAAABEAAAAAAAAAQAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\AddSignal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.ClearInterface" Collapsed="true">
+    <Position X="300.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAQAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\ClearInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.DeleteSignal" Collapsed="true">
+    <Position X="311.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\DeletePort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.GenerateInterfaceCSV" Collapsed="true">
+    <Position X="91" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAgBAAAACAAGAAACAAAAAAAQQAAAAgCBgA=</HashCode>
+      <FileName>Commands\InterfaceManager\GenerateInterfaceCSV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.LoadInterface" Collapsed="true">
+    <Position X="345.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\LoadInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.LoadInterfaceAsCSV" Collapsed="true">
+    <Position X="361" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAQAAAAAAAgAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\LoadInterfaceFromCSV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.ModifiySignal" Collapsed="true">
+    <Position X="372.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAABAAAAAAEAAAAQAAAACCAAQAAAAgAAEA=</HashCode>
+      <FileName>Commands\InterfaceManager\ModifiySignal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.PrintInterfaceCSVFromVHDL" Collapsed="true">
+    <Position X="100" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAIABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\PrintInterfaceCSVFromVHDL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.PrintInterfaceCSVFromXDLNetlist" Collapsed="true">
+    <Position X="102.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAABAIAAAAAAEAAAAQAAAAAAQAAAAAAAAI=</HashCode>
+      <FileName>Commands\InterfaceManager\PrintInterfaceCSVFromXDLNetlist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.SaveInterface" Collapsed="true">
+    <Position X="444.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\SaveInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.InterfaceManager.SaveInterfaceAsCSV" Collapsed="true">
+    <Position X="466.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAQAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\InterfaceManager\SaveInterfaceAsCSV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.AddBinaryLibraryElement" Collapsed="true">
+    <Position X="586" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQACAABAAAA=</HashCode>
+      <FileName>Commands\Library\AddBinaryLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.AddVivadoLibraryElement" Collapsed="true">
+    <Position X="601.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\AddVivadoLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.AddXDLLibraryElement" Collapsed="true">
+    <Position X="624.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAABAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Library\AddXDLLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.ClearLibrary" Collapsed="true">
+    <Position X="640" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQBAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\ClearLibrary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.DecomposeAntennasFromNets" Collapsed="true">
+    <Position X="169.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAABAAAAAAAAAAAAAIABAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\DecomposeAntennasFromNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.LaunchFE" Collapsed="true">
+    <Position X="667" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\LaunchFE.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.LoadLibrary" Collapsed="true">
+    <Position X="39.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Library\LoadLibrary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.PrintLibraryElement" Collapsed="true">
+    <Position X="43.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\PrintLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.RemoveLibraryElement" Collapsed="true">
+    <Position X="194.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\RemoveLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.SaveLibrary" Collapsed="true">
+    <Position X="226" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Library\SaveLibrary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.SaveLibraryElement" Collapsed="true">
+    <Position X="237.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\Library\SaveLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.SaveXDLLibraryElementAsBinaryLibraryElement" Collapsed="true">
+    <Position X="250.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAQABAAAA=</HashCode>
+      <FileName>Commands\Library\SaveXDLLibraryElementAsBinaryLibraryElement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Library.SetResourceShapeInfo" Collapsed="true">
+    <Position X="264.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Library\SetResourceShapeInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.AddInstantiationCommand" Collapsed="true">
+    <Position X="509.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAkAAAgAAAAAAAAAAAAAAQAAEAAAAAAAQAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\AddInstantiationCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.AddInstantiationInSelectedTiles" Collapsed="true">
+    <Position X="505" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAIBABAAAAAAAAAIAAAAAAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\AddInstantiationInSelectedTiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.AddSingleInstantiationBySlice" Collapsed="true">
+    <Position X="507.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAACAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\AddSingleInstantiationBySlice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.AddSingleInstantiationByTile" Collapsed="true">
+    <Position X="509.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\AddSingleInstantiationByTile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.PlaceCommand" Collapsed="true">
+    <Position X="513" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAABAAAQAAAAAAAAIAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\PlaceCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.PlaceConnectionPrimitve" Collapsed="true">
+    <Position X="511.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\PlaceCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiation.PlaceModule" Collapsed="true">
+    <Position X="514" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\PlaceCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiationManager.AnnotateSignalNames" Collapsed="true">
+    <Position X="421.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAACAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\AnnotateSignalNames.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiationManager.ClearSignalAnnotations" Collapsed="true">
+    <Position X="433" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\ClearSignalAnnotations.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.LibraryElementInstantiationManager.PrintPossibleLibraryElementPlacementsInSelection" Collapsed="true">
+    <Position X="124.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\LibraryElementInstantiationManager\PrintPossibleLibraryElementPlacementsInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.PermuteUtils" Collapsed="true">
+    <Position X="683.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Misc\FindPortMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.SubSetUtils" Collapsed="true">
+    <Position X="696" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Misc\FindPortMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.FindPortMapping" Collapsed="true">
+    <Position X="604" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAABAAAAAAAAAAAAAAAAIAgAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Misc\FindPortMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.PrintPortAdjacencyCSV" Collapsed="true">
+    <Position X="183.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAQAQAAA=</HashCode>
+      <FileName>Commands\Misc\PrintPortAdjecencyCSV.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.FPL2013.GetSourcesAndSinks" Collapsed="true">
+    <Position X="642.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAIABAAAAQAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Misc\FPL2013\GetSourcesAndSinks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Misc.FPL2013.IncrementalSearch" Collapsed="true">
+    <Position X="658" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAABABAAAgAAKAAAAAgBABAAQAAAAAAAhA=</HashCode>
+      <FileName>Commands\Misc\FPL2013\IncrementalSearch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddArc" Collapsed="true">
+    <Position X="563.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAABAAAAAAAAAAAAAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddArc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddNet" Collapsed="true">
+    <Position X="469" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIASAAAAQAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddNetlistContainer" Collapsed="true">
+    <Position X="475.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAgAAAAAQAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddNetlistContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddPipsToNet" Collapsed="true">
+    <Position X="478" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAIAQAAAABAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddPipsToNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddPort" Collapsed="true">
+    <Position X="482.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAAAAAAABAAAAAAAAAAAAAAAAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddSlice" Collapsed="true">
+    <Position X="489.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAABAAAAAAAAAAAAAAAAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddSlice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.AddTemplateConfig" Collapsed="true">
+    <Position X="498.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAIAAAAAEAABCAAAAIAAAAAAAAAAAAAASAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\AddTemplateConfig.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.CopyNetlistContainerContent" Collapsed="true">
+    <Position X="266.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAACAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\CopyNetlistContainerContent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.CopyPips" Collapsed="true">
+    <Position X="516.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgABAAAAAAAAAAAAAIAACAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\CopyPips.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.CutOff" Collapsed="true">
+    <Position X="518.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAABAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\CutOff.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.DerivePinsFromPips" Collapsed="true">
+    <Position X="520.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\DerivePinsFromPips.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.ExpandBlockAttribute" Collapsed="true">
+    <Position X="525.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\ExpandBlockAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.LocationOutsideNet" Collapsed="true">
+    <Position X="699.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAICAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\FuseNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.FuseNets" Collapsed="true">
+    <Position X="532" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAABAIAAAAAAAAAAAAAAAIAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\FuseNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.GotoNext" Collapsed="true">
+    <Position X="374.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQCAAAQAAAI=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\GotoNext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.GotoNextRegex" Collapsed="true">
+    <Position X="424" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQCAAAAAAAI=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\GotoNextRegex.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.MergeBlockerAndConnectClockInNetlistContainer" Collapsed="true">
+    <Position X="541" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAABAAAAAAACAAAAAAAAAAAAQEAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\MergeBlockerAndConnectClockInNetlistContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.MoveAllArcsToFirstNet" Collapsed="true">
+    <Position X="543.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAABAAAAAAAAAAAIAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\MoveAllArcsToFirstNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.NetlistContainerCommand" Collapsed="true">
+    <Position X="518.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\NetlistContainerCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.NetlistContainerCommandWithFileOutput" Collapsed="true">
+    <Position X="153" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\NetlistContainerCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.OpenDesign" Collapsed="true">
+    <Position X="545.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAACAAAAAAAAAAAAAAAQAAAABAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\OpenDesign.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.RemoveNets" Collapsed="true">
+    <Position X="167.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\RemoveNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.RemovePinsOnNoneExistingPrimitives" Collapsed="true">
+    <Position X="559" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\RemovePinsOnNoneExistingPrimitives.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.RemovePips" Collapsed="true">
+    <Position X="172" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAACAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\RemovePips.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.RenameNet" Collapsed="true">
+    <Position X="565.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAABAAAAAAAAAAAAAAAAAAIAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\RenameNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.SaveSelectionAsModule" Collapsed="true">
+    <Position X="471.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\SaveSelectionAsModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.SetFocus" Collapsed="true">
+    <Position X="46" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAQCAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\SetFocus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.SetSliceAttribute" Collapsed="true">
+    <Position X="196.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAEAAABIAAAAAAAEAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\SetSliceAttribute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.SetWriteProtection" Collapsed="true">
+    <Position X="140.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\SetWriteProtection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.NetlistContainerGeneration.UnrouteNets" Collapsed="true">
+    <Position X="491.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\NetlistContainerGeneration\UnrouteNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.AllArcs" Collapsed="true">
+    <Position X="500.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\RevEngineering\AllArcs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.AllArcsS3" Collapsed="true">
+    <Position X="502.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAICAAAAEAABAAgAAAIgICAAIABIAAAAQAAAAAAAAg=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\AllArcsS3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.BitstreamCodingInfo" Collapsed="true">
+    <Position X="690.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAAAAAAABAAAAAAAAAoCAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\AllArcsS3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.ArcCodiging" Collapsed="true">
+    <Position X="687.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAEAAAAAEAAAAAAAAAAAIIYAgAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\AllArcsS3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.OffsetGroup" Collapsed="true">
+    <Position X="697.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAEAAAAAAIIIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\AllArcsS3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.BitstreamToNetlist" Collapsed="true">
+    <Position X="527.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAABAAAAIACEAIAAAAAIAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\BitstreamToNetlist.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.RevEngineering.PrintBitstreamAPI" Collapsed="true">
+    <Position X="93.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\RevEngineering\Spartan3\PrintBitstreamAPI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddBlockToSelection" Collapsed="true">
+    <Position X="383.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAiAAABAAAAAAAAAgAABAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\AddBlockToSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionCommand" Collapsed="true">
+    <Position X="389.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionByIdentifier" Collapsed="true">
+    <Position X="385.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAABAAAAAAAQAAAAAAAAAAAEQAAAABgAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelectionByIdentifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionByRegexp" Collapsed="true">
+    <Position X="390.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelectionByRegexp.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionBySlice" Collapsed="true">
+    <Position X="394.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAADAAAAAAAAAAAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelectionBySlice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionLoc" Collapsed="true">
+    <Position X="397" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAAAAAAAAAAABAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelectionLoc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AddToSelectionXY" Collapsed="true">
+    <Position X="399.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAABAAAAAAAAAAAAFAAAAAAAQAAAABgAAA=</HashCode>
+      <FileName>Commands\Selection\AddToSelectionXY.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ClearSelection" Collapsed="true">
+    <Position X="606.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ClearSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ClearUserSelection" Collapsed="true">
+    <Position X="626.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ClearUserSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandByPort" Collapsed="true">
+    <Position X="644.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAABAAAAAAAAAAAAAAAEAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandByPort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelection" Collapsed="true">
+    <Position X="401.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQACAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelectionInRow" Collapsed="true">
+    <Position X="671.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAQBAAAEAAAABAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelectionInRow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelectionLeft" Collapsed="true">
+    <Position X="669.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelectionLeft.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelectionLeftAndRight" Collapsed="true">
+    <Position X="671.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelectionLeftAndRight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelectionRight" Collapsed="true">
+    <Position X="673.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelectionRight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ExpandSelectionSpecialTiles" Collapsed="true">
+    <Position X="376.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\ExpandSelectionSpecialTiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.InvertSelection" Collapsed="true">
+    <Position X="379" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\InvertSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.RemoveUserSelection" Collapsed="true">
+    <Position X="253" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\RemoveUserSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.SelectAll" Collapsed="true">
+    <Position X="381.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectAll.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.SelectAllWithFilter" Collapsed="true">
+    <Position X="282.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAABAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectAllWithFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.FindPlacementForReconfigurableArea" Collapsed="true">
+    <Position X="302.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAICCAAABAQRBAAAAQAAAAAAQAAAAAAAAQAAAAIAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ResourceStringInfo" Collapsed="true">
+    <Position X="689" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAQIAAAAgAAEAAAAAAAAAgQAAAgEAAAAAQAgAA=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.ResourceRequirements" Collapsed="true">
+    <Position X="685.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ZAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Fragmentation" Collapsed="true">
+    <Position X="697.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.SelectionInfo" Collapsed="true">
+    <Position X="699.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAQAAAAAAAAAAAAAAACACAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.AreaCandidate" Collapsed="true">
+    <Position X="689" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAEAAAAAAAAAAAAABAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectAreaForModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.SelectFenceAroundUserSelection" Collapsed="true">
+    <Position X="388" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectFenceAroundUserSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.SelectUserSelection" Collapsed="true">
+    <Position X="392.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\SelectUserSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.StoreCurrentSelectionAs" Collapsed="true">
+    <Position X="446.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\StoreCurrentSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Anchor.ClearAnchor" Collapsed="true">
+    <Position X="570.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAABAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\Anchor\ClearAnchor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Anchor.PrintRelativeAddToSelectionXY" Collapsed="true">
+    <Position X="588.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAABAAAAAAAAAAAAAAAAAAAAQAAAABgAAA=</HashCode>
+      <FileName>Commands\Selection\Anchor\PrintRelativeAddToSelectionXY.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Anchor.SetAddToSelectionAnchorCommand" Collapsed="true">
+    <Position X="609.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAABAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\Anchor\SetAddToSelectionAnchorCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Anchor.SetAddToSelectionAnchorLoc" Collapsed="true">
+    <Position X="608.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAIAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Selection\Anchor\SetAddToSelectionAnchorLoc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Selection.Anchor.SetAddToSelectionAnchorXY" Collapsed="true">
+    <Position X="610.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAYAA=</HashCode>
+      <FileName>Commands\Selection\Anchor\SetAddToSelectionAnchorXY.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Sets.AddArcs" Collapsed="true">
+    <Position X="561.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAABAAUAAAAAAAAAAAIAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\Sets\AddArcs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Sets.AddArcsToNewNet" Collapsed="true">
+    <Position X="568" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAABAAEAAAAAAAAAAAIAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Sets\AddArcsToNewNet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Sets.RemoveArcs" Collapsed="true">
+    <Position X="41.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAACAAAAA=</HashCode>
+      <FileName>Commands\Sets\RemoveArcs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Spartan6.FixS6XDLBug" Collapsed="true">
+    <Position X="48.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Spartan6\FixS6XDLBug.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Spartan6.S6IOBar" Collapsed="true">
+    <Position X="480.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAACgCgECBAAgAAAAEQBAEAAAAAAAAYAAAABAFwA=</HashCode>
+      <FileName>Commands\Spartan6\S6IOBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Spartan6.V6IOBar" Collapsed="true">
+    <Position X="484.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQAAAACgAAUCBAAgAAABEQBAEAAAAAAAAYQAAABAEgA=</HashCode>
+      <FileName>Commands\Virtex6\V6IOBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SystemCalls.CopyDirectory" Collapsed="true">
+    <Position X="239.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAgQAAAAIAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\SystemCalls\CopyDirectory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SystemCalls.CopyFile" Collapsed="true">
+    <Position X="255.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAgAAAAAAAAAAAQAAIAAAAAA=</HashCode>
+      <FileName>Commands\SystemCalls\CopyFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SystemCalls.Execute" Collapsed="true">
+    <Position X="268.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAABAAAAAAAAAAAAQQAAAAAAAA=</HashCode>
+      <FileName>Commands\SystemCalls\Execute.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.SystemCalls.RemoveDirectory" Collapsed="true">
+    <Position X="284.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAIAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\SystemCalls\RemoveDirectory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintAnchorStatement" Collapsed="true">
+    <Position X="104.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAEAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\UCF\PrintAnchorStatement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintAreaConstraint" Collapsed="true">
+    <Position X="106.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAgAAQAAAAAQAAAAAEQAA=</HashCode>
+      <FileName>Commands\UCF\PrintAreaConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintLocationConstraint" Collapsed="true">
+    <Position X="109" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACABAAAAAIAAAAAAAAQAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\UCF\PrintLocationConstraint.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintLocationConstraints" Collapsed="true">
+    <Position X="111.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\UCF\PrintLocationConstraints.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintLocationConstraintsForSelection" Collapsed="true">
+    <Position X="113.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAQAAAQAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\UCF\PrintLocationConstraintsForSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintProhibitStatement" Collapsed="true">
+    <Position X="115.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABAAAAAIAAAAAAAAAABAAAQAAAAAAAIA=</HashCode>
+      <FileName>Commands\UCF\PrintProhibitStatement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.PrintProhibitStatementsForSelection" Collapsed="true">
+    <Position X="118" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAABAAAQAAAAAAAIA=</HashCode>
+      <FileName>Commands\UCF\PrintProhibitStatementsForSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.UCF.UCFCommand" Collapsed="true">
+    <Position X="111.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\UCF\UCFCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Variables.Input" Collapsed="true">
+    <Position X="690.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAIAAAgAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Commands\Variables\GetVariablesFromUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Variables.GetVariablesFromUser" Collapsed="true">
+    <Position X="572.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAIAABAAAAAAAAAAAAAAAAAAAAQQAAAAAAAA=</HashCode>
+      <FileName>Commands\Variables\GetVariablesFromUser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Variables.Set" Collapsed="true">
+    <Position X="590.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAABAAAAAAQQgAACAQAA=</HashCode>
+      <FileName>Commands\Variables\Set.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Variables.Unset" Collapsed="true">
+    <Position X="613" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQQAAAAAAAA=</HashCode>
+      <FileName>Commands\Variables\Unset.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintVHDLInstantiation" Collapsed="true">
+    <Position X="68.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAABAAAAgACAAAAAAABAIABAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\VHDL\PrintVHDLInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintUnionInterface" Collapsed="true">
+    <Position X="70.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAQAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\VHDL\PrintVHDLUnionInterface.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintVHDLWrapper" Collapsed="true">
+    <Position X="190" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Commands\VHDL\PrintVHDLWrapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintVHDLWrapperCommand" Collapsed="true">
+    <Position X="189" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAABAQAAAAgAAAA=</HashCode>
+      <FileName>Commands\VHDL\PrintVHDLWrapperCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintVHDLWrapperInstantiation" Collapsed="true">
+    <Position X="187.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Commands\VHDL\PrintVHDLWrapperInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.VHDLCommand" Collapsed="true">
+    <Position X="63" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Commands\VHDL\VHDLCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PortMappingHandler" Collapsed="true">
+    <Position X="689" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIAAAA=</HashCode>
+      <FileName>Commands\VHDL\VHDLCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintArchitectureWithStaticPlaceholderInstantiation" Collapsed="true">
+    <Position X="55" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAhAAAAAAAAAAAAAAAAAAAQQAAAAAAAAA=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintArchitectureWithStaticPlaceholderInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintComponentDeclaration" Collapsed="true">
+    <Position X="57.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAQAAAA=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintComponentDeclaration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintComponentDeclarationForVHDLModule" Collapsed="true">
+    <Position X="59.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAI=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintComponentDeclarationForVHDLModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintConditionalModuleInstantiation" Collapsed="true">
+    <Position X="61.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAABAAAAAAAQACAAACAAI=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintConditionalModuleInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintModuleSelectionPackage" Collapsed="true">
+    <Position X="64" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAgAQAAAAAAAAAQQAAAIAAAAA=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintModuleSelectionPackage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.VHDL.PrintWireDeclarationForSignalMapping" Collapsed="true">
+    <Position X="66.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAACAAI=</HashCode>
+      <FileName>Commands\VHDL\Wizard\PrintWireDeclarationForSignalMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Virtex5.V5IOBar" Collapsed="true">
+    <Position X="523" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAIAQAAACAEABAAiQAQAEABAEAAAAAAAIIAAAAIgAgA=</HashCode>
+      <FileName>Commands\Virtex5\V5IOBar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Virtex5.V5IOBar_DoubleLines" Collapsed="true">
+    <Position X="523" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAEAAIAAAAAAAAAAABAAAAAIBAAAAAAQAAAAAAgHA=</HashCode>
+      <FileName>Commands\Virtex5\V5IOBar_DoubleLines.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Virtex6.FixV6XilinxXDLBug" Collapsed="true">
+    <Position X="529.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Virtex6\FixV6XilinxXDLBug.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Vivado.CheckPRLink" Collapsed="true">
+    <Position X="534.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAQAAAAAABAAAAAAAAAUAAACAAABAAQAAgAAAAAA=</HashCode>
+      <FileName>Commands\Vivado\CheckPRLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Vivado.MarkTilesInSelection" Collapsed="true">
+    <Position X="95.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Vivado\MarkTilesInSelection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Vivado.PreRoutePRLink" Collapsed="true">
+    <Position X="163" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAAAAAAAAAAAICAAAAAEQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Vivado\PreRoutePRLink.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.BuildIslandStyleModule" Collapsed="true">
+    <Position X="435.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABQAAAIAAgAAggAAAEAAAAQAAAIEAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.BuildIslandStyleModuleRunBatch" Collapsed="true">
+    <Position X="127" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAEAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleModuleRunBatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.BuildIslandStyleStaticSystem" Collapsed="true">
+    <Position X="574.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAIAAAAAAgAAAAAIAAQAAAAEAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleStaticSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.BuildIslandStyleSystem" Collapsed="true">
+    <Position X="592.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.IslandStyleSystemParameter" Collapsed="true">
+    <Position X="697.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAABAAAAAAggAAABAABAggAAVAIEQAAAACAEAgAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.ModuleSetting" Collapsed="true">
+    <Position X="680.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.PartialAreaSetting" Collapsed="true">
+    <Position X="682" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAAgAAAAAEAAAA=</HashCode>
+      <FileName>Commands\Wizards\BuildIslandStyleSystem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.IslandCommandBuilder" Collapsed="true">
+    <Position X="696" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAlAgAAILAAAgAAAIAAgAgAAAQBYgAMEgAAAEBg=</HashCode>
+      <FileName>Commands\Wizards\IslandCommandBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.Wizards.ProposeIslandPlacement" Collapsed="true">
+    <Position X="676" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAABAAAAAAAAAAAAAAAIAAAAQACAAAAAAA=</HashCode>
+      <FileName>Commands\Wizards\ProposeIslandPlacement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.DecomposeNets" Collapsed="true">
+    <Position X="473.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAQAAAAAAAAQ=</HashCode>
+      <FileName>Commands\XDLManipulation\DecomposeNets.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.ExtractModule" Collapsed="true">
+    <Position X="50.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABABAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\ExtractModule.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.MergeBlockerAndConnectClock" Collapsed="true">
+    <Position X="199" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAAAAAAAAAABABAAAAACAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\MergeBlockerAndConnectClock.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.MovePipsToNetWithDriver" Collapsed="true">
+    <Position X="228.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\MovePipsToNetWithDriver.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.SaveLibraryElementInstantiation" Collapsed="true">
+    <Position X="493.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAABAAAAAAAIAAAAAAQQAAIAQAgAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\SaveLibraryElementInstantiation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.SimpleSortDesignFast" Collapsed="true">
+    <Position X="257.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAABABAAAAAAAAgAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\SimpleSortDesignFast.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.SimplifyIdentifier" Collapsed="true">
+    <Position X="147.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAABAAAAAABAAAAAQAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\SimplifyIdentifier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Commands.XDLManipulation.WriteNetsToFile" Collapsed="true">
+    <Position X="79.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAABAAAAAAEAAAAAAAAAAAAAQAACAAAAAA=</HashCode>
+      <FileName>Commands\XDLManipulation\WriteNetsToFile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.FPGA" Collapsed="true">
+    <Position X="692.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>cQMIBAAGAAQjJIAEAASAFAggEBQBAAQhQAQYAAASRBA=</HashCode>
+      <FileName>FPGA\FPGA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.FPGAElement" Collapsed="true">
+    <Position X="6.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAEAAAAAAAQEgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\FPGAElement.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.FPGA.FPGATypes" Collapsed="true">
+    <Position X="694.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AECoBAEABAEIAAAQQSAAAAAAAAAAAAAFAAACABAIAAA=</HashCode>
+      <FileName>FPGA\FPGATypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.LUTRoutingInfo" Collapsed="true">
+    <Position X="701.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAIAAAAAAAAAAAAAEAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>FPGA\FPGATypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.IdentifierLookup" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="683.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACEAAAAAAAAAAAAEABAAQgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\IdentifierLookup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.FPGA.InPortOutPortMapping" Collapsed="true">
+    <Position X="689" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIIAgAAAAAAAAAEBAAAAAgAAAAABIACAEAEAAAQAEA=</HashCode>
+      <FileName>FPGA\InPortOutPortMapping.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Port" Collapsed="true">
+    <Position X="685.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAQAAAAAAIAAAAAAEAAAAAA=</HashCode>
+      <FileName>FPGA\Port.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.SelectionUpdate" Collapsed="true">
+    <Position X="678.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAQ=</HashCode>
+      <FileName>FPGA\SelectionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.TileSelectionManager" Collapsed="true">
+    <Position X="2.75" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAiAAEAAFAAkGAAAAAhAQIIAGBAAUAACSAAQIkA=</HashCode>
+      <FileName>FPGA\SelectionManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.FPGA.RAMSelectionManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="701.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAQAAAAAABAQAAAAAAAAAAACAAAgAQAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\SelectionManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.FPGA.RawSlice" Collapsed="true">
+    <Position X="678.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAQQAAAAAAAAAQAAAAAAYAA=</HashCode>
+      <FileName>FPGA\Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slice" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EABAIAIEAAQCBAAGABFGAAAcQAgCgAAAAAAIAAEAYAE=</HashCode>
+      <FileName>FPGA\Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.RawSwitchMatrix" Collapsed="true">
+    <Position X="680.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Switchmatrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.SwitchMatrix" Collapsed="true">
+    <Position X="6.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hIMAAATIkBIAAQAEhAAAAAAAEAAACIAIAAAAAAAQAIA=</HashCode>
+      <FileName>FPGA\Switchmatrix.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.RawTile" Collapsed="true">
+    <Position X="682" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAIAEAAAAAQAAAAAgAAAAABAAAAAAAAAAAAgE=</HashCode>
+      <FileName>FPGA\Tile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Tile" Collapsed="true">
+    <Position X="701.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IgYAUoBAIAFgBIEMQAIIAgIAAQAEAGAgAAAAAACIEkM=</HashCode>
+      <FileName>FPGA\Tile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.TileKey" Collapsed="true">
+    <Position X="678.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAQAAAAIAAAAAAAAAAYAA=</HashCode>
+      <FileName>FPGA\TileKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.TileSet" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="680.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQIAAAAAAAAAABAAAAAABAQAAAABAAAEAAAAAABQAAA=</HashCode>
+      <FileName>FPGA\TileSet.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.FPGA.WireList" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="689" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIABAAAAAAAABREgAAAAEQgBIAAAIAEAQAACABAAAA=</HashCode>
+      <FileName>FPGA\Wire.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.FPGA.Wire" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="687.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAABQEkAAAAAICAAAAAIACAAAQAAqAIgA=</HashCode>
+      <FileName>FPGA\Wire.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.ASlice" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\ASlice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.K7Slice" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\K7Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.S3Slice" Collapsed="true">
+    <Position X="5.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\S3Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.S6Slice" Collapsed="true">
+    <Position X="8" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\S6Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.V2Slice" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\V2Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.V4Slice" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\V4Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.V5Slice" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\V5Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.V6Slice" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\V6Slice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.FPGA.Slices.ZSlice" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>FPGA\Slices\ZSlice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Blocker.BlockerCtrl" Collapsed="true">
+    <Position X="694.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CASAAAAAACAAAAAAAACIIAACAAkCAAAAAAAEAAAQAEA=</HashCode>
+      <FileName>GUI\Blocker\BlockerCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Blocker.BlockerForm" Collapsed="true">
+    <Position X="696" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACQAABCAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Blocker\BlockerForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.BUFGInfo.BUFGInfoCtrl" Collapsed="true">
+    <Position X="682" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACCBACCAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>GUI\BUFGInfo\BUFGInfoCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.BUFGInfo.BUFGInfoForm" Collapsed="true">
+    <Position X="683.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAgCAAAACAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>GUI\BUFGInfo\BUFGInfoForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Help.ColorSettingsCtrl" Collapsed="true">
+    <Position X="687.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAFAACKIgwAAAHCQAAACAAARBAIAAAAAAIAEAAA=</HashCode>
+      <FileName>GUI\ColorSettingsCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.GUICommandHook" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAgAQAAAAAAAAEAAABAgAAAAAAAAwAAAAA=</HashCode>
+      <FileName>GUI\CommandHooks.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.CommandInterfaceCtrl" Collapsed="true">
+    <Position X="696" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABAICAACACAIgAACCAAAACAAQQAAAAEQQIAAAAAAA=</HashCode>
+      <FileName>GUI\CommandInterface\CommandInterfaceCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.CommandInterfaceForm" Collapsed="true">
+    <Position X="697.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgCAAAAAAAACAAAACAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>GUI\CommandInterface\CommandInterfaceForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ConsoleCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="687.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAECEANACBgBCwIAwHsZFMiBAgQACIACAABJgCACCA=</HashCode>
+      <FileName>GUI\ConsoleCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.DeviceInfoForm" Collapsed="true">
+    <Position X="694.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAoCIAAAKAAAAAABAAAAAAAQIBAA=</HashCode>
+      <FileName>GUI\DeviceInfoForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.FileSelectionCtrl" Collapsed="true">
+    <Position X="687.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEiAEAAAIABCAIACCABAAAYAEECCAAABAAAA=</HashCode>
+      <FileName>GUI\FileSelectionCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.FindTileGUI" Collapsed="true">
+    <Position X="690.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAABEAAWgCAAAAAADAAAACAAEAAAACAAIgACIAIAA=</HashCode>
+      <FileName>GUI\FindTileGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AllTilesPainter" Collapsed="true">
+    <Position X="10.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAgAAAEAAAAhAAAAAAAAAAAAAAAAQBEAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FPGAView\AllTilesPainter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.BlockPainter" Collapsed="true">
+    <Position X="12.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAgAAAEAAAAhAAAAAAAAAAAAAAQAQBEIAAAACAAAAA=</HashCode>
+      <FileName>GUI\FPGAView\BlockPainter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.HighLighter" Collapsed="true">
+    <Position X="4" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAEAAA=</HashCode>
+      <FileName>GUI\FPGAView\HighLighter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.RAMHighLighter" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GUI\FPGAView\HighLighter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.ClockRegionHighlighter" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAABAAAAAAAAAAAAAABAAAAAAIAAAAECAA=</HashCode>
+      <FileName>GUI\FPGAView\HighLighter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.MacroHighLighter" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>GUI\FPGAView\HighLighter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.PossibleMacroPlacementHighLighter" Collapsed="true">
+    <Position X="7.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAABCAAAAAAAAAAAAABAAAAAAAAAAAMAAA=</HashCode>
+      <FileName>GUI\FPGAView\HighLighter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.Painter" Collapsed="true">
+    <Position X="11.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAIABBAAAAAEAAAACAAAAARAAAAQAARAAAAA=</HashCode>
+      <FileName>GUI\FPGAView\Painter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoAhead.GUI.FPGAViewCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="696" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>4BiQHIvKCuQ0JGGHAQCSUpoGhEGCUJGSFBBiABUAKk8=</HashCode>
+      <FileName>GUI\FPGAViewCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.GUI" Collapsed="true">
+    <Position X="701.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AjIXa+/ikChqghBHkuW2wlGuxMyojDFSiGwTQAYuQJE=</HashCode>
+      <FileName>GUI\GUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AboutGoAhead" Collapsed="true">
+    <Position X="678.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAABAgAACAAAAAAQACAACACAAAAEBAAAAAECABAAAA=</HashCode>
+      <FileName>GUI\Help\AboutGoAhead.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.NetlistContainerCtrl" Collapsed="true">
+    <Position X="687.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hgAAAAIwJCAAAAIAAGCAQQACAAA4AAABAC0kAIAAEAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerManager\NetlistContainerCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.NetlistContainerForm" Collapsed="true">
+    <Position X="6.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEEAACAAIiAAAAAgAASGAAACAAAAAAAAAAACAgAFAAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.LaunchFEGUI" Collapsed="true">
+    <Position X="5.5" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AnchorStatementGenerationGUI" Collapsed="true">
+    <Position X="7.75" Y="15" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.MonoTestForm" Collapsed="true">
+    <Position X="682" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAAAAAAACAAAACAAAAAQAAACAAAAAAAAA=</HashCode>
+      <FileName>GUI\MonoTestForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ObjectViewCtrl" Collapsed="true">
+    <Position X="694.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAACAAAAAgAACAAAACBAAAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\ObjectView\ObjectViewCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.PortSelectionForm" Collapsed="true">
+    <Position X="690.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABAkAAQIDAAAAQAAASAAAACAAACUEAIIAECABAQCUA=</HashCode>
+      <FileName>GUI\PortSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.PreferencesForm" Collapsed="true">
+    <Position X="692.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACMEAAhAACQAAAAAIAKAAAACkAAABAIAIAAGAAAAAkA=</HashCode>
+      <FileName>GUI\PreferencesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.SyncTextBox" Collapsed="true">
+    <Position X="697.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAACCAQAACAAAAAAAQAAAAQAAAAAA=</HashCode>
+      <FileName>GUI\SyncTextBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.TileViewCtrl" Collapsed="true">
+    <Position X="682" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIQgACCADQBEKCgJDqQAAiKgAkAIAQBgAABJyhIACQ=</HashCode>
+      <FileName>GUI\TileView\TileViewCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.UserSelectionForm" Collapsed="true">
+    <Position X="690.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEQACAACQAAAAAIACAAAACAAAAAgAAAAAAAAEAAAA=</HashCode>
+      <FileName>GUI\UserSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ZoomPicBox" Collapsed="true">
+    <Position X="689" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUKAAACAAAAAAAAQEAAAAAAAAAAAQBAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\ZoomPictureBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ZoomPictureBox" Collapsed="true">
+    <Position X="690.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ExpandSelection.ExpandSelectionCtrl" Collapsed="true">
+    <Position X="699.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAQAACQAAQAAIACAAAACAAAAAABAAAAIAAAEAAA=</HashCode>
+      <FileName>GUI\ExpandSelection\ExpandSelectionCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ExpandSelection.ExpandSelectionForm" Collapsed="true">
+    <Position X="701.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIACAEAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\ExpandSelection\ExpandSelectionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.FPGAView.ClickToTileKeyConverter" Collapsed="true">
+    <Position X="3.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FPGAView\ClickToTileKeyConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.FPGAView.ConvertPosition" Collapsed="true">
+    <Position X="3.5" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\FPGAView\ClickToTileKeyConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.LibraryElementInstantiation.LibraryElementInstantiationManagerCtrl" Collapsed="true">
+    <Position X="683.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAgCAAAACAAgAAAABCAAAACAAAAgQAAAAAgUAAAAAA=</HashCode>
+      <FileName>GUI\Macros\AnnotateSignals\AnnotateSignalsCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.DesignBrowser.DesignBrowserCtrl" Collapsed="true">
+    <Position X="689" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACgAAAAABCCAAIAAAACEgAAiAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\DesignBrowser\DesignBrowserCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.DesignBrowser.DesignBrowserForm" Collapsed="true">
+    <Position X="690.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAIAgAAAAAA=</HashCode>
+      <FileName>GUI\Macros\DesignBrowser\DesignBrowserForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ExtractModules.ExtractModuleForm" Collapsed="true">
+    <Position X="683.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAGAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\ExtractModule\ExtractModuleForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ExtractModules.ExtractModuleCtrl" Collapsed="true">
+    <Position X="682" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIBAAAACBAQAAACACAACAiAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>GUI\Macros\ExtractModule\ExtractModuleFromFileCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.LibraryElementInstantiation.LibraryElementInstantiationSelectorCtrl" Collapsed="true">
+    <Position X="685.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAQACAAAAhAAACAAAgCAAAAAAAAAAIAYwAkAAA=</HashCode>
+      <FileName>GUI\Macros\LibraryElementInstantiationSelectorCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.MacroForm.LibraryElementPlacerCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="687.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEwIAAgAACgggBAAIIKggSACGAIBAAhAQCIUIAgBKEI=</HashCode>
+      <FileName>GUI\Macros\LibraryElementPlacer\LibraryElementPlacerCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.MacroForm.MacroManagerForm" Collapsed="true">
+    <Position X="678.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAQAAAAACAAAAAAAACEAAACAAgAABAAAEAAAAiCBAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerViewForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.LibraryManager.LibraryElementSelectorCtrl" Collapsed="true">
+    <Position X="689" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEIAAAAECAAAAAAAACAAAICAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\LibraryElementSelectorCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.AddXDLLibraryCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="680.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAAAAIAgCAAEACAAAAAABEACEAAAAAAAI=</HashCode>
+      <FileName>GUI\Macros\LibraryManager\AddXDLLibraryElementCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.ReadDesignCtrl" Collapsed="true">
+    <Position X="683.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACQBAAAAIACAAAACAAAAAAAAAAAEAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\OpenDesign\OpemDesignCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.OpenDesignForm" Collapsed="true">
+    <Position X="699.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAARAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\OpenDesign\OpenDesignForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.AddMacro.AddXDLLibraryElementForm" Collapsed="true">
+    <Position X="682" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAACAAAAAAAACAAAACAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\LibraryManager\AddXDLLibraryElementForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.MacroLibrary.LilbraryManagerCtrl" Collapsed="true">
+    <Position X="690.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAhgAAAGCAAACAQASAAUIKACAAAAAAIAAAAQBBgBE=</HashCode>
+      <FileName>GUI\Macros\LibraryManager\LilbraryManagerCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.NetlistContainerManager.NetlistContainerSelectorCtrl" Collapsed="true">
+    <Position X="690.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAECAAAAAAAACAAAACAAAAAACAAABABAAAAAA=</HashCode>
+      <FileName>GUI\Macros\NetlistContainerManager\NetlistContainerSelectorCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.Save.SaveCtrl" Collapsed="true">
+    <Position X="692.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAAABCABAAgAAACAACACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\Save\SaveCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.AddLibraryManager.Save.SaveForm" Collapsed="true">
+    <Position X="694.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAGAAAAAAAACAAAACAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\Save\SaveForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.VHDL.PrintVHDLCtrl" Collapsed="true">
+    <Position X="696" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAGBBAACAAAIAgAACAEEACAgEAEAQAQAAAAACEoIA=</HashCode>
+      <FileName>GUI\Macros\VHDL\PrintVHDLCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.XDLGeneration.XDLGenerationCtrl" Collapsed="true">
+    <Position X="694.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgCCICAgAAAgAACAAAICIAAACAAAAAAAAAAEAkA=</HashCode>
+      <FileName>GUI\Macros\XDLGeneration\XDLGenerationCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Macros.XDLGeneration.XDLGenerationForm" Collapsed="true">
+    <Position X="696" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Macros\XDLGeneration\XDLGenerationForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ObjectView.ObjectViewForm" Collapsed="true">
+    <Position X="696" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAABCAAAACAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\ObjectView\ObjectViewForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.PartGen.PartGenAllCtrl" Collapsed="true">
+    <Position X="678.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>wCBABECAICAkBBAAEByABCAChAgFMgYEACAMAAEQAAA=</HashCode>
+      <FileName>GUI\PartGen\PartGenAllCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.PartGen.PartgenAllForm" Collapsed="true">
+    <Position X="680.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACACAAAAAACAAAACAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\PartGen\PartgenAllForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ScriptDebugger.ScriptDebuggerCtrl" Collapsed="true">
+    <Position X="696" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KogA3AoCACQHgCeAEAjJCEIGCCgBhAAQEAUUABSIgIU=</HashCode>
+      <FileName>GUI\ScriptDebugger\ScriptDebuggerCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ScriptDebugger.FileSystemEventHanlder" Collapsed="true">
+    <Position X="689" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAEAAAAAAAAAAAAAABAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>GUI\ScriptDebugger\ScriptDebuggerCtrl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.ScriptDebugger.ScriptDebuggerForm" Collapsed="true">
+    <Position X="697.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACABAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>GUI\ScriptDebugger\ScriptDebuggerForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.SetVariables.SetVarCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="682" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAEAAAECOAAAgIAAACIAAACEAAAAAFQAAQAAAAAAAA=</HashCode>
+      <FileName>GUI\SetVariables\SetVarCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.SetVariables.SetVariablesCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="683.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAACAAIAAAAAWAACCCGAAAAAJAAgAAAAAAAAA=</HashCode>
+      <FileName>GUI\SetVariables\SetVariablesCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.SetVariables.SetVariablesForm" Collapsed="true">
+    <Position X="685.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAIAAAAADAAAACAAAAAgAAAAIAAAAAAAA=</HashCode>
+      <FileName>GUI\SetVariables\SetVariablesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Spartan6.S6IOBarConfigGUI" Collapsed="true">
+    <Position X="690.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAECACAAADAAAACAAAACAAAAAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>GUI\Spartan6\S6IOBarConfigGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.TileView.TileViewForm" Collapsed="true">
+    <Position X="683.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAECAAACKAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\TileView\TileViewForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.UCF.LocationConstraintsGUI" Collapsed="true">
+    <Position X="697.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAIDAAABEAAACBAAAKAAAQCAIAAAAAAAAEAAA=</HashCode>
+      <FileName>GUI\UCF\LocationConstraintsGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.UCF.PrintAreaConstraintsForm" Collapsed="true">
+    <Position X="694.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAICAAAIAAAACAAAACAAAAAAsAAAAAAAAEAAA=</HashCode>
+      <FileName>GUI\UCF\PrintAreaConstraintsForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.UCF.ProhibitStatementForm" Collapsed="true">
+    <Position X="699.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAACAAAIAAAACAAAACAAABAAAAAAAAAAAEIAA=</HashCode>
+      <FileName>GUI\UCF\ProhibitStatementForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Virtex5.V5IOBarConfigGUI" Collapsed="true">
+    <Position X="692.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgKBBAEAACAAALggAAChAADCAAGAaAAAAAAAAAiAIAU=</HashCode>
+      <FileName>GUI\Virtex5\V5IOBarConfigGUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.GUI.Watch.VariableWatchCtrl" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="696" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAACAAAACCAAAACAAQAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Watch\VariableWatchCtrl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.GUI.Watch.VariableWatchForm" Collapsed="true">
+    <Position X="697.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAACAAAAAAgACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Watch\VariableWatchForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Interfaces.Subject" Collapsed="true">
+    <Position X="1.75" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAEAAACAAAAAA=</HashCode>
+      <FileName>Interfaces\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.AliasManager" Collapsed="true">
+    <Position X="683.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAYAAAAABQAAA=</HashCode>
+      <FileName>Objects\AliasManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.Blackboard" Collapsed="true">
+    <Position X="692.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAAAAIAAAAAAIBAAAQIAAAAAAAAI=</HashCode>
+      <FileName>Objects\Blackboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.BlockerOrderElement" Collapsed="true">
+    <Position X="697.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAEAABACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\BlockerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.BlockerPath" Collapsed="true">
+    <Position X="699.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAACAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\BlockerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.BlockerSettings" Collapsed="true">
+    <Position X="701.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAgAAAAABEBAAAAEBAAAAEKAAAAABAyAIIAEAAIgI=</HashCode>
+      <FileName>Objects\BlockerSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.CommandServer" Collapsed="true">
+    <Position X="701.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Objects\CommandServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.CommandShell" Collapsed="true">
+    <Position X="678.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Objects\CommandShell.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.CommandStackManager" Collapsed="true">
+    <Position X="680.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAICAAAAAAQAAAAAAAAAAAAABAAAQAAAAAAAAAI=</HashCode>
+      <FileName>Objects\CommandStackManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.DesignRuleChecker" Collapsed="true">
+    <Position X="692.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAABAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\DesignRuleChecker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.EnvChecker" Collapsed="true">
+    <Position X="697.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\EnvChecker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.ExpressionParser" Collapsed="true">
+    <Position X="678.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAQAAgCAAgAAAAAAAAAQAAAAAAQAAAA=</HashCode>
+      <FileName>Objects\ExpressionParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.GoAheadPowerShellProxy" Collapsed="true">
+    <Position X="699.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAACAAAQAAAAAAEAAA=</HashCode>
+      <FileName>Objects\GoAheadPowerShellProxy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.BRAMDSPSetting" Collapsed="true">
+    <Position X="678.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAACAAAEAAAAAAAAAAAAEAAAAgAAA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.BRAMDSPSettingsManager" Collapsed="true">
+    <Position X="680.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIgAAAAAAAAAAAAAAAAAAAAAACAAAAQgACAEAAAQA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.LineParameter" Collapsed="true">
+    <Position X="694.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAQAAAAAAAAAAAAAAMAAAAAAAAAAAgCA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.LineManager" Collapsed="true">
+    <Position X="692.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAABAgAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.IdentifierManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="685.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACBQAAAAAABAAAAAAAAAAAAAAAAgAIQAAABABAAAA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Objects.IdentifierPrefixManager" Collapsed="true">
+    <Position X="687.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.SliceCompare" Collapsed="true">
+    <Position X="690.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAEAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Objects\IdentifierManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.InterfaceManager" Collapsed="true">
+    <Position X="692.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIEAAAAAAACBAAAABAABAAABAAACCICQAAwEAIEkAg=</HashCode>
+      <FileName>Objects\InterfaceManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.LabelManager" Collapsed="true">
+    <Position X="699.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAABABAAAAQAAAAAAQAAA=</HashCode>
+      <FileName>Objects\LabelManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.Library" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="701.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAABAAEAAAABAAAAAEAAAAAQCAAAARYAAA=</HashCode>
+      <FileName>Objects\Library.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Objects.LibraryElement" Collapsed="true">
+    <Position X="680.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAIBGAAJAEAAAAACQABAAAAACQAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Library.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.Shape" Collapsed="true">
+    <Position X="687.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAsAAAEAAAAAAAAEAAAAAAAAgAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Library.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.Anchor" Collapsed="true">
+    <Position X="685.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAARAAAAAA=</HashCode>
+      <FileName>Objects\Library.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.LibraryElemenetInstantiation" Collapsed="true">
+    <Position X="678.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAEUAAAAAAGAAAAAAAgAAAQAAQQAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\LibraryElementInstantiationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.PortMapper" Collapsed="true">
+    <Position X="687.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAgEAAAQAAACAAAAAAAAAAACAQAAgABACIA=</HashCode>
+      <FileName>Objects\LibraryElementInstantiationManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.LibraryElementInstantiationManager" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="682" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAMAAAAABAAEgAAABAAIAAACAAAAQAAAAAAAABA=</HashCode>
+      <FileName>Objects\LibraryElementInstantiationManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Objects.Location" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="696" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAYEgAACAACAAAAAAIAAAAAAAAAAAQA=</HashCode>
+      <FileName>Objects\Navigator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Objects.Navigator" Collapsed="true">
+    <Position X="685.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAEACAAAEAAAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Navigator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.V5Navigator" Collapsed="true">
+    <Position X="694.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Navigator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.NetlistContainer" Collapsed="true">
+    <Position X="0.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgMABAABAQACAABEAAAoBCcCDAAAAAAAQAAAAhAAAAA=</HashCode>
+      <FileName>Objects\NetlistContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.NetlistContainerManager" Collapsed="true">
+    <Position X="689" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJAAAAAAAAABABEAAAAAIAAIAAAAAAAQQAAAAAQBAA=</HashCode>
+      <FileName>Objects\NetlistContainerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.ObjectCopier" Collapsed="true">
+    <Position X="692.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Objects\ObjectCopier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.SelectionManager" Collapsed="true">
+    <Position X="701.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAEAABAAAAAAAAAAAAAAAAABAAAAQAAAAAAAEAA=</HashCode>
+      <FileName>Objects\SelectionManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Objects.Signal" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="689" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAABAEQEAIAEAABEAABggAAAQUAAAAAAAAAAAAA=</HashCode>
+      <FileName>Objects\Signal.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Objects.VariableManager" Collapsed="true">
+    <Position X="0.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAIACABEAAAABAAAAAAAAAAAAAQCAAAAAAAAA=</HashCode>
+      <FileName>Objects\VariableManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Properties.Resources" Collapsed="true">
+    <Position X="687.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Properties.Settings" Collapsed="true">
+    <Position X="680.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Settings.ColorSettings" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="685.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoIACCgAAAAABAgAAAAAACAAAAAAAACAQAgAAAAAAAA=</HashCode>
+      <FileName>Settings\ColorSettings.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="GoAhead.Settings.DialogSettings" Collapsed="true">
+    <Position X="696" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAEAAAgAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Settings\DialogSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Settings.GUISettings" Collapsed="true">
+    <Position X="678.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAIAAAAAAAAAAAAAAAAAACABAA=</HashCode>
+      <FileName>Settings\GUISettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Settings.IOBarSettings" Collapsed="true">
+    <Position X="694.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgIAAAABAABQAQAAAAAAAQCAAAYAAAAARAACAAA=</HashCode>
+      <FileName>Settings\IOBarSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoAhead.Settings.StoredPreferences" Collapsed="true">
+    <Position X="692.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KAIQIMAAFBIBAAEAAIAEAQAQAEQAAAIQwAgAEAAgAAA=</HashCode>
+      <FileName>Settings\Preferences.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="GoAhead.Interfaces.IResetable" Collapsed="true">
+    <Position X="680.25" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="GoAhead.Interfaces.IObserver" Collapsed="true">
+    <Position X="678.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\Interfaces.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="GoAhead.FPGA.SelectionUpdateAction" Collapsed="true">
+    <Position X="678.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACEAAAEAAEAAAAAAAAAAAAAAAABAAAAACAAEAggA=</HashCode>
+      <FileName>FPGA\SelectionManager.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

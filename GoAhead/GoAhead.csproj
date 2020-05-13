@@ -1,0 +1,1304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BA28C778-9369-4C08-84FB-AB162AFEF00B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GoAhead</RootNamespace>
+    <AssemblyName>GoAhead</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>ABF1C3A3F8C4D38F823D82D18F07D0A3BE750597</ManifestCertificateThumbprint>
+    <ManifestKeyFile>GoAhead_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>false</SignManifests>
+    <TargetZone>LocalIntranet</TargetZone>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <TargetFrameworkProfile />
+    <PublishUrl>D:\temp\publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>6</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release64|AnyCPU'">
+    <OutputPath>bin\Release64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release64|x64'">
+    <OutputPath>bin\x64\Release64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>GoAhead.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release64|x86'">
+    <OutputPath>bin\x86\Release64\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.PowerShell.Commands.Management, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\Microsoft.PowerShell.Commands.Management.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PowerShell.Commands.Utility, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\Microsoft.PowerShell.Commands.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PowerShell.ConsoleHost, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\Microsoft.PowerShell.ConsoleHost.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.PowerShell.Security, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\Microsoft.PowerShell.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\DesignParser.cs" />
+    <Compile Include="Code\HelperMethodsLibrary.cs" />
+    <Compile Include="Code\Net.cs" />
+    <Compile Include="Code\NetlistElement.cs" />
+    <Compile Include="Code\Instance.cs" />
+    <Compile Include="Code\PortTreeNode.cs" />
+    <Compile Include="Code\NetlistPort.cs" />
+    <Compile Include="Code\TCL\TCLContainer.cs" />
+    <Compile Include="Code\TCL\TCLDesignHierarchy.cs" />
+    <Compile Include="Code\TCL\TCLDesignParser.cs" />
+    <Compile Include="Code\TCL\TCLInstance.cs" />
+    <Compile Include="Code\TCL\TCLNet.cs" />
+    <Compile Include="Code\TCL\TCLPin.cs" />
+    <Compile Include="Code\TCL\TCLPort.cs" />
+    <Compile Include="Code\TCL\TCLProperties.cs" />
+    <Compile Include="Code\TCL\TCLRoutingTree.cs" />
+    <Compile Include="Code\TCL\TCLRoutingTreeNode.cs" />
+    <Compile Include="Commands\Beep.cs" />
+    <Compile Include="Code\VHDL\VHDLSignalDeclaration.cs" />
+    <Compile Include="Code\VHDL\VHDLEntity.cs" />
+    <Compile Include="Code\VHDL\VHDLInstantiation.cs" />
+    <Compile Include="Code\VHDL\VHDLFile.cs" />
+    <Compile Include="Code\VHDL\VHDLSignalList.cs" />
+    <Compile Include="Code\VHDL\VHDLComponent.cs" />
+    <Compile Include="Code\XDL\XDLPort.cs" />
+    <Compile Include="Code\NetInpin.cs" />
+    <Compile Include="Code\NetPin.cs" />
+    <Compile Include="Code\XDL\XDLPip.cs" />
+    <Compile Include="Code\XDL\XDLNet.cs" />
+    <Compile Include="Code\XDL\XDLInstance.cs" />
+    <Compile Include="Code\XDL\XDLModule.cs" />
+    <Compile Include="Code\XDL\XDLContainer.cs" />
+    <Compile Include="Code\NetOutpin.cs" />
+    <Compile Include="Commands\AddAlias.cs" />
+    <Compile Include="Commands\BitstreamCompression.cs" />
+    <Compile Include="Commands\BitwiseOr.cs" />
+    <Compile Include="Commands\BlockingShared\SetPortUsageInSelection.cs" />
+    <Compile Include="Commands\BlockingShared\SelectFence.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\MuteGUIErrorMessages.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\UnmuteGUIErrorMessages.cs" />
+    <Compile Include="Commands\CommandOutputManager.cs" />
+    <Compile Include="Commands\Data\ParseTimingData.cs" />
+    <Compile Include="Commands\Data\ReadVivadoFPGADebugger.cs" />
+    <Compile Include="Commands\Data\RenameTimeAttribute.cs" />
+    <Compile Include="Commands\Data\WireHelper.cs" />
+    <Compile Include="Commands\Data\GenerateBinFPGAs.cs" />
+    <Compile Include="Commands\Data\ReadAlteraFPGA.cs" />
+    <Compile Include="Commands\Data\ReadVivadoFPGA.cs" />
+    <Compile Include="Commands\Data\GenerateTCL.cs" />
+    <Compile Include="Commands\Debug\CheckThatSelectionIsEmpty.cs" />
+    <Compile Include="Commands\Debug\CheckUniqueUnderscoreRouting.cs" />
+    <Compile Include="Commands\Debug\ExportArchitectureBELs.cs" />
+    <Compile Include="Commands\Debug\ExportArchitectureSMs.cs" />
+    <Compile Include="Commands\Debug\ExportArchitectureWires.cs" />
+    <Compile Include="Commands\Debug\ExportArchitectureCommand.cs" />
+    <Compile Include="Commands\Debug\PrintBeginPipsWithTwoTaps.cs" />
+    <Compile Include="Commands\Debug\PrintLUTRouting.cs" />
+    <Compile Include="Commands\Debug\PrintNet.cs" />
+    <Compile Include="Commands\Debug\PrintSelectedTilesWithBlockedPorts.cs" />
+    <Compile Include="Commands\Debug\PrintTileInfo.cs" />
+    <Compile Include="Commands\Debug\PrintTileInfoForSelection.cs" />
+    <Compile Include="Commands\Debug\PrintTilesWithPortsExcludedFromBlocking.cs" />
+    <Compile Include="Commands\Identifier\AddBELInwireIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\AddBELRoute.cs" />
+    <Compile Include="Commands\Identifier\AddBELOutwireIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\AddBELWireIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetOrientedBlockIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetColumnType.cs" />
+    <Compile Include="Commands\Library\AddVivadoConnectionPrimitive.cs" />
+    <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
+    <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
+    <Compile Include="Commands\Library\DefineBELType.cs" />
+    <Compile Include="Commands\Misc\PathSearchOnFPGAWithRegexp.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddHierarchy.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\MergeBlockerAndConnectClockInNetlistContainer.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\CopyNetlistContainerContent.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\RemoveInstances.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\RemovePips.cs" />
+    <Compile Include="Commands\IncludeFlagCommands.cs" />
+    <Compile Include="Commands\Print\PrintColumnTypes.cs" />
+    <Compile Include="Commands\Return.cs" />
+    <Compile Include="Commands\GeneratePartialBitstreams.cs" />
+    <Compile Include="Commands\BlockingShared\AddPrimitvesInSelection.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerConfigCommand.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerOrder.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerPath.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerPortFilter.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerTileFilter.cs" />
+    <Compile Include="Commands\BlockingShared\DriverConfig\ConfigureDriver.cs" />
+    <Compile Include="Commands\BlockingShared\BlockSelection.cs" />
+    <Compile Include="Commands\BlockingShared\ExcludeInstantiationSourcesFromBlocking.cs" />
+    <Compile Include="Commands\BlockingShared\ExcludePortsFromBlockingInSelectionByRegexp.cs" />
+    <Compile Include="Commands\BlockingShared\BlockerConfig\AddBlockerPrimitveRegexp.cs" />
+    <Compile Include="Commands\BlockingShared\ExcludePortsFromBlockingOnTileUsedByRegexp.cs" />
+    <Compile Include="Commands\BlockingShared\FreeAllRoutingResources.cs" />
+    <Compile Include="Commands\CheckVersion.cs" />
+    <Compile Include="Commands\CommandExecutionContext.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\BreakOnError.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\ColorCommandTrace.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\DoNotExecuteCommandsAndUpdateCommandTraceOnly.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\MuteCommandTrace.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\MuteOutput.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\OnErrorContinue.cs" />
+    <Compile Include="Commands\Debug\PrintNumberOfSelectedTiles.cs" />
+    <Compile Include="Commands\IfExists.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\PrintPossibleLibraryElementPlacementsInSelection.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\ExpandBlockAttribute.cs" />
+    <Compile Include="Commands\Print\PrintCommandCoverage.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\PrintTotalProfile.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\PrintWrappedCommands.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\ProfileAll.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\ProfilePeakMemoryConsumption.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\StopToNotExecuteCommandsAndUpdateCommandTraceOnly.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\StopToProfileAll.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\StopToProfilePeakMemoryConsumption.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\UncolorCommandTrace.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\UnmuteCommandTrace.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\UnmuteOutput.cs" />
+    <Compile Include="Commands\CommandStringParser.cs" />
+    <Compile Include="Commands\CommandStringParserState.cs" />
+    <Compile Include="Commands\CommandStringTopology.cs" />
+    <Compile Include="Commands\CommandWithFileOutput.cs" />
+    <Compile Include="Code\LoadFPGAFamilyScript.cs" />
+    <Compile Include="Commands\Data\ReadWireStatements.cs" />
+    <Compile Include="Commands\Data\ExcludePipsToBidirectionalWiresFromBlocking.cs" />
+    <Compile Include="Commands\Data\SaveAsDesign.cs" />
+    <Compile Include="Commands\Data\SaveAsMacro.cs" />
+    <Compile Include="Commands\Data\SaveAsBlocker.cs" />
+    <Compile Include="Commands\Debug\AddDebugMenu.cs" />
+    <Compile Include="Commands\Debug\CheckDesignAgainstBlocker.cs" />
+    <Compile Include="Commands\Debug\PrintAllNetsInSelection.cs" />
+    <Compile Include="Commands\Debug\PrintAverageNumberOfReachablePips.cs" />
+    <Compile Include="Commands\Debug\PrintDriverConflicts.cs" />
+    <Compile Include="Commands\Debug\PrintGoAheadInternals.cs" />
+    <Compile Include="Commands\Debug\PrintPrimitivesInSelection.cs" />
+    <Compile Include="Commands\Debug\PrintUnroutedNets.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintAllSelectedTiles.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintAllSliceTypes.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintAllSwitchMatrixHashCodes.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintAllTileIdentifiersInSelection.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintMaxXTileKey.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintMaxYTileKey.cs" />
+    <Compile Include="Commands\DeviceInfo\PrintWireList.cs" />
+    <Compile Include="Commands\Evaluate.cs" />
+    <Compile Include="Commands\ExecuteAlias.cs" />
+    <Compile Include="Commands\Exit.cs" />
+    <Compile Include="Commands\Foo.cs" />
+    <Compile Include="Commands\GC.cs" />
+    <Compile Include="Commands\GetCommandTraceForScript.cs" />
+    <Compile Include="Commands\GotoCommand.cs" />
+    <Compile Include="Commands\GotoLabel.cs" />
+    <Compile Include="Commands\GotoLabelResource.cs" />
+    <Compile Include="Commands\GUI\AddUserButton.cs" />
+    <Compile Include="Commands\GUI\AddUserElement.cs" />
+    <Compile Include="Commands\GUI\AddUserMenu.cs" />
+    <Compile Include="Commands\GUI\ClearDynamicUserMenu.cs" />
+    <Compile Include="Commands\GUI\ClearStaticUserMenu.cs" />
+    <Compile Include="Commands\GUI\ClearUserMenuCommand.cs" />
+    <Compile Include="Commands\GUI\DrawLine.cs" />
+    <Compile Include="Commands\GUI\GUICommand.cs" />
+    <Compile Include="Commands\GUI\OpenScriptInDebugger.cs" />
+    <Compile Include="Commands\GUI\SaveFPGAViewAsPNG.cs" />
+    <Compile Include="Commands\Identifier\AddCompatibleSliceTypes.cs" />
+    <Compile Include="Commands\Identifier\SetAddToSelectionByIdentifierDefaultPrefices.cs" />
+    <Compile Include="Commands\Identifier\SetColorSetting.cs" />
+    <Compile Include="Commands\Identifier\SetBRAMDSPIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetCLBIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetIdentifierCommand.cs" />
+    <Compile Include="Commands\Identifier\SetInterconnectIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetProhibitExcludeFilter.cs" />
+    <Compile Include="Commands\Identifier\SetSliceIdentifierRegexp.cs" />
+    <Compile Include="Commands\If.cs" />
+    <Compile Include="Commands\InterfaceManager\GenerateInterfaceCSV.cs" />
+    <Compile Include="Commands\InterfaceManager\LoadInterfaceFromCSV.cs" />
+    <Compile Include="Commands\InterfaceManager\PrintInterfaceCSVFromVHDL.cs" />
+    <Compile Include="Commands\InterfaceManager\PrintInterfaceCSVFromXDLNetlist.cs" />
+    <Compile Include="Commands\InterfaceManager\SaveInterfaceAsCSV.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\AddInstantiationCommand.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\AnnotateSignalNames.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\ClearSignalAnnotations.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\PlaceCommand.cs" />
+    <Compile Include="Commands\Debug\PrintExpectedPorts.cs" />
+    <Compile Include="Commands\Library\SetResourceShapeInfo.cs" />
+    <Compile Include="Commands\Misc\FPL2013\GetSourcesAndSinks.cs" />
+    <Compile Include="Commands\Misc\FPL2013\IncrementalSearch.cs" />
+    <Compile Include="Commands\Misc\PrintPortAdjecencyCSV.cs" />
+    <Compile Include="Commands\MonoTest.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddPipsToNet.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\DerivePinsFromPips.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\NetlistContainerCommand.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddTemplateConfig.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\CopyPips.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\CutOff.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\FuseNets.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\MoveAllArcsToFirstNet.cs" />
+    <Compile Include="Commands\Debug\PrintAntennas.cs" />
+    <Compile Include="Commands\Debug\PrintStatistics.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\RenameNet.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\AddInstantiationInSelectedTiles.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\AddSingleInstantiationBySlice.cs" />
+    <Compile Include="Commands\LibraryElementInstantiationManager\AddSingleInstantiationByTile.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddPort.cs" />
+    <Compile Include="Code\FEScript.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddNetlistContainer.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddNet.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddArc.cs" />
+    <Compile Include="Commands\Debug\PrintInstantiations.cs" />
+    <Compile Include="Commands\Library\LaunchFE.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\OpenDesign.cs" />
+    <Compile Include="Commands\Library\SaveXDLLibraryElementAsBinaryLibraryElement.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\RemovePinsOnNoneExistingPrimitives.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\SaveSelectionAsModule.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\SetWriteProtection.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\UnrouteNets.cs" />
+    <Compile Include="Commands\PrintProfile.cs" />
+    <Compile Include="Commands\Print\PrintExampleFiles.cs" />
+    <Compile Include="Commands\Print\PrintComponentWiseMaximalResourceConsumption.cs" />
+    <Compile Include="Commands\Print\PrintResourceConsumptionPerModule.cs" />
+    <Compile Include="Commands\Print\PrintResourceConsumptionInSelection.cs" />
+    <Compile Include="Commands\Print\PrintResourceUtilizationScript.cs" />
+    <Compile Include="Commands\Print\PrintToFile.cs" />
+    <Compile Include="Commands\Print\PrintUncommentedCommandNames.cs" />
+    <Compile Include="Commands\Print\PrintUncoveredCommands.cs" />
+    <Compile Include="Commands\RouteNet.cs" />
+    <Compile Include="Commands\Library\AddBinaryLibraryElement.cs" />
+    <Compile Include="Commands\Library\AddXDLLibraryElement.cs" />
+    <Compile Include="Commands\Library\ClearLibrary.cs" />
+    <Compile Include="Commands\Debug\PrintLibrary.cs" />
+    <Compile Include="Commands\Library\RemoveLibraryElement.cs" />
+    <Compile Include="Commands\Library\LoadLibrary.cs" />
+    <Compile Include="Commands\Library\SaveLibrary.cs" />
+    <Compile Include="Commands\Library\SaveLibraryElement.cs" />
+    <Compile Include="Commands\Print.cs" />
+    <Compile Include="Commands\Print\PrintCommandNames.cs" />
+    <Compile Include="Commands\Print\PrintCommandParameters.cs" />
+    <Compile Include="Commands\InterfaceManager\DeletePort.cs" />
+    <Compile Include="Commands\InterfaceManager\ModifiySignal.cs" />
+    <Compile Include="Commands\RouteAll.cs" />
+    <Compile Include="Commands\RunScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\Selection\AddBlockToSelection.cs" />
+    <Compile Include="Commands\Selection\AddToSelection.cs" />
+    <Compile Include="Commands\Selection\AddToSelectionByRegexp.cs" />
+    <Compile Include="Commands\Selection\AddToSelectionByIdentifier.cs" />
+    <Compile Include="Commands\Selection\AddToSelectionBySlice.cs" />
+    <Compile Include="Commands\Selection\Anchor\ClearAnchor.cs" />
+    <Compile Include="Commands\Selection\Anchor\PrintRelativeAddToSelectionXY.cs" />
+    <Compile Include="Commands\Selection\Anchor\SetAddToSelectionAnchorCommand.cs" />
+    <Compile Include="Commands\Selection\ExpandByPort.cs" />
+    <Compile Include="Commands\Selection\ExpandSelection.cs" />
+    <Compile Include="Commands\Selection\ExpandSelectionInRow.cs" />
+    <Compile Include="Commands\Selection\ExpandSelectionLeft.cs" />
+    <Compile Include="Commands\Selection\ExpandSelectionLeftAndRight.cs" />
+    <Compile Include="Commands\Selection\ExpandSelectionRight.cs" />
+    <Compile Include="Commands\Debug\PrintSelection.cs" />
+    <Compile Include="Commands\Selection\ExpandSelectionSpecialTiles.cs" />
+    <Compile Include="Commands\Selection\RemoveUserSelection.cs" />
+    <Compile Include="Commands\Selection\SelectAllWithFilter.cs" />
+    <Compile Include="Commands\Selection\SelectAreaForModule.cs" />
+    <Compile Include="Commands\Selection\SelectFenceAroundUserSelection.cs" />
+    <Compile Include="Commands\Selection\Anchor\SetAddToSelectionAnchorLoc.cs" />
+    <Compile Include="Commands\Selection\Anchor\SetAddToSelectionAnchorXY.cs" />
+    <Compile Include="Commands\SetLabel.cs" />
+    <Compile Include="Commands\Sets\AddArcs.cs" />
+    <Compile Include="Commands\PrintVersion.cs" />
+    <Compile Include="Commands\Sets\AddArcsToNewNet.cs" />
+    <Compile Include="Commands\Sleep.cs" />
+    <Compile Include="Commands\Spartan6\FixS6XDLBug.cs" />
+    <Compile Include="Commands\CommandExecutionSettings\StopToPrintWrappedCommands.cs" />
+    <Compile Include="Commands\SystemCalls\AppendToFile.cs" />
+    <Compile Include="Commands\SystemCalls\CopyDirectory.cs" />
+    <Compile Include="Commands\SystemCalls\CopyFile.cs" />
+    <Compile Include="Commands\SystemCalls\Execute.cs" />
+    <Compile Include="Commands\SystemCalls\RemoveDirectory.cs" />
+    <Compile Include="Commands\Test\DoRandomGUISelections.cs" />
+    <Compile Include="Commands\UCF\PrintLocationConstraints.cs" />
+    <Compile Include="Commands\UCF\UCFCommand.cs" />
+    <Compile Include="Commands\UnDo.cs" />
+    <Compile Include="Commands\UCF\Variables\GetVariablesFromUser.cs" />
+    <Compile Include="Commands\Debug\PrintAllVariables.cs" />
+    <Compile Include="Commands\UCF\Variables\Set.cs" />
+    <Compile Include="Commands\UCF\Variables\Unset.cs" />
+    <Compile Include="Commands\VHDL\PrintVHDLUnionInterface.cs" />
+    <Compile Include="Commands\VHDL\PrintVHDLWrapper.cs" />
+    <Compile Include="Commands\VHDL\PrintVHDLWrapperCommand.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintArchitectureWithStaticPlaceholderInstantiation.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintComponentDeclarationForVHDLModule.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintConditionalModuleInstantiation.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintModuleSelectionPackage.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintWireDeclarationForSignalMapping.cs" />
+    <Compile Include="Commands\VHDL\Wizard\PrintComponentDeclaration.cs" />
+    <Compile Include="Commands\VHDL\PrintVHDLInstantiation.cs" />
+    <Compile Include="Commands\VHDL\PrintVHDLWrapperInstantiation.cs" />
+    <Compile Include="Commands\VHDL\VHDLCommand.cs" />
+    <Compile Include="Commands\Virtex6\FixV6XilinxXDLBug.cs" />
+    <Compile Include="Commands\Vivado\BuildHelloWorldSystem.cs" />
+    <Compile Include="Commands\Vivado\CheckPRLink.cs" />
+    <Compile Include="Commands\Vivado\ConnectClockPins.cs" />
+    <Compile Include="Commands\Vivado\DefinePRLink.cs" />
+    <Compile Include="Commands\Vivado\PreRoutePRLink.cs" />
+    <Compile Include="Commands\Vivado\SavePRLinksAsTCL.cs" />
+    <Compile Include="Commands\Wait.cs" />
+    <Compile Include="Commands\Watch.cs" />
+    <Compile Include="Commands\Wizards\BuildIslandStyleModule.cs" />
+    <Compile Include="Commands\Wizards\BuildIslandStyleModuleRunBatch.cs" />
+    <Compile Include="Commands\Wizards\BuildIslandStyleStaticSystem.cs" />
+    <Compile Include="Commands\Wizards\BuildIslandStyleSystem.cs" />
+    <Compile Include="Commands\Wizards\IslandCommandBuilder.cs" />
+    <Compile Include="Commands\Wizards\ProposeIslandPlacement.cs" />
+    <Compile Include="Commands\Library\DecomposeAntennasFromNets.cs" />
+    <Compile Include="Commands\Debug\CheckExpectedPorts.cs" />
+    <Compile Include="Commands\WriteToComPort.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Commands\XDLManipulation\DecomposeNets.cs" />
+    <Compile Include="Commands\XDLManipulation\MovePipsToNetWithDriver.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\RemoveNets.cs" />
+    <Compile Include="Commands\XDLManipulation\SaveLibraryElementInstantiation.cs" />
+    <Compile Include="Commands\XDLManipulation\MergeBlockerAndConnectClock.cs" />
+    <Compile Include="Commands\XDLManipulation\SimpleSortDesignFast.cs" />
+    <Compile Include="Commands\XDLManipulation\SimplifyIdentifier.cs" />
+    <Compile Include="Commands\XDLManipulation\WriteNetsToFile.cs" />
+    <Compile Include="DataStructures.cs" />
+    <Compile Include="FPGA\FPGATypes.cs" />
+    <Compile Include="FPGA\IdentifierLookup.cs" />
+    <Compile Include="FPGA\Slices\ASlice.cs" />
+    <Compile Include="FPGA\Slices\S3Slice.cs" />
+    <Compile Include="FPGA\Slices\USSlice.cs" />
+    <Compile Include="FPGA\Slices\V2Slice.cs" />
+    <Compile Include="FPGA\Slices\V7Slice.cs" />
+    <Compile Include="FPGA\TileSet.cs" />
+    <Compile Include="FPGA\Slices\V4Slice.cs" />
+    <Compile Include="FPGA\Wire.cs" />
+    <Compile Include="FPGA\Slices\ZSlice.cs" />
+    <Compile Include="GUI\ReadVivadoFPGADebugger\ReadVivadoFPGADebugger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ReadVivadoFPGADebugger\ReadVivadoFPGADebugger.Designer.cs">
+      <DependentUpon>ReadVivadoFPGADebugger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ArchitectureGraph\ExportArchitecture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ArchitectureGraph\ExportArchitecture.Designer.cs">
+      <DependentUpon>ExportArchitecture.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Blocker\BlockerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Blocker\BlockerCtrl.Designer.cs">
+      <DependentUpon>BlockerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Blocker\BlockerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Blocker\BlockerForm.Designer.cs">
+      <DependentUpon>BlockerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\BUFGInfo\BUFGInfoCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\BUFGInfo\BUFGInfoCtrl.Designer.cs">
+      <DependentUpon>BUFGInfoCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\BUFGInfo\BUFGInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\BUFGInfo\BUFGInfoForm.Designer.cs">
+      <DependentUpon>BUFGInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ColorSettingsCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ColorSettingsCtrl.Designer.cs">
+      <DependentUpon>ColorSettingsCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CommandForms\ParseTimingData\ParseTimingDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CommandForms\ParseTimingData\ParseTimingDataForm.Designer.cs">
+      <DependentUpon>ParseTimingDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ExpandSelection\ExpandSelectionCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ExpandSelection\ExpandSelectionCtrl.Designer.cs">
+      <DependentUpon>ExpandSelectionCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ExpandSelection\ExpandSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ExpandSelection\ExpandSelectionForm.Designer.cs">
+      <DependentUpon>ExpandSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FPGAView\FPGAEditorStylePainter.cs" />
+    <Compile Include="GUI\Macros\DesignBrowser\DesignBrowserCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\DesignBrowser\DesignBrowserCtrl.Designer.cs">
+      <DependentUpon>DesignBrowserCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\DesignBrowser\DesignBrowserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\DesignBrowser\DesignBrowserForm.Designer.cs">
+      <DependentUpon>DesignBrowserForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\ExtractModule\ExtractModuleFromFileCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\ExtractModule\ExtractModuleFromFileCtrl.Designer.cs">
+      <DependentUpon>ExtractModuleFromFileCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\ExtractModule\ExtractModuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\ExtractModule\ExtractModuleForm.Designer.cs">
+      <DependentUpon>ExtractModuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FileSelectionCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\FileSelectionCtrl.Designer.cs">
+      <DependentUpon>FileSelectionCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FPGAView\ClickToTileKeyConverter.cs" />
+    <Compile Include="GUI\FPGAView\HighLighter.cs" />
+    <Compile Include="GUI\Macros\LibraryManager\AddXDLLibraryElementCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryManager\AddXDLLibraryElementCtrl.Designer.cs">
+      <DependentUpon>AddXDLLibraryElementCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryManager\AddXDLLibraryElementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryManager\AddXDLLibraryElementForm.Designer.cs">
+      <DependentUpon>AddXDLLibraryElementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementInstantiationSelectorCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementInstantiationSelectorCtrl.Designer.cs">
+      <DependentUpon>LibraryElementInstantiationSelectorCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementPlacer\LibraryElementPlacerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementPlacer\LibraryElementPlacerCtrl.Designer.cs">
+      <DependentUpon>LibraryElementPlacerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementSelectorCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryElementSelectorCtrl.Designer.cs">
+      <DependentUpon>LibraryElementSelectorCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerManager\NetlistContainerSelectorCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerManager\NetlistContainerSelectorCtrl.Designer.cs">
+      <DependentUpon>NetlistContainerSelectorCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerViewForm.Designer.cs">
+      <DependentUpon>NetlistContainerViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\AnnotateSignals\AnnotateSignalsCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\AnnotateSignals\AnnotateSignalsCtrl.Designer.cs">
+      <DependentUpon>AnnotateSignalsCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryManager\LilbraryManagerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\LibraryManager\LilbraryManagerCtrl.Designer.cs">
+      <DependentUpon>LilbraryManagerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\OpenDesign\OpemDesignCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\OpenDesign\OpemDesignCtrl.Designer.cs">
+      <DependentUpon>OpemDesignCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\OpenDesign\OpenDesignForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\OpenDesign\OpenDesignForm.Designer.cs">
+      <DependentUpon>OpenDesignForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\Save\SaveCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\Save\SaveCtrl.Designer.cs">
+      <DependentUpon>SaveCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\Save\SaveForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\Save\SaveForm.Designer.cs">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\VHDL\PrintVHDLCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\VHDL\PrintVHDLCtrl.Designer.cs">
+      <DependentUpon>PrintVHDLCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\XDLGeneration\XDLGenerationCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\XDLGeneration\XDLGenerationCtrl.Designer.cs">
+      <DependentUpon>XDLGenerationCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\XDLGeneration\XDLGenerationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\XDLGeneration\XDLGenerationForm.Designer.cs">
+      <DependentUpon>XDLGenerationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\MonoTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\MonoTestForm.Designer.cs">
+      <DependentUpon>MonoTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ObjectView\ObjectViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ObjectView\ObjectViewCtrl.Designer.cs">
+      <DependentUpon>ObjectViewCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ObjectView\ObjectViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ObjectView\ObjectViewForm.Designer.cs">
+      <DependentUpon>ObjectViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PartGen\PartGenAllCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\PartGen\PartGenAllCtrl.Designer.cs">
+      <DependentUpon>PartGenAllCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PartGen\PartgenAllForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PartGen\PartgenAllForm.Designer.cs">
+      <DependentUpon>PartgenAllForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ScriptDebugger\ScriptDebuggerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ScriptDebugger\ScriptDebuggerForm.Designer.cs">
+      <DependentUpon>ScriptDebuggerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVarCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVarCtrl.Designer.cs">
+      <DependentUpon>SetVarCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVariablesCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVariablesCtrl.Designer.cs">
+      <DependentUpon>SetVariablesCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVariablesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\SetVariables\SetVariablesForm.Designer.cs">
+      <DependentUpon>SetVariablesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Watch\VariableWatchCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Watch\VariableWatchCtrl.Designer.cs">
+      <DependentUpon>VariableWatchCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Watch\VariableWatchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Watch\VariableWatchForm.Designer.cs">
+      <DependentUpon>VariableWatchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\SyncTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\SyncTextBox.Designer.cs">
+      <DependentUpon>SyncTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TileView\TileViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\TileView\TileViewForm.Designer.cs">
+      <DependentUpon>TileViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\UCF\PrintAreaConstraintsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\UCF\PrintAreaConstraintsForm.Designer.cs">
+      <DependentUpon>PrintAreaConstraintsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\UserSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\UserSelectionForm.Designer.cs">
+      <DependentUpon>UserSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ZoomPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\ZoomPictureBox.Designer.cs">
+      <DependentUpon>ZoomPictureBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\Interfaces.cs" />
+    <Compile Include="Objects\AliasManager.cs" />
+    <Compile Include="Objects\Blackboard.cs" />
+    <Compile Include="Objects\CommandServer.cs" />
+    <Compile Include="Objects\CommandShell.cs" />
+    <Compile Include="Objects\CommandStackManager.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\AddSlice.cs" />
+    <Compile Include="Commands\InterfaceManager\AddSignal.cs" />
+    <Compile Include="Commands\InterfaceManager\ClearInterface.cs" />
+    <Compile Include="Commands\InterfaceManager\LoadInterface.cs" />
+    <Compile Include="Commands\InterfaceManager\SaveInterface.cs" />
+    <Compile Include="Commands\BlockingShared\ExcludePortsFromBlocking.cs" />
+    <Compile Include="Commands\BlockingShared\ExcludePortsFromBlockingInSelection.cs" />
+    <Compile Include="Commands\Selection\ClearUserSelection.cs" />
+    <Compile Include="Commands\Selection\SelectUserSelection.cs" />
+    <Compile Include="Commands\Selection\StoreCurrentSelection.cs" />
+    <Compile Include="Commands\Sets\RemoveArcs.cs" />
+    <Compile Include="Commands\UCF\PrintAreaConstraint.cs" />
+    <Compile Include="Commands\UCF\PrintLocationConstraint.cs" />
+    <Compile Include="Commands\UCF\PrintLocationConstraintsForSelection.cs" />
+    <Compile Include="Commands\Print\PrintCommandHelp.cs" />
+    <Compile Include="Commands\Selection\AddToSelectionLoc.cs" />
+    <Compile Include="Commands\UCF\PrintAnchorStatement.cs" />
+    <Compile Include="Commands\UCF\PrintProhibitStatement.cs" />
+    <Compile Include="Commands\UCF\PrintProhibitStatementsForSelection.cs" />
+    <Compile Include="Commands\Selection\AddToSelectionXY.cs" />
+    <Compile Include="Commands\Selection\ClearSelection.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\CommandExecuter.cs" />
+    <Compile Include="Commands\Selection\InvertSelection.cs" />
+    <Compile Include="Commands\Data\LanchNetlistInFE.cs" />
+    <Compile Include="Commands\Misc\FindPortMapping.cs" />
+    <Compile Include="Commands\Selection\SelectAll.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\SetSliceAttribute.cs" />
+    <Compile Include="Commands\Data\GenerateFEScript.cs" />
+    <Compile Include="Commands\Misc\PathSearchOnFPGA.cs" />
+    <Compile Include="Commands\Data\OpenBinFPGA.cs" />
+    <Compile Include="Commands\Data\GenerateXDL.cs" />
+    <Compile Include="Commands\NOP.cs" />
+    <Compile Include="Commands\Data\ReadXDL.cs" />
+    <Compile Include="Commands\Reset.cs" />
+    <Compile Include="Commands\Data\SaveBinFPGA.cs" />
+    <Compile Include="Commands\NetlistContainerGeneration\SetFocus.cs" />
+    <Compile Include="Commands\GUI\ShowGUI.cs" />
+    <Compile Include="Commands\Data\PartGenAll.cs" />
+    <Compile Include="Commands\XDLManipulation\ExtractModule.cs" />
+    <Compile Include="FPGA\FPGA.cs" />
+    <Compile Include="FPGA\FPGAElement.cs" />
+    <Compile Include="FPGA\InPortOutPortMapping.cs" />
+    <Compile Include="FPGA\Slices\K7Slice.cs" />
+    <Compile Include="FPGA\Port.cs" />
+    <Compile Include="FPGA\Slices\S6Slice.cs" />
+    <Compile Include="FPGA\SelectionManager.cs" />
+    <Compile Include="FPGA\Slice.cs" />
+    <Compile Include="FPGA\Slices\V5Slice.cs" />
+    <Compile Include="FPGA\Switchmatrix.cs" />
+    <Compile Include="FPGA\Tile.cs" />
+    <Compile Include="FPGA\TileKey.cs" />
+    <Compile Include="FPGA\Slices\V6Slice.cs" />
+    <Compile Include="GUI\Help\AboutGoAhead.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Help\AboutGoAhead.Designer.cs">
+      <DependentUpon>AboutGoAhead.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CommandInterface\CommandInterfaceCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\CommandInterface\CommandInterfaceCtrl.Designer.cs">
+      <DependentUpon>CommandInterfaceCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\CommandInterface\CommandInterfaceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\CommandInterface\CommandInterfaceForm.Designer.cs">
+      <DependentUpon>CommandInterfaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ConsoleCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ConsoleCtrl.Designer.cs">
+      <DependentUpon>ConsoleCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FPGAView\AllTilesPainter.cs" />
+    <Compile Include="GUI\FPGAView\BlockPainter.cs" />
+    <Compile Include="GUI\FPGAView\Painter.cs" />
+    <Compile Include="GUI\PortSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PortSelectionForm.Designer.cs">
+      <DependentUpon>PortSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FindTileGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\FindTileGUI.Designer.cs">
+      <DependentUpon>FindTileGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\DeviceInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\DeviceInfoForm.Designer.cs">
+      <DependentUpon>DeviceInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\FPGAViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\FPGAViewCtrl.Designer.cs">
+      <DependentUpon>FPGAViewCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\GUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\GUI.Designer.cs">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Commands\CommandHook.cs" />
+    <Compile Include="GUI\CommandHooks.cs" />
+    <Compile Include="GUI\UCF\LocationConstraintsGUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\UCF\LocationConstraintsGUI.Designer.cs">
+      <DependentUpon>LocationConstraintsGUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ScriptDebugger\ScriptDebuggerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\ScriptDebugger\ScriptDebuggerCtrl.Designer.cs">
+      <DependentUpon>ScriptDebuggerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerManager\NetlistContainerCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerManager\NetlistContainerCtrl.Designer.cs">
+      <DependentUpon>NetlistContainerCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\NetlistContainerSelectionForm.Designer.cs">
+      <DependentUpon>NetlistContainerSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\PreferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PreferencesForm.Designer.cs">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\UCF\ProhibitStatementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\UCF\ProhibitStatementForm.Designer.cs">
+      <DependentUpon>ProhibitStatementForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\TileView\TileViewCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\TileView\TileViewCtrl.Designer.cs">
+      <DependentUpon>TileViewCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Objects\DesignRuleChecker.cs" />
+    <Compile Include="Objects\EnvChecker.cs" />
+    <Compile Include="Objects\ExpressionParser.cs" />
+    <Compile Include="Objects\IdentifierManager.cs" />
+    <Compile Include="Objects\InterfaceManager.cs" />
+    <Compile Include="Objects\LabelManager.cs" />
+    <Compile Include="Objects\NetlistContainer.cs" />
+    <Compile Include="Objects\NetlistContainerManager.cs" />
+    <Compile Include="Objects\LibraryElementInstantiationManager.cs" />
+    <Compile Include="Objects\Library.cs" />
+    <Compile Include="Objects\BlockerSettings.cs" />
+    <Compile Include="Objects\PRLinkManager.cs" />
+    <Compile Include="Objects\SelectionManager.cs" />
+    <Compile Include="Objects\Signal.cs" />
+    <Compile Include="Objects\VariableManager.cs" />
+    <Compile Include="Objects\VivadoBELManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Objects\Navigator.cs" />
+    <Compile Include="Code\XDL\XDLFile.cs" />
+    <Compile Include="Code\XDL\XDLMacroPort.cs" />
+    <Compile Include="Settings\ColorSettings.cs" />
+    <Compile Include="Settings\DialogSettings.cs" />
+    <Compile Include="Settings\GUISettings.cs" />
+    <Compile Include="Settings\IOBarSettings.cs" />
+    <Compile Include="Settings\Preferences.cs" />
+    <Compile Include="Code\VHDL\VHDLParser.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLDeviceShapeParser.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLResourceReportParser.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLSliceParser.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLStreamReaderWithUndo.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLTileParser.cs" />
+    <Compile Include="Code\XDL\ResourceDescription\XDLWireParser.cs" />
+    <Compile Include="Code\XDL\XDLDesignParser.cs" />
+    <Compile Include="Subsets.cs" />
+    <Compile Include="TCL\CommandsList.cs" />
+    <Compile Include="TCL\Procs\cshelp\CsHelpMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TCL\Procs\cshelp\CsHelp_GUI.cs" />
+    <Compile Include="TCL\Procs\cshelp\CsHelpLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TCL\Procs\cshelp\CsHelpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TCL\Procs\cshelp\CsHelpForm.Designer.cs">
+      <DependentUpon>CsHelpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TCL\Procs\TclProcs.cs" />
+    <Compile Include="TCL\tcl_api.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GUI\ReadVivadoFPGADebugger\ReadVivadoFPGADebugger.resx">
+      <DependentUpon>ReadVivadoFPGADebugger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ArchitectureGraph\ExportArchitecture.resx">
+      <DependentUpon>ExportArchitecture.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Blocker\BlockerCtrl.resx">
+      <DependentUpon>BlockerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Blocker\BlockerForm.resx">
+      <DependentUpon>BlockerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\BUFGInfo\BUFGInfoCtrl.resx">
+      <DependentUpon>BUFGInfoCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\BUFGInfo\BUFGInfoForm.resx">
+      <DependentUpon>BUFGInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CommandForms\ParseTimingData\ParseTimingDataForm.resx">
+      <DependentUpon>ParseTimingDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ExpandSelection\ExpandSelectionCtrl.resx">
+      <DependentUpon>ExpandSelectionCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ExpandSelection\ExpandSelectionForm.resx">
+      <DependentUpon>ExpandSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\DesignBrowser\DesignBrowserCtrl.resx">
+      <DependentUpon>DesignBrowserCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\DesignBrowser\DesignBrowserForm.resx">
+      <DependentUpon>DesignBrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\ExtractModule\ExtractModuleFromFileCtrl.resx">
+      <DependentUpon>ExtractModuleFromFileCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\ExtractModule\ExtractModuleForm.resx">
+      <DependentUpon>ExtractModuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FileSelectionCtrl.resx">
+      <DependentUpon>FileSelectionCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Help\AboutGoAhead.resx">
+      <DependentUpon>AboutGoAhead.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CommandInterface\CommandInterfaceCtrl.resx">
+      <DependentUpon>CommandInterfaceCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\CommandInterface\CommandInterfaceForm.resx">
+      <DependentUpon>CommandInterfaceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ConsoleCtrl.resx">
+      <DependentUpon>ConsoleCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ColorSettingsCtrl.resx">
+      <DependentUpon>ColorSettingsCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryManager\AddXDLLibraryElementCtrl.resx">
+      <DependentUpon>AddXDLLibraryElementCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryManager\AddXDLLibraryElementForm.resx">
+      <DependentUpon>AddXDLLibraryElementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryElementInstantiationSelectorCtrl.resx">
+      <DependentUpon>LibraryElementInstantiationSelectorCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryElementPlacer\LibraryElementPlacerCtrl.resx">
+      <DependentUpon>LibraryElementPlacerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryElementSelectorCtrl.resx">
+      <DependentUpon>LibraryElementSelectorCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\NetlistContainerManager\NetlistContainerSelectorCtrl.resx">
+      <DependentUpon>NetlistContainerSelectorCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\NetlistContainerViewForm.resx">
+      <DependentUpon>NetlistContainerViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\OpenDesign\OpemDesignCtrl.resx">
+      <DependentUpon>OpemDesignCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\OpenDesign\OpenDesignForm.resx">
+      <DependentUpon>OpenDesignForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\Save\SaveCtrl.resx">
+      <DependentUpon>SaveCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\Save\SaveForm.resx">
+      <DependentUpon>SaveForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\VHDL\PrintVHDLCtrl.resx">
+      <DependentUpon>PrintVHDLCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\XDLGeneration\XDLGenerationCtrl.resx">
+      <DependentUpon>XDLGenerationCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\XDLGeneration\XDLGenerationForm.resx">
+      <DependentUpon>XDLGenerationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\MonoTestForm.resx">
+      <DependentUpon>MonoTestForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ObjectView\ObjectViewCtrl.resx">
+      <DependentUpon>ObjectViewCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ObjectView\ObjectViewForm.resx">
+      <DependentUpon>ObjectViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SetVariables\SetVarCtrl.resx">
+      <DependentUpon>SetVarCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SetVariables\SetVariablesCtrl.resx">
+      <DependentUpon>SetVariablesCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\SetVariables\SetVariablesForm.resx">
+      <DependentUpon>SetVariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Watch\VariableWatchCtrl.resx">
+      <DependentUpon>VariableWatchCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TileView\TileViewForm.resx">
+      <DependentUpon>TileViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\AnnotateSignals\AnnotateSignalsCtrl.resx">
+      <DependentUpon>AnnotateSignalsCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\LibraryManager\LilbraryManagerCtrl.resx">
+      <DependentUpon>LilbraryManagerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PartGen\PartGenAllCtrl.resx">
+      <DependentUpon>PartGenAllCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PartGen\PartgenAllForm.resx">
+      <DependentUpon>PartgenAllForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PortSelectionForm.resx">
+      <DependentUpon>PortSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FindTileGUI.resx">
+      <DependentUpon>FindTileGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\DeviceInfoForm.resx">
+      <DependentUpon>DeviceInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\FPGAViewCtrl.resx">
+      <DependentUpon>FPGAViewCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\GUI.resx">
+      <DependentUpon>GUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\UCF\LocationConstraintsGUI.resx">
+      <DependentUpon>LocationConstraintsGUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ScriptDebugger\ScriptDebuggerCtrl.resx">
+      <DependentUpon>ScriptDebuggerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ScriptDebugger\ScriptDebuggerForm.resx">
+      <DependentUpon>ScriptDebuggerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\UCF\PrintAreaConstraintsForm.resx">
+      <DependentUpon>PrintAreaConstraintsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\UserSelectionForm.resx">
+      <DependentUpon>UserSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\NetlistContainerManager\NetlistContainerCtrl.resx">
+      <DependentUpon>NetlistContainerCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Macros\NetlistContainerSelectionForm.resx">
+      <DependentUpon>NetlistContainerSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PreferencesForm.resx">
+      <DependentUpon>PreferencesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\UCF\ProhibitStatementForm.resx">
+      <DependentUpon>ProhibitStatementForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TileView\TileViewCtrl.resx">
+      <DependentUpon>TileViewCtrl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Watch\VariableWatchForm.resx">
+      <DependentUpon>VariableWatchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TCL\Procs\cshelp\CsHelpLayoutPanel.resx">
+      <DependentUpon>CsHelpLayoutPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TCL\Procs\cshelp\CsHelpForm.resx">
+      <DependentUpon>CsHelpForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="GoAhead_TemporaryKey.pfx" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\DataSources\GoAhead.Objects.InterfaceManager.datasource" />
+    <None Include="Properties\DataSources\GoAhead.Objects.MacroInstantiationManager.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="MMC20">
+      <Guid>{8E80422B-CAC4-472B-B272-9635F1DFEF3B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-add-48.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-expand-arrow-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-collapse-arrow-64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-submit-for-approval-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-delete-bin-50.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-help-24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-browse-folder-30.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

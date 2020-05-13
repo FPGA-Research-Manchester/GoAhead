@@ -1,0 +1,103 @@
+OpenBinFPGA FileName=%GOAHEAD_HOME%/Devices/xc7z010clg400.binFPGA PrintProgress=True;
+
+AddAlias AliasName=MySelection Commands="
+	AddToSelectionXY Filter=.* UpperLeftX=51 UpperLeftY=11 LowerRightX=52 LowerRightY=15;
+";
+MySelection UpperLeftX=34000;
+
+####################################################################################################################################
+# module
+####################################################################################################################################
+Reset;
+
+# !!! This selection is NOT a full clock region high, just for test purposes !!!
+ClearSelection;
+AddToSelectionXY Filter=.* UpperLeftX=33 UpperLeftY=1 LowerRightX=46 LowerRightY=25;
+ExpandSelection;
+StoreCurrentSelectionAs UserSelectionType=ModulArea;
+
+# connection primitives
+ClearSelection;
+AddToSelectionXY Filter=.* UpperLeftX=51 UpperLeftY=11 LowerRightX=52 LowerRightY=15;
+ExpandSelection;
+StoreCurrentSelectionAs UserSelectionType=StaticPlaceholder;
+
+AddInstantiationInSelectedTiles InstanceName=inst LibraryElementName="ZynqVivadoConnectionPrimitive" SliceNumber=1;
+#AnnotateSignalNames PortMapping=I(5|2|4|3):p2s:external,I(4|5):0:external,Q:s2p:external,O:lut_to_ff:internal
+PrintVHDLWrapper InstantiationFilter=.* EntityName=StaticPlaceholder FileName=./wrapper.vhd Append=False; 
+PrintVHDLWrapperInstantiation InstantiationFilter=:* EntityName=StaticPlaceholder FileName=./wrapper_inst.vhd Append=False;
+PrintLocationConstraints InstantiationFilter=.* HierarchyPrefix="inst_StaticPlaceholder/" FileName=./module_location_constraints.tcl Append=False;
+
+#tunnel
+ExpandByPort UserSelectionType=ModulArea Begin=WW2BEG0 End=WW2END0;
+StoreCurrentSelectionAs UserSelectionType=Tunnel;
+DoNotBlockDoubleEast;
+DoNotBlockDoubleWest;
+
+# blocker
+#PreRoutePRLink UserSelectionType=ModulArea RoutingResources=WW2BEG SliceOutPorts=_L_A$,_L_B$,_L_C$,_L_D$ SignalName=s2p FileName=./module_preroute.tcl Append=False;
+
+# minimal blocker
+ClearSelection;
+SelectUserSelection UserSelectionType=ModulArea;
+SelectFence;
+StoreCurrentSelectionAs UserSelectionType=Blocker;
+
+BlockSelection Prefix=blocker_net BlockWithEndPips=True SliceNumber=0 PrintProgress=True PrintUnblockedPorts=True;
+SaveAsBlocker FileName=./module_blocker.tcl;
+
+# prohibits
+ClearSelection;
+SelectUserSelection UserSelectionType=ModulArea;
+InvertSelection;
+StoreCurrentSelectionAs UserSelectionType=Prohibits;
+PrintProhibitStatementsForSelection ExcludeUsedSlices=False FileName=./module_prohibits.tcl Append=False;
+# area group
+ClearSelection;
+SelectUserSelection UserSelectionType=ModulArea;
+PrintAreaConstraint InstanceName=inst_Module FileName=./module_area_constraints.tcl Append=False;
+####################################################################################################################################
+# static
+####################################################################################################################################
+Reset;	
+
+# !!! This selection is NOT a full clock region high, just for test purposes !!!
+ClearSelection;
+AddToSelectionXY Filter=.* UpperLeftX=33 UpperLeftY=1 LowerRightX=46 LowerRightY=25;
+ExpandSelection;
+StoreCurrentSelectionAs UserSelectionType=ModulArea;
+
+ConnectClockPins FileName=./static_connect_clockpins.tcl Append=False ClockPin=C ClockNetName=Inst_vga_ctrl/clk_wiz_0_inst/clk_in1 BELs=[A-D]FF;
+
+# connection primitives
+ClearSelection;
+AddToSelectionXY Filter=.* UpperLeftX=45 UpperLeftY=11 LowerRightX=46 LowerRightY=15;
+ExpandSelection;
+StoreCurrentSelectionAs UserSelectionType=ModulePlaceholder;
+
+# VHDL
+AddInstantiationInSelectedTiles InstanceName=inst LibraryElementName="ZynqVivadoConnectionPrimitive" SliceNumber=1;
+AnnotateSignalNames PortMapping=I(0|1|2|3):s2p:external,I(4|5):0:external,Q:p2s:external:0-1-3-2;
+PrintVHDLWrapper InstantiationFilter=.* EntityName=PartialSubsystem FileName=./wrapper.vhd Append=False; 
+PrintVHDLWrapperInstantiation InstantiationFilter=:* EntityName=PartialSubsystem FileName=.//wrapper_inst.vhd Append=False;
+PrintLocationConstraints InstantiationFilter=.* HierarchyPrefix="inst_PartialSubsystem/" FileName=./static_location_constraints.tcl Append=False;
+
+# tunnel in direction east starting from each ModulePlaceholder
+ClearSelection;
+SelectUserSelection UserSelectionType=ModulePlaceholder;
+ExpandByPort UserSelectionType=ModulArea Begin=EE2BEG0 End=EE2END0;
+StoreCurrentSelectionAs UserSelectionType=Tunnel;
+DoNotBlockDoubleEast;
+DoNotBlockDoubleWest;
+
+# blocker
+PreRoutePRLink UserSelectionType=ModulArea RoutingResources=EE2BEG SliceOutPorts=_L_A$,_L_B$,_L_C$,_L_D$ SignalName=p2s FileName=./static_preroute.tcl Append=False;
+ClearSelection;
+SelectUserSelection UserSelectionType=ModulArea;
+PrintProhibitStatementsForSelection ExcludeUsedSlices=False FileName=./static_prohibits.tcl Append=False;
+BlockSelection Prefix=blocker_net BlockWithEndPips=True SliceNumber=0 PrintProgress=True PrintUnblockedPorts=True UnblockedPortsToIgnore="(CTRL_)|(GND_WIRE)|(LOGIC)|(BYP_BOUNCE1)";
+SaveAsBlocker FileName=./static_blocker.tcl;
+	
+Exit;
+
+
