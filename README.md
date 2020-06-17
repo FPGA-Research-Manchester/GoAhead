@@ -1,4 +1,6 @@
-# GoAhead
+![Logo](Logo.png)
+
+## Navigation
 * [Documentation](#documentation)
 * [Installation](#installation)
 * [Contribution](#contribution)
@@ -7,7 +9,7 @@
 ## Documentation
 For documentation, tutorials, version history etc... visit the following link:
 
-### [GoAhead Manual](https://nikola-grunchevski.gitbook.io/goahead/)
+### [GoAhead Wiki](https://nikola-grunchevski.gitbook.io/goahead/)
 
 
 ## Installation
