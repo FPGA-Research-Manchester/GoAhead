@@ -14,18 +14,18 @@ namespace GoAhead.Commands.Vivado
     {
         protected override void DoCommandAction()
         {
-            Regex BELRegexp = new Regex(BELs, RegexOptions.Compiled);
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles())
+            Regex BELRegexp = new Regex(this.BELs, RegexOptions.Compiled);
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 foreach (Slice slice in tile.Slices)
                 {
                     foreach (string bel in slice.Bels.Where(b => BELRegexp.IsMatch(b)))
                     {
                         string instName = slice.SliceName + "_" + bel;
-                        OutputManager.WriteOutput("create_cell -reference FDRE	" + instName);
-                        OutputManager.WriteOutput("place_cell " + instName + " " + slice.SliceName + "/" + bel);
-                        OutputManager.WriteOutput("create_pin -direction IN " + instName + "/" + ClockPin);
-                        OutputManager.WriteOutput("connect_net -hier -net " + ClockNetName + " -objects {" + instName + "/" + ClockPin + "}");
+                        this.OutputManager.WriteOutput("create_cell -reference FDRE	" + instName);
+                        this.OutputManager.WriteOutput("place_cell " + instName + " " + slice.SliceName + "/" + bel);
+                        this.OutputManager.WriteOutput("create_pin -direction IN " + instName + "/" + this.ClockPin);
+                        this.OutputManager.WriteOutput("connect_net -hier -net " + this.ClockNetName + " -objects {" + instName + "/" + this.ClockPin + "}");
                     }
                 }
             }
@@ -37,12 +37,12 @@ namespace GoAhead.Commands.Vivado
         }
 
         [Parameter(Comment = "The name of the clock pin to connect")]
-        public string ClockPin = "CK";
+        public String ClockPin = "CK";
 
         [Parameter(Comment = "The slice bels")]
-        public string BELs = "[A-D]FF";
+        public String BELs = "[A-D]FF";
 
         [Parameter(Comment = "The name of the clock net that the clock pins will be added to")]
-        public string ClockNetName = "clk";
+        public String ClockNetName = "clk";
     }
 }

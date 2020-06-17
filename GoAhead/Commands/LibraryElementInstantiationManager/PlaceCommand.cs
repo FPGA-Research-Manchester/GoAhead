@@ -12,29 +12,29 @@ namespace GoAhead.Commands.LibraryElementInstantiation
     {
         protected override sealed void DoCommandAction()
         {
-            if (FPGA.FPGA.Instance.Contains(AnchorLocation))
+            if (FPGA.FPGA.Instance.Contains(this.AnchorLocation))
             {
-                Tile anchor = FPGA.FPGA.Instance.GetTile(AnchorLocation);
+                Tile anchor = FPGA.FPGA.Instance.GetTile(this.AnchorLocation);
                 AddSingleInstantiationByTile addCmd = new AddSingleInstantiationByTile();
-                addCmd.AnchorLocation = AnchorLocation;
-                SetBaseClassParametersAndExecuteCommand(addCmd);
+                addCmd.AnchorLocation = this.AnchorLocation;
+                this.SetBaseClassParametersAndExecuteCommand(addCmd);
             }
-            else if (FPGA.FPGA.Instance.ContainsSlice(AnchorLocation))
+            else if (FPGA.FPGA.Instance.ContainsSlice(this.AnchorLocation))
             {
-                Slice s = FPGA.FPGA.Instance.GetSlice(AnchorLocation);
+                Slice s = FPGA.FPGA.Instance.GetSlice(this.AnchorLocation);
                 AddSingleInstantiationBySlice addCmd = new AddSingleInstantiationBySlice();
-                addCmd.SliceName = AnchorLocation;
-                SetBaseClassParametersAndExecuteCommand(addCmd);
+                addCmd.SliceName = this.AnchorLocation;
+                this.SetBaseClassParametersAndExecuteCommand(addCmd);
             }
             else
             {
-                throw new ArgumentException("Expecting either a tile or a slice identifier (CLB_X4Y3 or SLICE_X465). Found " + AnchorLocation);
+                throw new ArgumentException("Expecting either a tile or a slice identifier (CLB_X4Y3 or SLICE_X465). Found " + this.AnchorLocation);
             }
                         
-            if (GetAutoClearModuleSlotValue())
+            if (this.GetAutoClearModuleSlotValue())
             {
                 FuseNets fuseCmd = new FuseNets();
-                fuseCmd.NetlistContainerName = NetlistContainerName;
+                fuseCmd.NetlistContainerName = this.NetlistContainerName;
                 CommandExecuter.Instance.Execute(fuseCmd);
             }
         }
@@ -46,18 +46,18 @@ namespace GoAhead.Commands.LibraryElementInstantiation
 
         protected void SetBaseClassParametersAndExecuteCommand(AddInstantiationCommand addCmd)
         {
-            addCmd.AutoClearModuleSlot = GetAutoClearModuleSlotValue();
-            addCmd.InstanceName = InstanceName;
-            addCmd.LibraryElementName = LibraryElementName;
-            addCmd.NetlistContainerName = NetlistContainerName;
-            addCmd.PrintProgress = PrintProgress;
-            addCmd.Profile = Profile;
-            addCmd.Mute = Mute;
+            addCmd.AutoClearModuleSlot = this.GetAutoClearModuleSlotValue();
+            addCmd.InstanceName = this.InstanceName;
+            addCmd.LibraryElementName = this.LibraryElementName;
+            addCmd.NetlistContainerName = this.NetlistContainerName;
+            addCmd.PrintProgress = this.PrintProgress;
+            addCmd.Profile = this.Profile;
+            addCmd.Mute = this.Mute;
             CommandExecuter.Instance.Execute(addCmd);
         }
 
         [Parameter(Comment = "The location string of the anchor. Either a tile or a slice identifier (CLB_X4Y3 or SLICE_X465)")]
-        public string AnchorLocation = "CLB_X4Y3";
+        public String AnchorLocation = "CLB_X4Y3";
 
         protected abstract bool GetAutoClearModuleSlotValue();
     }

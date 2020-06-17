@@ -14,11 +14,11 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             // what to route
-            NetlistContainer netlist = GetNetlistContainer();
-            XDLNet netToRoute = (XDLNet) netlist.GetNet(NetName);
+            NetlistContainer netlist = this.GetNetlistContainer();
+            XDLNet netToRoute = (XDLNet) netlist.GetNet(this.NetName);
 
             int outpinCount = netToRoute.NetPins.Count(np => np is NetOutpin);
             if (outpinCount != 1)
@@ -32,7 +32,7 @@ namespace GoAhead.Commands
             List<Location> targetLocations = new List<Location>();
 
             // route from outpin
-            string startTileName = netlist.GetInstanceByName(outpin.InstanceName).Location;
+            String startTileName = netlist.GetInstanceByName(outpin.InstanceName).Location;
             Tile startTile = FPGA.FPGA.Instance.GetTile(startTileName);
             Slice startSlice = startTile.GetSliceByName(netlist.GetInstanceByName(outpin.InstanceName).SliceName);
             Port startPip = startSlice.PortMapping.Ports.Where(p => p.Name.EndsWith(outpin.SlicePort)).First();
@@ -42,7 +42,7 @@ namespace GoAhead.Commands
             Queue<Location> targetQueue = new Queue<Location>(targetLocations);
             foreach (NetPin inpin in netToRoute.NetPins.Where(np => np is NetInpin).OrderBy(np => np.InstanceName))
             {
-                string targetTileName = netlist.GetInstanceByName(inpin.InstanceName).Location;
+                String targetTileName = netlist.GetInstanceByName(inpin.InstanceName).Location;
                 Tile targetTile = FPGA.FPGA.Instance.GetTile(targetTileName);
                 Slice targetSlice = targetTile.GetSliceByName(netlist.GetInstanceByName(inpin.InstanceName).SliceName);
                 Port targetPip = targetSlice.PortMapping.Ports.Where(p => p.Name.EndsWith(inpin.SlicePort)).First();
@@ -63,9 +63,9 @@ namespace GoAhead.Commands
                 // dequeue next target
                 Location targetLocation = targetQueue.Dequeue();
 
-                Watch.Start("route");
-                List<Location> revPath = Route(SearchMode, true, startLocations, targetLocation, 0, 100, false).FirstOrDefault();
-                Watch.Stop("route");
+                this.Watch.Start("route");
+                List<Location> revPath = this.Route(this.SearchMode, true, startLocations, targetLocation, 0, 100, false).FirstOrDefault();
+                this.Watch.Stop("route");
 
                 // extend net
                 if (revPath != null)
@@ -79,7 +79,7 @@ namespace GoAhead.Commands
             netToRoute.BlockUsedResources();
         }
 
-        public IEnumerable<List<Location>> Route(string searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, bool keepPathsIndependet)
+        public IEnumerable<List<Location>> Route(String searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, bool keepPathsIndependet)
         {
             if (startLocations.Count() == 0)
             {
@@ -109,14 +109,14 @@ namespace GoAhead.Commands
 
             if (!keepPathsIndependet)
             {
-                foreach (List<Location> l in RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, locMan))
+                foreach (List<Location> l in this.RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, locMan))
                 {
                     yield return l;
                 }
             }
             else
             {
-                foreach (List<Location> l in RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, startLocation, locMan))
+                foreach (List<Location> l in this.RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, startLocation, locMan))
                 {
                     yield return l;
                 }
@@ -158,7 +158,7 @@ namespace GoAhead.Commands
 
                 foreach (Tuple<Location, int> tuple in reachables.OrderByDescending(t => t.Item2))
                  * */
-                foreach (Location next in GetReachableLocations(currentLocation, forward))
+                foreach (Location next in this.GetReachableLocations(currentLocation, forward))
                 {
                     //Location next = tuple.Item1;
                     if (targetLocation.Equals(next))
@@ -169,7 +169,7 @@ namespace GoAhead.Commands
                     }
                     else
                     {
-                        bool close = LocationLeadsCloserToTarget(currentLocation, next, targetLocation.Tile, distanceLimit);
+                        bool close = this.LocationLeadsCloserToTarget(currentLocation, next, targetLocation.Tile, distanceLimit);
 
                         //if (!visited.ContainsKey(next) && close)
                         if (!locMan.WasAlreadyVisited(next) && close)
@@ -199,7 +199,7 @@ namespace GoAhead.Commands
                     }
                 }
                 
-                foreach (Location l in GetReachableLocations(currentLocation, forward))
+                foreach (Location l in this.GetReachableLocations(currentLocation, forward))
                 {
                     bool targetReached = targetLocation.Equals(l);
 
@@ -220,7 +220,7 @@ namespace GoAhead.Commands
                     }
                     else
                     {
-                        bool close = LocationLeadsCloserToTarget(currentLocation, l, targetLocation.Tile, distanceLimit);
+                        bool close = this.LocationLeadsCloserToTarget(currentLocation, l, targetLocation.Tile, distanceLimit);
 
                         //this.Watch.Start("compare");
                         // same tile
@@ -268,26 +268,26 @@ namespace GoAhead.Commands
         {
             if (forward)
             {
-                foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => FollowPort(currentLocation.Tile, p)))
+                foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => this.FollowPort(currentLocation.Tile, p)))
                 {
                     Location next = new Location(currentLocation.Tile, pip);
                     yield return next;
                 }
 
-                foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip).Where(loc => FollowPort(loc.Tile, loc.Pip)))
+                foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip).Where(loc => this.FollowPort(loc.Tile, loc.Pip)))
                 {
                     yield return next;
                 }
             }
             else
             {
-                foreach (Tuple<Port, Port> arc in currentLocation.Tile.SwitchMatrix.GetAllArcs().Where(a => a.Item2.Name.Equals(currentLocation.Pip.Name) && FollowPort(currentLocation.Tile, a.Item1)))
+                foreach (Tuple<Port, Port> arc in currentLocation.Tile.SwitchMatrix.GetAllArcs().Where(a => a.Item2.Name.Equals(currentLocation.Pip.Name) && this.FollowPort(currentLocation.Tile, a.Item1)))
                 {
                     Location next = new Location(currentLocation.Tile, arc.Item1);
                     yield return next;
                 }
 
-                foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip, false).Where(loc => FollowPort(loc.Tile, loc.Pip)))
+                foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip, false).Where(loc => this.FollowPort(loc.Tile, loc.Pip)))
                 {
                     yield return next;
                 }
@@ -309,8 +309,8 @@ namespace GoAhead.Commands
        
         private bool LocationLeadsCloserToTarget(Location current, Location other, Tile target, int distanceLimit)
         {
-            int currentDistance = Distance(current.Tile, target);
-            int newDistance = Distance(other.Tile, target);
+            int currentDistance = this.Distance(current.Tile, target);
+            int newDistance = this.Distance(other.Tile, target);
 
             return newDistance <= currentDistance + distanceLimit;
         }
@@ -326,10 +326,10 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The name to add to the macro")]
-        public string NetName = "net";
+        public String NetName = "net";
 
         [Parameter(Comment = "The path search modue (BFS, DFS, A*)")]
-        public string SearchMode = "BFS";
+        public String SearchMode = "BFS";
     }
 
     abstract class LocationManager
@@ -340,7 +340,7 @@ namespace GoAhead.Commands
 
         protected LocationManager(Location start)
         {
-            m_startLocation = start;
+            this.m_startLocation = start;
         }
         
         public abstract bool LocationsLeft();
@@ -349,7 +349,7 @@ namespace GoAhead.Commands
         {
             foreach (Location l in locations)
             {
-                Add(l);
+                this.Add(l);
             }
         }
         public abstract Location GetNext();
@@ -364,22 +364,22 @@ namespace GoAhead.Commands
 
         public void MarkAsVisited(Location next, Location from)
         {
-            m_visited.Add(next, false);
-            m_parent.Add(next, from);
+            this.m_visited.Add(next, false);
+            this.m_parent.Add(next, from);
         }
 
         public bool WasAlreadyVisited(Location next)
         {
-            return m_visited.ContainsKey(next);           
+            return this.m_visited.ContainsKey(next);           
         }
 
         public List<Location> GetPath(IEnumerable<Location> startLocations, Location currentLocation)
         {
             List<Location> revPath = new List<Location>();
             revPath.Add(currentLocation);
-            if (m_parent.ContainsKey(currentLocation))
+            if (this.m_parent.ContainsKey(currentLocation))
             {
-                Location pre = m_parent[currentLocation];
+                Location pre = this.m_parent[currentLocation];
                 while (true)
                 {
                     Location start = startLocations.FirstOrDefault(l => l.Equals(pre));
@@ -391,7 +391,7 @@ namespace GoAhead.Commands
                     }
 
                     revPath.Add(pre);
-                    pre = m_parent[pre];
+                    pre = this.m_parent[pre];
                 }
                 revPath.Reverse();
             }
@@ -401,9 +401,9 @@ namespace GoAhead.Commands
         public int GetDepth(Location currentLocation, int maxDepth)
         {
             int depth = 0;
-            if (m_parent.ContainsKey(currentLocation))
+            if (this.m_parent.ContainsKey(currentLocation))
             {
-                Location pre = m_parent[currentLocation];
+                Location pre = this.m_parent[currentLocation];
                 while (!pre.Equals(m_startLocation))
                 {
                     if (depth > maxDepth)
@@ -411,12 +411,12 @@ namespace GoAhead.Commands
                         return depth;
                     }
 
-                    if (!m_parent.ContainsKey(pre))
+                    if (!this.m_parent.ContainsKey(pre))
                     {
                         // partial routing already
                         return depth;
                     }
-                    pre = m_parent[pre];
+                    pre = this.m_parent[pre];
                     depth++;
                 }
             }
@@ -433,23 +433,23 @@ namespace GoAhead.Commands
         public SortedQLocationManager(Location start, Tile target)
             :base(start)
         {
-            m_start = start.Tile;
-            m_target = target;
+            this.m_start = start.Tile;
+            this.m_target = target;
         }
 
         public override bool LocationsLeft()
         {
-            return m_locations.Count > 0;
+            return this.m_locations.Count > 0;
         }
 
         public override int Count()
         {
-            return m_locations.Sum(t => t.Value.Count());
+            return this.m_locations.Sum(t => t.Value.Count());
         }
 
         public override void Clear()
         {
-            m_locations.Clear();
+            this.m_locations.Clear();
         }
 
         public override void Add(Location loc)
@@ -457,8 +457,8 @@ namespace GoAhead.Commands
             // do not route through CLBS expect start and target
             if(IdentifierManager.Instance.IsMatch(loc.Tile.Location, IdentifierManager.RegexTypes.CLB))
             {
-                bool startMatch = m_start.Location.Equals(loc.Tile.Location);
-                bool targetMatch = m_target.Location.Equals(loc.Tile.Location);// && this.m_target.SwitchMatrix.Contains(loc.Pip, this.m_targetPip);
+                bool startMatch = this.m_start.Location.Equals(loc.Tile.Location);
+                bool targetMatch = this.m_target.Location.Equals(loc.Tile.Location);// && this.m_target.SwitchMatrix.Contains(loc.Pip, this.m_targetPip);
 
                 if (!startMatch && !targetMatch)
                 {
@@ -466,19 +466,19 @@ namespace GoAhead.Commands
                 }
             }
 
-            int distance = Distance(loc.Tile, m_target);
-            if (!m_locations.ContainsKey(distance))
+            int distance = this.Distance(loc.Tile, this.m_target);
+            if (!this.m_locations.ContainsKey(distance))
             {
-                m_locations.Add(distance, new SortedList<int, List<Location>>());
+                this.m_locations.Add(distance, new SortedList<int, List<Location>>());
             }
             
-            int cost = GetDepth(loc, 100);
-            if (!m_locations[distance].ContainsKey(cost))
+            int cost = this.GetDepth(loc, 100);
+            if (!this.m_locations[distance].ContainsKey(cost))
             {
-                m_locations[distance].Add(cost, new List<Location>());
+                this.m_locations[distance].Add(cost, new List<Location>());
             }
             
-            m_locations[distance][cost].Add(loc);
+            this.m_locations[distance][cost].Add(loc);
         }
 
         private int Distance(Tile from, Tile to)
@@ -488,8 +488,8 @@ namespace GoAhead.Commands
 
         public override Location GetNext()
         {
-            int minimalDistance = m_locations.Keys[0];
-            SortedList<int, List<Location>> closestLocations = m_locations[minimalDistance];
+            int minimalDistance = this.m_locations.Keys[0];
+            SortedList<int, List<Location>> closestLocations = this.m_locations[minimalDistance];
 
             int shortestPathLength = closestLocations.Keys[0];
             List<Location> closesPathsWithShortedPathLength = closestLocations[shortestPathLength];
@@ -505,7 +505,7 @@ namespace GoAhead.Commands
             }
             if (closestLocations.Count == 0)
             {
-                m_locations.RemoveAt(0); // remove the first, i.e. the minimal distance entry
+                this.m_locations.RemoveAt(0); // remove the first, i.e. the minimal distance entry
             }
             return next;
         }
@@ -524,27 +524,27 @@ namespace GoAhead.Commands
         
         public override bool LocationsLeft()
         {
-            return m_locationStack.Count > 0;
+            return this.m_locationStack.Count > 0;
         }
 
         public override void Add(Location loc)
         {
-            m_locationStack.Push(loc);
+            this.m_locationStack.Push(loc);
         }
 
         public override Location GetNext()
         {
-            return m_locationStack.Pop();
+            return this.m_locationStack.Pop();
         }
 
         public override int Count()
         {
-            return m_locationStack.Count;
+            return this.m_locationStack.Count;
         }
 
         public override void Clear()
         {
-            m_locationStack.Clear();
+            this.m_locationStack.Clear();
         }
                     
         private Stack<Location> m_locationStack = new Stack<Location>();
@@ -559,27 +559,27 @@ namespace GoAhead.Commands
 
         public override bool LocationsLeft()
         {
-            return m_locationQueue.Count > 0;
+            return this.m_locationQueue.Count > 0;
         }
 
         public override void Add(Location loc)
         {
-            m_locationQueue.Enqueue(loc);
+            this.m_locationQueue.Enqueue(loc);
         }
 
         public override Location GetNext()
         {
-            return m_locationQueue.Dequeue();
+            return this.m_locationQueue.Dequeue();
         }
                         
         public override int Count()
         {
-            return m_locationQueue.Count;
+            return this.m_locationQueue.Count;
         }
 
         public override void Clear()
         {
-            m_locationQueue.Clear();
+            this.m_locationQueue.Clear();
         }
 
         private Queue<Location> m_locationQueue = new Queue<Location>(2000000);

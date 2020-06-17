@@ -13,13 +13,13 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
     {
         protected override void DoCommandAction()
         {
-            LibraryElement libEl = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libEl = Objects.Library.Instance.GetElement(this.LibraryElementName);
             List<Tile> anchors = new List<Tile>();
 
-            foreach (Tile placePos in TileSelectionManager.Instance.GetSelectedTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB)))
+            foreach (Tile placePos in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => Objects.IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB)))
             {
                 StringBuilder errorList = null;
-                bool placementOk = DesignRuleChecker.CheckLibraryElementPlacement(placePos, libEl, out errorList);
+                bool placementOk = Objects.DesignRuleChecker.CheckLibraryElementPlacement(placePos, libEl, out errorList);
                 if (placementOk)
                 {
                     anchors.Add(placePos);
@@ -28,7 +28,7 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
 
             foreach (Tile t in anchors)
             {
-                OutputManager.WriteOutput("Libary element " + libEl.Name + " can be placed at " + t.Location);
+                this.OutputManager.WriteOutput("Libary element " + libEl.Name + " can be placed at " + t.Location);
             }
         }
 
@@ -38,6 +38,6 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
         }
 
         [Parameter(Comment = "The name of the library element, e.g. BM_S6_L4_R4_double")]
-        public string LibraryElementName = "BM_S6_L4_R4_double";
+        public String LibraryElementName = "BM_S6_L4_R4_double";
     }
 }

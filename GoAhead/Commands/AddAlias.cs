@@ -7,7 +7,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            Objects.AliasManager.Instance.AddAlias(AliasName, Commands);
+            Objects.AliasManager.Instance.AddAlias(this.AliasName, this.Commands);
         }
 
         public override void Undo()
@@ -16,9 +16,9 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The name of alias")]
-        public string AliasName = "select_an_area";
+        public String AliasName = "select_an_area";
 
         [Parameter(Comment = "A semicolon seperated list of GoAhead commands that will be executed if the alias name is used as a command.")]
-        public string Commands = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";
+        public String Commands = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";
     }
 }

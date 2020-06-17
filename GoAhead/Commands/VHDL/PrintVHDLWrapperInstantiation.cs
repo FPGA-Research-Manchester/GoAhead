@@ -11,7 +11,7 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void PrintVHDLCode(VHDLFile vhdlFile)
         {
-            OutputManager.WriteVHDLOutput(vhdlFile.GetSubsystemInstantiation());
+            this.OutputManager.WriteVHDLOutput(vhdlFile.GetSubsystemInstantiation());
         }
         
         public override void Undo()

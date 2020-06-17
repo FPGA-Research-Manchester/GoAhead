@@ -11,17 +11,17 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            Regex filter = new Regex(Filter, RegexOptions.Compiled);
+            Regex filter = new Regex(this.Filter, RegexOptions.Compiled);
             foreach (Tile where in FPGA.FPGA.Instance.GetAllTiles().Where(t => filter.IsMatch(t.Location)))
             {
                 //deselect or add the selected tile 
-                if (TileSelectionManager.Instance.IsSelected(where.TileKey))
+                if (FPGA.TileSelectionManager.Instance.IsSelected(where.TileKey))
                 {
-                    TileSelectionManager.Instance.RemoveFromSelection(where.TileKey, true);
+                    FPGA.TileSelectionManager.Instance.RemoveFromSelection(where.TileKey, true);
                 }
                 else
                 {
-                    TileSelectionManager.Instance.AddToSelection(where.TileKey);
+                    FPGA.TileSelectionManager.Instance.AddToSelection(where.TileKey);
                 }
             }
         }
@@ -32,6 +32,6 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "All tiles that match this regular expression will be added")]
-        public string Filter = "";
+        public String Filter = "";
     }
 }

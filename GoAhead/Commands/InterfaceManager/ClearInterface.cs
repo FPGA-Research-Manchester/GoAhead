@@ -10,14 +10,14 @@ namespace GoAhead.Commands.InterfaceManager
        protected override void DoCommandAction()
         {
             // capture current signal set for undo
-            m_clearedSignals = Objects.InterfaceManager.Instance.Signals;
+            this.m_clearedSignals = Objects.InterfaceManager.Instance.Signals;
             Objects.InterfaceManager.Instance.Reset();
         }
 
         public override void Undo()
         {
             Objects.InterfaceManager.Instance.Reset();
-            foreach (Signal s in m_clearedSignals)
+            foreach (Signal s in this.m_clearedSignals)
             {
                 Objects.InterfaceManager.Instance.Add(s);
             };

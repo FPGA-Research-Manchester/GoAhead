@@ -10,81 +10,81 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void DoCommandAction()
         {
-            if (PrintBegin)
+            if (this.PrintBegin)
             {
-                OutputManager.WriteVHDLOutput("begin");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("begin");
+                this.OutputManager.WriteVHDLOutput("");
             }
 
-            string componentPrefix = "static_placeholder_";
+            String componentPrefix = "static_placeholder_";
 
             // out parameters to UpdateSignalData
-            Dictionary<string, List<int>> signalWidths;
-            Dictionary<string, string> directions;
-            List<Tuple<string, List<int>>> interfaces;
-            List<string> ifSignals;
-            List<string> signalsForInterface;
-            List<string> signalsDeclarationsForMappingAndKeep;
-            GetSignalList(PartialAreaName, false, out signalWidths, out directions, out interfaces, out ifSignals, out signalsForInterface,out signalsDeclarationsForMappingAndKeep);
+            Dictionary<String, List<int>> signalWidths;
+            Dictionary<String, String> directions;
+            List<Tuple<String, List<int>>> interfaces;
+            List<String> ifSignals;
+            List<String> signalsForInterface;
+            List<String> signalsDeclarationsForMappingAndKeep;
+            this.GetSignalList(this.PartialAreaName, false, out signalWidths, out directions, out interfaces, out ifSignals, out signalsForInterface,out signalsDeclarationsForMappingAndKeep);
 
             // TODO move to parser
-            VHDLParser vhdlParser = new VHDLParser(VHDLModule);
+            VHDLParser vhdlParser = new VHDLParser(this.VHDLModule);
             foreach (VHDLParserEntity ent in vhdlParser.GetEntities())
             {
-                OutputManager.WriteVHDLOutput("-- conditional instantiation of module " + ent.EntityName + " in partial area " + PartialAreaName);
-                string enumType = "build_" + ent.EntityName + "_in_" + PartialAreaName;
+                this.OutputManager.WriteVHDLOutput("-- conditional instantiation of module " + ent.EntityName + " in partial area " + this.PartialAreaName);
+                String enumType = "build_" + ent.EntityName + "_in_" + this.PartialAreaName;
                 enumType = enumType.ToUpper();
-                OutputManager.WriteVHDLOutput("mod_sel_build_" + ent.EntityName + "_in_" + PartialAreaName + ": if module_selector = " + enumType + " generate");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("mod_sel_build_" + ent.EntityName + "_in_" + this.PartialAreaName + ": if module_selector = " + enumType + " generate");
+                this.OutputManager.WriteVHDLOutput("");
 
-                string prefix = ent.EntityName + "_";
+                String prefix = ent.EntityName + "_";
                 //String module_name = this.ModulePrefix + this.PartialAreaNames;
-                string placeHolderName = componentPrefix + PartialAreaName;
+                String placeHolderName = componentPrefix + this.PartialAreaName;
 
-                OutputManager.WriteVHDLOutput("\t" + "-- the instantiation of the placeholder for the static system");
-                OutputManager.WriteVHDLOutput("\t" + "inst_" + componentPrefix + PartialAreaName + " : " + placeHolderName + " port map (");
+                this.OutputManager.WriteVHDLOutput("\t" + "-- the instantiation of the placeholder for the static system");
+                this.OutputManager.WriteVHDLOutput("\t" + "inst_" + componentPrefix + this.PartialAreaName + " : " + placeHolderName + " port map (");
                 for (int j = 0; j < interfaces.Count; j++)
                 {
-                    string mapping = "\t" + "\t" + interfaces[j].Item1 + " => " + prefix + interfaces[j].Item1 + "_" + PartialAreaName + (j < interfaces.Count - 1 ? "," : "");
-                    OutputManager.WriteVHDLOutput(mapping);
+                    String mapping = "\t" + "\t" + interfaces[j].Item1 + " => " + prefix + interfaces[j].Item1 + "_" + this.PartialAreaName + (j < interfaces.Count - 1 ? "," : "");
+                    this.OutputManager.WriteVHDLOutput(mapping);
                 }
-                OutputManager.WriteVHDLOutput("\t" + ");");
+                this.OutputManager.WriteVHDLOutput("\t" + ");");
 
-                OutputManager.WriteVHDLOutput("\t" + "-- the instantiation of module " + ent.EntityName);
-                OutputManager.WriteVHDLOutput("\t" + "inst_" + PartialAreaName + "_" + ent.EntityName + " : " + ent.EntityName + " port map (");
+                this.OutputManager.WriteVHDLOutput("\t" + "-- the instantiation of module " + ent.EntityName);
+                this.OutputManager.WriteVHDLOutput("\t" + "inst_" + this.PartialAreaName + "_" + ent.EntityName + " : " + ent.EntityName + " port map (");
 
-                List<string> mappings = new List<string>();
+                List<String> mappings = new List<String>();
                 for (int j = 0; j < ent.InterfaceSignals.Count; j++)
                 {
                     HDLEntitySignal s = ent.InterfaceSignals[j];
                     bool signalWillBeMappedToPlaceHolderSignal = interfaces.Any(tupel => tupel.Item1.Equals(s.SignalName));
                     if (signalWillBeMappedToPlaceHolderSignal)
                     {
-                        Tuple<string, List<int>> ifElement = interfaces.FirstOrDefault(tupel => tupel.Item1.Equals(s.SignalName));
-                        string mapping = "\t" + "\t" + s.SignalName + " => " + prefix + ifElement.Item1 + "_" + PartialAreaName + s.Range;
+                        Tuple<String, List<int>> ifElement = interfaces.FirstOrDefault(tupel => tupel.Item1.Equals(s.SignalName));
+                        String mapping = "\t" + "\t" + s.SignalName + " => " + prefix + ifElement.Item1 + "_" + this.PartialAreaName + s.Range;
                         mappings.Add(mapping);                        
                     }
                     else
                     {
                         // TODO #
-                        string mapping = "\t" + "\t" + s.SignalName + " => " + s.SignalName;
+                        String mapping = "\t" + "\t" + s.SignalName + " => " + s.SignalName;
                         mappings.Add(mapping);   
                     }
                 }
                 for(int j=0;j<mappings.Count;j++)
                 {
-                    OutputManager.WriteVHDLOutput(mappings[j] + (j < mappings.Count - 1 ? "," : ""));
+                    this.OutputManager.WriteVHDLOutput(mappings[j] + (j < mappings.Count - 1 ? "," : ""));
                 }
-                OutputManager.WriteVHDLOutput("\t" + ");");
+                this.OutputManager.WriteVHDLOutput("\t" + ");");
                                
-                OutputManager.WriteVHDLOutput("");
-                OutputManager.WriteVHDLOutput("end generate;");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("end generate;");
+                this.OutputManager.WriteVHDLOutput("");
             }
 
-            if (CloseArchitecture)
+            if (this.CloseArchitecture)
             {
-                OutputManager.WriteVHDLOutput("end architecture;");
+                this.OutputManager.WriteVHDLOutput("end architecture;");
             }
         }
 
@@ -100,9 +100,9 @@ namespace GoAhead.Commands.VHDL
         public bool CloseArchitecture = false;
 
         [Parameter(Comment = "The VHDL module to instantiate")]
-        public string VHDLModule = "module.vhd";
+        public String VHDLModule = "module.vhd";
 
         [Parameter(Comment = "The name of the partial area this module will be built in")]
-        public string PartialAreaName = "pr0";
+        public String PartialAreaName = "pr0";
     }
 }

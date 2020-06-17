@@ -11,9 +11,9 @@ namespace GoAhead.Commands.DeviceInfo
     {
        protected override void DoCommandAction()
         {
-            Dictionary<string, bool> sliceTypes = new Dictionary<string, bool>();
+            Dictionary<String, bool> sliceTypes = new Dictionary<String, bool>();
 
-            foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TileFilter)))
+            foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, this.TileFilter)))
             {
                 foreach (Slice slice in tile.Slices)
                 {
@@ -26,9 +26,9 @@ namespace GoAhead.Commands.DeviceInfo
 
 
             // print
-            foreach(KeyValuePair<string, bool> tupel in sliceTypes)
+            foreach(KeyValuePair<String, bool> tupel in sliceTypes)
             {
-                OutputManager.WriteOutput(tupel.Key);
+                this.OutputManager.WriteOutput(tupel.Key);
             }
         }
 
@@ -37,6 +37,6 @@ namespace GoAhead.Commands.DeviceInfo
         }
 
         [Parameter(Comment = "Only consider tile that match this pattern. Leave the string empty to print all slice types")]
-        public string TileFilter = "^CL";
+        public String TileFilter = "^CL";
     }
 }

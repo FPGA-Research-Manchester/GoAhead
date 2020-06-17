@@ -11,21 +11,21 @@ namespace GoAhead.Commands.Spartan6
     {
        protected override void DoCommandAction()
         {
-            StreamReader reader = new StreamReader(XDLInFile);
-            string line = "";
+            StreamReader reader = new StreamReader(this.XDLInFile);
+            String line = "";
             bool update = false;
             bool outbufFound = false;
-            List<string> unmodifiedBuffer = new List<string>();
-            List<string> modifiedBuffer = new List<string>();
+            List<String> unmodifiedBuffer = new List<string>();
+            List<String> modifiedBuffer = new List<string>();
 
-            string bufferFileName = "";
-            if (XDLInFile.Equals(XDLOutFile))
+            String bufferFileName = "";
+            if (this.XDLInFile.Equals(this.XDLOutFile))
             {
                 bufferFileName = Path.GetTempFileName();
             }
             else
             {
-                bufferFileName = XDLOutFile;
+                bufferFileName = this.XDLOutFile;
             }
             TextWriter result = new StreamWriter(bufferFileName, false);
 
@@ -77,9 +77,9 @@ namespace GoAhead.Commands.Spartan6
             result.Close();
 
             // overwrite XDLOutfile with temp file and delete temp file
-            if (XDLInFile.Equals(XDLOutFile))
+            if (this.XDLInFile.Equals(this.XDLOutFile))
             {
-                File.Copy(bufferFileName, XDLOutFile, true);
+                File.Copy(bufferFileName, this.XDLOutFile, true);
                 File.Delete(bufferFileName);
             }
         }
@@ -90,9 +90,9 @@ namespace GoAhead.Commands.Spartan6
         }
 
         [Parameter(Comment = "The XDL-File to read in")]
-        public string XDLInFile = "in.xdl";
+        public String XDLInFile = "in.xdl";
 
         [Parameter(Comment = "The XDL-File to write the result to (overwrittten or created)")]
-        public string XDLOutFile = "out.xdl";
+        public String XDLOutFile = "out.xdl";
     }
 }

@@ -9,50 +9,50 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void DoCommandAction()
         {
-            string componentPrefix = "static_placeholder_";
-            string entityName = "partial_master";
+            String componentPrefix = "static_placeholder_";
+            String entityName = "partial_master";
 
-            OutputManager.WriteVHDLOutput("library IEEE;");
-            OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.ALL;");
-            OutputManager.WriteVHDLOutput("");
-            OutputManager.WriteVHDLOutput("use work.config.all;");
-            OutputManager.WriteVHDLOutput("");
-            OutputManager.WriteVHDLOutput("entity " + entityName + " is port (");
-            OutputManager.WriteVHDLOutput("\t" + "clk : in std_logic);");
-            OutputManager.WriteVHDLOutput("end " + entityName + ";");
-            OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("library IEEE;");
+            this.OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.ALL;");
+            this.OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("use work.config.all;");
+            this.OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("entity " + entityName + " is port (");
+            this.OutputManager.WriteVHDLOutput("\t" + "clk : in std_logic);");
+            this.OutputManager.WriteVHDLOutput("end " + entityName + ";");
+            this.OutputManager.WriteVHDLOutput("");
 
-            OutputManager.WriteVHDLOutput("architecture module_implementation of " + entityName + " is");
-            OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("architecture module_implementation of " + entityName + " is");
+            this.OutputManager.WriteVHDLOutput("");
 
             // out parameters to UpdateSignalData
-            Dictionary<string, List<int>> signalWidths;
-            Dictionary<string, string> directions;
-            List<Tuple<string, List<int>>> interfaces;
-            List<string> ifSignals;
-            List<string> signalsForInterface;
-            List<string> signalsDeclarationsForMappingAndKeep;
+            Dictionary<String, List<int>> signalWidths;
+            Dictionary<String, String> directions;
+            List<Tuple<String, List<int>>> interfaces;
+            List<String> ifSignals;
+            List<String> signalsForInterface;
+            List<String> signalsDeclarationsForMappingAndKeep;
 
-            for (int i = 0; i < PartialAreaNames.Count; i++)
+            for (int i = 0; i < this.PartialAreaNames.Count; i++)
             {
-                UpdateSignalData(PartialAreaNames[i], out signalWidths, out directions, out interfaces, out ifSignals, out signalsForInterface, out signalsDeclarationsForMappingAndKeep);
+                this.UpdateSignalData(this.PartialAreaNames[i], out signalWidths, out directions, out interfaces, out ifSignals, out signalsForInterface, out signalsDeclarationsForMappingAndKeep);
 
                 // comp decl
-                OutputManager.WriteVHDLOutput("-- the declaration of the placeholder for the static system");
-                OutputManager.WriteVHDLOutput("component " + componentPrefix + PartialAreaNames[i] + " is port (");
-                foreach (string s in signalsForInterface)
+                this.OutputManager.WriteVHDLOutput("-- the declaration of the placeholder for the static system");
+                this.OutputManager.WriteVHDLOutput("component " + componentPrefix + this.PartialAreaNames[i] + " is port (");
+                foreach (String s in signalsForInterface)
                 {
-                    OutputManager.WriteVHDLOutput("\t" + s);
+                    this.OutputManager.WriteVHDLOutput("\t" + s);
                 }
-                OutputManager.WriteVHDLOutput("end component;");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("end component;");
+                this.OutputManager.WriteVHDLOutput("");
             }
         }
         
 
-        private void UpdateSignalData(string partialAreaName, out Dictionary<string, List<int>> signalWidths, out Dictionary<string, string> directions, out List<Tuple<string, List<int>>> interfaces, out List<string> ifSignals, out List<string> signalsForInterface, out List<string> signalsDeclarationsForMappingAndKeep)
+        private void UpdateSignalData(String partialAreaName, out Dictionary<String, List<int>> signalWidths, out Dictionary<String, String> directions, out List<Tuple<String, List<int>>> interfaces, out List<String> ifSignals, out List<String> signalsForInterface, out List<String> signalsDeclarationsForMappingAndKeep)
         {
-            GetSignalList(partialAreaName, true,
+            this.GetSignalList(partialAreaName, true,
                 out signalWidths,
                 out directions,
                 out interfaces,
@@ -76,6 +76,6 @@ namespace GoAhead.Commands.VHDL
         }
                 
         [Parameter(Comment = "The name of partial areas, e.g. pr0,pr1,pr2")]
-        public List<string> PartialAreaNames = new List<string>();
+        public List<String> PartialAreaNames = new List<String>();
     }
 }

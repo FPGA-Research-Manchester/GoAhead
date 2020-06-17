@@ -66,26 +66,26 @@ namespace GoAhead.Commands.Library
 
         private void CheckParameters()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(this.Name))
             {
                 throw new ArgumentException("Name must not be empty");
             }
-            if (BELs.Count == 0)
+            if (this.BELs.Count == 0)
             {
                 throw new ArgumentException("No BELs provided");
             }
-            if (!string.IsNullOrEmpty(InputBEL))
+            if (!String.IsNullOrEmpty(this.InputBEL))
             {
-                if (BELs.IndexOf(InputBEL) < 0)
+                if (this.BELs.IndexOf(this.InputBEL) < 0)
                 {
                     throw new ArgumentException("InputBEL must be included in BELs");
                 }
             }
-            if(BELs.Any(s => Regex.IsMatch(s, @"[A-D]LUT6$^")))
+            if(this.BELs.Any(s => Regex.IsMatch(s, @"[A-D]LUT6$^")))
             {
                 throw new ArgumentException("InputBEL must be included in A..DLUT6");
             }
-            if (BELs.Count != InputBELinputPortPrefix.Count)
+            if (this.BELs.Count != this.InputBELinputPortPrefix.Count)
             {
                 throw new ArgumentException("All list arguments must be of the same size (1)");
             }
@@ -95,7 +95,7 @@ namespace GoAhead.Commands.Library
                 throw new ArgumentException("All list arguments must be of the same size (2)");
             }
              * */
-            if (BELs.Count != BELOutputPorts.Count)
+            if (this.BELs.Count != this.BELOutputPorts.Count)
             {
                 throw new ArgumentException("All list arguments must be of the same size (3)");
             }

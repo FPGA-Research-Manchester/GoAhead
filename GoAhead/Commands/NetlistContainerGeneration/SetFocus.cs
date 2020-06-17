@@ -11,26 +11,26 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
         }
 
-        public SetFocus(string locationString)
+        public SetFocus(String locationString)
         {
-            Location = locationString;
+            this.Location = locationString;
         }
 
         protected override void DoCommandAction()
 		{
-            Tile newFocus = FPGA.FPGA.Instance.GetTile(Location);
+            Tile newFocus = FPGA.FPGA.Instance.GetTile(this.Location);
 
-			m_oldFocus = FPGA.FPGA.Instance.Current;
+			this.m_oldFocus = FPGA.FPGA.Instance.Current;
 			FPGA.FPGA.Instance.Current = newFocus;
 		}
 
 		public override void Undo()
 		{
-			FPGA.FPGA.Instance.Current = m_oldFocus;
+			FPGA.FPGA.Instance.Current = this.m_oldFocus;
 		}
 
         [Parameter(Comment = "The location string  of the tile to set the focus to, e.g INT_X3Y12")]
-        public string Location;
+        public String Location;
         private Tile m_oldFocus;
 	}
 }

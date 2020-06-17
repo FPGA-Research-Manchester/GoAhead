@@ -12,23 +12,23 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             // the old net must exist
-            if (!nlc.Nets.Any(n => n.Name.Equals(OldName)))
+            if (!nlc.Nets.Any(n => n.Name.Equals(this.OldName)))
             {
-                throw new ArgumentException("Could not find net " + OldName);
+                throw new ArgumentException("Could not find net " + this.OldName);
             }
 
             // net new netname may not exist
-            if (nlc.Nets.Any(n => n.Name.Equals(NewName)))
+            if (nlc.Nets.Any(n => n.Name.Equals(this.NewName)))
             {
-                throw new ArgumentException("Net " + NewName + " already used");
+                throw new ArgumentException("Net " + this.NewName + " already used");
             }
 
             // capture net
-            Net net = nlc.GetNet(OldName);
-            net.Name = NewName;
+            Net net = nlc.GetNet(this.OldName);
+            net.Name = this.NewName;
         }
 
         public override void Undo()
@@ -37,9 +37,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The old name of the net to rename")]
-        public string OldName = "oldName";
+        public String OldName = "oldName";
 
         [Parameter(Comment = "The new name of the net")]
-        public string NewName = "newName";
+        public String NewName = "newName";
     }
 }

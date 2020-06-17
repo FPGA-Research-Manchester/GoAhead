@@ -11,19 +11,19 @@ namespace GoAhead.Commands.CommandExecutionSettings
         protected override void DoCommandAction()
         {
             // surpreess own output after ProfileAll
-            Profile = false;
-            Dictionary<string, long> profile = new Dictionary<string, long>();
+            this.Profile = false;
+            Dictionary<String, long> profile = new Dictionary<String, long>();
 
-            if (Append && File.Exists(FileName))
+            if (this.Append && File.Exists(this.FileName))
             {
-                TextReader tr = new StreamReader(FileName);
-                string line = "";
+                TextReader tr = new StreamReader(this.FileName);
+                String line = "";
                 while ((line = tr.ReadLine()) != null)
                 {
-                    string[] atoms = Regex.Split(line, ";");
+                    String[] atoms = Regex.Split(line, ";");
                     if (atoms.Length == 2)
                     {
-                        string cmdName = atoms[0];
+                        String cmdName = atoms[0];
                         long cmdCount = long.Parse(atoms[1]);
                         profile[cmdName] = cmdCount;
                     }
@@ -31,10 +31,10 @@ namespace GoAhead.Commands.CommandExecutionSettings
                 tr.Close();                
             }
 
-            if (File.Exists(FileName))
+            if (File.Exists(this.FileName))
             {
                 // bypass later append
-                File.Delete(FileName);
+                File.Delete(this.FileName);
             }
 
             CommandHook hook = CommandExecuter.Instance.GetAllHooks().FirstOrDefault(h => h is ProfilingHook);
@@ -45,9 +45,9 @@ namespace GoAhead.Commands.CommandExecutionSettings
             }
             else
             {
-                foreach (KeyValuePair<string, long> tupel in profileHook.TotalProfile)
+                foreach (KeyValuePair<String, long> tupel in profileHook.TotalProfile)
                 {
-                    string key = tupel.Key;
+                    String key = tupel.Key;
                     if(!profile.ContainsKey(key))
                     {
                         profile.Add(key, 0);
@@ -57,9 +57,9 @@ namespace GoAhead.Commands.CommandExecutionSettings
             }
 
             //TextWriter tw = new StreamWriter(this.FileName);
-            foreach (KeyValuePair<string, long> tupel in profile.OrderBy(t => t.Value))
+            foreach (KeyValuePair<String, long> tupel in profile.OrderBy(t => t.Value))
             {
-                OutputManager.WriteOutput(tupel.Key + ";" + profile[tupel.Key]);
+                this.OutputManager.WriteOutput(tupel.Key + ";" + profile[tupel.Key]);
                 //tw.WriteLine(tupel.Key + ";" + profile[tupel.Key]);
             }
             //tw.Close();

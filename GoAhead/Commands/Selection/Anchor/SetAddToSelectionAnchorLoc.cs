@@ -11,13 +11,13 @@ namespace GoAhead.Commands.Selection.Anchor
     {
        protected override void DoCommandAction()
         {
-            if (!FPGA.FPGA.Instance.Contains(Location))
+            if (!FPGA.FPGA.Instance.Contains(this.Location))
             {
-                throw new ArgumentException("Tile not found: " + ToString());
+                throw new ArgumentException("Tile not found: " + this.ToString());
             }
 
-            Tile anchor = FPGA.FPGA.Instance.GetTile(Location);
-            SetAnchor(anchor);
+            Tile anchor = FPGA.FPGA.Instance.GetTile(this.Location);
+            this.SetAnchor(anchor);
         }
 
         public override void Undo()
@@ -26,6 +26,6 @@ namespace GoAhead.Commands.Selection.Anchor
         }
 
         [Parameter(Comment = "The identifier string of the tile where to set the anchor, e.g INT_X10Y24")]
-        public string Location = "INT_X10Y24";
+        public String Location = "INT_X10Y24";
     }
 }

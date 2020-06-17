@@ -12,13 +12,13 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 PrintTileInfo printCmd = new PrintTileInfo();
                 printCmd.Location = t.Location;
                 CommandExecuter.Instance.Execute(printCmd);
 
-                OutputManager.WriteOutput(printCmd.OutputManager.GetOutput());
+                this.OutputManager.WriteOutput(printCmd.OutputManager.GetOutput());
             }
         }
 

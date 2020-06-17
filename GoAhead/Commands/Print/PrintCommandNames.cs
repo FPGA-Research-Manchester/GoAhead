@@ -14,16 +14,16 @@ namespace GoAhead.Commands
         {
             try
             {
-                Regex.IsMatch(Filter, "");
+                Regex.IsMatch(this.Filter, "");
             }
             catch (Exception error)
             {
-                throw new ArgumentException("No valid regular expression given: " + Filter + " " + error.Message);
+                throw new ArgumentException("No valid regular expression given: " + this.Filter + " " + error.Message);
             }
 
-            foreach (Type type in CommandStringParser.GetAllCommandTypes().Where(t => string.IsNullOrEmpty(Filter) ? true : Regex.IsMatch(t.Name, Filter)).OrderBy(t => t.Name))
+            foreach (Type type in CommandStringParser.GetAllCommandTypes().Where(t => String.IsNullOrEmpty(this.Filter) ? true : Regex.IsMatch(t.Name, this.Filter)).OrderBy(t => t.Name))
             {
-                OutputManager.WriteOutput(type.Name);
+                this.OutputManager.WriteOutput(type.Name);
             }
         }
 
@@ -33,7 +33,7 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "Only print those command the match this regular epxression. Use .* to print all commands or e.g. Print.* to print all commmand that Print something.")]
-        public string Filter = ".*";
+        public String Filter = ".*";
 
     }
 }

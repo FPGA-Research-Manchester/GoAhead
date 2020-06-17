@@ -13,14 +13,14 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
-            Net net = nlc.Nets.FirstOrDefault(n => n.Name.Equals(NetName));
+            NetlistContainer nlc = this.GetNetlistContainer();
+            Net net = nlc.Nets.FirstOrDefault(n => n.Name.Equals(this.NetName));
             if(net == null)
             {
-                throw new ArgumentException("Net " + NetName + " not found");
+                throw new ArgumentException("Net " + this.NetName + " not found");
             }
-            OutputManager.WriteOutput(net.Name + ":");
-            OutputManager.WriteOutput(net.ToString());
+            this.OutputManager.WriteOutput(net.Name + ":");
+            this.OutputManager.WriteOutput(net.ToString());
         }
 
         public override void Undo()
@@ -29,6 +29,6 @@ namespace GoAhead.Commands.Debug
         }
 
         [Parameter(Comment = "The name of the net that will be printed ")]
-        public string NetName = "quote(p2s[9])";
+        public String NetName = "quote(p2s[9])";
     }
 }

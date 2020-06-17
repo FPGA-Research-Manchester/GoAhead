@@ -14,14 +14,14 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer design = GetNetlistContainer();
+            NetlistContainer design = this.GetNetlistContainer();
 
-            Regex filter = new Regex(AllowedPrimitives);
+            Regex filter = new Regex(this.AllowedPrimitives);
 
             foreach (XDLInstance inst in design.Instances)
             {
                 // do we have a filter?
-                if (!string.IsNullOrEmpty(AllowedPrimitives))
+                if (!String.IsNullOrEmpty(this.AllowedPrimitives))
                 {
                     if (filter.IsMatch(inst.Name))
                     {
@@ -30,9 +30,9 @@ namespace GoAhead.Commands.Debug
                     }
                 }
                 Tile t = FPGA.FPGA.Instance.GetTile(inst.Location);
-                if (TileSelectionManager.Instance.IsSelected(t.TileKey))
+                if (FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey))
                 {
-                    OutputManager.WriteOutput("Primitive " + inst.Name + " is in selection");
+                    this.OutputManager.WriteOutput("Primitive " + inst.Name + " is in selection");
                 }
             }
         }
@@ -43,6 +43,6 @@ namespace GoAhead.Commands.Debug
         }
 
         [Parameter(Comment = "Primitives whose identifiers match this regular epxression are not considered as erroneously placed. Leave empty if no primitives are allowed at all")]
-        public string AllowedPrimitives = "";
+        public String AllowedPrimitives = "";
     }
 }

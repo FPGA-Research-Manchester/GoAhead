@@ -14,25 +14,25 @@ namespace GoAhead.Commands.Selection
             int y = start.TileKey.Y;
 
             // get boundaries
-            Tile ll = TileSelectionManager.Instance.GetUserSelectedTile(".*", UserSelectionType, FPGATypes.Placement.LowerLeft);
-            Tile lr = TileSelectionManager.Instance.GetUserSelectedTile(".*", UserSelectionType, FPGATypes.Placement.LowerRight);
+            Tile ll = FPGA.TileSelectionManager.Instance.GetUserSelectedTile(".*", this.UserSelectionType, FPGATypes.Placement.LowerLeft);
+            Tile lr = FPGA.TileSelectionManager.Instance.GetUserSelectedTile(".*", this.UserSelectionType, FPGATypes.Placement.LowerRight);
 
 
             while (FPGA.FPGA.Instance.Contains(x, y))
             {
                 Tile other = FPGA.FPGA.Instance.GetTile(x, y);
 
-                bool tileStillInUserSelection = TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && startInUserSelection;
-                bool tileStillOutUserSelection = !TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && !startInUserSelection;
+                bool tileStillInUserSelection = FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && startInUserSelection;
+                bool tileStillOutUserSelection = !FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && !startInUserSelection;
 
                 if (tileStillInUserSelection || tileStillOutUserSelection)
                 {
-                    m_expansion.Add(other);
+                    this.m_expansion.Add(other);
                 }
 
                 bool userSelectionBorderCrossed =
-                   !TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && startInUserSelection ||
-                    TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && !startInUserSelection;
+                   !FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && startInUserSelection ||
+                    FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && !startInUserSelection;
 
                 if (userSelectionBorderCrossed)
                 {
@@ -42,19 +42,19 @@ namespace GoAhead.Commands.Selection
                 x += increment;
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         protected bool StartInUserSelection()
         {
-            int selectTiles = TileSelectionManager.Instance.NumberOfSelectedTiles;
+            int selectTiles = FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles;
             if (selectTiles == 0)
             {
                 throw new ArgumentException("No tiles selected");
             }
 
-            bool allUserSelected = TileSelectionManager.Instance.GetSelectedTiles().All(t => TileSelectionManager.Instance.IsUserSelected(t.TileKey, UserSelectionType));
-            bool noneUserSelected = TileSelectionManager.Instance.GetSelectedTiles().All(t => !TileSelectionManager.Instance.IsUserSelected(t.TileKey, UserSelectionType));
+            bool allUserSelected = FPGA.TileSelectionManager.Instance.GetSelectedTiles().All(t => FPGA.TileSelectionManager.Instance.IsUserSelected(t.TileKey, this.UserSelectionType));
+            bool noneUserSelected = FPGA.TileSelectionManager.Instance.GetSelectedTiles().All(t => !FPGA.TileSelectionManager.Instance.IsUserSelected(t.TileKey, this.UserSelectionType));
 
             if (!allUserSelected && !noneUserSelected)
             {
@@ -67,20 +67,20 @@ namespace GoAhead.Commands.Selection
 
         protected void AddTiles()
         {
-            foreach (Tile t in m_expansion)
+            foreach (Tile t in this.m_expansion)
             {
-                if (!TileSelectionManager.Instance.IsSelected(t.TileKey))
+                if (!FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey))
                 {
-                    TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                    FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                 }
             }
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
 
         protected List<Tile> m_expansion = new List<Tile>();
 
         [Parameter(Comment = "The name of the user selection that limits the extent of the selection expanding")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

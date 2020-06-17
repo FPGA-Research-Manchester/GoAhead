@@ -13,9 +13,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            DesignParser parser = DesignParser.CreateDesignParser(FileName);
+            DesignParser parser = DesignParser.CreateDesignParser(this.FileName);
 
             try
             {
@@ -23,7 +23,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             }
             catch (Exception e)
             {
-                throw new ArgumentException("Error during parsing the design " + FileName + ": " + e.Message + ". Are you trying to open the design on the correct device?");
+                throw new ArgumentException("Error during parsing the design " + this.FileName + ": " + e.Message + ". Are you trying to open the design on the correct device?");
             }
 
             foreach (Instance inst in nlc.Instances)
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                 Tile t = FPGA.FPGA.Instance.GetTile(inst.Location);
                 if (!t.HasSlice(inst.SliceName))
                 {
-                    OutputManager.WriteWarning("Can not find primitve " + inst.SliceName + " on tile " + t.Location);
+                    this.OutputManager.WriteWarning("Can not find primitve " + inst.SliceName + " on tile " + t.Location);
                 }
                 else
                 {
@@ -40,7 +40,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                     if (FPGA.FPGA.Instance.BackendType == FPGATypes.BackendType.Vivado)
                     {
                         TCLInstance tclInst = (TCLInstance)inst;
-                        if (!string.IsNullOrEmpty(tclInst.BELType))
+                        if (!String.IsNullOrEmpty(tclInst.BELType))
                         {
                             s.SetBelUsage(tclInst.BELType, FPGATypes.SliceUsage.Macro);
                         }
@@ -53,20 +53,20 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                 n.BlockUsedResources();
             }
 
-            if (AutoFixXDLBugs)
+            if (this.AutoFixXDLBugs)
             {
-                FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+                FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
                 if (FPGA.FPGA.Instance.Family == FPGATypes.FPGAFamily.Spartan6)
                 {
                     foreach (XDLInstance inst in nlc.Instances.Where(i => i.Location.Contains("IOB") || i.SliceType.Equals("IOB")))
                     {
-                        string code = inst.ToString();
+                        String code = inst.ToString();
                         if (!code.Contains("OUTBUF:"))
                         {
                             code = code.Replace("PRE_EMPHASIS::#OFF", "");
                             inst.SetCode(code);
-                            OutputManager.WriteWarning("Fixed XDL code for instance " + inst.Name);
+                            this.OutputManager.WriteWarning("Fixed XDL code for instance " + inst.Name);
                         }
                     }
                 }
@@ -79,7 +79,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The netlist to read in (either .xdl oder .viv_nl)")]
-        public string FileName = "design.xdl";
+        public String FileName = "design.xdl";
 
         [Parameter(Comment = "Whether or not ot automatically fix known XDL bugs")]
         public bool AutoFixXDLBugs = false;

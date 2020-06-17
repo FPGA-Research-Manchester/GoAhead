@@ -14,17 +14,17 @@ namespace GoAhead.Commands.Library
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             // read file
-            DesignParser parser = DesignParser.CreateDesignParser(FileName);
+            DesignParser parser = DesignParser.CreateDesignParser(this.FileName);
 
             XDLContainer container = new XDLContainer();
             // into design            
             parser.ParseDesign(container, this);
 
             // derive name from file
-            string elementName = Path.GetFileNameWithoutExtension(FileName);
+            String elementName = Path.GetFileNameWithoutExtension(this.FileName);
 
             if (container.ModuleCount != 0)
             {
@@ -39,11 +39,11 @@ namespace GoAhead.Commands.Library
                     libElement.Containter = module;
                     libElement.Name = elementName;
                     libElement.PrimitiveName = elementName;
-                    libElement.LoadCommand = ToString();
+                    libElement.LoadCommand = this.ToString();
 
                     // add lib element to library, BEFORE deriving block data as command SaveXDLLibraryElementAsBinaryLibraryElement access the element in the library
                     Objects.Library.Instance.Add(libElement);
-                    DeriveBlockingData(libElement);
+                    this.DeriveBlockingData(libElement);
                 }
             }
             else
@@ -53,11 +53,11 @@ namespace GoAhead.Commands.Library
                 libElement.Containter = container;
                 libElement.Name = elementName;
                 libElement.PrimitiveName = elementName;
-                libElement.LoadCommand = ToString();
+                libElement.LoadCommand = this.ToString();
 
                 // add lib element to library, BEFORE deriving block data as command SaveXDLLibraryElementAsBinaryLibraryElement access the element in the library
                 Objects.Library.Instance.Add(libElement);
-                DeriveBlockingData(libElement);
+                this.DeriveBlockingData(libElement);
             }
         }
 
@@ -69,7 +69,7 @@ namespace GoAhead.Commands.Library
             {
                 XDLInstance inst = (XDLInstance) libElement.Containter.GetInstanceByName(xdlPort.InstanceName);
                 Tile clb = FPGA.FPGA.Instance.GetTile(inst.Location);
-                Tile interconnectTile = FPGATypes.GetInterconnectTile(clb);
+                Tile interconnectTile = FPGA.FPGATypes.GetInterconnectTile(clb);
                 Slice slice = clb.GetSliceByName(inst.SliceName);
 
                 // true: in, false: out (no needed)
@@ -164,6 +164,6 @@ namespace GoAhead.Commands.Library
         }
         
         [Parameter(Comment = "The XDL netlist to read in")]
-        public string FileName = "design.xdl";
+        public String FileName = "design.xdl";
     }
 }

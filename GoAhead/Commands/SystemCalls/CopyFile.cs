@@ -11,7 +11,7 @@ namespace GoAhead.Commands.SystemCalls
     {
         protected override void DoCommandAction()
         {
-            File.Copy(SourceFile, TargetFile, true);
+            File.Copy(this.SourceFile, this.TargetFile, true);
         }
 
         public override void Undo()
@@ -20,9 +20,9 @@ namespace GoAhead.Commands.SystemCalls
         }
 
         [Parameter(Comment = "The name of the file to copy")]
-        public string SourceFile = "";
+        public String SourceFile = "";
 
         [Parameter(Comment = "The name of the target file")]
-        public string TargetFile = "";
+        public String TargetFile = "";
     }
 }

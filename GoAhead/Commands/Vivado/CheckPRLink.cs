@@ -21,25 +21,25 @@ namespace GoAhead.Commands.Vivado
             FPGATypes.AssertBackendType(FPGATypes.BackendType.Vivado);
 
             Mode mode = Mode.Undefined;
-            if (NetlistType.ToLower().Equals("static")) { mode = Mode.Static; }
-            else if (NetlistType.ToLower().Equals("module")) { mode = Mode.Module; }
-            else { throw new ArgumentException("Invalid value for NetlistType " + NetlistType + ". Use either static or module"); }
+            if (this.NetlistType.ToLower().Equals("static")) { mode = Mode.Static; }
+            else if (this.NetlistType.ToLower().Equals("module")) { mode = Mode.Module; }
+            else { throw new ArgumentException("Invalid value for NetlistType " + this.NetlistType + ". Use either static or module"); }
 
-            CheckRoutingResourceUsageInTunnel(mode);
-            CheckEnterLeave();
+            this.CheckRoutingResourceUsageInTunnel(mode);
+            this.CheckEnterLeave();
         }
 
         private void CheckRoutingResourceUsageInTunnel(Mode mode)
         {
-            NetlistContainer nlc = GetNetlistContainer();
-            Regex validRoutingResources = new Regex(RoutingResources);
-            foreach (TCLNet net in nlc.Nets.Where(n => Regex.IsMatch(n.Name, Nets)))
+            NetlistContainer nlc = this.GetNetlistContainer();
+            Regex validRoutingResources = new Regex(this.RoutingResources);
+            foreach (TCLNet net in nlc.Nets.Where(n => Regex.IsMatch(n.Name, this.Nets)))
             {
                 foreach (TCLRoutingTreeNode node in net.RoutingTree.GetAllRoutingNodes(net.RoutingTree.Root))
                 {
                     if (node.Tile == null)
                     {
-                        OutputManager.WriteWarning("Incomplete routing tree " + net.Name);
+                        this.OutputManager.WriteWarning("Incomplete routing tree " + net.Name);
                         break;
                     }
                     bool insideTunnel = false;
@@ -48,19 +48,19 @@ namespace GoAhead.Commands.Vivado
                     switch (mode)
                     {
                         case Mode.Static:
-                            insideTunnel =
-                                TileSelectionManager.Instance.IsUserSelected(node.Tile, Tunnel) &&
-                                TileSelectionManager.Instance.IsUserSelected(node.Tile, ModulArea);
+                            insideTunnel = 
+                                FPGA.TileSelectionManager.Instance.IsUserSelected(node.Tile, this.Tunnel) &&
+                                FPGA.TileSelectionManager.Instance.IsUserSelected(node.Tile, this.ModulArea);
                             break;
                         case Mode.Module:
                             insideTunnel =
-                                TileSelectionManager.Instance.IsUserSelected(node.Tile, Tunnel) &&
-                                !TileSelectionManager.Instance.IsUserSelected(node.Tile, ModulArea);
+                                FPGA.TileSelectionManager.Instance.IsUserSelected(node.Tile, this.Tunnel) &&
+                                !FPGA.TileSelectionManager.Instance.IsUserSelected(node.Tile, this.ModulArea);
                             break;
                     }
                     if (insideTunnel && interConnectedTile && !validRoutingResources.IsMatch(node.Port.Name))
                     {
-                        OutputManager.WriteWarning("Unexpected routing resource " + node.ToString() + " in net " + net.Name + " inside tunnel " + Tunnel);
+                        this.OutputManager.WriteWarning("Unexpected routing resource " + node.ToString() + " in net " + net.Name + " inside tunnel " + this.Tunnel);
                     }
                 }
             }
@@ -68,17 +68,17 @@ namespace GoAhead.Commands.Vivado
 
         private void CheckEnterLeave()
         {
-            NetlistContainer nlc = GetNetlistContainer();
-            foreach (TCLNet net in nlc.Nets.Where(n => Regex.IsMatch(n.Name, Nets)))
+            NetlistContainer nlc = this.GetNetlistContainer();
+            foreach (TCLNet net in nlc.Nets.Where(n => Regex.IsMatch(n.Name, this.Nets)))
             {
                 Slice startSlice = FPGA.FPGA.Instance.GetSlice(net.OutpinInstance.SliceName);
                 TCLRoutingTreeNode startPort = net.RoutingTree.Root.Children.First();
-                while (!Regex.IsMatch(startPort.Port.Name, StartPort))
+                while (!Regex.IsMatch(startPort.Port.Name, this.StartPort))
                 {
                     startPort = startPort.Children.First();
                 }
                 Location startLoc = new Location(startSlice.ContainingTile, startPort.Port);
-                bool startLocIsUserSelected = TileSelectionManager.Instance.IsUserSelected(startLoc.Tile.TileKey, ModulArea);
+                bool startLocIsUserSelected = FPGA.TileSelectionManager.Instance.IsUserSelected(startLoc.Tile.TileKey, this.ModulArea);
                 Location currentLoc = startLoc;
                 Location lastLoc = currentLoc;
                 TCLRoutingTreeNode currentNode = startPort;
@@ -93,7 +93,7 @@ namespace GoAhead.Commands.Vivado
                     currentNode = currentNode.Children.FirstOrDefault();
                     if (currentNode == null)
                     {
-                        OutputManager.WriteWarning("Can not follow routing in net " + net.Name + " after using routing resources " + violator.Port.Name);
+                        this.OutputManager.WriteWarning("Can not follow routing in net " + net.Name + " after using routing resources " + violator.Port.Name);
                         break;
                     }
                     // stop over
@@ -106,17 +106,17 @@ namespace GoAhead.Commands.Vivado
 
                     if (currentLoc == null)
                     {
-                        OutputManager.WriteWarning("Can not follow routing in net " + net.Name + " after using routing resources " + violator.Port.Name);
+                        this.OutputManager.WriteWarning("Can not follow routing in net " + net.Name + " after using routing resources " + violator.Port.Name);
                         break;
                     }
 
-                    bool currentLocIsUserSelected = TileSelectionManager.Instance.IsUserSelected(currentLoc.Tile.TileKey, ModulArea);
+                    bool currentLocIsUserSelected = FPGA.TileSelectionManager.Instance.IsUserSelected(currentLoc.Tile.TileKey, this.ModulArea);
                     bool crossingBoundary = (startLocIsUserSelected && !currentLocIsUserSelected) || (!startLocIsUserSelected && currentLocIsUserSelected);
                     if (crossingBoundary)
                     {
-                        if (!Regex.IsMatch(violator.Port.Name, RoutingResources))
+                        if (!Regex.IsMatch(violator.Port.Name, this.RoutingResources))
                         {
-                            OutputManager.WriteWarning("Unexpected routing resource " + violator.Port.Name + " in net " + net.Name + "used to enter/leave the reconfigurable area");
+                            this.OutputManager.WriteWarning("Unexpected routing resource " + violator.Port.Name + " in net " + net.Name + "used to enter/leave the reconfigurable area");
                         }
                         break;
                     }
@@ -134,13 +134,13 @@ namespace GoAhead.Commands.Vivado
         }
 
         [Parameter(Comment = "A regular expression to define the nets that will be checked ")]
-        public string Nets = "p2s";
+        public String Nets = "p2s";
 
         [Parameter(Comment = "A regular expression to define valid routing resources")]
-        public string RoutingResources = "(EE2BEG)|(IMUX)";
+        public String RoutingResources = "(EE2BEG)|(IMUX)";
 
         [Parameter(Comment = "A regular expression to define the start port form where to check")]
-        public string StartPort = "LOGIC_OUTS";
+        public String StartPort = "LOGIC_OUTS";
 
         [Parameter(Comment = "The name of the user seletcion the PR link enters or leaves")]
         public string ModulArea = "PartialArea";

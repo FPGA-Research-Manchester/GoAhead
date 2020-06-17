@@ -10,9 +10,9 @@ namespace GoAhead.Commands.SystemCalls
     {
        protected override void DoCommandAction()        
         {
-            if (System.IO.Directory.Exists(Path))
+            if (System.IO.Directory.Exists(this.Path))
             {
-                System.IO.Directory.Delete(Path, true);
+                System.IO.Directory.Delete(this.Path, true);
             } 
             // trying to remove a non existing directory will cause an error
         }
@@ -23,6 +23,6 @@ namespace GoAhead.Commands.SystemCalls
         }
 
         [Parameter(Comment = "The name of the directory to delete")]
-        public string Path = "";
+        public String Path = "";
     }
 }

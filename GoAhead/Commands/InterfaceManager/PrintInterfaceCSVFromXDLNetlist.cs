@@ -14,20 +14,20 @@ namespace GoAhead.Commands.InterfaceManager
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            DesignParser parser = DesignParser.CreateDesignParser(XDLFile);
+            DesignParser parser = DesignParser.CreateDesignParser(this.XDLFile);
             XDLContainer container = new XDLContainer();
             parser.ParseDesign(container, this);
 
-            VHDLParser moduleParser = new VHDLParser(VHDLModule);
+            VHDLParser moduleParser = new VHDLParser(this.VHDLModule);
             VHDLParserEntity ent = moduleParser.GetEntity(0);
 
             Dictionary<int, List<Signal>> east = new Dictionary<int, List<Signal>>();
             Dictionary<int, List<Signal>> west = new Dictionary<int, List<Signal>>();
 
             double xCenter, yCenter;
-            TileSelectionManager.Instance.GetCenterOfSelection(t => TileSelectionManager.Instance.IsSelected(t.TileKey), out xCenter, out yCenter);
+            FPGA.TileSelectionManager.Instance.GetCenterOfSelection(t => FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey), out xCenter, out yCenter);
 
             foreach (HDLEntitySignal signal in ent.InterfaceSignals)
             {
@@ -35,20 +35,20 @@ namespace GoAhead.Commands.InterfaceManager
                 {
                     Tile fromTile;
                     Tile toTile;
-                    GetSourceAndSink(container, net, out fromTile, out toTile);
+                    this.GetSourceAndSink(container, net, out fromTile, out toTile);
 
-                    GetSourceAndSink(container, net, out fromTile, out toTile);
+                    this.GetSourceAndSink(container, net, out fromTile, out toTile);
 
                     Tile innerTile = null;
                     Tile outerTile = null;
-                    string signalMode = "";
-                    if (!TileSelectionManager.Instance.IsSelected(fromTile.TileKey) && TileSelectionManager.Instance.IsSelected(toTile.TileKey))
+                    String signalMode = "";
+                    if (!FPGA.TileSelectionManager.Instance.IsSelected(fromTile.TileKey) && FPGA.TileSelectionManager.Instance.IsSelected(toTile.TileKey))
                     {
                         innerTile = toTile;
                         outerTile = fromTile;
                         signalMode = "in";
                     }
-                    else if (TileSelectionManager.Instance.IsSelected(fromTile.TileKey) && !TileSelectionManager.Instance.IsSelected(toTile.TileKey))
+                    else if (FPGA.TileSelectionManager.Instance.IsSelected(fromTile.TileKey) && !FPGA.TileSelectionManager.Instance.IsSelected(toTile.TileKey))
                     {
                         outerTile = toTile;
                         innerTile = fromTile;
@@ -116,33 +116,33 @@ namespace GoAhead.Commands.InterfaceManager
         {
             // where is the outpin
             NetOutpin outPin = (NetOutpin)net.NetPins.Where(p => p is NetOutpin).First();
-            source = GetTile(container, outPin);
+            source = this.GetTile(container, outPin);
 
             List<Tile> tilesWithInpins = new List<Tile>();
 
-            if (TileSelectionManager.Instance.IsSelected(source.TileKey))
+            if (FPGA.TileSelectionManager.Instance.IsSelected(source.TileKey))
             {
-                foreach (NetPin pin in net.NetPins.Where(p => p is NetInpin && !IsInside(container, p)))
+                foreach (NetPin pin in net.NetPins.Where(p => p is NetInpin && !this.IsInside(container, p)))
                 {
-                    tilesWithInpins.Add(GetTile(container, pin));
+                    tilesWithInpins.Add(this.GetTile(container, pin));
                 }
             }
             else
             {
-                foreach (NetPin pin in net.NetPins.Where(p => p is NetInpin && IsInside(container, p)))
+                foreach (NetPin pin in net.NetPins.Where(p => p is NetInpin && this.IsInside(container, p)))
                 {
-                    tilesWithInpins.Add(GetTile(container, pin));
+                    tilesWithInpins.Add(this.GetTile(container, pin));
                 }
             }
             double x, y;
-            TileSelectionManager.Instance.GetCenterOfTiles(tilesWithInpins, out x, out y);
+            FPGA.TileSelectionManager.Instance.GetCenterOfTiles(tilesWithInpins, out x, out y);
             sink = FPGA.FPGA.Instance.GetTile((int)x, (int)y);
         }
 
         private bool IsInside(NetlistContainer container, NetPin pin)
         {
-            Tile instanceTile = GetTile(container, pin);
-            return TileSelectionManager.Instance.IsSelected(instanceTile.TileKey);
+            Tile instanceTile = this.GetTile(container, pin);
+            return FPGA.TileSelectionManager.Instance.IsSelected(instanceTile.TileKey);
         }
 
         private Tile GetTile(NetlistContainer container, NetPin pin)
@@ -158,9 +158,9 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The placed XDL netlist to read in")]
-        public string XDLFile = "top_map.xdl";
+        public String XDLFile = "top_map.xdl";
 
         [Parameter(Comment = "The VHDL file with the moduel entity")]
-        public string VHDLModule = "module.vhd";
+        public String VHDLModule = "module.vhd";
     }
 }

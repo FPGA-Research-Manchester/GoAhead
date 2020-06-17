@@ -7,7 +7,7 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
     {
         protected override void DoCommandAction()
         {
-            Objects.BlockerSettings.Instance.AddBlockerPath(FamilyRegexp, DriverRegexp, HopRegexp, SinkRegexp);
+            Objects.BlockerSettings.Instance.AddBlockerPath(this.FamilyRegexp, this.DriverRegexp, this.HopRegexp, this.SinkRegexp);
         }
 
         public override void Undo()
@@ -15,12 +15,12 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
         }
 
         [Parameter(Comment = "Where to start the path that")]
-        public string DriverRegexp = "";
+        public String DriverRegexp = "";
 
         [Parameter(Comment = "The port Where to start the path that")]
-        public string HopRegexp = "";
+        public String HopRegexp = "";
 
         [Parameter(Comment = "Where to end the path")]
-        public string SinkRegexp = "";
+        public String SinkRegexp = "";
     }
 }

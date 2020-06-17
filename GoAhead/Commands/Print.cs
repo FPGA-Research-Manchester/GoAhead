@@ -10,13 +10,13 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            if (Regex.IsMatch(Text, @"^\s*#"))
+            if (Regex.IsMatch(this.Text, @"^\s*#"))
             {
-                OutputManager.WriteOutput(Text);
+                this.OutputManager.WriteOutput(this.Text);
             }
             else
             {
-                OutputManager.WriteOutput("# " + Text);
+                this.OutputManager.WriteOutput("# " + this.Text);
             }
         }
 
@@ -26,6 +26,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The text to print out")]
-        public string Text = "";
+        public String Text = "";
     }
 }

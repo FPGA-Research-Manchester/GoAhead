@@ -10,23 +10,23 @@ namespace GoAhead.Commands.CommandExecutionSettings
     {
         protected override void DoCommandAction()
         {
-            Dictionary<string, int> cmds = new Dictionary<string, int>();
+            Dictionary<String, int> cmds = new Dictionary<String, int>();
 
-            if (Append && File.Exists(FileName))
+            if (this.Append && File.Exists(this.FileName))
             {
-                TextReader tr = new StreamReader(FileName);
-                string line = "";
+                TextReader tr = new StreamReader(this.FileName);
+                String line = "";
                 while((line = tr.ReadLine()) != null)
                 {
-                    string[] atoms = Regex.Split(line, ";");
-                    string cmdName = atoms[0];
-                    int cmdCount = int.Parse(atoms[1]);
+                    String[] atoms = Regex.Split(line, ";");
+                    String cmdName = atoms[0];
+                    int cmdCount = Int32.Parse(atoms[1]);
                     cmds[cmdName] = cmdCount;
                 }
                 tr.Close();
 
                 // bypass later append
-                File.Delete(FileName);
+                File.Delete(this.FileName);
             }
             foreach (Command cmd in CommandExecuter.Instance.GetAllCommands())
             {
@@ -37,8 +37,8 @@ namespace GoAhead.Commands.CommandExecutionSettings
                 cmds[cmd.GetType().Name] += 1;
             }
 
-            TextWriter tw = new StreamWriter(FileName);
-            foreach (string cmdName in cmds.Keys.OrderBy(c => c))
+            TextWriter tw = new StreamWriter(this.FileName);
+            foreach (String cmdName in cmds.Keys.OrderBy(c => c))
             {
                 tw.WriteLine(cmdName + ";" + cmds[cmdName]);
             }

@@ -11,13 +11,13 @@ namespace GoAhead.Commands.Selection.Anchor
     {
        protected override void DoCommandAction()
         {
-            if (!FPGA.FPGA.Instance.Contains(X, Y))
+            if (!FPGA.FPGA.Instance.Contains(this.X, this.Y))
             {
-                throw new ArgumentException("Tile not found: " + ToString());
+                throw new ArgumentException("Tile not found: " + this.ToString());
             }
 
-            Tile anchor = FPGA.FPGA.Instance.GetTile(X, Y);
-            SetAnchor(anchor);
+            Tile anchor = FPGA.FPGA.Instance.GetTile(this.X, this.Y);
+            this.SetAnchor(anchor);
         }
 
         public override void Undo()

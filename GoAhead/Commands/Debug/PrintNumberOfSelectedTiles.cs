@@ -10,7 +10,7 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput(FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles.ToString());
+            this.OutputManager.WriteOutput(FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles.ToString());
         }
 
         public override void Undo()

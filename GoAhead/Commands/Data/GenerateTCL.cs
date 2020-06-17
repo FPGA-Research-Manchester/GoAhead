@@ -24,7 +24,7 @@ namespace GoAhead.Commands.Data
         /// <param name="sw"></param>
         public GenerateTCL(StreamWriter sw)
         {
-            m_sw = sw;
+            this.m_sw = sw;
         }
 
         protected override void DoCommandAction()
@@ -32,19 +32,19 @@ namespace GoAhead.Commands.Data
             // Vivado only
             FPGATypes.AssertBackendType(FPGATypes.BackendType.Vivado);
 
-            TCLContainer nlc = (TCLContainer)GetNetlistContainer();
+            TCLContainer nlc = (TCLContainer)this.GetNetlistContainer();
 
             bool closeStream = false;
-            if (m_sw == null)
+            if (this.m_sw == null)
             {
                 // do not close external stream
                 closeStream = true;
-                m_sw = new StreamWriter(FileName, false);
+                this.m_sw = new StreamWriter(this.FileName, false);
             }
 
-            WriteHeader(nlc, m_sw);
+            this.WriteHeader(nlc, this.m_sw);
 
-            if (IncludeLinkDesignCommand)
+            if (this.IncludeLinkDesignCommand)
             {
                 //this.m_sw.WriteLine("link_design -name empty_netlist -part " + FPGA.FPGA.Instance.DeviceName);
             }
@@ -52,46 +52,46 @@ namespace GoAhead.Commands.Data
             // eingelesen aus Netzliste (also von Vivado erstellt!) genrieren (brauchen wir erstmal nicht, nur fuer eigene instanzen ggf neu Hierstufen ienziehen, siehe create_cell)
             //this.WriteHierarchyCells(nlc);
 
-            WriteInstances(nlc);
+            this.WriteInstances(nlc);
 
             //this.WritePins(nlc);
 
             ////this.WritePorts(nlc);
 
-            WriteNets(nlc);
+            this.WriteNets(nlc);
             
 
-            m_sw.WriteLine("");
-            m_sw.WriteLine("# end of file");
+            this.m_sw.WriteLine("");
+            this.m_sw.WriteLine("# end of file");
 
             if (closeStream)
             {
-                m_sw.Close();
+                this.m_sw.Close();
             }
         }
 
         private void WritePins(TCLContainer nlc)
         {
-            m_sw.WriteLine("#########################################################################");
-            m_sw.WriteLine("# pins");
-            m_sw.WriteLine("#########################################################################");
-            m_sw.WriteLine("");
+            this.m_sw.WriteLine("#########################################################################");
+            this.m_sw.WriteLine("# pins");
+            this.m_sw.WriteLine("#########################################################################");
+            this.m_sw.WriteLine("");
             int pinCount = 0;
             foreach (TCLPin pin in nlc.Pins)
             {
-                m_sw.WriteLine("# pin " + pinCount++);
+                this.m_sw.WriteLine("# pin " + pinCount++);
                 string name = pin.Instance.Name + "/" + pin.Properties.GetValue("REF_PIN_NAME");
-                m_sw.WriteLine("create_pin -direction " + pin.Properties.GetValue("DIRECTION") + " " + name);
-                m_sw.WriteLine("connect_net -net [get_nets " + pin.Net.Name + "] -objects [get_pins " + name + "]"); 
+                this.m_sw.WriteLine("create_pin -direction " + pin.Properties.GetValue("DIRECTION") + " " + name);
+                this.m_sw.WriteLine("connect_net -net [get_nets " + pin.Net.Name + "] -objects [get_pins " + name + "]"); 
             }
         }
 
         private void WriteNets(TCLContainer nlc)
         {
-            m_sw.WriteLine("#########################################################################");
-            m_sw.WriteLine("# nets");
-            m_sw.WriteLine("#########################################################################");
-            m_sw.WriteLine("");
+            this.m_sw.WriteLine("#########################################################################");
+            this.m_sw.WriteLine("# nets");
+            this.m_sw.WriteLine("#########################################################################");
+            this.m_sw.WriteLine("");
             int netCount = 0;
             foreach (TCLNet net in nlc.Nets)
             {
@@ -100,35 +100,35 @@ namespace GoAhead.Commands.Data
                     net.UnflattenNet();
                 }
 
-                m_sw.WriteLine("# net " + netCount++);
+                this.m_sw.WriteLine("# net " + netCount++);
                 if ((netCount % 1000) == 0)
                 {
-                    m_sw.WriteLine("puts " + netCount);
+                    this.m_sw.WriteLine("puts " + netCount);
                 }
-                m_sw.WriteLine("remove_net -quiet " + net.Name);
-                m_sw.WriteLine("create_net " + net.Name);
+                this.m_sw.WriteLine("remove_net -quiet " + net.Name);
+                this.m_sw.WriteLine("create_net " + net.Name);
 
                 foreach (NetPin np in net.NetPins)
                 {
                     string direction = np is NetOutpin ? "OUT" : "IN";
-                    m_sw.WriteLine("create_pin -direction " + direction + " " + np.InstanceName + "/" + np.SlicePort);
+                    this.m_sw.WriteLine("create_pin -direction " + direction + " " + np.InstanceName + "/" + np.SlicePort);
                 }
                 foreach (NetPin np in net.NetPins)
                 {
-                    m_sw.WriteLine("connect_net -net " + net.Name + " -objects " + "[get_pins " + np.InstanceName + "/" + np.SlicePort + "]");
+                    this.m_sw.WriteLine("connect_net -net " + net.Name + " -objects " + "[get_pins " + np.InstanceName + "/" + np.SlicePort + "]");
                 }
 
                 // insert the ROUTE property
-                m_sw.WriteLine(net.GetTCLRouting());
+                this.m_sw.WriteLine(net.GetTCLRouting());
 
                 // we can not set "empty" values
-                foreach (TCLProperty prop in net.Properties.Where(p => !string.IsNullOrEmpty(p.Value) && !p.ReadOnly))
+                foreach (TCLProperty prop in net.Properties.Where(p => !String.IsNullOrEmpty(p.Value) && !p.ReadOnly))
                 {
                     string value = prop.Value.Contains(" ") ? ("\"" + prop.Value + "\"") : prop.Value;
-                    m_sw.WriteLine("set_property " + prop.Name + " " + value + " [get_nets " + net.Name + "]");
+                    this.m_sw.WriteLine("set_property " + prop.Name + " " + value + " [get_nets " + net.Name + "]");
                 }
                 //this.m_sw.WriteLine("set_property IS_ROUTE_FIXED TRUE [get_nets " + net.Name + "]");
-                m_sw.WriteLine(net.FooterComment);
+                this.m_sw.WriteLine(net.FooterComment);
             }
         }
 
@@ -136,7 +136,7 @@ namespace GoAhead.Commands.Data
         {
             foreach (TCLDesignHierarchy hier in nlc.Hierarchies)
             {
-                m_sw.WriteLine("create_cell -reference " + hier.Properties.GetValue("REF_NAME") + " -black_box " + hier.Name);
+                this.m_sw.WriteLine("create_cell -reference " + hier.Properties.GetValue("REF_NAME") + " -black_box " + hier.Name);
             }
         }
 
@@ -146,16 +146,16 @@ namespace GoAhead.Commands.Data
             // GDN currnently only blockers re supported, overwrok twhen placing netlist!!!
             foreach (TCLInstance inst in nlc.Instances.Where(i => ((TCLInstance)i).BELType.Equals("GND")))
             {
-                m_sw.WriteLine("# instance " + instanceCount++);
+                this.m_sw.WriteLine("# instance " + instanceCount++);
 
-                if (!string.IsNullOrEmpty(inst.BELType) && inst.OmitPlaceCommand)
+                if (!String.IsNullOrEmpty(inst.BELType) && inst.OmitPlaceCommand)
                 {
                     // Used by blocker
-                    m_sw.WriteLine("create_cell -reference " + inst.BELType + " " + inst.Name);
+                    this.m_sw.WriteLine("create_cell -reference " + inst.BELType + " " + inst.Name);
                 }
                 else                
                 {
-                    m_sw.WriteLine("create_cell -reference " + inst.Properties.GetValue("REF_NAME") + " " + inst.Name);
+                    this.m_sw.WriteLine("create_cell -reference " + inst.Properties.GetValue("REF_NAME") + " " + inst.Name);
                     string belName = inst.Properties.GetValue("BEL");
                     belName = belName.Remove(0, belName.IndexOf('.') + 1);
 
@@ -166,15 +166,15 @@ namespace GoAhead.Commands.Data
                         inst.Properties.GetValue("REF_NAME").Equals("OBUFT");
 
                     // we can not set "empty" values, e.g., "set_property ASYNC_REG  [get_sites IOB_X0Y1]"    
-                    foreach (TCLProperty prop in inst.Properties.Where(p => !string.IsNullOrEmpty(p.Value) && !p.ReadOnly && !ExcludedProperties.Contains(p.Name)))
+                    foreach (TCLProperty prop in inst.Properties.Where(p => !String.IsNullOrEmpty(p.Value) && !p.ReadOnly && !this.ExcludedProperties.Contains(p.Name)))
                     {
                         string prefix = wrapCatch ? "catch {" : "";
                         string suffix = wrapCatch ? "}" : "";
                         string value = prop.Value.Contains(" ") ? ("\"" + prop.Value + "\"") : prop.Value;
-                        m_sw.WriteLine(prefix + "set_property " + prop.Name + " " + value + " [get_cells " + inst.Name + "]"  + suffix);
+                        this.m_sw.WriteLine(prefix + "set_property " + prop.Name + " " + value + " [get_cells " + inst.Name + "]"  + suffix);
                     }
                 }
-                m_sw.WriteLine("");
+                this.m_sw.WriteLine("");
             }
         }
 
@@ -208,6 +208,6 @@ namespace GoAhead.Commands.Data
         public bool IncludeLinkDesignCommand = false;
         
         [Parameter(Comment = "A list of properties which will not be emiitedd")]
-        public List<string> ExcludedProperties = new List<string>();
+        public List<String> ExcludedProperties = new List<String>();
     }
 }

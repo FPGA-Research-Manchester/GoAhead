@@ -9,56 +9,56 @@ namespace GoAhead.Commands.InterfaceManager
     {
        protected override void DoCommandAction()
         {
-            if (PartialAreaNames.Count != InputMSB.Count ||
-                PartialAreaNames.Count != InputLSB.Count || 
-                PartialAreaNames.Count != OutputMSB.Count ||
-                PartialAreaNames.Count != OutputLSB.Count ||
-                PartialAreaNames.Count != StreamMSB.Count ||
-                PartialAreaNames.Count != this.streamLSB.Count || 
-                PartialAreaNames.Count != Columns.Count ||
-                PartialAreaNames.Count != InputSignalNames.Count ||
-                PartialAreaNames.Count != OuputSignalNames.Count ||
-                PartialAreaNames.Count != StreamSignalNames.Count)
+            if (this.PartialAreaNames.Count != this.InputMSB.Count ||
+                this.PartialAreaNames.Count != this.InputLSB.Count || 
+                this.PartialAreaNames.Count != this.OutputMSB.Count ||
+                this.PartialAreaNames.Count != this.OutputLSB.Count ||
+                this.PartialAreaNames.Count != this.StreamMSB.Count ||
+                this.PartialAreaNames.Count != this.streamLSB.Count || 
+                this.PartialAreaNames.Count != this.Columns.Count ||
+                this.PartialAreaNames.Count != this.InputSignalNames.Count ||
+                this.PartialAreaNames.Count != this.OuputSignalNames.Count ||
+                this.PartialAreaNames.Count != this.StreamSignalNames.Count)
             {
                 throw new ArgumentException("Size of PartialAreaNames, InputMSBIndex, InputLSBIndex, OutputMSBIndex, OutputLSBIndex, StreamMSB, StreamLSB, Columns, InputSignalNames, OuputSignalNames, and StreamSignalNames must match");
             }
 
-            for(int i=0;i<PartialAreaNames.Count;i++)
+            for(int i=0;i<this.PartialAreaNames.Count;i++)
             {
                 //StaticToPartial(),in,East,pr1,0;				StaticToPartial(),in,East,pr1,1;					StaticFromPartial(),out,East,pr1,0;					StaticFromPartial(),out,East,pr1,1;
 
                 // -1 zero based index
-                int inputMSB = InputMSB[i];
-                int inputLSB = InputLSB[i];
-                int outputMSB = OutputMSB[i];
-                int outputLSB = OutputLSB[i];
-                int streamMSB = StreamMSB[i];
+                int inputMSB = this.InputMSB[i];
+                int inputLSB = this.InputLSB[i];
+                int outputMSB = this.OutputMSB[i];
+                int outputLSB = this.OutputLSB[i];
+                int streamMSB = this.StreamMSB[i];
                 int streamLSB = this.streamLSB[i];
-                int columns = Columns[i];
-                string inputSignalName = InputSignalNames[i];
-                string outputSignalName = OuputSignalNames[i];
-                string streamSignalName = StreamSignalNames[i];
-                string pr = PartialAreaNames[i];
+                int columns = this.Columns[i];
+                String inputSignalName = this.InputSignalNames[i];
+                String outputSignalName = this.OuputSignalNames[i];
+                String streamSignalName = this.StreamSignalNames[i];
+                String pr = this.PartialAreaNames[i];
 
-                OutputManager.WriteOutput("#########################");
-                OutputManager.WriteOutput("# interface for " + pr + " " + Direction + ": " + ((inputMSB-inputLSB)+1) + " inputs, " + ((outputMSB-outputLSB)+1) + " outputs, and " + ((streamMSB-streamLSB)+1) + " streaming port using " + columns + " interleaved columns");
-                OutputManager.WriteOutput("#########################");
+                this.OutputManager.WriteOutput("#########################");
+                this.OutputManager.WriteOutput("# interface for " + pr + " " + this.Direction + ": " + ((inputMSB-inputLSB)+1) + " inputs, " + ((outputMSB-outputLSB)+1) + " outputs, and " + ((streamMSB-streamLSB)+1) + " streaming port using " + columns + " interleaved columns");
+                this.OutputManager.WriteOutput("#########################");
 
                 int lineCounter = 0;
                 while (inputMSB >= inputLSB || outputMSB >= outputLSB || streamMSB >= streamLSB)
                 {
-                    string currentLine = "";
+                    String currentLine = "";
                     // input
                     for (int c = 0; c < columns; c++)
                     {
                         if (inputMSB >= inputLSB)
                         {
-                            string signalDef = inputSignalName + "(" + inputMSB-- + "),in," + Direction + "," + pr + "," + c + ";";
+                            String signalDef = inputSignalName + "(" + inputMSB-- + "),in," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += signalDef;
                         }
                         else
                         {
-                            string openInput = "open,in," + Direction + "," + pr + "," + c + ";";
+                            String openInput = "open,in," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += openInput;
                         }                        
                     }
@@ -68,12 +68,12 @@ namespace GoAhead.Commands.InterfaceManager
                     {
                         if (outputMSB >= outputLSB)
                         {
-                            string signalDef = outputSignalName + "(" + outputMSB-- + "),out," + Direction + "," + pr + "," + c + ";";
+                            String signalDef = outputSignalName + "(" + outputMSB-- + "),out," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += signalDef;
                         }
                         else
                         {
-                            string openOutput = "open,out," + Direction + "," + pr + "," + c + ";";
+                            String openOutput = "open,out," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += openOutput;
                         }
                     }
@@ -83,23 +83,23 @@ namespace GoAhead.Commands.InterfaceManager
                     {
                         if (streamMSB >= streamLSB)
                         {
-                            string signalDef = streamSignalName + "(" + streamMSB-- + "),stream," + Direction + "," + pr + "," + c + ";";
+                            String signalDef = streamSignalName + "(" + streamMSB-- + "),stream," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += signalDef;
                         }
                         else
                         {
-                            string openStream = "open,stream," + Direction + "," + pr + "," + c + ";";
+                            String openStream = "open,stream," + this.Direction + "," + pr + "," + c + ";";
                             currentLine += openStream;
                         }
                     }
 
                     currentLine = Regex.Replace(currentLine, ";", ";" + "\t");
 
-                    OutputManager.WriteOutput(currentLine);
+                    this.OutputManager.WriteOutput(currentLine);
                     lineCounter++;
                     if(lineCounter % 4 == 0)
                     {
-                        OutputManager.WriteOutput("");
+                        this.OutputManager.WriteOutput("");
                     }
                 }
             }
@@ -111,7 +111,7 @@ namespace GoAhead.Commands.InterfaceManager
         }
         
         [Parameter(Comment = "The names of the partial areas, e.g. pr0,pr1")]
-        public List<string> PartialAreaNames = new List<string>(){"pr0","pr1"};
+        public List<String> PartialAreaNames = new List<String>(){"pr0","pr1"};
 
         [Parameter(Comment = "The number of interleaved columns for each area")]
         public List<int> Columns = new List<int>(){2,2};
@@ -135,15 +135,15 @@ namespace GoAhead.Commands.InterfaceManager
         public List<int> streamLSB = new List<int>(){0,0};
 
         [Parameter(Comment = "The name of the input signals (from the partial region point of view), e.g. pr0_StaticToPartial,pr1_StaticToPartial")]
-        public List<string> InputSignalNames = new List<string>(){"pr0_StaticToPartial", "pr1_StaticToPartial"};
+        public List<String> InputSignalNames = new List<String>(){"pr0_StaticToPartial", "pr1_StaticToPartial"};
 
         [Parameter(Comment = "The name of the output signals (from the partial region point of view), e.g. pr0_StaticFromPartial,pr1_StaticFromPartial")]
-        public List<string> OuputSignalNames = new List<string>(){"pr0_StaticFromPartial", "pr1_StaticFromPartial"};
+        public List<String> OuputSignalNames = new List<String>(){"pr0_StaticFromPartial", "pr1_StaticFromPartial"};
 
         [Parameter(Comment = "The name of the streaming signals, e.g. pr0_stream,pr1_stream")]
-        public List<string> StreamSignalNames = new List<string>(){"pr0_stream", "pr1_stream"};
+        public List<String> StreamSignalNames = new List<String>(){"pr0_stream", "pr1_stream"};
 
         [Parameter(Comment = "Where to place the interface (East, West, South, North)")]
-        public string Direction = "East";
+        public String Direction = "East";
     }
 }

@@ -12,11 +12,11 @@ namespace GoAhead.Commands
         {
             // save settings
             Settings.StoredPreferences.SavePrefernces();
-            if(!string.IsNullOrEmpty(Text))
+            if(!String.IsNullOrEmpty(this.Text))
             {
-                Console.WriteLine(Text);
+                Console.WriteLine(this.Text);
             }
-            Environment.Exit(ReturnValue);
+            Environment.Exit(this.ReturnValue);
         }
 
         public override void Undo()
@@ -28,6 +28,6 @@ namespace GoAhead.Commands
         public int ReturnValue = 0;
 
         [Parameter(Comment = "The message is printed to the console out before exiting", PrintParameter = false)]
-        public string Text = "";
+        public String Text = "";
     }
 }

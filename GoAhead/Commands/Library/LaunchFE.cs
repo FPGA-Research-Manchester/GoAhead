@@ -10,14 +10,14 @@ namespace GoAhead.Commands.Library
     {
        protected override void DoCommandAction()
         {
-            if(!System.IO.File.Exists(File))
+            if(!System.IO.File.Exists(this.File))
             {
-                throw new ArgumentException("File " + File + " does not exits");
+                throw new ArgumentException("File " + this.File + " does not exits");
             }
 
-            string tempBatchFile = Path.GetTempFileName();
+            String tempBatchFile = Path.GetTempFileName();
  	        StreamWriter batchFile = new StreamWriter(tempBatchFile);
-            batchFile.WriteLine("start fpga_editor " + File);
+            batchFile.WriteLine("start fpga_editor " + this.File);
 
             batchFile.Close();
 
@@ -31,6 +31,6 @@ namespace GoAhead.Commands.Library
 
 
         [Parameter(Comment = "The file no open ")]
-        public string File = "design.ncd";
+        public String File = "design.ncd";
     }
 }

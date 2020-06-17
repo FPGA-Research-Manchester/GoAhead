@@ -14,18 +14,18 @@ namespace GoAhead.Commands.VHDL
         protected override void DoCommandAction()
         {
             // TODO move to parser
-            VHDLParser vhdlParser = new VHDLParser(VHDLModule);
+            VHDLParser vhdlParser = new VHDLParser(this.VHDLModule);
             foreach (VHDLParserEntity ent in vhdlParser.GetEntities())
             {
-                OutputManager.WriteVHDLOutput("-- component declaration for module " + ent.EntityName);
-                OutputManager.WriteVHDLOutput("component " + ent.EntityName + " is port (");
+                this.OutputManager.WriteVHDLOutput("-- component declaration for module " + ent.EntityName);
+                this.OutputManager.WriteVHDLOutput("component " + ent.EntityName + " is port (");
                 for (int i = 0; i < ent.InterfaceSignals.Count; i++)
                 {
                     // weiter: invertieren und dann auch signal mapping bei instasntiierung abgleichen
-                    OutputManager.WriteVHDLOutput("\t" + ent.InterfaceSignals[i].WholeSignalDeclaration + (i < ent.InterfaceSignals.Count - 1 ? ";" : ");"));
+                    this.OutputManager.WriteVHDLOutput("\t" + ent.InterfaceSignals[i].WholeSignalDeclaration + (i < ent.InterfaceSignals.Count - 1 ? ";" : ");"));
                 }
-                OutputManager.WriteVHDLOutput("end component;");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("end component;");
+                this.OutputManager.WriteVHDLOutput("");
             }
         }
 
@@ -35,6 +35,6 @@ namespace GoAhead.Commands.VHDL
         }
 
         [Parameter(Comment = "The path to VHDL module  file to read")]
-        public string VHDLModule = "top.vhd";
+        public String VHDLModule = "top.vhd";
     }
 }

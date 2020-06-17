@@ -9,11 +9,11 @@ namespace GoAhead.Commands.Debug
     {      
         protected override void DoCommandAction()
         {
-            foreach (object o in ObjectsToPrint)
+            foreach (Object o in PrintGoAheadInternals.ObjectsToPrint)
             {
-                OutputManager.WriteOutput(o.GetType().Name);
-                OutputManager.WriteOutput(o.ToString());
-                OutputManager.WriteOutput("------------------------------------------------------");
+                this.OutputManager.WriteOutput(o.GetType().Name);
+                this.OutputManager.WriteOutput(o.ToString());
+                this.OutputManager.WriteOutput("------------------------------------------------------");
             }
         }
 
@@ -22,6 +22,6 @@ namespace GoAhead.Commands.Debug
             throw new NotImplementedException();
         }
 
-        public static List<object> ObjectsToPrint = new List<object>();
+        public static List<Object> ObjectsToPrint = new List<Object>();
     }
 }

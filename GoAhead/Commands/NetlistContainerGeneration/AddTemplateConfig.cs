@@ -13,23 +13,23 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            XDLContainer nlc = (XDLContainer) GetNetlistContainer();
-            AddTemplate(nlc, Template, Location, PrimitiveIndex);
+            XDLContainer nlc = (XDLContainer) this.GetNetlistContainer();
+            AddTemplateConfig.AddTemplate(nlc, this.Template, this.Location, this.PrimitiveIndex);
         }
 
-        public static void AddTemplate(XDLContainer netlistContainer, string template, string location, int primitiveIndex)
+        public static void AddTemplate(XDLContainer netlistContainer, String template, String location, int primitiveIndex)
         {
             StreamReader sr = new StreamReader(template);
-            string wholeFile = sr.ReadToEnd();
+            String wholeFile = sr.ReadToEnd();
             sr.Close();    
 
             Tile t = FPGA.FPGA.Instance.GetTile(location);
-            MatchCollection instanceMatches = m_regExpInstance.Matches(wholeFile);
+            MatchCollection instanceMatches = AddTemplateConfig.m_regExpInstance.Matches(wholeFile);
             foreach (Match match in instanceMatches)
             {
-                string instanceCode = match.Groups[1].Value;
+                String instanceCode = match.Groups[1].Value;
 
                 instanceCode = instanceCode.Replace("_LOCATION_", t.Location);
                 instanceCode = instanceCode.Replace("_SLICENAME_", t.Slices[primitiveIndex].SliceName);
@@ -40,10 +40,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                 netlistContainer.AddSliceCodeBlock(instanceCode);
             }
 
-            MatchCollection netMatches = m_regExpNets.Matches(wholeFile);
+            MatchCollection netMatches = AddTemplateConfig.m_regExpNets.Matches(wholeFile);
             foreach (Match netMatch in netMatches)
             {
-                string netCode = netMatch.Groups[1].Value;
+                String netCode = netMatch.Groups[1].Value;
 
                 // DSP and BRAM templates only use _LOCATION_
                 netCode = netCode.Replace("_LOCATION_", t.Location);
@@ -63,12 +63,12 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The template to use")]
-        public string Template = "";
+        public String Template = "";
 
         [Parameter(Comment = "The slice index to use")]
         public int PrimitiveIndex = 0;
 
         [Parameter(Comment = "The tile identifier to instantiate a slice from")]
-        public string Location = "";
+        public String Location = "";
     }
 }

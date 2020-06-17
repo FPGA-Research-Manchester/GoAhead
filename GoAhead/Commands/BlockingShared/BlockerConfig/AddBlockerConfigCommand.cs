@@ -6,6 +6,6 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
     public abstract class AddBlockerConfigCommand : Command
     {
         [Parameter(Comment = "The FPGA Family this command applies to")]
-        public string FamilyRegexp = "";
+        public String FamilyRegexp = "";
     }
 }

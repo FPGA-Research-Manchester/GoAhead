@@ -15,9 +15,9 @@ namespace GoAhead.Commands.Data
     [CommandDescription(Description = "Create an XDl resource descriptions of all FPGAs, parse them in and serialize them", Wrapper = false)]
     class PartGenAll : Command
     {
-        public static IEnumerable<string> GetAllPackages()
+        public static IEnumerable<String> GetAllPackages()
         {
-            if (m_packages.Count == 0)
+            if (PartGenAll.m_packages.Count == 0)
             {
                 if (FPGA.FPGA.Instance.BackendType == FPGA.FPGATypes.BackendType.ISE)
                 {
@@ -29,7 +29,7 @@ namespace GoAhead.Commands.Data
                 }
             }
 
-            foreach (string package in m_packages)
+            foreach (String package in PartGenAll.m_packages)
             {
                 yield return package;
             }
@@ -37,7 +37,7 @@ namespace GoAhead.Commands.Data
 
         private static void PreparePackagesVivado()
         {
-            string tempTCLScript = Path.ChangeExtension(Path.GetTempFileName(), "tcl");
+            String tempTCLScript = Path.ChangeExtension(Path.GetTempFileName(), "tcl");
             StreamWriter sw = new StreamWriter(tempTCLScript);
             sw.WriteLine("set parts [get_parts]");
             sw.WriteLine("set devices {}");
@@ -57,13 +57,13 @@ namespace GoAhead.Commands.Data
             devDevInfo.ErrorDialog = true;
             devDevInfo.RedirectStandardOutput = true;
             devDevInfo.CreateNoWindow = false;
-            Process p = Process.Start(devDevInfo);
+            Process p = System.Diagnostics.Process.Start(devDevInfo);
 
             StreamReader output = p.StandardOutput;
             
             while (true)
             {
-                string partLine = output.ReadLine();
+                String partLine = output.ReadLine();
 
                 // no more lines
                 if (partLine == null)
@@ -81,15 +81,15 @@ namespace GoAhead.Commands.Data
             partgenInfo.ErrorDialog = true;
             partgenInfo.RedirectStandardOutput = true;
             partgenInfo.CreateNoWindow = false;
-            Process partgen = Process.Start(partgenInfo);
+            Process partgen = System.Diagnostics.Process.Start(partgenInfo);
 
             StreamReader partGenOutput = partgen.StandardOutput;
 
-            string currentDevice = "";
+            String currentDevice = "";
             bool package = false;
             while (true)
             {
-                string partLine = partGenOutput.ReadLine();
+                String partLine = partGenOutput.ReadLine();
 
                 // no more lines
                 if (partLine == null)
@@ -98,19 +98,19 @@ namespace GoAhead.Commands.Data
                 }
                 if (Regex.IsMatch(partLine, "SPEEDS"))
                 {
-                    string[] atoms = Regex.Split(partLine, @"\s");
+                    String[] atoms = Regex.Split(partLine, @"\s");
                     currentDevice = atoms[0];
                     package = true;
                 }
                 else if (package)
                 {
-                    string packageName = Regex.Replace(partLine, @"\s", "");
+                    String packageName = Regex.Replace(partLine, @"\s", "");
                     // xc6slx16cpg196	-3    -2 > xc6slx16cpg196
                     while (Regex.IsMatch(packageName, @"\-\d$"))
                     {
                         packageName = packageName.Remove(packageName.Length - 2, 2);
                     }
-                    m_packages.Add(currentDevice + "-" + packageName);
+                    PartGenAll.m_packages.Add(currentDevice + "-" + packageName);
                 }
             }
         }
@@ -119,12 +119,12 @@ namespace GoAhead.Commands.Data
         {
             List<StringTripel> files = new List<StringTripel>();
 
-            foreach (string package in GetAllPackages().Where(p => Regex.IsMatch(p, FPGAFilter)))
+            foreach (String package in PartGenAll.GetAllPackages().Where(p => Regex.IsMatch(p, this.FPGAFilter)))
             {
-                string[] atoms = Regex.Split(package, "\t");
-                string deviceName = atoms[0];
-                string xdlFileName = StorePath + Path.DirectorySeparatorChar + package + ".xdl";
-                string binFPGAFileName = StorePath + Path.DirectorySeparatorChar + package + ".binFPGA";
+                String[] atoms = Regex.Split(package, "\t");
+                String deviceName = atoms[0];
+                String xdlFileName = this.StorePath + Path.DirectorySeparatorChar + package + ".xdl";
+                String binFPGAFileName = this.StorePath + Path.DirectorySeparatorChar + package + ".binFPGA";
 
                 /*
                 StringTripel tripel = new StringTripel();
@@ -134,9 +134,9 @@ namespace GoAhead.Commands.Data
                 files.Add(tripel);
                  * */
 
-                if (!PrintCommandsOnly)
+                if (!this.PrintCommandsOnly)
                 {
-                    GenerateXDL(xdlFileName, binFPGAFileName, deviceName);
+                    this.GenerateXDL(xdlFileName, binFPGAFileName, deviceName);
                 }
             }
 
@@ -152,7 +152,7 @@ namespace GoAhead.Commands.Data
             // read and serialize must be sequentiell
             foreach (StringTripel tripel in files)
             {
-                if (File.Exists(tripel.binFPGAFileName) && KeepExisting_binFPGAS)
+                if (File.Exists(tripel.binFPGAFileName) && this.KeepExisting_binFPGAS)
                 {
                     // TODO check if tripel.binFPGAFileName maybe deserialzed, if not ReadXDL!
                     continue;
@@ -162,16 +162,16 @@ namespace GoAhead.Commands.Data
                 ReadXDL read = new ReadXDL();
                 read.FileName = tripel.xdlFileName;
                 read.PrintProgress = true;
-                read.ExcludePipsToBidirectionalWiresFromBlocking = ExcludePipsToBidirectionalWiresFromBlocking;
+                read.ExcludePipsToBidirectionalWiresFromBlocking = this.ExcludePipsToBidirectionalWiresFromBlocking;
                 // ... and serialize
                 SaveBinFPGA save = new SaveBinFPGA();
                 save.FileName = tripel.binFPGAFileName;
-                save.Compress = Compress;
+                save.Compress = this.Compress;
 
-                if (PrintCommandsOnly)
+                if (this.PrintCommandsOnly)
                 {
-                    OutputManager.WriteOutput(read.ToString());
-                    OutputManager.WriteOutput(save.ToString());
+                    this.OutputManager.WriteOutput(read.ToString());
+                    this.OutputManager.WriteOutput(save.ToString());
                 }
                 else
                 {
@@ -179,7 +179,7 @@ namespace GoAhead.Commands.Data
                     CommandExecuter.Instance.Execute(save);
 
                     // remove?
-                    if (!KeepXDLFiles)
+                    if (!this.KeepXDLFiles)
                     {
                         File.Delete(tripel.xdlFileName);
                     }
@@ -192,15 +192,15 @@ namespace GoAhead.Commands.Data
             throw new NotImplementedException();
         }
 
-        private static List<string> m_packages = new List<string>();
+        private static List<String> m_packages = new List<String>();
 
         public class StringTripel
         {
-            public string xdlFileName = "";
-            public string binFPGAFileName = "";
+            public String xdlFileName = "";
+            public String binFPGAFileName = "";
         }
 
-        private void GenerateXDL(string xdlFileName, string binFPGAFileName, string deviceName)
+        private void GenerateXDL(String xdlFileName, String binFPGAFileName, String deviceName)
         {
             // check if the XDL is complete, i.e. has a summary at the end
             if (File.Exists(xdlFileName))
@@ -210,7 +210,7 @@ namespace GoAhead.Commands.Data
                     using (StreamReader sr = new StreamReader(fs))
                     {
                         sr.BaseStream.Position = fs.Length - 100;
-                        string tail = sr.ReadToEnd();
+                        String tail = sr.ReadToEnd();
                         if (tail.Contains("(summary"))
                         {
                             return;
@@ -220,12 +220,12 @@ namespace GoAhead.Commands.Data
             }
 
             // skip this device if xdl and binFpga already exist
-            if (File.Exists(binFPGAFileName) && KeepExisting_binFPGAS)
+            if (File.Exists(binFPGAFileName) && this.KeepExisting_binFPGAS)
             {
                 return;
             }
             
-            ProcessStartInfo xdlInfo = new ProcessStartInfo(@"xdl", " -report -pips " + (AllCons ? "-all_conns " : "") + deviceName + " " + xdlFileName);
+            ProcessStartInfo xdlInfo = new ProcessStartInfo(@"xdl", " -report -pips " + (this.AllCons ? "-all_conns " : "") + deviceName + " " + xdlFileName);
             Process xdlGen = Process.Start(xdlInfo);
             // wait for end of xdl generation
             xdlGen.WaitForExit();
@@ -234,16 +234,16 @@ namespace GoAhead.Commands.Data
             // check for success
             if (!File.Exists(xdlFileName))
             {
-                OutputManager.WriteOutput("Could not generate XDL File " + xdlFileName);
+                this.OutputManager.WriteOutput("Could not generate XDL File " + xdlFileName);
                 return;
             }
         }        
                 
         [Parameter(Comment = "Only generate XDL and binFPGA for those FPGA families that match this filter")]
-        public string FPGAFilter = "^xc[3-7]";
+        public String FPGAFilter = "^xc[3-7]";
                 
         [Parameter(Comment = "Where to store the XDL files and the binFPGA files")]
-        public string StorePath = "";
+        public String StorePath = "";
 
         [Parameter(Comment = "Wheter to keep (TRUE) the intermediate XDL files or not (FALSE)")]
         public bool KeepXDLFiles = true;

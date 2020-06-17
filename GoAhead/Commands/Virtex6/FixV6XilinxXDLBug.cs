@@ -15,16 +15,16 @@ namespace GoAhead.Commands.Virtex6
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            XDLContainer nlc = (XDLContainer)GetNetlistContainer();
+            XDLContainer nlc = (XDLContainer)this.GetNetlistContainer();
 
-            List<string> fixedSliceConfigurations = new List<string>();
+            List<String> fixedSliceConfigurations = new List<String>();
             foreach (XDLInstance inst in nlc.Instances)
-            {
+            { 
                 // A5LUT:Inst_PE/Mmult_OPA[31]_OPB[31]_MuLt_17_OUT_Madd10_cy<6>:#LUT -> A5LUT::#LUT
-                string originalCode = inst.ToString();
-                string fixedCode = originalCode;
+                String originalCode = inst.ToString();
+                String fixedCode = originalCode;
                 if (!fixedCode.Contains("A5LUT::#OFF")) { fixedCode = Regex.Replace(fixedCode, " A5LUT:(.+?):#LUT:", " A5LUT::#LUT:"); }
                 if (!fixedCode.Contains("B5LUT::#OFF")) { fixedCode = Regex.Replace(fixedCode, " B5LUT:(.+?):#LUT:", " B5LUT::#LUT:"); }
                 if (!fixedCode.Contains("C5LUT::#OFF")) { fixedCode = Regex.Replace(fixedCode, " C5LUT:(.+?):#LUT:", " C5LUT::#LUT:"); }
@@ -50,7 +50,7 @@ namespace GoAhead.Commands.Virtex6
             }
 
             nlc.Remove(delegate(Instance i) {return true;});
-            foreach(string xdlCode in fixedSliceConfigurations)
+            foreach(String xdlCode in fixedSliceConfigurations)
             {
                 nlc.AddSliceCodeBlock(xdlCode);
             }

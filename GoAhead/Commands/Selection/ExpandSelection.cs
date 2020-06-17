@@ -12,19 +12,19 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            if (!RAMSelectionManager.Instance.HasMappings)
+            if (!FPGA.RAMSelectionManager.Instance.HasMappings)
             {
-                RAMSelectionManager.Instance.UpdateMapping();
+                FPGA.RAMSelectionManager.Instance.UpdateMapping();
             }
 
             List<Tile> expansion = new List<Tile>();
 
             // get tiles to add
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 if (IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB))
                 {
-                    Tile intTile = FPGATypes.GetInterconnectTile(t);
+                    Tile intTile = FPGA.FPGATypes.GetInterconnectTile(t);
                     if (intTile.LocationX == t.LocationX && intTile.LocationY == t.LocationY && IdentifierManager.Instance.IsMatch(intTile.Location, IdentifierManager.RegexTypes.Interconnect))
                     {
                         if (AddToSelection(intTile))
@@ -43,11 +43,11 @@ namespace GoAhead.Commands.Selection
 
                 if (IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect))
                 {
-                    foreach (Tile clbTile in FPGATypes.GetCLTile(t))
+                    foreach (Tile clbTile in FPGA.FPGATypes.GetCLTile(t))
                     {
                         if (clbTile.LocationX == t.LocationX && clbTile.LocationY == t.LocationY && IdentifierManager.Instance.IsMatch(clbTile.Location, IdentifierManager.RegexTypes.CLB))
                         {
-                            if (AddToSelection(clbTile))
+                            if (this.AddToSelection(clbTile))
                             {
                                 expansion.Add(clbTile);
                             }
@@ -55,11 +55,11 @@ namespace GoAhead.Commands.Selection
                     }
                 }
 
-                if (RAMSelectionManager.Instance.HasMapping(t))
+                if (FPGA.RAMSelectionManager.Instance.HasMapping(t))
                 {
-                    foreach (Tile ramBlockMember in RAMSelectionManager.Instance.GetRamBlockMembers(t))
+                    foreach (Tile ramBlockMember in FPGA.RAMSelectionManager.Instance.GetRamBlockMembers(t))
                     {
-                        if (AddToSelection(ramBlockMember))
+                        if (this.AddToSelection(ramBlockMember))
                         {
                             expansion.Add(ramBlockMember);
                         }
@@ -70,17 +70,17 @@ namespace GoAhead.Commands.Selection
             // expand selection
             foreach (Tile t in expansion)
             {
-                TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         private bool AddToSelection(Tile where)
         {
             if (FPGA.FPGA.Instance.Contains(where.Location))
             {
-                return (!TileSelectionManager.Instance.IsSelected(where.TileKey));
+                return (!FPGA.TileSelectionManager.Instance.IsSelected(where.TileKey));
             }
             else
             {

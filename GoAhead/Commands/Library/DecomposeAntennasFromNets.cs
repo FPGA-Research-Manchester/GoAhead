@@ -19,20 +19,20 @@ namespace GoAhead.Commands.Library
                 return;
             }
 
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            int workload = GetNetsToDecomposeWithOutpin().Count();
+            int workload = this.GetNetsToDecomposeWithOutpin().Count();
             int count = 0;
 
             List<XDLNet> newNets = new List<XDLNet>();
 
-            foreach(XDLNet net in GetNetsToDecomposeWithOutpin().Where(n => n.PRLink))
+            foreach(XDLNet net in this.GetNetsToDecomposeWithOutpin().Where(n => n.PRLink))
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)count++ / (double)workload * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)count++ / (double)workload * this.ProgressShare);
 
-                Dictionary<string, List<XDLPip>> pipsToRemove = null;
+                Dictionary<String, List<XDLPip>> pipsToRemove = null;
 
                 // decompose nets without outpin.
                 // e.g., placing a module on connection macros wil remove outpins from certain I/O bar wires
@@ -92,11 +92,11 @@ namespace GoAhead.Commands.Library
                     }
                 }
                 // only invoke Remove once per net (blocker is very slow)
-                net.Remove(p => PipFilter(p, pipsToRemove));                     
+                net.Remove(p => this.PipFilter(p, pipsToRemove));                     
             }
 
             // decompose blocker net 
-            foreach (XDLNet net in GetNetsToDecomposeWithoutOutpin())
+            foreach (XDLNet net in this.GetNetsToDecomposeWithoutOutpin())
             {
                 foreach (XDLPip pip in net.Pips)
                 {
@@ -120,7 +120,7 @@ namespace GoAhead.Commands.Library
 
         private IEnumerable<XDLNet> GetNetsToDecomposeWithoutOutpin()
         {
-            NetlistContainer macro = GetNetlistContainer();
+            NetlistContainer macro = this.GetNetlistContainer();
 
             foreach (XDLNet net in macro.Nets.Where(n => n.OutpinCount == 0 && n.InpinCount == 0 && n.PipCount > 0))
             {
@@ -130,7 +130,7 @@ namespace GoAhead.Commands.Library
 
         private IEnumerable<XDLNet> GetNetsToDecomposeWithOutpin()
         {
-            NetlistContainer macro = GetNetlistContainer();
+            NetlistContainer macro = this.GetNetlistContainer();
 
             foreach (XDLNet net in macro.Nets.Where(n => n.OutpinCount == 1 && n.PipCount > 0))
             {
@@ -143,7 +143,7 @@ namespace GoAhead.Commands.Library
         }
 
 
-        private bool PipFilter(XDLPip pip, Dictionary<string, List<XDLPip>> pipsToRemove)
+        private bool PipFilter(XDLPip pip, Dictionary<String, List<XDLPip>> pipsToRemove)
         {
             if (!pipsToRemove.ContainsKey(pip.Location))
             {

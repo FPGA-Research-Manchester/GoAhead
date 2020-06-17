@@ -14,14 +14,14 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex netFilter = new Regex(NetNameRegexp, RegexOptions.Compiled);
+            Regex netFilter = new Regex(this.NetNameRegexp, RegexOptions.Compiled);
 
             // output to be removed nets for later writing them to file
             foreach (Net netToRemove in netlistContainer.Nets.Where(n => netFilter.IsMatch(n.Name)))
             {
-                OutputManager.WriteOutput(netToRemove.ToString());
+                this.OutputManager.WriteOutput(netToRemove.ToString());
             }
 
             netlistContainer.Remove(new Predicate<Net>(n => netFilter.IsMatch(n.Name)));
@@ -33,6 +33,6 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "All nets whose name matches this regular expression will be removed (e.g. ^module removes all nets woth prefix module, ^netname$ remove a particular net name)")]
-        public string NetNameRegexp = "^module";
+        public String NetNameRegexp = "^module";
     }
 }

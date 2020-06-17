@@ -21,7 +21,7 @@ namespace GoAhead.Commands.DeviceInfo
                 bool rowExtended = false;
                 for (int x = 0; x < maxX; x++)
                 {
-                    if (TileSelectionManager.Instance.IsSelected(x, y))
+                    if (FPGA.TileSelectionManager.Instance.IsSelected(x, y))
                     {
                         Tile tile = FPGA.FPGA.Instance.GetTile(x, y);
                         if (rowExtended == true)
@@ -42,7 +42,7 @@ namespace GoAhead.Commands.DeviceInfo
                 }
             }
 
-            OutputManager.WriteOutput(buffer.ToString());
+            this.OutputManager.WriteOutput(buffer.ToString());
         }
 
         public override void Undo()

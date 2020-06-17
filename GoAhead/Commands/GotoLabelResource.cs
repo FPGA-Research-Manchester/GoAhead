@@ -20,10 +20,10 @@ namespace GoAhead.Commands
 
         public override bool JumpToLabel()
         {
-            return TileSelectionManager.Instance.GetSelectedTiles().Any(t => Regex.IsMatch(t.Location, Condition));
+            return FPGA.TileSelectionManager.Instance.GetSelectedTiles().Any(t => Regex.IsMatch(t.Location, this.Condition));
         }
 
         [Parameter(Comment = "The conidition is considered as true it at least any of the currently selected tiles matches this regular expression")]
-        public string Condition = "(BRAM)|(DSP)";
+        public String Condition = "(BRAM)|(DSP)";
     }
 }

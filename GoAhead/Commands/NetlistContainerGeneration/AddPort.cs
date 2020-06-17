@@ -14,21 +14,21 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
         }
 
-		public AddPort(string netlistContainerName, string portName, int sliceNumber, string portString)
+		public AddPort(String netlistContainerName, String portName, int sliceNumber, String portString)
 		{
-            NetlistContainerName = netlistContainerName;
-            PortName = portName;
-			SliceNumber = sliceNumber;
-            PortString = portString;
+            this.NetlistContainerName = netlistContainerName;
+            this.PortName = portName;
+			this.SliceNumber = sliceNumber;
+            this.PortString = portString;
 		}
 
         protected override void DoCommandAction()
 		{
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-			Slice where = FPGA.FPGA.Instance.Current.Slices[SliceNumber];
-            XDLMacroPort addedPort = new XDLMacroPort(PortName, new Port(PortString), where);
-            XDLContainer netlistContainer = (XDLContainer) GetNetlistContainer();
+			Slice where = FPGA.FPGA.Instance.Current.Slices[this.SliceNumber];
+            XDLMacroPort addedPort = new XDLMacroPort(this.PortName, new Port(this.PortString), where);
+            XDLContainer netlistContainer = (XDLContainer) this.GetNetlistContainer();
 
             netlistContainer.Add(addedPort);
 		}
@@ -39,10 +39,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 		}
 
         [Parameter(Comment = "The XDL port name to be exported")]
-        public string PortName;
+        public String PortName;
 
         [Parameter(Comment = "The name of the FPGA pip")]
-        public string PortString;
+        public String PortString;
 
         [Parameter(Comment = "The index of the slice on which the port resides")]
         public int SliceNumber;

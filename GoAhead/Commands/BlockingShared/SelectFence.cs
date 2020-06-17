@@ -13,11 +13,11 @@ namespace GoAhead.Commands.BlockingShared
         protected override void DoCommandAction()
         {
             TileSet fence = new TileSet();
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t => t.WireList != null))
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => t.WireList != null))
             {
                 foreach (Wire wire in tile.WireList.Where(w => w.LocalPipIsDriver))
                 {
-                    foreach(Location loc in Navigator.GetDestinations(tile.Location, wire.LocalPip).Where(l => !TileSelectionManager.Instance.IsSelected(l.Tile)))
+                    foreach(Location loc in Navigator.GetDestinations(tile.Location, wire.LocalPip).Where(l => !FPGA.TileSelectionManager.Instance.IsSelected(l.Tile)))
                     {
                         if (!fence.Contains(loc.Tile))
                         {
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.BlockingShared
             CommandExecuter.Instance.Execute(new Commands.Selection.ClearSelection());
             foreach(Tile t in fence)
             {
-                TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
             }
             CommandExecuter.Instance.Execute(new Commands.Selection.ExpandSelection());
         }

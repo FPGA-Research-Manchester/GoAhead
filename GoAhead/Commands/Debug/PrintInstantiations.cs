@@ -11,9 +11,9 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations())
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations())
             {
-                OutputManager.WriteOutput(inst.ToString());
+                this.OutputManager.WriteOutput(inst.ToString());
             }
         }
 

@@ -9,8 +9,8 @@ namespace GoAhead.Commands.Selection.Anchor
     {        
        protected override void DoCommandAction()
         {
-            AddToSelectionXY addCmd = new AddToSelectionXY(UpperLeftX, UpperLeftY, LowerRightX, LowerRightY);
-            OutputManager.WriteOutput(addCmd.ToString());
+            AddToSelectionXY addCmd = new AddToSelectionXY(this.UpperLeftX, this.UpperLeftY, this.LowerRightX, this.LowerRightY);
+            this.OutputManager.WriteOutput(addCmd.ToString());
         }
 
         public override void Undo()

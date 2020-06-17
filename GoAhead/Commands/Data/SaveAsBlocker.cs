@@ -14,10 +14,10 @@ namespace GoAhead.Commands.Data
             FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE, FPGA.FPGATypes.BackendType.Vivado);
 
             // work on default netlist if no netlist container names are specifed
-            List<string> netlistContainerNames = new List<string>();
-            if (NetlistContainerNames.Count > 0)
+            List<String> netlistContainerNames = new List<String>();
+            if (this.NetlistContainerNames.Count > 0)
             {
-                netlistContainerNames.AddRange(NetlistContainerNames);
+                netlistContainerNames.AddRange(this.NetlistContainerNames);
             }
             else
             {
@@ -29,7 +29,7 @@ namespace GoAhead.Commands.Data
                 case FPGA.FPGATypes.BackendType.ISE:
                     GenerateXDL genCmd = new GenerateXDL();
                     genCmd.DesignName = "blocker";
-                    genCmd.FileName = FileName;
+                    genCmd.FileName = this.FileName;
                     genCmd.IncludeDesignStatement = true;
                     genCmd.IncludeDummyNets = true;
                     genCmd.IncludeModuleFooter = false;
@@ -43,11 +43,11 @@ namespace GoAhead.Commands.Data
                 case FPGA.FPGATypes.BackendType.Vivado:
                     if (netlistContainerNames.Count != 1)
                     {
-                        throw new ArgumentNullException(GetType() + " for backend " + FPGA.FPGATypes.BackendType.Vivado + " only supports one netlist container for code generation");
+                        throw new ArgumentNullException(this.GetType() + " for backend " + FPGA.FPGATypes.BackendType.Vivado + " only supports one netlist container for code generation");
                     }
 
                     GenerateTCL saveCmd = new GenerateTCL();
-                    saveCmd.FileName = FileName;
+                    saveCmd.FileName = this.FileName;
                     saveCmd.NetlistContainerName = netlistContainerNames[0];
                     saveCmd.IncludeLinkDesignCommand = false;
                     CommandExecuter.Instance.Execute(saveCmd);
@@ -61,9 +61,9 @@ namespace GoAhead.Commands.Data
         }
 
         [Parameter(Comment = "A list of net list container for which XDL code will be generated")]
-        public List<string> NetlistContainerNames = new List<string>();
+        public List<String> NetlistContainerNames = new List<String>();
 
         [Parameter(Comment = "The filename to write the blocker netlist to")]
-        public string FileName = "blocker.xdl";
+        public String FileName = "blocker.xdl";
     }
 }

@@ -6,7 +6,7 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
     {
         protected override void DoCommandAction()
         {
-            Objects.BlockerSettings.Instance.AddTileFilter(FamilyRegexp, Regexp);
+            Objects.BlockerSettings.Instance.AddTileFilter(this.FamilyRegexp, this.Regexp);
         }
 
         public override void Undo()
@@ -14,6 +14,6 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
         }
 
         [Parameter(Comment = "The regular expression which identifies all ports not to block")]
-        public string Regexp = "";
+        public String Regexp = "";
     }
 }

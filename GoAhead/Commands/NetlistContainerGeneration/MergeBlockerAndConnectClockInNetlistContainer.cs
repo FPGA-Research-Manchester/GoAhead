@@ -15,17 +15,17 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            foreach (XDLNet bufgNet in nlc.Nets.Where(n => ((XDLNet)n).NetPins.Count(np => np is NetOutpin && np.InstanceName.Contains(BUFGInstanceName)) > 0))
+            foreach (XDLNet bufgNet in nlc.Nets.Where(n => ((XDLNet)n).NetPins.Count(np => np is NetOutpin && np.InstanceName.Contains(this.BUFGInstanceName)) > 0))
             {
-                OutputManager.WriteOutput("Merging blocker into net " + bufgNet.Name);
+                this.OutputManager.WriteOutput("Merging blocker into net " + bufgNet.Name);
 
-                foreach (string blockerFileName in XDLBlockerFiles)
+                foreach (String blockerFileName in this.XDLBlockerFiles)
                 {
-                    NetlistContainer blocker = ReadBlocker(blockerFileName);
+                    NetlistContainer blocker = this.ReadBlocker(blockerFileName);
                     foreach (XDLNet blockerNet in blocker.Nets)
                     {
                         foreach (NetPin inpin in blockerNet.NetPins.Where(np => np is NetInpin && np.SlicePort.Contains("CLK")))
@@ -38,7 +38,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             }
         }
 
-        private NetlistContainer ReadBlocker(string blockerFileName)
+        private NetlistContainer ReadBlocker(String blockerFileName)
         {
             NetlistContainer blocker = new NetlistContainer("blocker");
             // read file
@@ -63,9 +63,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The name of the BUFG instance (e.g. instBUFG100)")]
-        public string BUFGInstanceName = "NULL";
+        public String BUFGInstanceName = "NULL";
 
         [Parameter(Comment = "A list of blockers")]
-        public List<string> XDLBlockerFiles = new List<string>();
+        public List<String> XDLBlockerFiles = new List<String>();
     }
 }

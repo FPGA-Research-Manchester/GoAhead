@@ -11,7 +11,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            SortedDictionary<string, string> parameters = new SortedDictionary<string,string>();
+            SortedDictionary<String, String> parameters = new SortedDictionary<string,string>();
 
             foreach (Type type in CommandStringParser.GetAllCommandTypes())
             {
@@ -28,9 +28,9 @@ namespace GoAhead.Commands
                 }
             }
 
-            foreach(string s in parameters.Keys)
+            foreach(String s in parameters.Keys)
             {
-                OutputManager.WriteOutput(s);
+                this.OutputManager.WriteOutput(s);
             }
         }
 

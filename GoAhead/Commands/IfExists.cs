@@ -13,20 +13,20 @@ namespace GoAhead.Commands
         protected override void DoCommandAction()
         {
             // internal
-            bool exists = Objects.VariableManager.Instance.IsSet(Variable);
+            bool exists = Objects.VariableManager.Instance.IsSet(this.Variable);
 
             // environement
-            string value = Environment.GetEnvironmentVariable(Variable);
+            String value = Environment.GetEnvironmentVariable(this.Variable);
             if (value != null)
             {
                 exists = true;
             }
 
-            CommandStringParser parser = new CommandStringParser(exists ? Then : Else);
-            foreach (string cmdString in parser.Parse())
+            CommandStringParser parser = new CommandStringParser(exists ? this.Then : this.Else);
+            foreach (String cmdString in parser.Parse())
             {
                 Command cmd = null;
-                string errorDescr = "";
+                String errorDescr = "";
                 parser.ParseCommand(cmdString, true, out cmd, out errorDescr);
                 // only the alias it self shall appear in the command trace
                 cmd.UpdateCommandTrace = false;
@@ -41,12 +41,12 @@ namespace GoAhead.Commands
 
 
         [Parameter(Comment = "A variable. Do not embed the variable in %%")]
-        public string Variable = "a";
+        public String Variable = "a";
 
         [Parameter(Comment = "Execute these commands if condition evaluates to true")]
-        public string Then = "ClearSelection;InvertSelection;";
+        public String Then = "ClearSelection;InvertSelection;";
 
         [Parameter(Comment = "Execute these commands if condition evaluates to false")]
-        public string Else = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";     
+        public String Else = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";     
     }
 }

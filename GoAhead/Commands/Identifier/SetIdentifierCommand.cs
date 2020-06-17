@@ -9,9 +9,9 @@ namespace GoAhead.Commands.Identifier
     abstract class SetIdentifierCommand : Command
     {
         [Parameter(Comment = "e.g. Spartan6")]
-        public string FamilyRegexp = "Spartan6";
+        public String FamilyRegexp = "Spartan6";
 
         [Parameter(Comment = "e.g. (^MACCSITE2)|(^BRAMSITE2)")]
-        public string IdentifierRegexp = "(^MACCSITE2)|(^BRAMSITE2)";
+        public String IdentifierRegexp = "(^MACCSITE2)|(^BRAMSITE2)";
     }
 }

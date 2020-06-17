@@ -12,7 +12,7 @@ namespace GoAhead.Commands.InterfaceManager
     {
        protected override void DoCommandAction()
         {
-            TextWriter tw = new StreamWriter(FileName, Append);
+            TextWriter tw = new StreamWriter(this.FileName, this.Append);
 
             foreach (Signal s in Objects.InterfaceManager.Instance.GetAllSignals())
             {
@@ -29,7 +29,7 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of the file to save the interface in")]
-        public string FileName;
+        public String FileName;
 
         [Parameter(Comment = "Wheter to append the file")]
         public bool Append = false;

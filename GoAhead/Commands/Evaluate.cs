@@ -13,9 +13,9 @@ namespace GoAhead.Commands
         {
             ExpressionParser ep = new ExpressionParser();
             int evaluationResult = 0;
-            bool validExpression = ep.Evaluate(Expression, out evaluationResult);
+            bool validExpression = ep.Evaluate(this.Expression, out evaluationResult);
 
-            OutputManager.WriteOutput(Expression + " = " + evaluationResult);
+            this.OutputManager.WriteOutput(this.Expression + " = " + evaluationResult);
         }
 
         public override void Undo()
@@ -24,6 +24,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The expression to evaluate")]
-        public string Expression = "";
+        public String Expression = "";
     }
 }

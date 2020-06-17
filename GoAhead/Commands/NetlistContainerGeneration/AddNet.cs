@@ -12,36 +12,36 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 	{
         public AddNet()
         {
-            NetName = GetUniqueNetName();
+            this.NetName = AddNet.GetUniqueNetName();
         }
 
-        public AddNet(string netlistContainerName)
+        public AddNet(String netlistContainerName)
         {
-            NetlistContainerName = netlistContainerName;
-            NetName = GetUniqueNetName();
+            this.NetlistContainerName = netlistContainerName;
+            this.NetName = AddNet.GetUniqueNetName();
         }
 
         protected override void DoCommandAction()
 		{
-            NetlistContainer netlistContainer = GetNetlistContainer();
-            netlistContainer.Add(Net.CreateNet(NetName));
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
+            netlistContainer.Add(Net.CreateNet(this.NetName));
 		}
 
 		public override void Undo()
 		{
-            NetlistContainer netlistContainer = GetNetlistContainer();
-            netlistContainer.Remove(new Predicate<Net>(n => n.Name.Equals(NetName)));
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
+            netlistContainer.Remove(new Predicate<Net>(n => n.Name.Equals(this.NetName)));
 		}
 
-        private static string GetUniqueNetName()
+        private static String GetUniqueNetName()
         {
-            return "net_" + m_netIndex++;
+            return "net_" + AddNet.m_netIndex++;
         }
 
         private static int m_netIndex = 0;
 
         [Parameter(Comment = "The name of the net")]
-		public string NetName = "";
+		public String NetName = "";
 	}
 }
 

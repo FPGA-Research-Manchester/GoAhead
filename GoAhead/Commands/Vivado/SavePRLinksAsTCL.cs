@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Vivado
     {
         protected override void DoCommandAction()
         {
-            foreach (PRLink link in PRLinkManager.Instance)
+            foreach (PRLink link in Objects.PRLinkManager.Instance)
             {
                 string path = "";
                 int index = 0;
@@ -21,7 +21,7 @@ namespace GoAhead.Commands.Vivado
                 }
 
                 string routingConstraint = @"set_property FIXED_ROUTE { GAP " + path + "} [get_nets " + link.NetName + "]" + Environment.NewLine;
-                OutputManager.WriteTCLOutput(routingConstraint);
+                this.OutputManager.WriteTCLOutput(routingConstraint);
             }
         }
 

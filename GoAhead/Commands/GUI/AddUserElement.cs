@@ -10,13 +10,13 @@ namespace GoAhead.Commands.GUI
     {
         protected void UserDefinedAction(object sender, EventArgs e)
         {
-            CommandStringParser parser = new CommandStringParser(Command);
+            CommandStringParser parser = new CommandStringParser(this.Command);
             bool cmdFound = false;
-            foreach(string subComd in parser.Parse())
+            foreach(String subComd in parser.Parse())
             {
                 cmdFound = true;
                 Command cmd = null;
-                string errorDescr;
+                String errorDescr;
                 bool valid = parser.ParseCommand(subComd, true, out cmd, out errorDescr);
                 if (valid)
                 {
@@ -24,24 +24,24 @@ namespace GoAhead.Commands.GUI
                 }
                 else
                 {
-                    MessageBox.Show(errorDescr + " when parsing " + Command, "Error during command parsing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(errorDescr + " when parsing " + this.Command, "Error during command parsing", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
 
-            if (!cmdFound && !string.IsNullOrEmpty(Command))
+            if (!cmdFound && !String.IsNullOrEmpty(this.Command))
             {
-                MessageBox.Show("Could not extract a command from " + Command + ". Missing semicolon after the last command?", "No commands executed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Could not extract a command from " + this.Command + ". Missing semicolon after the last command?", "No commands executed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         [Parameter(Comment = "The name of the button")]
-        public string Name = "No operation (NOP)";
+        public String Name = "No operation (NOP)";
 
         [Parameter(Comment = "The optional tool tip")]
-        public string ToolTip = "";
+        public String ToolTip = "";
 
         [Parameter(Comment = "The string representation of the GoAhead command to execute. E.g. ClearSelection;")]
-        public string Command = "NOP;";
+        public String Command = "NOP;";
 
         [Parameter(Comment = "Whether this entry is static (True) or dynamic (False). This property is evaluated in the commands ClearStaticUserMenu and ClearDynamicUserMenu ")]
         public bool Static = true;

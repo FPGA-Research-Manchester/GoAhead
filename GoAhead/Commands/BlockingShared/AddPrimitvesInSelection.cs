@@ -15,29 +15,29 @@ namespace GoAhead.Commands.BlockingShared
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer macro = NetlistContainerManager.Instance.Get(MacroName);
+            NetlistContainer macro = NetlistContainerManager.Instance.Get(this.MacroName);
 
             // 1 iterate over all not filtered out tiles to instantiate primitves and to find an outpin
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => !Objects.BlockerSettings.Instance.SkipTile(t)))
             {
                 // iterate in order
                 for (int i = 0; i < t.Slices.Count; i++)
                 {
                     Slice s = t.Slices[i];
 
-                    if (!Regex.IsMatch(i.ToString(), SliceNumberPattern) || s.Usage != FPGATypes.SliceUsage.Free)
+                    if (!Regex.IsMatch(i.ToString(), this.SliceNumberPattern) || s.Usage != FPGATypes.SliceUsage.Free)
                     {
                         continue;
                     }
 
-                    string template = "";
+                    String template = "";
                     // ignore the SliceNumberPattern given by AddBlockerPrimitveRegexp, this command has its own one
                     // TODO add AddPrimitveRegexp in addition to AddBlockerPrimitveRegexp
-                    if (BlockerSettings.Instance.InsertTemplate(s.SliceName, true, i, out template))
+                    if (Objects.BlockerSettings.Instance.InsertTemplate(s.SliceName, true, i, out template))
                     {
                         AddTemplateConfig addTemplateCommand = new AddTemplateConfig();
                         addTemplateCommand.Location = t.Location;
-                        addTemplateCommand.NetlistContainerName = NetlistContainerName;
+                        addTemplateCommand.NetlistContainerName = this.NetlistContainerName;
                         addTemplateCommand.PrimitiveIndex = i;
                         addTemplateCommand.Template = template;
                         CommandExecuter.Instance.Execute(addTemplateCommand);
@@ -55,9 +55,9 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The regular expression that identifies the slices to instantiate primitives in, e.g. [0-1]")]
-        public string SliceNumberPattern = "0|1";
+        public String SliceNumberPattern = "0|1";
 
         [Parameter(Comment = "The macro to extend")]
-        public string MacroName = "macro";
+        public String MacroName = "macro";
     }
 }

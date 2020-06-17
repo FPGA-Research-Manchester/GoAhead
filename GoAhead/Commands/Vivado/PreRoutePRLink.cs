@@ -13,31 +13,31 @@ namespace GoAhead.Commands.Vivado
         protected override void DoCommandAction()
         {
             int slicePortIndex = 0;
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations())
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations())
             {
                 PortMapper portMapper = inst.PortMapper;
                 Slice s = FPGA.FPGA.Instance.GetSlice(inst.SliceName);
                 Tile clb = s.ContainingTile;
 
-                Tuple<string, string, PortMapper.MappingKind> mapping = portMapper.GetMappings().Where(m => Regex.IsMatch(m.Item2, SignalName)).FirstOrDefault();
+                Tuple<String, String, PortMapper.MappingKind> mapping = portMapper.GetMappings().Where(m => Regex.IsMatch(m.Item2, this.SignalName)).FirstOrDefault();
 
                 string signalName = portMapper.GetSignalName(mapping.Item1);
                 int index = portMapper.GetIndex(mapping.Item1);
-                string netName = Prefix + signalName + "[" + index + "]";
-                Tuple<Port, Port> arc = clb.SwitchMatrix.GetAllArcs().FirstOrDefault(a => Regex.IsMatch(a.Item1.Name, SliceOutPorts[slicePortIndex]));
+                string netName = this.Prefix + signalName + "[" + index + "]";
+                Tuple<Port, Port> arc = clb.SwitchMatrix.GetAllArcs().FirstOrDefault(a => Regex.IsMatch(a.Item1.Name, this.SliceOutPorts[slicePortIndex]));
                 slicePortIndex++;
-                slicePortIndex %= SliceOutPorts.Count;
+                slicePortIndex %= this.SliceOutPorts.Count;
                 if (arc == null)
                 {
                     throw new ArgumentException("Cannot start pre route from tile " + clb.Location);
                 }
                 Location current = Navigator.GetDestinations(clb.Location, arc.Item2.Name).First();
-                bool startIsUserSelected = TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, UserSelectionType);
+                bool startIsUserSelected = FPGA.TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, this.UserSelectionType);
                 bool continuePath = true;
                 string routingConstraint = @"set_property ROUTE { " + arc.Item1 + " " + arc.Item2 + " ";
                 do
                 {
-                    Port port = current.Tile.SwitchMatrix.GetDrivenPorts(current.Pip).Where(p => Regex.IsMatch(p.Name, RoutingResources)).FirstOrDefault();
+                    Port port = current.Tile.SwitchMatrix.GetDrivenPorts(current.Pip).Where(p => Regex.IsMatch(p.Name, this.RoutingResources)).FirstOrDefault();
                     if (port == null)
                     {
                         throw new ArgumentException("Cannot continue pre route from " + current + ". Is the tile at the border of the device?");
@@ -46,14 +46,14 @@ namespace GoAhead.Commands.Vivado
                     current = Navigator.GetDestinations(current.Tile.Location, port.Name).FirstOrDefault();
 
                     continuePath =
-                        (startIsUserSelected && TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, UserSelectionType)) ||
-                        (!startIsUserSelected && !TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, UserSelectionType));
+                        (startIsUserSelected && FPGA.TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, this.UserSelectionType)) ||
+                        (!startIsUserSelected && !FPGA.TileSelectionManager.Instance.IsUserSelected(current.Tile.TileKey, this.UserSelectionType));
                 }
                 while (continuePath);
 
                 routingConstraint += "} [get_nets " + netName + "]" + Environment.NewLine; ;
                 routingConstraint += "set_property IS_ROUTE_FIXED TRUE [get_nets " + netName + "]";
-                OutputManager.WriteOutput(routingConstraint);
+                this.OutputManager.WriteOutput(routingConstraint);
 
             }
         }

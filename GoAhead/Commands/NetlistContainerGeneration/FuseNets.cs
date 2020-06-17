@@ -12,19 +12,19 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 {
     class LocationOutsideNet
     {
-        public LocationOutsideNet(Location l, object routingElement)
+        public LocationOutsideNet(Location l, Object routingElement)
         {
-            Location = l;
-            RoutingElement = routingElement;
+            this.Location = l;
+            this.RoutingElement = routingElement;
         }
         public Location Location = null;
-        public object RoutingElement = null;
+        public Object RoutingElement = null;
 
         public override string ToString()
         {
             return
-                (Location != null ? Location.ToString() : "") + " at " + 
-                (RoutingElement != null ? RoutingElement.ToString() : "");
+                (this.Location != null ? this.Location.ToString() : "") + " at " + 
+                (this.RoutingElement != null ? this.RoutingElement.ToString() : "");
         }
     }
 
@@ -33,10 +33,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
             DecomposeAntennasFromNets decompose = new DecomposeAntennasFromNets();
-            decompose.NetlistContainerName = NetlistContainerName;
+            decompose.NetlistContainerName = this.NetlistContainerName;
             // no output
             decompose.FileName = "";
             CommandExecuter.Instance.Execute(decompose);
@@ -44,21 +44,21 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
-                    FuseXDLNets(netlistContainer);
+                    this.FuseXDLNets(netlistContainer);
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    FuseTCLNets(netlistContainer);
+                    this.FuseTCLNets(netlistContainer);
                     break;
             }
         }
 
         private void FuseTCLNets(NetlistContainer netlistContainer)
         {
-            Queue<Net> netsWithOutpin = FindNetsWithOutpin(netlistContainer);
-            Dictionary<string, Net> netsToConsiderForFusing = FindNetsToConsiderForFusing(netlistContainer);
+            Queue<Net> netsWithOutpin = this.FindNetsWithOutpin(netlistContainer);
+            Dictionary<String, Net> netsToConsiderForFusing = this.FindNetsToConsiderForFusing(netlistContainer);
 
             // build mapping: Location -> XDLNet WEITER HIER
-            Dictionary<string, Dictionary<string, List<Net>>> candidateLocations = BuildLocationNetMapping(netlistContainer);
+            Dictionary<String, Dictionary<String, List<Net>>> candidateLocations = this.BuildLocationNetMapping(netlistContainer);
 
             int startSize = netsWithOutpin.Count;
             while (netsWithOutpin.Count > 0)
@@ -69,15 +69,15 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                 {
                 }
 
-                ProgressInfo.Progress = (int)((double)(startSize - netsWithOutpin.Count) / (double)startSize * 100);
+                this.ProgressInfo.Progress = (int)((double)(startSize - netsWithOutpin.Count) / (double)startSize * 100);
 
                 while (netsToConsiderForFusing.Count > 0)
                 {
-                    Dictionary<string, Net> fusedNets = new Dictionary<string, Net>();
-                    Dictionary<string, LocationOutsideNet> fusePoints = new Dictionary<string, LocationOutsideNet>();
+                    Dictionary<String, Net> fusedNets = new Dictionary<String, Net>();
+                    Dictionary<String, LocationOutsideNet> fusePoints = new Dictionary<String, LocationOutsideNet>();
 
                     // route from end of antennas
-                    foreach (LocationOutsideNet los in AllLocationsOutsideNet(current))
+                    foreach (LocationOutsideNet los in FuseNets.AllLocationsOutsideNet(current))
                     {
                         Location loc = los.Location;
 
@@ -87,10 +87,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                         }
                         if (!candidateLocations[loc.Tile.Location].ContainsKey(loc.Pip.Name))
                         {
-                            Dictionary<string, List<Net>> debug = candidateLocations[loc.Tile.Location];
+                            Dictionary<String, List<Net>> debug = candidateLocations[loc.Tile.Location];
                             continue;
                         }
-                        List<string> netNamesToRemove = new List<string>();
+                        List<String> netNamesToRemove = new List<String>();
                         foreach (Net n in candidateLocations[loc.Tile.Location][loc.Pip.Name])
                         {
                             if (!fusedNets.ContainsKey(n.Name) && !n.Name.Equals(current.Name) && netsToConsiderForFusing.ContainsKey(n.Name))
@@ -109,7 +109,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
                     foreach (TCLNet net in fusedNets.Values)
                     {
-                        OutputManager.WriteOutput("Fusing " + current.Name + " with " + net.Name + " @" + fusePoints[net.Name].ToString());
+                        this.OutputManager.WriteOutput("Fusing " + current.Name + " with " + net.Name + " @" + fusePoints[net.Name].ToString());
 
                         //this.OutputManager.WriteOutput(net.ToString());
                         //this.OutputManager.WriteOutput(net.Foo());
@@ -142,7 +142,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
         public static IEnumerable<LocationOutsideNet> AllLocationsOutsideNet(Net net)
         {
-            Dictionary<string, List<string>> locations = new Dictionary<string, List<string>>();
+            Dictionary<String, List<String>> locations = new Dictionary<String, List<String>>();
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
@@ -151,7 +151,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                     {
                         if (!locations.ContainsKey(pip.Location))
                         {
-                            locations.Add(pip.Location, new List<string>());
+                            locations.Add(pip.Location, new List<String>());
                         }
                         locations[pip.Location].Add(pip.From);
                     }
@@ -203,7 +203,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                     {
                         if (!locations.ContainsKey(node.Tile.Location))
                         {
-                            locations.Add(node.Tile.Location, new List<string>());
+                            locations.Add(node.Tile.Location, new List<String>());
                         }
                         locations[node.Tile.Location].Add(node.Port.Name);
                     }                  
@@ -257,26 +257,26 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
         private void FuseXDLNets(NetlistContainer netlistContainer)
         {
-            Queue<Net> netsWithOutpin = FindNetsWithOutpin(netlistContainer);
-            Dictionary<string, Net> netsToConsiderForFusing = FindNetsToConsiderForFusing(netlistContainer);
+            Queue<Net> netsWithOutpin = this.FindNetsWithOutpin(netlistContainer);
+            Dictionary<String, Net> netsToConsiderForFusing = this.FindNetsToConsiderForFusing(netlistContainer);
 
             // build mapping: Location -> XDLNet
-            Dictionary<string, Dictionary<string, List<Net>>> candidateLocations = BuildLocationNetMapping(netlistContainer);
+            Dictionary<String, Dictionary<String, List<Net>>> candidateLocations = this.BuildLocationNetMapping(netlistContainer);
 
             int startSize = netsWithOutpin.Count;
             while (netsWithOutpin.Count > 0)
             {
                 XDLNet current = (XDLNet ) netsWithOutpin.Dequeue();
 
-                ProgressInfo.Progress = (int)((double)(startSize - netsWithOutpin.Count) / (double)startSize * 100);
+                this.ProgressInfo.Progress = (int)((double)(startSize - netsWithOutpin.Count) / (double)startSize * 100);
 
                 while (netsToConsiderForFusing.Count > 0)
                 {
-                    Dictionary<string, XDLNet> fusedNets = new Dictionary<string, XDLNet>();
-                    Dictionary<string, Location> fusePoints = new Dictionary<string, Location>();
+                    Dictionary<String, XDLNet> fusedNets = new Dictionary<String, XDLNet>();
+                    Dictionary<String, Location> fusePoints = new Dictionary<String, Location>();
 
                     // route from end of antennas
-                    foreach (LocationOutsideNet los in AllLocationsOutsideNet(current))
+                    foreach (LocationOutsideNet los in FuseNets.AllLocationsOutsideNet(current))
                     {
                         Location loc = los.Location;
 
@@ -288,7 +288,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                         {
                             continue;
                         }
-                        List<string> netNamesToRemove = new List<string>();
+                        List<String> netNamesToRemove = new List<String>();
                         foreach (XDLNet n in candidateLocations[loc.Tile.Location][loc.Pip.Name])
                         {
                             if (!fusedNets.ContainsKey(n.Name) && !n.Name.Equals(current.Name) && netsToConsiderForFusing.ContainsKey(n.Name))
@@ -312,7 +312,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                         {
                             continue;
                         }
-                        List<string> netNamesToRemove = new List<string>();
+                        List<String> netNamesToRemove = new List<String>();
                         foreach (XDLNet n in candidateLocations[pip.Location][pip.From])
                         {
                             if (!fusedNets.ContainsKey(n.Name) && !n.Name.Equals(current.Name) && netsToConsiderForFusing.ContainsKey(n.Name))
@@ -334,15 +334,15 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                         current.Add(net, false, "");
                         //current.Add(net, true, "taken from " + net.Name);
 
-                        if (!string.IsNullOrEmpty(net.Header))
+                        if (!String.IsNullOrEmpty(net.Header))
                         {
                             if (net.Header.Contains("vcc") || net.Header.Contains("gnd"))
                             {
-                                OutputManager.WriteWarning("Attribute lost: " + net.Header);
+                                this.OutputManager.WriteWarning("Attribute lost: " + net.Header);
                             }
                         }
 
-                        OutputManager.WriteOutput("Fusing " + current.Name + " with " + net.Name + " @" + fusePoints[net.Name].ToString());
+                        this.OutputManager.WriteOutput("Fusing " + current.Name + " with " + net.Name + " @" + fusePoints[net.Name].ToString());
 
                         //this.OutputManager.WriteOutput(net.ToString());
                         //this.OutputManager.WriteOutput(net.Foo());
@@ -362,9 +362,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             }
         }
 
-        private Dictionary<string, Dictionary<string, List<Net>>> BuildLocationNetMapping(NetlistContainer netlistContainer)
+        private Dictionary<String, Dictionary<String, List<Net>>> BuildLocationNetMapping(NetlistContainer netlistContainer)
         {
-            Dictionary<string, Dictionary<string, List<Net>>> candidateLocations = new Dictionary<string, Dictionary<string, List<Net>>>();
+            Dictionary<String, Dictionary<String, List<Net>>> candidateLocations = new Dictionary<String, Dictionary<String, List<Net>>>();
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
@@ -374,7 +374,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                         {
                             if (!candidateLocations.ContainsKey(pip.Location))
                             {
-                                candidateLocations.Add(pip.Location, new Dictionary<string, List<Net>>());
+                                candidateLocations.Add(pip.Location, new Dictionary<String, List<Net>>());
                             }
                             // from
                             if (!candidateLocations[pip.Location].ContainsKey(pip.From))
@@ -405,7 +405,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
                             if (!candidateLocations.ContainsKey(node.Tile.Location))
                             {
-                                candidateLocations.Add(node.Tile.Location, new Dictionary<string, List<Net>>());
+                                candidateLocations.Add(node.Tile.Location, new Dictionary<String, List<Net>>());
                             }
                             // from
                             if (!candidateLocations[node.Tile.Location].ContainsKey(node.Port.Name))
@@ -422,9 +422,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             return candidateLocations;
         }
 
-        private Dictionary<string, Net> FindNetsToConsiderForFusing(NetlistContainer netlistContainer)
+        private Dictionary<String, Net> FindNetsToConsiderForFusing(NetlistContainer netlistContainer)
         {
-            Dictionary<string, Net> netsToConsiderForFusing = new Dictionary<string, Net>();
+            Dictionary<String, Net> netsToConsiderForFusing = new Dictionary<String, Net>();
 
             foreach (Net other in netlistContainer.Nets.Where(n => n.OutpinCount == 0 && n.PipCount > 0))
             {

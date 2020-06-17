@@ -11,8 +11,8 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            Tile ul = TileSelectionManager.Instance.GetSelectedTile(".*", FPGATypes.Placement.UpperLeft);
-            Tile lr = TileSelectionManager.Instance.GetSelectedTile(".*", FPGATypes.Placement.LowerRight);
+            Tile ul = FPGA.TileSelectionManager.Instance.GetSelectedTile(".*", FPGATypes.Placement.UpperLeft);
+            Tile lr = FPGA.TileSelectionManager.Instance.GetSelectedTile(".*", FPGATypes.Placement.LowerRight);
 
             for (int x = ul.TileKey.X; x <= lr.TileKey.X; x++)
             {
@@ -26,14 +26,14 @@ namespace GoAhead.Commands.Selection
                         continue;
                     }
                     // add if not added already
-                    if (!TileSelectionManager.Instance.IsSelected(key))
+                    if (!FPGA.TileSelectionManager.Instance.IsSelected(key))
                     {
-                        TileSelectionManager.Instance.AddToSelection(key, false);
+                        FPGA.TileSelectionManager.Instance.AddToSelection(key, false);
                     }
                 }
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         public override void Undo()

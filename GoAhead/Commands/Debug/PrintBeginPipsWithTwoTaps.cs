@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            Tile t = FPGA.FPGA.Instance.GetTile(Location);
+            Tile t = FPGA.FPGA.Instance.GetTile(this.Location);
             foreach (Port port in t.SwitchMatrix.GetAllDrivers())
             {
                 IEnumerable<Wire> wires = t.WireList.GetAllWires(port).Where(w => w.LocalPipIsDriver);
@@ -20,7 +20,7 @@ namespace GoAhead.Commands.Debug
                     foreach (Wire w in wires)
                     {
                         Tile other = Navigator.GetDestinationByWire(t, w);
-                        OutputManager.WriteOutput(t.Location + "." + port.Name + " -> " + other.Location + "." + w.PipOnOtherTile);
+                        this.OutputManager.WriteOutput(t.Location + "." + port.Name + " -> " + other.Location + "." + w.PipOnOtherTile);
                     }
                 }
 
@@ -33,6 +33,6 @@ namespace GoAhead.Commands.Debug
         }
 
         [Parameter(Comment = "The tile")]
-        public string Location = "INT_X34Y10";
+        public String Location = "INT_X34Y10";
     }
 }

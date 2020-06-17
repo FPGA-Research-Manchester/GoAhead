@@ -14,7 +14,7 @@ namespace GoAhead.Commands.Library
             // capture current library
             foreach(LibraryElement el in Objects.Library.Instance.GetAllElements())
             {
-                m_clearedElements.Add(el);
+                this.m_clearedElements.Add(el);
             }
 
             Objects.Library.Instance.Clear();
@@ -23,7 +23,7 @@ namespace GoAhead.Commands.Library
         public override void Undo()
         {
             Objects.Library.Instance.Clear();
-            foreach (LibraryElement el in m_clearedElements)
+            foreach (LibraryElement el in this.m_clearedElements)
             {
                 Objects.Library.Instance.Add(el);
             }

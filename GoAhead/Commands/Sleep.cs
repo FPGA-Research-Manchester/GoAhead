@@ -10,7 +10,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            System.Threading.Thread.Sleep(Miliseconds);
+            System.Threading.Thread.Sleep(this.Miliseconds);
         }
 
         public override void Undo()

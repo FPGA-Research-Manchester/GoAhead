@@ -14,18 +14,18 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             int clbCount = 0;
             int bramCount = 0;
             int dspCount = 0;
-            TileSelectionManager.Instance.GetRessourcesInSelection(TileSelectionManager.Instance.GetSelectedTiles(), out clbCount, out bramCount, out dspCount);
+            FPGA.TileSelectionManager.Instance.GetRessourcesInSelection(FPGA.TileSelectionManager.Instance.GetSelectedTiles(), out clbCount, out bramCount, out dspCount);
             int sliceCount = clbCount*2;
 
             int sliceInstances = 0;
             int bramInstances = 0;
             int dspInstances = 0;
-            foreach (XDLInstance inst in nlc.Instances.Where(i => TileSelectionManager.Instance.IsSelected(i.TileKey)))
+            foreach (XDLInstance inst in nlc.Instances.Where(i => FPGA.TileSelectionManager.Instance.IsSelected(i.TileKey)))
             {
                 if (IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.CLB))
                 {
@@ -41,9 +41,9 @@ namespace GoAhead.Commands
                 }
             }
 
-            OutputManager.WriteOutput("Slices: " + sliceInstances + " out of " + sliceCount);
-            OutputManager.WriteOutput("DSPs: " + dspInstances + " out of " + dspCount);
-            OutputManager.WriteOutput("BRAMs: " + bramInstances + " out of " + bramCount);
+            this.OutputManager.WriteOutput("Slices: " + sliceInstances + " out of " + sliceCount);
+            this.OutputManager.WriteOutput("DSPs: " + dspInstances + " out of " + dspCount);
+            this.OutputManager.WriteOutput("BRAMs: " + bramInstances + " out of " + bramCount);
         }
 
         public override void Undo()

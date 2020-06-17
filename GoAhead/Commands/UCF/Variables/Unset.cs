@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Variables
     {
         protected override void DoCommandAction()
         {
-            VariableManager.Instance.Unset(Variable);
+            VariableManager.Instance.Unset(this.Variable);
         }
 
         public override void Undo()
@@ -20,6 +20,6 @@ namespace GoAhead.Commands.Variables
         }
 
         [Parameter(Comment = "The name of the variable to unset")]
-        public string Variable = "a";
+        public String Variable = "a";
     }
 }

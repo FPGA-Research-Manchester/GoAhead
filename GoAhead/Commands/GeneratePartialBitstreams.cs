@@ -18,11 +18,11 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            string batchFile = TargetDirectory + "\\gen_bitstreams.bat";
+            String batchFile = this.TargetDirectory + "\\gen_bitstreams.bat";
 
-            if (!Directory.Exists(TargetDirectory))
+            if (!Directory.Exists(this.TargetDirectory))
             {
-                Directory.CreateDirectory(TargetDirectory);
+                Directory.CreateDirectory(this.TargetDirectory);
             }
 
             if (File.Exists(batchFile))
@@ -38,13 +38,13 @@ namespace GoAhead.Commands
             tw.WriteLine("rm *.bin > NUL");
             tw.Close();
 
-            if (Positions.All(s => string.IsNullOrEmpty(s)))
+            if (this.Positions.All(s => String.IsNullOrEmpty(s)))
             {
-                string moduleName = Path.GetFileNameWithoutExtension(Module);
+                String moduleName = Path.GetFileNameWithoutExtension(this.Module);
                 if (!Objects.Library.Instance.Contains(moduleName))
                 {
                     AddBinaryLibraryElement addCmd = new AddBinaryLibraryElement();
-                    addCmd.FileName = Module;
+                    addCmd.FileName = this.Module;
                     CommandExecuter.Instance.Execute(addCmd);
                 }               
                 LibraryElement libElement = Objects.Library.Instance.GetElement(moduleName);
@@ -54,18 +54,18 @@ namespace GoAhead.Commands
                     bool placementOk = DesignRuleChecker.CheckLibraryElementPlacement(tile, libElement, out errorList);
                     if (placementOk)
                     {
-                        PlaceModuleAndAddBatchFileEntry(tile, batchFile);
+                        this.PlaceModuleAndAddBatchFileEntry(tile, batchFile);
                         //this.OutputManager.WriteOutput("Placing " + moduleName + " to " + tile.Location);
                     }
                 }
             }
             else
             {
-                for (int i = 0; i < Positions.Count; i++)
+                for (int i = 0; i < this.Positions.Count; i++)
                 {
-                    string[] atoms = Positions[i].Split('X', 'Y');
-                    int x = int.Parse(atoms[1]);
-                    int y = int.Parse(atoms[2]);
+                    String[] atoms = this.Positions[i].Split('X', 'Y');
+                    int x = Int32.Parse(atoms[1]);
+                    int y = Int32.Parse(atoms[2]);
                      Tile anchor = FPGA.FPGA.Instance.GetAllTiles().Where(t =>
                         IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB) &&
                         t.LocationX == x &&
@@ -73,17 +73,17 @@ namespace GoAhead.Commands
 
                      if (anchor == null)
                      {
-                         throw new ArgumentException("Could not find an anchor for " + Positions[i]);
+                         throw new ArgumentException("Could not find an anchor for " + this.Positions[i]);
                      }
 
-                    PlaceModuleAndAddBatchFileEntry(anchor, batchFile);
+                    this.PlaceModuleAndAddBatchFileEntry(anchor, batchFile);
                 }
             }
         }
 
-        private string GetFileName(int x, int y, string extension)
+        private String GetFileName(int x, int y, String extension)
         {
-            string target = TargetDirectory + "\\" + Path.GetFileNameWithoutExtension(Module) + "_X" + x.ToString() + "Y" + y.ToString() + "." + extension;
+            String target = this.TargetDirectory + "\\" + Path.GetFileNameWithoutExtension(this.Module) + "_X" + x.ToString() + "Y" + y.ToString() + "." + extension;
             return target;
         }
 
@@ -99,19 +99,19 @@ namespace GoAhead.Commands
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        private void PlaceModuleAndAddBatchFileEntry(Tile anchor, string batchFile)
-        {
-            string xdlFile = GetFileName(anchor.LocationX, anchor.LocationY, "xdl");
-            string ncdFile = GetFileName(anchor.LocationX, anchor.LocationY, "ncd");
-            string bitFile = GetFileName(anchor.LocationX, anchor.LocationY, "bit");
-
-            string libraryElement = Path.GetFileNameWithoutExtension(Module);
+        private void PlaceModuleAndAddBatchFileEntry(Tile anchor, String batchFile)
+        {        
+            String xdlFile = this.GetFileName(anchor.LocationX, anchor.LocationY, "xdl");
+            String ncdFile = this.GetFileName(anchor.LocationX, anchor.LocationY, "ncd");
+            String bitFile = this.GetFileName(anchor.LocationX, anchor.LocationY, "bit");
+            
+            String libraryElement = Path.GetFileNameWithoutExtension(this.Module);
 
             // read in module
             if (!Objects.Library.Instance.Contains(libraryElement))
             {
                 AddBinaryLibraryElement addCmd = new AddBinaryLibraryElement();
-                addCmd.FileName = Module;
+                addCmd.FileName = this.Module;
                 CommandExecuter.Instance.Execute(addCmd);
             }
 
@@ -121,19 +121,19 @@ namespace GoAhead.Commands
             placeCmd.AutoClearModuleSlot = true;
             placeCmd.InstanceName = "inst_" + libraryElement;
             placeCmd.LibraryElementName = libraryElement;
-            placeCmd.NetlistContainerName = NetlistContainerName;
-            placeCmd.Mute = Mute;
+            placeCmd.NetlistContainerName = this.NetlistContainerName;
+            placeCmd.Mute = this.Mute;
             CommandExecuter.Instance.Execute(placeCmd);
             
             // save as netlist
             SaveAsBlocker saveCmd = new SaveAsBlocker();
             saveCmd.FileName = xdlFile;
-            saveCmd.NetlistContainerNames.Add(NetlistContainerName);
+            saveCmd.NetlistContainerNames.Add(this.NetlistContainerName);
             CommandExecuter.Instance.Execute(saveCmd);
 
             TextWriter tw = new StreamWriter(batchFile, true);
             tw.WriteLine("xdl -xdl2ncd " + xdlFile + " " + ncdFile + " -nodrc");
-            tw.WriteLine("bitgen " + ncdFile + " -d -w -g ActiveReconfig:Yes -g CRC:Disable -g binary:Yes -r " + EmptyBitfile);
+            tw.WriteLine("bitgen " + ncdFile + " -d -w -g ActiveReconfig:Yes -g CRC:Disable -g binary:Yes -r " + this.EmptyBitfile);
             tw.Close();
             /*
             // do it
@@ -155,16 +155,16 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The binary module")]
-        public string Module = "";
+        public String Module = "";
 
         [Parameter(Comment = "A liszt of X;Y tuples ")]
-        public List<string> Positions = new List<string>();
+        public List<String> Positions = new List<String>();
 
         [Parameter(Comment = "The bitstream used for differential bitstream generation (first.bit)")]
-        public string EmptyBitfile = "";
+        public String EmptyBitfile = "";
 
         [Parameter(Comment = "Where to store the partial bitfiles")]
-        public string TargetDirectory = "";
+        public String TargetDirectory = "";
     }
 
 

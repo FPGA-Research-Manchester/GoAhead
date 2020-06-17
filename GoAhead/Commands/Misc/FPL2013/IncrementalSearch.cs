@@ -17,14 +17,14 @@ namespace GoAhead.Commands.Misc.FPL2013
         {
             // read input
             Queue<Tuple<Location, Location>> fromToTuples = null;
-            ReadSearchInput(out fromToTuples);           
+            this.ReadSearchInput(out fromToTuples);           
 
             // result
             List<List<Location>> paths = new List<List<Location>>();
             List<XDLNet> nets = new List<XDLNet>();
 
             RouteNet routeCmd = new RouteNet();
-            routeCmd.Watch = Watch;
+            routeCmd.Watch = this.Watch;
 
             int size = fromToTuples.Count;
             int count = 0;
@@ -36,7 +36,7 @@ namespace GoAhead.Commands.Misc.FPL2013
 
             while (fromToTuples.Count > 0) 
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)count++ / (double)size * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)count++ / (double)size * this.ProgressShare);
 
                 Tuple<Location, Location> tuple = fromToTuples.Dequeue();
                 Location source = tuple.Item1;
@@ -48,7 +48,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                 lastSink = sink;
                 if (sinkChange)
                 {
-                    BlockPips(nets);
+                    this.BlockPips(nets);
                 }
                 Usage usage = new Usage(source, sink);
 
@@ -59,7 +59,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                 }
 
                 List<Location> initialSearchFront = new List<Location>();
-                foreach (Location location in usageManager.GetLocationsWithExclusiveUsage(usage).OrderBy(l => Distance(l, sink)))
+                foreach (Location location in usageManager.GetLocationsWithExclusiveUsage(usage).OrderBy(l => this.Distance(l, sink)))
                 {
                     initialSearchFront.Add(location);
                 }
@@ -67,7 +67,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                 initialSearchFront.Add(source);          
                
                 // truncate on first run
-                TextWriter tw = new StreamWriter(OutputFile, count > 1);
+                TextWriter tw = new StreamWriter(this.OutputFile, count > 1);
                 tw.Write(PathSearchOnFPGA.GetBanner(source, sink));
 
 
@@ -79,14 +79,14 @@ namespace GoAhead.Commands.Misc.FPL2013
 
                 }
 
-                Watch.Start("search");
-                foreach (List<Location> path in routeCmd.Route("BFS", true, initialSearchFront, sink, 100, MaxDepth, false))
+                this.Watch.Start("search");
+                foreach (List<Location> path in routeCmd.Route("BFS", true, initialSearchFront, sink, 100, this.MaxDepth, false))
                 {
                     if (!PathSearchOnFPGA.PathAlreadyFound(path, paths))
                     {
                         paths.Add(path);
                         
-                        XDLNet n = PathToNet(source, sink, path);
+                        XDLNet n = this.PathToNet(source, sink, path);
                         nets.Add(n);
                         usage.Net = n;
 
@@ -94,7 +94,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                         pathFound = true; 
                                                 
                          // no blocking on CLEX LOGIC  
-                        foreach (XDLPip pip in GetPipsToBlock(n))
+                        foreach (XDLPip pip in this.GetPipsToBlock(n))
                         {
                             Location l = new Location(FPGA.FPGA.Instance.GetTile(pip.Location), new Port(pip.From));
                             //Location r = new Location(FPGA.FPGA.Instance.GetTile(pip.Location), new Port(pip.To));
@@ -104,12 +104,12 @@ namespace GoAhead.Commands.Misc.FPL2013
                         break;
                     }              
                 }
-                Watch.Stop("search");
+                this.Watch.Stop("search");
 
                 if (!pathFound)
                 {
                     tw.WriteLine("No path found");
-                    string trigger = ("if (source.Tile.Location.Equals(\"" + source.Tile.Location + "\") && source.Pip.Name.Equals(\"" + source.Pip.Name +  "\") && sink.Tile.Location.Equals(\"" + sink.Tile.Location + "\") && sink.Pip.Name.Equals(\"" + sink.Pip.Name + "\"))");
+                    String trigger = ("if (source.Tile.Location.Equals(\"" + source.Tile.Location + "\") && source.Pip.Name.Equals(\"" + source.Pip.Name +  "\") && sink.Tile.Location.Equals(\"" + sink.Tile.Location + "\") && sink.Pip.Name.Equals(\"" + sink.Pip.Name + "\"))");
                     Console.WriteLine(trigger);
                 }
 
@@ -128,7 +128,7 @@ namespace GoAhead.Commands.Misc.FPL2013
             foreach (XDLNet net in nets)
             {
                 // no blocking on CLEX LOGIC  
-                foreach (XDLPip pip in GetPipsToBlock(net))
+                foreach (XDLPip pip in this.GetPipsToBlock(net))
                 {
                     Tile t = FPGA.FPGA.Instance.GetTile(pip.Location);
                     if (!t.IsPortBlocked(pip.From))
@@ -199,19 +199,19 @@ namespace GoAhead.Commands.Misc.FPL2013
         {
             fromToTuples = new Queue<Tuple<Location,Location>>();
 
-            TextReader tr = new StreamReader(InputFile);
-            string l = "";
+            TextReader tr = new StreamReader(this.InputFile);
+            String l = "";
             while ((l = tr.ReadLine()) != null)
             {
-                string[] tuples = l.Split('-');
+                String[] tuples = l.Split('-');
                 if (tuples.Length != 2)
                 {                    
                     Console.WriteLine("Skipping " + l);
                     continue;
                 }
 
-                string[] left = tuples[0].Split('.');
-                string[] right = tuples[1].Split('.');
+                String[] left = tuples[0].Split('.');
+                String[] right = tuples[1].Split('.');
 
                 if (left.Length != 2 || right.Length != 2)
                 {
@@ -248,8 +248,8 @@ namespace GoAhead.Commands.Misc.FPL2013
         {
             public Usage(Location source, Location sink)
             {
-                m_source = source;
-                m_sink = sink;
+                this.m_source = source;
+                this.m_sink = sink;
             }
 
             public Location Source
@@ -264,7 +264,7 @@ namespace GoAhead.Commands.Misc.FPL2013
 
             public override string ToString()
             {
-                return Source + " -> " + Sink;
+                return this.Source + " -> " + this.Sink;
             }
 
             public override bool Equals(object obj)
@@ -276,7 +276,7 @@ namespace GoAhead.Commands.Misc.FPL2013
 
                 Usage other = (Usage)obj;
 
-                return other.Source.Equals(Source);// && other.Sink.Equals(this.Sink);
+                return other.Source.Equals(this.Source);// && other.Sink.Equals(this.Sink);
             }
 
             public XDLNet Net
@@ -293,20 +293,20 @@ namespace GoAhead.Commands.Misc.FPL2013
         {
             public void Add(Location location, Usage usage, XDLNet n)
             {
-                if (!m_usages.ContainsKey(location))
+                if (!this.m_usages.ContainsKey(location))
                 {
-                    m_usages.Add(location, new List<Usage>());
+                    this.m_usages.Add(location, new List<Usage>());
                 }
 
-                if (!m_usages[location].Contains(usage))
+                if (!this.m_usages[location].Contains(usage))
                 {
-                    m_usages[location].Add(usage);
+                    this.m_usages[location].Add(usage);
                 }
             }
 
             public IEnumerable<Location> GetLocationsWithExclusiveUsage(Usage usage)
             {
-                foreach(KeyValuePair<Location, List<Usage>> tuples in m_usages)
+                foreach(KeyValuePair<Location, List<Usage>> tuples in this.m_usages)
                 {
                     if (tuples.Value.Count != 1)
                     {
@@ -326,7 +326,7 @@ namespace GoAhead.Commands.Misc.FPL2013
         }
 
         [Parameter(Comment = "Input file")]
-        public string InputFile = "";
+        public String InputFile = "";
 
         [Parameter(Comment = "The max path length")]
         public int MaxDepth = 5;
@@ -335,6 +335,6 @@ namespace GoAhead.Commands.Misc.FPL2013
         public int MaxSolutions = 5;
 
         [Parameter(Comment = "The file to store the results in")]
-        public string OutputFile = "results_all.txt";
+        public String OutputFile = "results_all.txt";
     }
 }

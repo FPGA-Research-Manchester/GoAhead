@@ -23,10 +23,10 @@ namespace GoAhead.Commands.Selection
             int startY = Math.Min(y1, y2);
             int endY = Math.Max(y1, y2);
 
-            int maxX = int.MinValue;
-            int minX = int.MaxValue;
-            int maxY = int.MinValue;
-            int minY = int.MaxValue;
+            int maxX = Int32.MinValue;
+            int minX = Int32.MaxValue;
+            int maxY = Int32.MinValue;
+            int minY = Int32.MaxValue;
 
             Tile ul = null;
             Tile lr = null;
@@ -42,7 +42,7 @@ namespace GoAhead.Commands.Selection
                     }
 
                     Tile t = FPGA.FPGA.Instance.GetTile(x, y);
-                    UpdateUpperLeftAndLowerRightCorner(ref maxX, ref minX, ref maxY, ref minY, ref ul, ref lr, t);
+                    this.UpdateUpperLeftAndLowerRightCorner(ref maxX, ref minX, ref maxY, ref minY, ref ul, ref lr, t);
                 }
             }
 
@@ -50,11 +50,11 @@ namespace GoAhead.Commands.Selection
             if( (ul == null || lr == null) && FPGA.FPGA.Instance.Contains(startX, endY))
             {
                 Tile t = FPGA.FPGA.Instance.GetTile(startX, endY);
-                if (RAMSelectionManager.Instance.HasMapping(t))
+                if (FPGA.RAMSelectionManager.Instance.HasMapping(t))
                 {
-                    foreach (Tile member in RAMSelectionManager.Instance.GetRamBlockMembers(t))
+                    foreach (Tile member in FPGA.RAMSelectionManager.Instance.GetRamBlockMembers(t))
                     {
-                        UpdateUpperLeftAndLowerRightCorner(ref maxX, ref minX, ref maxY, ref minY, ref ul, ref lr, member);
+                        this.UpdateUpperLeftAndLowerRightCorner(ref maxX, ref minX, ref maxY, ref minY, ref ul, ref lr, member);
                     }
                 }
             }
@@ -76,13 +76,13 @@ namespace GoAhead.Commands.Selection
             }
 
 
-            UpperLeftTile = ul.Location;
-            LowerRightTile = lr.Location;
+            this.UpperLeftTile = ul.Location;
+            this.LowerRightTile = lr.Location;
         }
 
         private void UpdateUpperLeftAndLowerRightCorner(ref int maxX, ref int minX, ref int maxY, ref int minY, ref Tile ul, ref Tile lr, Tile t)
         {
-            if (Consider(t))
+            if (this.Consider(t))
             {
                 if (t.LocationX <= minX && t.LocationY >= maxY)
                 {
@@ -101,11 +101,11 @@ namespace GoAhead.Commands.Selection
 
         protected override void DoCommandAction()
         {
-            Tile ul = GetCorner(UpperLeftTile, FPGATypes.Direction.West);
-            Tile lr = GetCorner(LowerRightTile, FPGATypes.Direction.East);
+            Tile ul = this.GetCorner(this.UpperLeftTile, FPGATypes.Direction.West);
+            Tile lr = this.GetCorner(this.LowerRightTile, FPGATypes.Direction.East);
             if (ul == null || lr == null)
             {
-                OutputManager.WriteWarning("Can not resolve " + UpperLeftTile + " or " + LowerRightTile);
+                this.OutputManager.WriteWarning("Can not resolve " + this.UpperLeftTile + " or " + this.LowerRightTile);
                 return;
             }
             // TODO sort lu kann auch unten links und lr kann auch oben rechts sein
@@ -124,7 +124,7 @@ namespace GoAhead.Commands.Selection
             int startY = Math.Min(ul.TileKey.Y, lr.TileKey.Y);
             int endY = Math.Max(ul.TileKey.Y, lr.TileKey.Y);
 
-            Regex filter = new Regex(Filter);
+            Regex filter = new Regex(this.Filter);
 
             for (int x = startX; x <= endX; x++)
             {
@@ -142,25 +142,25 @@ namespace GoAhead.Commands.Selection
                         continue;
                     }
 
-                    if (Consider(t))
+                    if (this.Consider(t))
                     {
                         // deselect or add the selected tile 
-                        if (TileSelectionManager.Instance.IsSelected(x, y))
+                        if (FPGA.TileSelectionManager.Instance.IsSelected(x, y))
                         {
-                            TileSelectionManager.Instance.RemoveFromSelection(t.TileKey, false);
+                            FPGA.TileSelectionManager.Instance.RemoveFromSelection(t.TileKey, false);
                         }
                         else
                         {
-                            TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                            FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                         }
                     }                
                 }
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
-        private Tile GetCorner(string identifier, FPGATypes.Direction dir)
+        private Tile GetCorner(String identifier, FPGATypes.Direction dir)
         {
             Tile tile = null;
             if (FPGA.FPGA.Instance.Contains(identifier))
@@ -170,8 +170,8 @@ namespace GoAhead.Commands.Selection
             else if (identifier.Contains("_"))
             {
                 int split = identifier.IndexOf('_');
-                string prefix = identifier.Substring(0, split + 1);
-                string suffix = identifier.Substring(split, identifier.Length - split);
+                String prefix = identifier.Substring(0, split + 1);
+                String suffix = identifier.Substring(split, identifier.Length - split);
                 tile = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => t.Location.StartsWith(prefix) && t.Location.EndsWith(suffix));
                 // if we can not resolve the identifer, triggger error handling in Do
                 if(tile==null)
@@ -211,7 +211,7 @@ namespace GoAhead.Commands.Selection
             }
             else
             {
-                throw new ArgumentException(GetType().Name + ".GetCorner only supports East and West");
+                throw new ArgumentException(this.GetType().Name + ".GetCorner only supports East and West");
             }
         }
 
@@ -230,12 +230,12 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "Only selected those tiles in the given range that match this filter", PrintParameter=false)]
-        public string Filter = ".*";
+        public String Filter = ".*";
         
         [Parameter(Comment = "The upper left tile")]
-        public string UpperLeftTile = "";
+        public String UpperLeftTile = "";
 
         [Parameter(Comment = "The lower right tile")]
-        public string LowerRightTile = "";
+        public String LowerRightTile = "";
     }
 }

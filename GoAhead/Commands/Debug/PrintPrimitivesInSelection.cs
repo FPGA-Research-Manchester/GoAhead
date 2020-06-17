@@ -12,11 +12,11 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 foreach (Slice s in t.Slices)
                 {
-                    OutputManager.WriteOutput(t.Location + "." + s.SliceName);
+                    this.OutputManager.WriteOutput(t.Location + "." + s.SliceName);
                 }
             }
         }

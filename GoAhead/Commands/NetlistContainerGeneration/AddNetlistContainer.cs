@@ -13,12 +13,12 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 	{
         public AddNetlistContainer()
         {
-            NetlistContainerName = GetUniquqMacroName();
+            this.NetlistContainerName = AddNetlistContainer.GetUniquqMacroName();
         }
 
-        public AddNetlistContainer(string netlistContainerName)
+        public AddNetlistContainer(String netlistContainerName)
         {
-            NetlistContainerName = netlistContainerName;
+            this.NetlistContainerName = netlistContainerName;
         }
 
         protected override void DoCommandAction()
@@ -26,10 +26,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             switch (FPGA.FPGA.Instance.BackendType)
             {                
                 case FPGATypes.BackendType.ISE:
-                    NetlistContainerManager.Instance.Add(new XDLContainer(NetlistContainerName));
+                    NetlistContainerManager.Instance.Add(new XDLContainer(this.NetlistContainerName));
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    NetlistContainerManager.Instance.Add(new TCLContainer(NetlistContainerName));
+                    NetlistContainerManager.Instance.Add(new TCLContainer(this.NetlistContainerName));
                     break;
                 default:
                     throw new ArgumentException("Unsuuported backend type " + FPGA.FPGA.Instance.BackendType);
@@ -41,9 +41,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
             throw new NotImplementedException("Not implemented yet");
 		}
 
-        private static string GetUniquqMacroName()
+        private static String GetUniquqMacroName()
         {
-            return "netlist_container_" + m_macroIndex++;
+            return "netlist_container_" + AddNetlistContainer.m_macroIndex++;
         }
 
         private static int m_macroIndex = 0;

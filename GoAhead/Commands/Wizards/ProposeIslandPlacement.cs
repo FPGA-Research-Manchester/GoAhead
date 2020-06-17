@@ -11,19 +11,19 @@ namespace GoAhead.Commands.Wizards
         protected override void DoCommandAction()
         {
             IslandStyleSystemParameter systemParameter = new IslandStyleSystemParameter();
-            systemParameter.Read(XMLSpecificationInput);
+            systemParameter.Read(this.XMLSpecificationInput);
 
             if (systemParameter.PartialAreas.Count != 1)
             {
                 throw new ArgumentException("Expecting only one island");
             }
 
-            if (!Directory.Exists(XMLSpecificationOutputDirectory))
+            if (!Directory.Exists(this.XMLSpecificationOutputDirectory))
             {
-                Directory.CreateDirectory(XMLSpecificationOutputDirectory);
+                Directory.CreateDirectory(this.XMLSpecificationOutputDirectory);
             }
 
-            foreach (KeyValuePair<string, PartialAreaSetting> tupel in systemParameter.PartialAreas)
+            foreach (KeyValuePair<String, PartialAreaSetting> tupel in systemParameter.PartialAreas)
             {
                 if (tupel.Value.Modules.Count != 1)
                 {
@@ -34,8 +34,8 @@ namespace GoAhead.Commands.Wizards
                 {
                     throw new ArgumentException("Expecting a value for a netlist and name in the module setting");
                 }
-                string path = ms.Settings["netlist"];
-                string name = ms.Settings["name"];
+                String path = ms.Settings["netlist"];
+                String name = ms.Settings["name"];
                 // is it a file
                 if (!File.Exists(path))
                 {
@@ -45,11 +45,11 @@ namespace GoAhead.Commands.Wizards
                 FindPlacementForReconfigurableArea selCmd = new FindPlacementForReconfigurableArea();
                 selCmd.InstancePrefix = name;
                 selCmd.XDLModules.Add(path);
-                selCmd.TopN = TopN;
+                selCmd.TopN = this.TopN;
                 selCmd.UserSelectionPrefix = "min_frag_for_placing_an_island_";
                 CommandExecuter.Instance.Execute(selCmd);
 
-                for (int i = 1; i < TopN; i++)
+                for (int i = 1; i < this.TopN; i++)
                 {
                     systemParameter.PartialAreas[tupel.Key].Nodes[IslandStyleSystemParameter.Geometry].InnerText = "";
 
@@ -58,10 +58,10 @@ namespace GoAhead.Commands.Wizards
                         systemParameter.PartialAreas[tupel.Key].Nodes[IslandStyleSystemParameter.Geometry].InnerText += cmd.ToString();
                     }
 
-                    string projectDir = XMLSpecificationOutputDirectory + @"\run" + i.ToString() + @"\";
+                    String projectDir = this.XMLSpecificationOutputDirectory + @"\run" + i.ToString() + @"\";
                     systemParameter.StaticParameter[IslandStyleSystemParameter.ISEProjectDir].InnerText = projectDir;
 
-                    string specificationOutputFileWithoutExtension = projectDir + Path.GetFileNameWithoutExtension(XMLSpecificationInput);
+                    String specificationOutputFileWithoutExtension = projectDir + System.IO.Path.GetFileNameWithoutExtension(this.XMLSpecificationInput);
 
                     // save modifications
                     systemParameter.XmlDoc.Save(specificationOutputFileWithoutExtension + ".xml");
@@ -74,10 +74,10 @@ namespace GoAhead.Commands.Wizards
         }
 
         [Parameter(Comment = "The XML system specification to read in")]
-        public string XMLSpecificationInput = "system_specification.xml";
+        public String XMLSpecificationInput = "system_specification.xml";
 
         [Parameter(Comment = "The directory where to store the XML system specification with geometry information")]
-        public string XMLSpecificationOutputDirectory = "system_specification_proposal.xml";
+        public String XMLSpecificationOutputDirectory = "system_specification_proposal.xml";
 
         [Parameter(Comment = "The first TopN selections will be stored as user selections")]
         public int TopN = 1;

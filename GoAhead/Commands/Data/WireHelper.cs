@@ -9,20 +9,11 @@ using System.Text.RegularExpressions;
 
 namespace GoAhead.Commands.Data
 {
-    /// <summary>
-    /// This class is used to aid vivado device description parsing when additional FPGA archirecture is required
-    /// </summary>
     class WireHelper
     {
         #region Include Flags
-        /// <summary>
-        /// The different types of FPGA architecture extras based on wires
-        /// </summary>
-        public enum IncludeFlag { UTurnWires, SingleStopoverArcs, BlockStopoverPorts, BELOutWires, BELInWires, WiresTrajectoriesData, IncomingWires, BiDirectionalPips }
+        public enum IncludeFlag { UTurnWires, SingleStopoverArcs, BlockStopoverPorts, BELOutWires, BELInWires, WiresTrajectoriesData, IncomingWires }
 
-        /// <summary>
-        /// Each flag designates whether the corresponding data should be present in the model 
-        /// </summary>
         private static Dictionary<IncludeFlag, Dictionary<string, bool>> includeFlags =
             new Dictionary<IncludeFlag, Dictionary<string, bool>>();
 

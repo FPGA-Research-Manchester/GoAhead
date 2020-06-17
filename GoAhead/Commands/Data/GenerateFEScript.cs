@@ -20,11 +20,11 @@ namespace GoAhead.Commands.Data
         /// <param name="fileName">the name of the file to store the script in</param>
         /// <param name="nmcFileName">the path of the macro the script will open, modify and save</param>
         /// <param name="m_macroNames"></param>
-        public GenerateFEScript(string SCRfileName, string nmcFileName, List<string> macroNames)
+        public GenerateFEScript(String SCRfileName, String nmcFileName, List<String> macroNames)
         {
-            FileName = SCRfileName;
-            MacroNames = macroNames;
-            NMCFileName = nmcFileName;
+            this.FileName = SCRfileName;
+            this.MacroNames = macroNames;
+            this.NMCFileName = nmcFileName;
         }
 
         protected override void DoCommandAction()
@@ -35,7 +35,7 @@ namespace GoAhead.Commands.Data
 
             FEScript script = new FEScript(NMCFileName);
 
-            foreach (string macroName in MacroNames)
+            foreach (String macroName in this.MacroNames)
             {
                 foreach (XDLMacroPort port in ((XDLContainer)NetlistContainerManager.Instance.Get(macroName)).MacroPorts)
                 {
@@ -54,11 +54,11 @@ namespace GoAhead.Commands.Data
         }
 
         [Parameter(Comment = "The name of the file to save the script in")]
-        public string FileName;
+        public String FileName;
         [Parameter(Comment = "A list of macro names that will be considered for this script")]
-        public List<string> MacroNames;
+        public List<String> MacroNames;
         [Parameter(Comment = "The name of the macro the scripz will try to open")]
-        public string NMCFileName;
+        public String NMCFileName;
     }
 }
 

@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Identifier
     {
         protected override void DoCommandAction()
         {
-            IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.ProhibitExcludeFilter, FamilyRegexp, IdentifierRegexp);
+            Objects.IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.ProhibitExcludeFilter, this.FamilyRegexp, this.IdentifierRegexp);
         }
 
         public override void Undo()

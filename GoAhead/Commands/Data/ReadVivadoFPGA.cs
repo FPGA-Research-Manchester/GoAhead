@@ -21,57 +21,57 @@ namespace GoAhead.Commands.Data
 
             FPGA.FPGA.Instance.Reset();
 
-            FPGA.FPGA.Instance.BackendType = FPGATypes.BackendType.Vivado;
+            FPGA.FPGA.Instance.BackendType = FPGA.FPGATypes.BackendType.Vivado;
 
             // create reader & open file
-            StreamReader sr = new StreamReader(FileName);
+            StreamReader sr = new StreamReader(this.FileName);
 
-            FileInfo fi = new FileInfo(FileName);
+            FileInfo fi = new FileInfo(this.FileName);
             long charCount = 0;
             long lineCount = 0;
-            string line = "";
+            String line = "";
             while ((line = sr.ReadLine()) != null)
             {
                 lineCount++;
                 charCount += line.Length;
-                if (PrintProgress)
+                if (this.PrintProgress)
                 {
-                    ProgressInfo.Progress = (int)(((double)charCount / (double)fi.Length) * (ExcludePipsToBidirectionalWiresFromBlocking ? 50 : 100));
+                    this.ProgressInfo.Progress = (int)(((double)charCount / (double)fi.Length) * (this.ExcludePipsToBidirectionalWiresFromBlocking ? 50 : 100));
                 }
 
-                if (m_commentRegexp.IsMatch(line))
+                if (this.m_commentRegexp.IsMatch(line))
                 {
                     continue;
                 }
 
                 int length = line.IndexOf('=');
-                string prefix = line.Substring(0, length);
+                String prefix = line.Substring(0, length);
                 switch (prefix)
                 {
                     case "Device" : 
-                        Watch.Start("ProcessDevice");
-                        ProcessDevice(line);
-                        Watch.Stop("ProcessDevice");
+                        this.Watch.Start("ProcessDevice");
+                        this.ProcessDevice(line);
+                        this.Watch.Stop("ProcessDevice");
                         break;
                     case "R":
-                        Watch.Start("ProcessTile");
-                        ProcessTile(line);
-                        Watch.Stop("ProcessTile");
+                        this.Watch.Start("ProcessTile");
+                        this.ProcessTile(line);
+                        this.Watch.Stop("ProcessTile");
                         break;
                     case "Site":
-                        Watch.Start("ProcessSite");
-                        ProcessSite(line);
-                        Watch.Stop("ProcessSite");
+                        this.Watch.Start("ProcessSite");
+                        this.ProcessSite(line);
+                        this.Watch.Stop("ProcessSite");
                         break;
                     case "Pips":
-                        Watch.Start("ProcessPips");
-                        ProcessPips(line);
-                        Watch.Stop("ProcessPips");
+                        this.Watch.Start("ProcessPips");
+                        this.ProcessPips(line);
+                        this.Watch.Stop("ProcessPips");
                         break;
                     case "Wire":
-                        Watch.Start("ProcessWire");
-                        ProcessWires(line, sr, ref charCount, fi.Length);
-                        Watch.Stop("ProcessWire");
+                        this.Watch.Start("ProcessWire");
+                        this.ProcessWires(line, sr, ref charCount, fi.Length);
+                        this.Watch.Stop("ProcessWire");
                         break;
                     default:
                     {
@@ -80,7 +80,6 @@ namespace GoAhead.Commands.Data
                 }
             }
             sr.Close();
-            ReadVivadoFPGADebugger.CloseStream();
 
             WireList emptyWl = new WireList();
             foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => t.WireList == null))
@@ -88,27 +87,27 @@ namespace GoAhead.Commands.Data
                 XDLTileParser.StoreAndShareWireList(tile, emptyWl);
             }
 
-            if (ExcludePipsToBidirectionalWiresFromBlocking)
+            if (this.ExcludePipsToBidirectionalWiresFromBlocking)
             {
                 ExcludePipsToBidirectionalWiresFromBlocking exclCmd = new ExcludePipsToBidirectionalWiresFromBlocking();
-                exclCmd.Profile = Profile;
-                exclCmd.PrintProgress = PrintProgress;
+                exclCmd.Profile = this.Profile;
+                exclCmd.PrintProgress = this.PrintProgress;
                 exclCmd.ProgressStart = 50;
                 exclCmd.ProgressShare = 50;
                 exclCmd.FileName = "";
-                CommandExecuter.Instance.Execute(exclCmd);
+                Commands.CommandExecuter.Instance.Execute(exclCmd);
             }
 
-            CommandExecuter.Instance.Execute(new Reset());
+            Commands.CommandExecuter.Instance.Execute(new Reset());
 
             // no LoadFPGAFamilyScript here! LoadFPGAFamilyScript is called through Reset
 
             // remember for other stuff how we read in this FPGA
-            Blackboard.Instance.LastLoadCommandForFPGA = ToString();
-
+        
+            Objects.Blackboard.Instance.LastLoadCommandForFPGA = this.ToString();
         }
 
-        private void ProcessDevice(string line)
+        private void ProcessDevice(String line)
         {
             if (line.Length < 5 || !line.Contains('='))
             {
@@ -132,20 +131,20 @@ namespace GoAhead.Commands.Data
             FPGA.FPGA.Instance.DeviceName = pairs[1];
         }
 
-        private void ProcessTile(string line)
+        private void ProcessTile(String line)
         {
             // R=40,C=10,Name=CLBLL_L_X2Y161,Sites=SLICE_X1Y161 SLICE_X0Y161
-            string[] pairs = line.Split(',');
+            String[] pairs = line.Split(',');
 
             int r = -1;
             int c = -1;
             string cr = "unknown";
-            string name = "";
+            String name = "";
             List<string> siteNames = new List<string>();
             List<string> siteTypes = new List<string>();
             foreach (string pair in pairs)
             {
-                string[] atoms = pair.Split('=');
+                String[] atoms = pair.Split('=');
                 if (atoms.Length != 2)
                 {
                     throw new ArgumentException("Error in line " + line);
@@ -153,19 +152,19 @@ namespace GoAhead.Commands.Data
                 switch (atoms[0])
                 {
                     case "R":
-                        r = int.Parse(atoms[1]);
+                        r = Int32.Parse(atoms[1]);
                         break;
                     case "C":
-                        c = int.Parse(atoms[1]);
+                        c = Int32.Parse(atoms[1]);
                         break;
                     case "Name":
                         name = atoms[1];
                         break;
                     case "Sites":
-                        siteNames.AddRange(atoms[1].Split(' ').Where(s => !string.IsNullOrEmpty(s)));
+                        siteNames.AddRange(atoms[1].Split(' ').Where(s => !String.IsNullOrEmpty(s)));
                         break;
                     case "Types":
-                        siteTypes.AddRange(atoms[1].Split(' ').Where(s => !string.IsNullOrEmpty(s)));
+                        siteTypes.AddRange(atoms[1].Split(' ').Where(s => !String.IsNullOrEmpty(s)));
                         break;
                     case "ClockRegion":
                         cr = atoms[1];
@@ -188,11 +187,11 @@ namespace GoAhead.Commands.Data
                 Slice s = Slice.GetSlice(tile, siteNames[i], siteTypes[i]);
                 tile.Slices.Add(s);
 
-                m_sliceNames.Add(siteNames[i], s);
+                this.m_sliceNames.Add(siteNames[i], s);
             }
         }
 
-        private void ProcessSite(string line)
+        private void ProcessSite(String line)
         {            
             // Site=TIEOFF_X18Y107 with HARD0GND/0 HARD1VCC/1
             string[] pairs = line.Split(',');
@@ -215,7 +214,7 @@ namespace GoAhead.Commands.Data
                     case "Site":
                         // GetSlice has no index structure -> most processing time is spent here
                         //slice = FPGA.FPGA.Instance.GetSlice(data);
-                        slice = m_sliceNames[data];
+                        slice = this.m_sliceNames[data];
                         break;
                     case "Inpins":
                         ExtractPins(data, portMapping, FPGATypes.PortDirection.In, slice);
@@ -234,10 +233,10 @@ namespace GoAhead.Commands.Data
             slice.InPortOutPortMappingHashCode = hashCode;
         }
 
-        private void ExtractPins(string pins, InPortOutPortMapping pm, FPGATypes.PortDirection direction, Slice slice)
+        private void ExtractPins(String pins, InPortOutPortMapping pm, FPGATypes.PortDirection direction, Slice slice)
         {
             string[] pinPaths = pins.Split(' ');
-            foreach (string pinPath in pinPaths.Where(s => !string.IsNullOrEmpty(s)))
+            foreach (string pinPath in pinPaths.Where(s => !String.IsNullOrEmpty(s)))
             {
                 int index = pinPath.IndexOf('/');
                 if (index <= 0)
@@ -262,9 +261,9 @@ namespace GoAhead.Commands.Data
             }
         }
 
-        private void ProcessPips(string line)
+        private void ProcessPips(String line)
         {
-            string[] pairs = line.Split(',');
+            String[] pairs = line.Split(',');
             if (pairs.Length != 2)
             {
                 throw new ArgumentException("Error in line " + line);
@@ -274,67 +273,60 @@ namespace GoAhead.Commands.Data
             Tile t = FPGA.FPGA.Instance.GetTile(tileName);
             SwitchMatrix sm = new SwitchMatrix();
 
-            string[] switching = pairs[1].Split(' ');
+            String[] switching = pairs[1].Split(' ');
 
-            foreach (string entry in switching.Where(s => !string.IsNullOrEmpty(s)))
+            foreach (String entry in switching.Where(s => !String.IsNullOrEmpty(s)))
             {
                 // "LIOI3_SING.IOI_BYP6_0->IOI_IDELAY0_CINVCTRL"
                 int fromEnd = entry.IndexOf('-');
                 int toStart = entry.LastIndexOf('>'); // last due to ->>              
 
-                string from = entry.Substring(0, fromEnd);
-                bool biDirectional = from.EndsWith("<<");
+                String from = entry.Substring(0, fromEnd);
                 // handle LH0<<->>LH12
                 while (from.EndsWith(">") || from.EndsWith("<"))
                 {
                     from = from.Remove(from.Length - 1);
                 }
-                string to = entry.Substring(toStart + 1);
-                Port p1 = new Port(from);
-                Port p2 = new Port(to);
-                sm.Add(p1, p2);
+                String to = entry.Substring(toStart + 1);
+                sm.Add(new Port(from), new Port(to));
 
-                if (biDirectional && WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BiDirectionalPips))
-                {
-                    sm.Add(p2, p1);
-                }
+                // TODO bidirectional pip if (pipOperator.Equals("-->"))
             }
             XDLTileParser.StoreAndShareSwitchMatrix(t, sm);
         }
 
-        private void ProcessWires(string line, StreamReader sr, ref long currentcharCount, long totalCharCount)
+        private void ProcessWires(String line, StreamReader sr, ref long currentcharCount, long totalCharCount)
         {
             string currentTileName = "";
             Tile currentTile = null;
 
             WireList wl = new WireList();
-            string wireLine = line;
+            String wireLine = line;
 
             WireHelper wireHelper = new WireHelper();
 
             do
             {
                 currentcharCount += wireLine.Length;
-                if (PrintProgress)
+                if (this.PrintProgress)
                 {
-                    ProgressInfo.Progress = (int)(((double)currentcharCount / (double)totalCharCount) * (ExcludePipsToBidirectionalWiresFromBlocking ? 50 : 100));
+                    this.ProgressInfo.Progress = (int)(((double)currentcharCount / (double)totalCharCount) * (this.ExcludePipsToBidirectionalWiresFromBlocking ? 50 : 100));
                 }
 
-                if (m_commentRegexp.IsMatch(wireLine))
+                if (this.m_commentRegexp.IsMatch(wireLine))
                 {
-                    Console.WriteLine(wireLine);
                     continue;
                 }
 
                 int equalIndex = wireLine.IndexOf('=');
                 int sepIndex = wireLine.IndexOf('>', equalIndex);
-                string left = wireLine.Substring(equalIndex + 1, sepIndex - equalIndex - 2);
+                String left = wireLine.Substring(equalIndex + 1, sepIndex - equalIndex - 2);
 
                 int slashIndexLeft = left.IndexOf("/");
-                string fromTile = left.Substring(0, slashIndexLeft);
-                string fromPip = left.Substring(slashIndexLeft + 1);//, left.Length - slashIndexLeft-1);
+                String fromTile = left.Substring(0, slashIndexLeft);
+                String fromPip = left.Substring(slashIndexLeft + 1);//, left.Length - slashIndexLeft-1);
 
-                if (string.IsNullOrEmpty(currentTileName))
+                if (String.IsNullOrEmpty(currentTileName))
                 {
                     currentTileName = fromTile;
                     currentTile = FPGA.FPGA.Instance.GetTile(currentTileName);
@@ -352,10 +344,10 @@ namespace GoAhead.Commands.Data
                     wl = new WireList();
                 }
 
-                string right = wireLine.Substring(sepIndex + 1);//, wireLine.Length - sepIndex - 1);
+                String right = wireLine.Substring(sepIndex + 1);//, wireLine.Length - sepIndex - 1);
                 int slashIndexRight = right.IndexOf("/");
-                string toTile = right.Substring(0, slashIndexRight);
-                string toPip = right.Substring(slashIndexRight + 1);//, right.Length - slashIndexRight - 1);
+                String toTile = right.Substring(0, slashIndexRight);
+                String toPip = right.Substring(slashIndexRight + 1);//, right.Length - slashIndexRight - 1);
 
                 Tile tile = FPGA.FPGA.Instance.GetTile(fromTile);
                 Tile target = FPGA.FPGA.Instance.GetTile(toTile);
@@ -367,12 +359,8 @@ namespace GoAhead.Commands.Data
                 
                 if (!currentTile.SwitchMatrix.Contains(fromPip))
                 {
-                    if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELOutWires) ||
-                        !wireHelper.IsBELOutPip(currentTile, fromPip))
-                    {
-                        ReadVivadoFPGADebugger.DebugWire(fromTile, fromPip, toTile, toPip);
-                        continue;
-                    }
+                    if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELOutWires)) continue;
+                    if (!wireHelper.IsBELOutPip(currentTile, fromPip)) continue;
                 }
 
                 short xIncr = (short)(target.TileKey.X - currentTile.TileKey.X);
@@ -381,20 +369,12 @@ namespace GoAhead.Commands.Data
                 // Check if we should consider U-turn wires
                 bool condition = WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.UTurnWires);
                 condition = condition ? fromTile != toTile || fromPip != toPip : xIncr != 0 || yIncr != 0;
-                if (!condition)
-                {
-                    ReadVivadoFPGADebugger.DebugWire(fromTile, fromPip, toTile, toPip);
-                    continue;
-                }
+                if (!condition) continue;
 
                 if (!target.SwitchMatrix.Contains(toPip))
                 {
-                    if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELInWires) ||
-                        !wireHelper.IsBELInPip(target, toPip))
-                    {
-                        ReadVivadoFPGADebugger.DebugWire(fromTile, fromPip, toTile, toPip);
-                        continue;
-                    }
+                    if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELInWires)) continue;
+                    if (!wireHelper.IsBELInPip(target, toPip)) continue;
                 }
 
                 uint pipOnOtherTileKey = FPGA.FPGA.Instance.IdentifierListLookup.GetKey(toPip);
@@ -423,11 +403,11 @@ namespace GoAhead.Commands.Data
         public bool ExcludePipsToBidirectionalWiresFromBlocking = true;
 
         [Parameter(Comment = "The file to read in")]
-        public string FileName = "xc7k70tfbg676.viv_rpt";
+        public String FileName = "xc7k70tfbg676.viv_rpt";
 
         /// <summary>
         /// public index  
         /// </summary>
-        private Dictionary<string, Slice> m_sliceNames = new Dictionary<string, Slice>();
+        private Dictionary<String, Slice> m_sliceNames = new Dictionary<string, Slice>();
     }
 }

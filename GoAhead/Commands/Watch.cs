@@ -13,13 +13,13 @@ namespace GoAhead.Commands
 
         public void Add(Watch w)
         {
-            m_watches.Add(w);
+            this.m_watches.Add(w);
         }
 
-        public string GetResults()
+        public String GetResults()
         {
             StringBuilder result = new StringBuilder();
-            foreach (Watch watch in m_watches.Where(w => w.TotalDuration > 0).OrderBy(w => w.TotalDuration))
+            foreach (Watch watch in this.m_watches.Where(w => w.TotalDuration > 0).OrderBy(w => w.TotalDuration))
             {
                 result.Append(watch.GetResults());
             }
@@ -41,56 +41,56 @@ namespace GoAhead.Commands
 
         public void Clear()
         {
-            m_calls.Clear();
-            m_durations.Clear();
-            m_starts.Clear();
+            this.m_calls.Clear();
+            this.m_durations.Clear();
+            this.m_starts.Clear();
         }
 
-        public void Start(string who)
+        public void Start(String who)
         {
-            if (m_starts.ContainsKey(who))
+            if (this.m_starts.ContainsKey(who))
             {
                 Console.WriteLine(who + " exists already");
                 return;
             }
-            if (!m_calls.ContainsKey(who))
+            if (!this.m_calls.ContainsKey(who))
             {
-                m_calls.Add(who, 0);
+                this.m_calls.Add(who, 0);
             }
-            m_calls[who]++;
+            this.m_calls[who]++;
 
-            m_starts.Add(who, DateTime.Now);
+            this.m_starts.Add(who, DateTime.Now);
         }
 
-        public void Stop(string who)
+        public void Stop(String who)
         {
-            if (!m_durations.ContainsKey(who))
+            if (!this.m_durations.ContainsKey(who))
             {
-                m_durations.Add(who, new TimeSpan(0));
+                this.m_durations.Add(who, new TimeSpan(0));
             }
 
-            if (!m_starts.ContainsKey(who))
+            if (!this.m_starts.ContainsKey(who))
             {
                 Console.WriteLine(who + " not started");
                 return;
             }
 
-            m_durations[who] += DateTime.Now - m_starts[who];
+            this.m_durations[who] += DateTime.Now - this.m_starts[who];
 
-            if (!m_starts.ContainsKey(who))
+            if (!this.m_starts.ContainsKey(who))
             {
                 Console.WriteLine(who + " does not exists already");
             }
-            m_starts.Remove(who);
+            this.m_starts.Remove(who);
         }
 
-        public string GetResults()
+        public String GetResults()
         {
             StringBuilder result = new StringBuilder();
             int scale = 64;
-            foreach (KeyValuePair<string, TimeSpan> tupel in m_durations.OrderBy(t => t.Value))
+            foreach (KeyValuePair<String, TimeSpan> tupel in this.m_durations.OrderBy(t => t.Value))
             {
-                string currentResult = "# ";
+                String currentResult = "# ";
                 currentResult += tupel.Key;
                 while (currentResult.Length <= 1 * scale)
                 {
@@ -103,7 +103,7 @@ namespace GoAhead.Commands
                     currentResult += ' ';
                 }
 
-                currentResult += " in " + m_calls[tupel.Key] + " call(s).";
+                currentResult += " in " + this.m_calls[tupel.Key] + " call(s).";
 
                 result.AppendLine(currentResult);
             }
@@ -112,18 +112,18 @@ namespace GoAhead.Commands
 
         public long TotalDuration
         {
-            get { return m_durations.Sum(t => t.Value.Ticks); }
+            get { return this.m_durations.Sum(t => t.Value.Ticks); }
         }
 
         public void Reset()
         {
-            m_calls.Clear();
-            m_starts.Clear();
-            m_durations.Clear();
+            this.m_calls.Clear();
+            this.m_starts.Clear();
+            this.m_durations.Clear();
         }
 
-        private Dictionary<string, int> m_calls = new Dictionary<string, int>();
-        private Dictionary<string, DateTime> m_starts = new Dictionary<string, DateTime>();
-        private Dictionary<string, TimeSpan> m_durations = new Dictionary<string, TimeSpan>();
+        private Dictionary<String, int> m_calls = new Dictionary<String, int>();
+        private Dictionary<String, DateTime> m_starts = new Dictionary<String, DateTime>();
+        private Dictionary<String, TimeSpan> m_durations = new Dictionary<String, TimeSpan>();
     }
 }

@@ -14,9 +14,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE);
 
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
             
             foreach(XDLNet n in netlistContainer.Nets)
             {
@@ -44,7 +44,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
                                 pin = new NetOutpin();
                             }
 
-                            string[] atoms = pip.To.Split('_');
+                            String[] atoms = pip.To.Split('_');
                             pin.SlicePort = atoms[1];
 
                             if (netlistContainer.Instances.Any(i => i.SliceName.Equals(s.SliceName)))

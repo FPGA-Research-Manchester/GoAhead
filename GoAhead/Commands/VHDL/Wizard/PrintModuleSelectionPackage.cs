@@ -8,16 +8,16 @@ namespace GoAhead.Commands.VHDL
 {
     class PrintModuleSelectionPackage : VHDLCommand
     {
-        public IEnumerable<string> GetEnumTypeValues()
+        public IEnumerable<String> GetEnumTypeValues()
         {
-            foreach (string pr in PartialAreaNames)
+            foreach (String pr in this.PartialAreaNames)
             {
-                foreach (string vhdlFile in GetVHDLFilePaths(pr))
+                foreach (String vhdlFile in this.GetVHDLFilePaths(pr))
                 {
                     VHDLParser vhdlParser = new VHDLParser(vhdlFile);
                     foreach (VHDLParserEntity ent in vhdlParser.GetEntities())
                     {
-                        string nextEnumValue = "build_" + ent.EntityName + "_in_" + pr;
+                        String nextEnumValue = "build_" + ent.EntityName + "_in_" + pr;
                         yield return nextEnumValue;
                     }
                 }
@@ -26,15 +26,15 @@ namespace GoAhead.Commands.VHDL
 
        protected override void DoCommandAction()
         {
-            OutputManager.WriteVHDLOutput("library IEEE;");
-            OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.all;");
-            OutputManager.WriteVHDLOutput("");   
-            OutputManager.WriteVHDLOutput("package config is");
-            OutputManager.WriteVHDLOutput("");
-            string enumType = "";
-            string initValue = "";
+            this.OutputManager.WriteVHDLOutput("library IEEE;");
+            this.OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.all;");
+            this.OutputManager.WriteVHDLOutput("");   
+            this.OutputManager.WriteVHDLOutput("package config is");
+            this.OutputManager.WriteVHDLOutput("");
+            String enumType = "";
+            String initValue = "";
 
-            foreach (string enumValue in GetEnumTypeValues())
+            foreach (String enumValue in this.GetEnumTypeValues())
             {
                 if (initValue.Length == 0)
                 {
@@ -46,17 +46,17 @@ namespace GoAhead.Commands.VHDL
             initValue = "NONE";// MinitValue.ToUpper();
             enumType = enumType.ToUpper();
 
-            OutputManager.WriteVHDLOutput("\t" + "type module_selector_t is (" + enumType + ");");
-            OutputManager.WriteVHDLOutput("\t" + "constant module_selector : module_selector_t := " + initValue + ";");
-            OutputManager.WriteVHDLOutput("");
-            OutputManager.WriteVHDLOutput("end config;");
+            this.OutputManager.WriteVHDLOutput("\t" + "type module_selector_t is (" + enumType + ");");
+            this.OutputManager.WriteVHDLOutput("\t" + "constant module_selector : module_selector_t := " + initValue + ";");
+            this.OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("end config;");
         }
 
-        private IEnumerable<string> GetVHDLFilePaths(string partialArea)
+        private IEnumerable<String> GetVHDLFilePaths(String partialArea)
         {
-            foreach (string mapping in ModulesPerArea.Where(str => str.StartsWith(partialArea + ":")))
+            foreach (String mapping in this.ModulesPerArea.Where(str => str.StartsWith(partialArea + ":")))
             {
-                string[] tupel = Regex.Split(mapping, partialArea + ":");
+                String[] tupel = Regex.Split(mapping, partialArea + ":");
                 yield return tupel[1];
             }
         }
@@ -68,9 +68,9 @@ namespace GoAhead.Commands.VHDL
 
 
         [Parameter(Comment = @"pr0:c:\temp\m1.vhd,pr0:c:\temp\m2.vhd,pr1:c:\temp\m3.vhd")]
-        public List<string> ModulesPerArea = new List<string>();
+        public List<String> ModulesPerArea = new List<String>();
 
         [Parameter(Comment = "The name of partial areas, e.g. pr0,pr1,pr2")]
-        public List<string> PartialAreaNames = new List<string>();
+        public List<String> PartialAreaNames = new List<String>();
     }
 }

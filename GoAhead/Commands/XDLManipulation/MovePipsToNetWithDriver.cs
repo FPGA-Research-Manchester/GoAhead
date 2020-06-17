@@ -13,28 +13,28 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             // read file
-            DesignParser parser = DesignParser.CreateDesignParser(XDLInFile);
+            DesignParser parser = DesignParser.CreateDesignParser(this.XDLInFile);
             // into design
             XDLContainer container = new XDLContainer();
             parser.ParseDesign(container, this);
 
-            XDLNet netWithOutPin = (XDLNet) container.Nets.FirstOrDefault(n => n.OutpinCount == 1 && string.IsNullOrEmpty(((XDLNet)n).HeaderExtension));
+            XDLNet netWithOutPin = (XDLNet) container.Nets.FirstOrDefault(n => n.OutpinCount == 1 && String.IsNullOrEmpty(((XDLNet)n).HeaderExtension));
 
             if(netWithOutPin == null)
             {
                 throw new ArgumentException("No net with outpin found");
             }
 
-            List<string> namesOfNetsWithoutOutpin = new List<string>();
+            List<String> namesOfNetsWithoutOutpin = new List<String>();
             foreach (Net net in container.Nets.Where(n => n.OutpinCount == 0))
             {
                 namesOfNetsWithoutOutpin.Add(net.Name);
             }
 
-            foreach (string netName in namesOfNetsWithoutOutpin)
+            foreach (String netName in namesOfNetsWithoutOutpin)
             {
                 XDLNet net = (XDLNet) container.Nets.FirstOrDefault(n => n.Name.Equals(netName));
                 if (net == null)
@@ -48,7 +48,7 @@ namespace GoAhead.Commands.XDLManipulation
                 net.ClearPips();
             }
 
-            System.IO.TextWriter tw = new System.IO.StreamWriter(XDLOutFile, false);
+            System.IO.TextWriter tw = new System.IO.StreamWriter(this.XDLOutFile, false);
             tw.WriteLine(container.GetDesignConfig().ToString());
 
             foreach (XDLModule mod in container.Modules)
@@ -80,9 +80,9 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "The name of the file to read in")]
-        public string XDLInFile = "in.xdl";
+        public String XDLInFile = "in.xdl";
 
         [Parameter(Comment = "The name of the file to write the new design to")]
-        public string XDLOutFile = "out.xdl";
+        public String XDLOutFile = "out.xdl";
     }
 }

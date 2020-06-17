@@ -14,23 +14,23 @@ namespace GoAhead.Commands.UCF
     {
         protected override void DoCommandAction()
         {
-            foreach (string prohibitStatment in GetProhibitStatments(Location, ExcludeUsedSlices))
+            foreach (String prohibitStatment in PrintProhibitStatement.GetProhibitStatments(this.Location, this.ExcludeUsedSlices))
             {
-                OutputManager.WriteUCFOutput(prohibitStatment);
+                this.OutputManager.WriteUCFOutput(prohibitStatment);
             }
         }
 
-        public static List<string> GetProhibitStatments(string location, bool excludeUsedSlices)
+        public static List<String> GetProhibitStatments(String location, bool excludeUsedSlices)
         {
             Tile tile = FPGA.FPGA.Instance.GetTile(location);
 
-            List<string> result = new List<string>();
+            List<String> result = new List<String>();
 
             if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB) ||
                 IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.BRAM) ||
                 IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.DSP))
             {
-                foreach (Slice slice in tile.Slices.Where(s => ConsiderSlice(s)))
+                foreach (Slice slice in tile.Slices.Where(s => PrintProhibitStatement.ConsiderSlice(s)))
                 {
                     if (FPGA.FPGA.Instance.BackendType == FPGATypes.BackendType.ISE)
                     {
@@ -94,7 +94,7 @@ namespace GoAhead.Commands.UCF
         }
 
         [Parameter(Comment = "The location string  of the tile to block")]
-        public string Location = "CLBLL_X2Y78";
+        public String Location = "CLBLL_X2Y78";
 
         [Parameter(Comment = "Whether to exclude slices used by user instantiated macros")]
         public bool ExcludeUsedSlices = true;

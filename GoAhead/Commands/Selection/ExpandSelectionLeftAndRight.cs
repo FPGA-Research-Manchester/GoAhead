@@ -10,17 +10,17 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            bool startInUserSelection = StartInUserSelection();
+            bool startInUserSelection = this.StartInUserSelection();
 
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                ExpandSelection(t, -1, startInUserSelection);
-                ExpandSelection(t, 1, startInUserSelection);
+                this.ExpandSelection(t, -1, startInUserSelection);
+                this.ExpandSelection(t, 1, startInUserSelection);
             }
 
-            AddTiles();
+            this.AddTiles();
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         public override void Undo()

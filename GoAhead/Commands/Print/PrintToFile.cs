@@ -10,7 +10,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput(Text);
+            this.OutputManager.WriteOutput(this.Text);
         }
 
         public override void Undo()
@@ -19,6 +19,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The text to add to the given file")]
-        public string Text = "# text";
+        public String Text = "# text";
     }
 }

@@ -16,20 +16,20 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
 
             // map a library element port to 
             // kind (internal, external, no vecotr
-            Dictionary<string, string> signals = new Dictionary<string, string>();
+            Dictionary<String, String> signals = new Dictionary<String, String>();
             // and to a signal name
-            Dictionary<string, PortMapper.MappingKind> mappings = new Dictionary<string, PortMapper.MappingKind>();
-            Dictionary<string, List<int>> stepWidth = new Dictionary<string, List<int>>();            
+            Dictionary<String, PortMapper.MappingKind> mappings = new Dictionary<String, PortMapper.MappingKind>();
+            Dictionary<String, List<int>> stepWidth = new Dictionary<String, List<int>>();            
 
-            foreach(string triplet in PortMapping)
+            foreach(String triplet in this.PortMapping)
             {
-                string[] atoms = triplet.Split(':');
+                String[] atoms = triplet.Split(':');
                 if(atoms.Length < 2)
                 {
                     throw new ArgumentException("Unexpected format in PortMapping. See parameter description for an example");
                 }
-                string libraryElementPortNameRegexp = atoms[0];
-                string connectedSignal = atoms[1];
+                String libraryElementPortNameRegexp = atoms[0];
+                String connectedSignal = atoms[1];
 
                 // external is the default value
                 PortMapper.MappingKind mapping = PortMapper.MappingKind.External;
@@ -64,27 +64,27 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
                 stepWidth[libraryElementPortNameRegexp] = new List<int>();
                 if (atoms.Length == 4)
                 {
-                    foreach (string intAsString in atoms[3].Split('-'))
+                    foreach (String intAsString in atoms[3].Split('-'))
                     {
-                        stepWidth[libraryElementPortNameRegexp].Add(int.Parse(intAsString));
+                        stepWidth[libraryElementPortNameRegexp].Add(Int32.Parse(intAsString));
                     }
                 }
             }
 
-            if (LibraryElementFilter.Contains("LUT"))
+            if (this.LibraryElementFilter.Contains("LUT"))
             {
 
             }
 
-            foreach (string libraryElementPortNameRegexp in signals.Keys)
+            foreach (String libraryElementPortNameRegexp in signals.Keys)
             {
                 // index with every signal 
                 // two use case: increment or stepwidth
-                int index = StartIndex;
+                int index = this.StartIndex;
                 int wraps = 0;
-                foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(inst =>
-                    Regex.IsMatch(inst.InstanceName, InstantiationFilter) &&
-                    Regex.IsMatch(inst.LibraryElementName, LibraryElementFilter)))
+                foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(inst =>
+                    Regex.IsMatch(inst.InstanceName, this.InstantiationFilter) &&
+                    Regex.IsMatch(inst.LibraryElementName, this.LibraryElementFilter)))
                 {
                     LibraryElement libElement = Objects.Library.Instance.GetElement(inst.LibraryElementName);
                     foreach (XDLPort port in libElement.Containter.Ports.Where(p => Regex.IsMatch(p.ExternalName, libraryElementPortNameRegexp)).OrderBy(p => p.ExternalName))
@@ -106,7 +106,7 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
                                 signals[libraryElementPortNameRegexp], 
                                 mappings[libraryElementPortNameRegexp],
                                 nextIndex);
-                            index += StepWidth;
+                            index += this.StepWidth;
                             
                         }
                     }
@@ -120,10 +120,10 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
         }
 
         [Parameter(Comment = "Only consider those library element instantiations whose name matches this filter")]
-        public string InstantiationFilter = ".*";
+        public String InstantiationFilter = ".*";
 
         [Parameter(Comment = "Only consider those library element instantiations of this type")]
-        public string LibraryElementFilter = ".*";
+        public String LibraryElementFilter = ".*";
 
         [Parameter(Comment = "The start of the signal index")]
         public int StartIndex = 0;
@@ -132,6 +132,6 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
         public int StepWidth = 1;
 
         [Parameter(Comment = "How to map library element instantiation ports, e.g. H:1,I:RES_1:external,O:not_used_0:internal,CLK:CLK:no_vector")]
-        public List<string> PortMapping = new List<string>();
+        public List<String> PortMapping = new List<String>();
     }
 }

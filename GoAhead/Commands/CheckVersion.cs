@@ -14,12 +14,12 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            string filePath = Process.GetCurrentProcess().MainModule.FileName;
+            String filePath = Process.GetCurrentProcess().MainModule.FileName;
 
-            string dir = Program.AssemblyDirectory;
-            string hashFile = dir + Path.DirectorySeparatorChar + "GOA.hash";
+            String dir = Program.AssemblyDirectory;
+            String hashFile = dir + Path.DirectorySeparatorChar + "GOA.hash";
 
-            string oldHash = "";
+            String oldHash = "";
             if (File.Exists(hashFile))
             {
                 TextReader tr = new StreamReader(hashFile);
@@ -28,27 +28,27 @@ namespace GoAhead.Commands
             }
 
             FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            string currentHash = HashFile(fs);
+            String currentHash = HashFile(fs);
             fs.Close();
 
             TextWriter tw = new StreamWriter(hashFile, false);
             tw.Write(currentHash);
             tw.Close();
 
-            string question = "You switched to a new GoAhead version. Delete the preferences " + StoredPreferences.GetPreferenceFileName() + "?";
+            String question = "You switched to a new GoAhead version. Delete the preferences " + StoredPreferences.GetPreferenceFileName() + "?";
 
             if (!oldHash.Equals(currentHash) || true)
             {       
-                switch (Action.ToUpper())
+                switch (this.Action.ToUpper())
                 {
                     case "WARN" : 
                         {
-                            OutputManager.WriteOutput("Warning: You switched to a new GoAhead version. Make sure you delete your preferences file.");
+                            this.OutputManager.WriteOutput("Warning: You switched to a new GoAhead version. Make sure you delete your preferences file.");
                             break;
                         }
                     case "DEL" :
                         {
-                            CreateBackupAndDelete();
+                            this.CreateBackupAndDelete();
                             break;
                         }
                     case "ASK" : 
@@ -72,7 +72,7 @@ namespace GoAhead.Commands
                                 while(true)
                                 {
                                     Console.WriteLine(question + " (yes|no)");
-                                    string value = Console.ReadLine();
+                                    String value = Console.ReadLine();
                                     if (value.ToUpper().Equals("YES"))
                                     {
                                         delete = true;
@@ -87,7 +87,7 @@ namespace GoAhead.Commands
                             }
                             if(delete)
                             {
-                                CreateBackupAndDelete();
+                                this.CreateBackupAndDelete();
                             }
                             break;
                         }
@@ -104,13 +104,13 @@ namespace GoAhead.Commands
 
         private void CreateBackupAndDelete()
         {
-            string prefFile = StoredPreferences.GetPreferenceFileName();
+            String prefFile = StoredPreferences.GetPreferenceFileName();
             if (!File.Exists(prefFile))
             {
                 return;
             }
             // create backup (overwrite existing bcakup)
-            string backup = Path.GetFileNameWithoutExtension(prefFile) + ".backup";
+            String backup = Path.GetFileNameWithoutExtension(prefFile) + ".backup";
             if (File.Exists(backup))
             {
                 File.Delete(backup);
@@ -132,7 +132,7 @@ namespace GoAhead.Commands
             {
                 stream.Seek(0, SeekOrigin.Begin);
 
-                MD5 md5 = MD5.Create();
+                MD5 md5 = MD5CryptoServiceProvider.Create();
                 byte[] hash = md5.ComputeHash(stream);
                 foreach (byte b in hash)
                     sb.Append(b.ToString("x2"));
@@ -145,6 +145,6 @@ namespace GoAhead.Commands
 
 
         [Parameter(Comment = "What to do, if a new version is detected: Issue a warning (WARN), delete preferences.bin (DEL) or ask the user whether to delete preferences.bin (ASK)")]
-        public string Action = "WARN";
+        public String Action = "WARN";
     }
 }

@@ -12,24 +12,24 @@ namespace GoAhead.Commands.Selection.Anchor
         protected void SetAnchor(Tile anchor)
         {
             Objects.SelectionManager.Instance.Anchor = anchor;
-            Objects.SelectionManager.Instance.XAnchorName = XName;
-            Objects.SelectionManager.Instance.YAnchorName = YName;
+            Objects.SelectionManager.Instance.XAnchorName = this.XName;
+            Objects.SelectionManager.Instance.YAnchorName = this.YName;
 
             Set setXDefineCmd = new Set();
-            setXDefineCmd.Variable = XName;
+            setXDefineCmd.Variable = this.XName;
             setXDefineCmd.Value = anchor.TileKey.X.ToString();
             CommandExecuter.Instance.Execute(setXDefineCmd);
 
             Set setYDefineCmd = new Set();
-            setYDefineCmd.Variable = YName;
+            setYDefineCmd.Variable = this.YName;
             setYDefineCmd.Value = anchor.TileKey.Y.ToString();
             CommandExecuter.Instance.Execute(setYDefineCmd);
         }
 
         [Parameter(Comment = "The name of the X Anchor")]
-        public string XName = "xAnchor";
+        public String XName = "xAnchor";
                 
         [Parameter(Comment = "The name of the Y Anchor")]
-        public string YName = "yAnchor";
+        public String YName = "yAnchor";
     }
 }

@@ -29,19 +29,19 @@ namespace GoAhead.Commands.Selection
                 do
                 {
                     expansion.Add(interconnect);
-                    Location loc = Navigator.GetDestinations(interconnect, port).FirstOrDefault(l => l.Pip.Name.Equals(End));
+                    Location loc = Navigator.GetDestinations(interconnect, port).FirstOrDefault(l => l.Pip.Name.Equals(this.End));
                     if (loc == null)
                     {
-                        throw new ArgumentException("Can not route via " + Begin + " from " + interconnect + " to " + End);
+                        throw new ArgumentException("Can not route via " + this.Begin + " from " + interconnect + " to " + this.End);
                     }
                     interconnect = loc.Tile;
                     continuePath =
-                            (startIsUserSelected && TileSelectionManager.Instance.IsUserSelected(interconnect.TileKey, UserSelectionType)) ||
-                            (!startIsUserSelected && !TileSelectionManager.Instance.IsUserSelected(interconnect.TileKey, UserSelectionType));
+                            (startIsUserSelected && FPGA.TileSelectionManager.Instance.IsUserSelected(interconnect.TileKey, this.UserSelectionType)) ||
+                            (!startIsUserSelected && !FPGA.TileSelectionManager.Instance.IsUserSelected(interconnect.TileKey, this.UserSelectionType));
                 } while (continuePath);
             }
 
-            expansion.ForEach(t => TileSelectionManager.Instance.AddToSelection(t.TileKey, false));
+            expansion.ForEach(t => FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false));
         }
 
         public override void Undo()
@@ -50,13 +50,13 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "The name of the user selection that limits the extent of the selection expanding")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
 
 
         [Parameter(Comment = "The name of the port to expand the selection until reaching or leaving the user selecton")]
-        public string Begin = "EE2BEG0";
+        public String Begin = "EE2BEG0";
 
         [Parameter(Comment = "The name of the port to expand the selection until reaching or leaving the user selecton. We need to provide this parameter as the BEG pip might have several taps (e.g., mid)")]
-        public string End = "EE2END0";
+        public String End = "EE2END0";
     }
 }

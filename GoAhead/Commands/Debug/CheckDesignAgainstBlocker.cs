@@ -15,13 +15,13 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            XDLContainer design = (XDLContainer) GetNetlistContainer();
+            XDLContainer design = (XDLContainer) this.GetNetlistContainer();
             XDLContainer blocker = new XDLContainer();
 
             // read file
-            DesignParser parser = DesignParser.CreateDesignParser(Blocker);
+            DesignParser parser = DesignParser.CreateDesignParser(this.Blocker);
 
             // into design            
             parser.ParseDesign(blocker, this);
@@ -43,11 +43,11 @@ namespace GoAhead.Commands.Debug
                     Tile t = FPGA.FPGA.Instance.GetTile(pip.Location);
                     if (t.IsPortBlocked(pip.From))
                     {
-                        OutputManager.WriteOutput("In net " + net.Name + ": resource conflict on FROM port " + pip);
+                        this.OutputManager.WriteOutput("In net " + net.Name + ": resource conflict on FROM port " + pip);
                     }
                     if (t.IsPortBlocked(pip.To))
                     {
-                        OutputManager.WriteOutput("In net " + net.Name + ": resource conflict on TO port " + pip);
+                        this.OutputManager.WriteOutput("In net " + net.Name + ": resource conflict on TO port " + pip);
                     }
                 }
             }
@@ -59,6 +59,6 @@ namespace GoAhead.Commands.Debug
         }
 
         [Parameter(Comment = "The blocker")]
-        public string Blocker = "blocker.xdl";
+        public String Blocker = "blocker.xdl";
     }
 }

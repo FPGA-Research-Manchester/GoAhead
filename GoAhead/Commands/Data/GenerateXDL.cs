@@ -17,15 +17,15 @@ namespace GoAhead.Commands.Data
         /// </summary>
         /// <param name="XDLfileName">name of the xdl file to save the macro in</param>
         /// <param name="m_macroNames"></param>
-        public GenerateXDL(string XDLfileName, List<string> macroNames, bool includePorts, bool includeDummyNets, bool includeDesignStatement, bool includeModuleHeader, bool includeModuleFooter)
+        public GenerateXDL(String XDLfileName, List<String> macroNames, bool includePorts, bool includeDummyNets, bool includeDesignStatement, bool includeModuleHeader, bool includeModuleFooter)
 		{
-			FileName = XDLfileName;
-			NetlistContainerNames = macroNames;
-            IncludePorts = includePorts;
-            IncludeDummyNets = includeDummyNets;
-            IncludeDesignStatement = includeDesignStatement;
-            IncludeModuleHeader = includeModuleHeader;
-            IncludeModuleFooter = includeModuleFooter;
+			this.FileName = XDLfileName;
+			this.NetlistContainerNames = macroNames;
+            this.IncludePorts = includePorts;
+            this.IncludeDummyNets = includeDummyNets;
+            this.IncludeDesignStatement = includeDesignStatement;
+            this.IncludeModuleHeader = includeModuleHeader;
+            this.IncludeModuleFooter = includeModuleFooter;
 		}
 
         protected override void DoCommandAction() 
@@ -33,22 +33,22 @@ namespace GoAhead.Commands.Data
             FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE);
 
             List<XDLContainer> netlistContainer = new List<XDLContainer>();
-            foreach (string netlistContainerName in NetlistContainerNames)
+            foreach (String netlistContainerName in this.NetlistContainerNames)
             {
                 netlistContainer.Add((XDLContainer)NetlistContainerManager.Instance.Get(netlistContainerName));
             }
 
-            using (StreamWriter sw = new StreamWriter(FileName, false))
+            using (StreamWriter sw = new StreamWriter(this.FileName, false))
             {
                 XDLFile file = new XDLFile(
-                    IncludePorts, 
-                    IncludeDummyNets, 
+                    this.IncludePorts, 
+                    this.IncludeDummyNets, 
                     netlistContainer, 
-                    IncludeDesignStatement, 
-                    IncludeModuleHeader, 
-                    IncludeModuleFooter, 
-                    DesignName, 
-                    SortInstancesBySliceName);
+                    this.IncludeDesignStatement, 
+                    this.IncludeModuleHeader, 
+                    this.IncludeModuleFooter, 
+                    this.DesignName, 
+                    this.SortInstancesBySliceName);
 
                 file.WriteXDLCodeToFile(sw);
 
@@ -62,10 +62,10 @@ namespace GoAhead.Commands.Data
 		}
 
         [Parameter(Comment = "The name of the file to save the XDL code in")]
-        public string FileName = "";
+        public String FileName = "";
 
         [Parameter(Comment = "A list of macro names (XDL-Containter) for which XDL code will be generated")]
-        public List<string> NetlistContainerNames = new List<string>();
+        public List<String> NetlistContainerNames = new List<String>();
 
         [Parameter(Comment = "Whether to include XDL ports or not")]
         public bool IncludePorts = false;
@@ -83,7 +83,7 @@ namespace GoAhead.Commands.Data
         public bool IncludeModuleFooter = false;
 
         [Parameter(Comment = "The Design name to insert in the design statement")]
-        public string DesignName = "__XILINX_NMC_MACRO";     
+        public String DesignName = "__XILINX_NMC_MACRO";     
                         
         [Parameter(Comment = "Whether to sort the generated instances by the slice name (e.g. SLICE_X3Y4) (we do not(!) by the instance names")]
         public bool SortInstancesBySliceName = false;

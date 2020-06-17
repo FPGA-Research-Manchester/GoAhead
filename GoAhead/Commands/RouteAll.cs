@@ -14,7 +14,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
             int numberOfUnroutedNets = netlistContainer.Nets.Where(n => n.PipCount == 0 && n.OutpinCount == 1 && n.InpinCount > 0).Count();
             int routedNets = 0;
@@ -26,9 +26,9 @@ namespace GoAhead.Commands
                 int pipCount = unroutedNet.PipCount;               
 
                 RouteNet routeCmd = new RouteNet();
-                routeCmd.NetlistContainerName = NetlistContainerName;
+                routeCmd.NetlistContainerName = this.NetlistContainerName;
                 routeCmd.NetName = unroutedNet.Name;
-                routeCmd.SearchMode = SearchMode;
+                routeCmd.SearchMode = this.SearchMode;
 
                 CommandExecuter.Instance.Execute(routeCmd);
 
@@ -38,17 +38,17 @@ namespace GoAhead.Commands
                     unrouteableNets.Add(unroutedNet);
                 }             
                 
-                ProgressInfo.Progress = ProgressStart + (int)((double)routedNets++ / (double)numberOfUnroutedNets * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)routedNets++ / (double)numberOfUnroutedNets * this.ProgressShare);
             }
             
             foreach(XDLNet net in unrouteableNets)
             {
                 RouteNet routeCmd = new RouteNet();
-                routeCmd.NetlistContainerName = NetlistContainerName;
+                routeCmd.NetlistContainerName = this.NetlistContainerName;
                 routeCmd.NetName = net.Name;
-                routeCmd.SearchMode = SearchMode;
+                routeCmd.SearchMode = this.SearchMode;
 
-                OutputManager.WriteOutput(routeCmd.ToString());
+                this.OutputManager.WriteOutput(routeCmd.ToString());
 
                 CommandExecuter.Instance.Execute(routeCmd);
             }
@@ -60,6 +60,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The path search modue (BFS, DFS)")]
-        public string SearchMode = "BFS";
+        public String SearchMode = "BFS";
     }
 }

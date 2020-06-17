@@ -14,10 +14,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
             FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.Vivado);
 
-            TCLContainer netlistContainer = (TCLContainer) GetNetlistContainer();
+            TCLContainer netlistContainer = (TCLContainer) this.GetNetlistContainer();
             TCLDesignHierarchy hier = new TCLDesignHierarchy();
-            hier.Name = Name;
-            hier.Properties.SetProperty("REF_NAME", Reference, true);
+            hier.Name = this.Name;
+            hier.Properties.SetProperty("REF_NAME", this.Reference, true);
             netlistContainer.Add(hier);
         }
 
@@ -27,9 +27,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The name of the hierarchy, e.g inst_PartialSubsystem")]
-        public string Name = "inst_PartialSubsystem3";
+        public String Name = "inst_PartialSubsystem3";
 
         [Parameter(Comment = "The reference name for the create_cell command, e.g PartialSubsystem")]
-        public string Reference = "PartialSubsystem";
+        public String Reference = "PartialSubsystem";
     }
 }

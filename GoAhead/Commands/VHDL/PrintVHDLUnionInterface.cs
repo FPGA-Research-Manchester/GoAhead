@@ -12,7 +12,7 @@ namespace GoAhead.Commands.VHDL
         {
             VHDLFile union = new VHDLFile("union_interface");
 
-            foreach (string vhdlFile in Modules)
+            foreach (String vhdlFile in this.Modules)
             {
                 VHDLParser p = new VHDLParser(vhdlFile);
                 foreach (VHDLParserEntity entity in p.GetEntities())
@@ -33,9 +33,9 @@ namespace GoAhead.Commands.VHDL
                 }
             }
 
-            OutputManager.WriteOutput("entity union_interface is port (");
-            OutputManager.WriteOutput(union.Entity.ToString());
-            OutputManager.WriteOutput("end union_interface;");
+            this.OutputManager.WriteOutput("entity union_interface is port (");
+            this.OutputManager.WriteOutput(union.Entity.ToString());
+            this.OutputManager.WriteOutput("end union_interface;");
         }
 
         public override void Undo()
@@ -44,6 +44,6 @@ namespace GoAhead.Commands.VHDL
         }
 
         [Parameter(Comment = "A list of files with VHDL Entities")]
-        public List<string> Modules = new List<string>();
+        public List<String> Modules = new List<String>();
     }
 }

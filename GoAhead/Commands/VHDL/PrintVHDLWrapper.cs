@@ -14,7 +14,7 @@ namespace GoAhead.Commands.VHDL
         protected override void PrintVHDLCode(VHDLFile vhdlFile)
         {
             // onle for ISE insert component declarations, in Vivado we use LUT6 primitves, and do not need component declartation
-            OutputManager.WriteVHDLOutput(vhdlFile.GetSubsystem(FPGA.FPGA.Instance.BackendType == FPGA.FPGATypes.BackendType.ISE));
+            this.OutputManager.WriteVHDLOutput(vhdlFile.GetSubsystem(FPGA.FPGA.Instance.BackendType == FPGA.FPGATypes.BackendType.ISE));
         }
 
         public override void Undo()

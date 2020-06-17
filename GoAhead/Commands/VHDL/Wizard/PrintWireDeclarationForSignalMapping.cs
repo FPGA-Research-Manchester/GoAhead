@@ -10,13 +10,13 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void DoCommandAction()
         {
-            Dictionary<string, List<int>> signalWidths;
-            Dictionary<string, string> directions;
-            List<Tuple<string, List<int>>> interfaces;
-            List<string> ifSignals;
-            List<string> signalsForInterface;
-            List<string> signalsDeclarationsForMappingAndKeep;
-            GetSignalList(PartialAreaName, false,
+            Dictionary<String, List<int>> signalWidths;
+            Dictionary<String, String> directions;
+            List<Tuple<String, List<int>>> interfaces;
+            List<String> ifSignals;
+            List<String> signalsForInterface;
+            List<String> signalsDeclarationsForMappingAndKeep;
+            this.GetSignalList(this.PartialAreaName, false,
                 out signalWidths,
                 out directions,
                 out interfaces,
@@ -24,41 +24,41 @@ namespace GoAhead.Commands.VHDL
                 out signalsForInterface,
                 out signalsDeclarationsForMappingAndKeep);
 
-            if (PrintAttributeDeclaration)
+            if (this.PrintAttributeDeclaration)
             {
-                OutputManager.WriteVHDLOutput("attribute s : string;");
-                OutputManager.WriteVHDLOutput("attribute keep : string;");
+                this.OutputManager.WriteVHDLOutput("attribute s : string;");
+                this.OutputManager.WriteVHDLOutput("attribute keep : string;");
             }
 
-            List<string> declaredSignalNames = new List<string>();
-            VHDLParser vhdlParser = new VHDLParser(VHDLModule);
+            List<String> declaredSignalNames = new List<String>();
+            VHDLParser vhdlParser = new VHDLParser(this.VHDLModule);
             foreach (VHDLParserEntity ent in vhdlParser.GetEntities())
             {
-                OutputManager.WriteVHDLOutput("-- declaration of signals to connect module " + ent.EntityName);
+                this.OutputManager.WriteVHDLOutput("-- declaration of signals to connect module " + ent.EntityName);
                 for (int i = 0; i < ent.InterfaceSignals.Count; i++)
                 {
-                    string signalName = ent.InterfaceSignals[i].SignalName;
+                    String signalName = ent.InterfaceSignals[i].SignalName;
                     if (!signalWidths.ContainsKey(signalName))
                     {
-                        OutputManager.WriteVHDLOutput("-- could not map the module signal " + ent.InterfaceSignals[i].SignalName + " to a signal in the partial area");
+                        this.OutputManager.WriteVHDLOutput("-- could not map the module signal " + ent.InterfaceSignals[i].SignalName + " to a signal in the partial area");
                     }
                     else
                     {
                         int signalWidthOfSignalNameInPartialArea = signalWidths[signalName].Count;
-                        string signalDecl = "signal " + ent.EntityName + "_" + signalName + "_" + PartialAreaName + " : std_logic_vector(" + (signalWidthOfSignalNameInPartialArea - 1) + " downto 0) := (others => '1');";
-                        OutputManager.WriteVHDLOutput(signalDecl);
-                        declaredSignalNames.Add(ent.EntityName + "_" + signalName + "_" + PartialAreaName);
+                        String signalDecl = "signal " + ent.EntityName + "_" + signalName + "_" + this.PartialAreaName + " : std_logic_vector(" + (signalWidthOfSignalNameInPartialArea - 1) + " downto 0) := (others => '1');";
+                        this.OutputManager.WriteVHDLOutput(signalDecl);
+                        declaredSignalNames.Add(ent.EntityName + "_" + signalName + "_" + this.PartialAreaName);
                     }
                 }
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("");
             }
           
-            foreach (string signalName in declaredSignalNames)
+            foreach (String signalName in declaredSignalNames)
             {
-                OutputManager.WriteVHDLOutput("attribute s of " + signalName + " : signal is \"yes\";");
-                OutputManager.WriteVHDLOutput("attribute keep of " + signalName + " : signal is \"yes\";");
+                this.OutputManager.WriteVHDLOutput("attribute s of " + signalName + " : signal is \"yes\";");
+                this.OutputManager.WriteVHDLOutput("attribute keep of " + signalName + " : signal is \"yes\";");
             }
-            OutputManager.WriteVHDLOutput("");
+            this.OutputManager.WriteVHDLOutput("");
         }
 
         public override void Undo()
@@ -67,10 +67,10 @@ namespace GoAhead.Commands.VHDL
         }
 
         [Parameter(Comment = "The name of the partial area this module will be built in")]
-        public string PartialAreaName = "pr0";
+        public String PartialAreaName = "pr0";
 
         [Parameter(Comment = "The path to VHDL module  file to read")]
-        public string VHDLModule = "top.vhd";
+        public String VHDLModule = "top.vhd";
                 
         [Parameter(Comment = "The path to VHDL module  file to read")]
         public bool PrintAttributeDeclaration = true;

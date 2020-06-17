@@ -15,22 +15,22 @@ namespace GoAhead.Commands.UCF
         {
         }
 
-        public PrintAnchorStatement(string fileName, List<string> macroNames)
+        public PrintAnchorStatement(String fileName, List<String> macroNames)
         {
-            FileName = fileName;
-            NetlistContainerNames = macroNames;
+            this.FileName = fileName;
+            this.NetlistContainerNames = macroNames;
         }
 
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             StringBuilder buffer = new StringBuilder();
             buffer.AppendLine("################ GoAhead ################ GoAhead ################");
 
-            foreach (string netlistContainerName in NetlistContainerNames)
+            foreach (String netlistContainerName in this.NetlistContainerNames)
             {
-                string anchor;
+                String anchor;
                 List<XDLContainer> nlcs = new List<XDLContainer>();
                 nlcs.Add((XDLContainer) NetlistContainerManager.Instance.Get(netlistContainerName));
                 bool anchorFound = XDLContainer.GetAnchor(nlcs, out anchor);
@@ -39,7 +39,7 @@ namespace GoAhead.Commands.UCF
             }
         
             // write to file
-            if (File.Exists(FileName))
+            if (File.Exists(this.FileName))
             {
                 TextWriter tw = new StreamWriter(FileName);
                 tw.Write(buffer.ToString());
@@ -47,7 +47,7 @@ namespace GoAhead.Commands.UCF
             }
 
             // write to gui
-            OutputManager.WriteUCFOutput(buffer.ToString());
+            this.OutputManager.WriteUCFOutput(buffer.ToString());
         }
 
         public override void Undo()
@@ -56,6 +56,6 @@ namespace GoAhead.Commands.UCF
         }
 
         [Parameter(Comment = "A list of netlist container names for those anchor statements will be printed")]
-        public List<string> NetlistContainerNames = new List<string>();
+        public List<String> NetlistContainerNames = new List<String>();
     }
 }

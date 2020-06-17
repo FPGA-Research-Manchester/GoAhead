@@ -17,11 +17,11 @@ namespace GoAhead.Commands.Library
         {            
             Stream stream = null;
 
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
             try
             {
-                stream = File.Open(FileName, FileMode.Create);
+                stream = File.Open(this.FileName, FileMode.Create);
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, libElement);
             }
@@ -36,7 +36,7 @@ namespace GoAhead.Commands.Library
 
             // update the restore command for the library element
             AddBinaryLibraryElement addElCmd = new AddBinaryLibraryElement();
-            addElCmd.FileName = FileName;
+            addElCmd.FileName = this.FileName;
             libElement.LoadCommand = addElCmd.ToString();
         }
 
@@ -46,10 +46,10 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The name of the library element to save")]
-        public string LibraryElementName = "libelement";
+        public String LibraryElementName = "libelement";
 
         [Parameter(Comment = "The name of the file to save the library element in")]
-        public string FileName = "libelement.binNetlist";
+        public String FileName = "libelement.binNetlist";
         
     }
 }

@@ -10,7 +10,7 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            FPGA.TileSelectionManager.Instance.ClearUserSelection(UserSelectionType);
+            FPGA.TileSelectionManager.Instance.ClearUserSelection(this.UserSelectionType);
         }
 
         public override void Undo()
@@ -18,6 +18,6 @@ namespace GoAhead.Commands.Selection
             throw new NotImplementedException();
         }
         [Parameter(Comment = "The name of the user selection")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

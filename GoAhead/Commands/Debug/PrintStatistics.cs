@@ -12,42 +12,42 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            OutputManager.WriteOutput("Name: " + nlc.Name);
-            OutputManager.WriteOutput("Instances: " + nlc.InstanceCount);
-            OutputManager.WriteOutput("Nets: " + nlc.Nets.Count());
+            this.OutputManager.WriteOutput("Name: " + nlc.Name);
+            this.OutputManager.WriteOutput("Instances: " + nlc.InstanceCount);
+            this.OutputManager.WriteOutput("Nets: " + nlc.Nets.Count());
             if (nlc.NetCount > 0)
             {
-                OutputManager.WriteOutput("Average pip count per net: " + nlc.Nets.Average(n => n.PipCount));
-                OutputManager.WriteOutput("Minimal pip count: " + nlc.Nets.Min(n => n.PipCount));
-                OutputManager.WriteOutput("Maximal pip count: " + nlc.Nets.Max(n => n.PipCount));
+                this.OutputManager.WriteOutput("Average pip count per net: " + nlc.Nets.Average(n => n.PipCount));
+                this.OutputManager.WriteOutput("Minimal pip count: " + nlc.Nets.Min(n => n.PipCount));
+                this.OutputManager.WriteOutput("Maximal pip count: " + nlc.Nets.Max(n => n.PipCount));
 
-                OutputManager.WriteOutput("-----------------------------------------");
+                this.OutputManager.WriteOutput("-----------------------------------------");
                 IEnumerable<Net> netsWithoutOutpin = nlc.Nets.Where(n => n.OutpinCount == 0);
-                OutputManager.WriteOutput("Nets without Outpin: " + netsWithoutOutpin.Count());
-                PrintHits(netsWithoutOutpin);
-                OutputManager.WriteOutput("-----------------------------------------");
+                this.OutputManager.WriteOutput("Nets without Outpin: " + netsWithoutOutpin.Count());
+                this.PrintHits(netsWithoutOutpin);
+                this.OutputManager.WriteOutput("-----------------------------------------");
 
                 IEnumerable<Net> netsWithoutOutpinWithMoreThanOnePip = nlc.Nets.Where(n => n.OutpinCount == 0 && n.PipCount > 0);
-                OutputManager.WriteOutput("Nets without Outpin and more than one pip: " + netsWithoutOutpinWithMoreThanOnePip.Count());
-                PrintHits(netsWithoutOutpinWithMoreThanOnePip);
-                OutputManager.WriteOutput("-----------------------------------------");
+                this.OutputManager.WriteOutput("Nets without Outpin and more than one pip: " + netsWithoutOutpinWithMoreThanOnePip.Count());
+                this.PrintHits(netsWithoutOutpinWithMoreThanOnePip);
+                this.OutputManager.WriteOutput("-----------------------------------------");
 
                 IEnumerable<Net> netsWithoutIntpin = nlc.Nets.Where(n => n.InpinCount == 0);
-                OutputManager.WriteOutput("Nets without Inpin: " + netsWithoutIntpin.Count());
-                PrintHits(netsWithoutIntpin);
+                this.OutputManager.WriteOutput("Nets without Inpin: " + netsWithoutIntpin.Count());
+                this.PrintHits(netsWithoutIntpin);
 
-                OutputManager.WriteOutput("-----------------------------------------");
+                this.OutputManager.WriteOutput("-----------------------------------------");
                 IEnumerable<Net> singelInpinNets = nlc.Nets.Where(n => n.InpinCount == 1 && n.OutpinCount == 0 && n.PipCount == 0);
-                OutputManager.WriteOutput("Single inpin nets (dummy nets): " + singelInpinNets.Count());
-                PrintHits(singelInpinNets);
+                this.OutputManager.WriteOutput("Single inpin nets (dummy nets): " + singelInpinNets.Count());
+                this.PrintHits(singelInpinNets);
             }
 
-            if (PrintAntennas)
+            if (this.PrintAntennas)
             {
                 PrintAntennas printAntennasCmd = new PrintAntennas();
-                printAntennasCmd.NetlistContainerName = NetlistContainerName;
+                printAntennasCmd.NetlistContainerName = this.NetlistContainerName;
                 // consider all nets
                 printAntennasCmd.PositiveFilter = ".*";
                 printAntennasCmd.NegativeFilter = "";
@@ -58,13 +58,13 @@ namespace GoAhead.Commands.Debug
 
         private void PrintHits(IEnumerable<Net> nets)
         {
-            foreach (Net n in nets.Take(NetNameLimit))
+            foreach (Net n in nets.Take(this.NetNameLimit))
             {
-                OutputManager.WriteOutput(n.Name);
+                this.OutputManager.WriteOutput(n.Name);
             }
-            if (nets.Count() > NetNameLimit)
+            if (nets.Count() > this.NetNameLimit)
             {
-                OutputManager.WriteWarning(" ... more follows. Increase NetNameLimit to " + nets.Count());
+                this.OutputManager.WriteWarning(" ... more follows. Increase NetNameLimit to " + nets.Count());
             }
         }
 

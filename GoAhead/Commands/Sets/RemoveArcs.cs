@@ -12,19 +12,19 @@ namespace GoAhead.Commands.Sets
     {
         public RemoveArcs()
         {
-            PortNameFilter = "";
+            this.PortNameFilter = "";
         }
 
-        public RemoveArcs(string portNameFilter)
+        public RemoveArcs(String portNameFilter)
         {
-            PortNameFilter = portNameFilter;
+            this.PortNameFilter = portNameFilter;
         }
 
         protected override void DoCommandAction()
         {
-            Regex filter = new Regex(PortNameFilter, RegexOptions.Compiled);
+            Regex filter = new Regex(this.PortNameFilter, RegexOptions.Compiled);
 
-            foreach (Tile where in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile where in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 foreach (NetlistContainer netlistContainer in NetlistContainerManager.Instance.NetlistContainer)
                 {
@@ -42,6 +42,6 @@ namespace GoAhead.Commands.Sets
         }
 
         [Parameter(Comment = "If an arc contains this port it will be removed")]
-        public string PortNameFilter = "EE2";
+        public String PortNameFilter = "EE2";
     }
 }

@@ -17,16 +17,16 @@ namespace GoAhead.Commands.Vivado
 
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE, FPGA.FPGATypes.BackendType.Vivado);
 
             SortMode mode = SortMode.Undefined;
             HMode hMode = HMode.Undefined;
             VMode vMode = VMode.Undefined;
 
-            SetSortModes(ref mode, ref hMode, ref vMode);
+            this.SetSortModes(ref mode, ref hMode, ref vMode);
 
             List<TileKey> keys = new List<TileKey>();
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t =>
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t =>
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
                 keys.Add(tile.TileKey);
@@ -60,12 +60,12 @@ namespace GoAhead.Commands.Vivado
                 }
             }
 
-            int index = StartIndex;
+            int index = this.StartIndex;
             foreach (Tile tile in tilesInFinalOrder)
             {
-                foreach (string path in Paths)
+                foreach (string path in this.Paths)
                 {
-                    string netName = Prefix + SignalName + "[" + index++ + "]";
+                    string netName = this.Prefix + this.SignalName + "[" + index++ + "]";
                     PRLink link = new PRLink(tile, netName);
 
                     string[] portNames = path.Split(':');
@@ -90,17 +90,17 @@ namespace GoAhead.Commands.Vivado
 
         private void SetSortModes(ref SortMode mode, ref HMode hMode, ref VMode vMode)
         {
-            if (Mode.ToLower().Equals("row-wise")) { mode = SortMode.R; }
-            else if (Mode.ToLower().Equals("column-wise")) { mode = SortMode.C; }
-            else { throw new ArgumentException("Invalid value for Mode " + Mode + ". Use either row-wise or column-wise"); }
+            if (this.Mode.ToLower().Equals("row-wise")) { mode = SortMode.R; }
+            else if (this.Mode.ToLower().Equals("column-wise")) { mode = SortMode.C; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Mode + ". Use either row-wise or column-wise"); }
 
-            if (Horizontal.ToLower().Equals("left-to-right")) { hMode = HMode.L2R; }
-            else if (Horizontal.ToLower().Equals("right-to-left")) { hMode = HMode.R2L; }
-            else { throw new ArgumentException("Invalid value for Mode " + Horizontal + ". Use either left-to-right or right-to-left"); }
+            if (this.Horizontal.ToLower().Equals("left-to-right")) { hMode = HMode.L2R; }
+            else if (this.Horizontal.ToLower().Equals("right-to-left")) { hMode = HMode.R2L; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Horizontal + ". Use either left-to-right or right-to-left"); }
 
-            if (Vertical.ToLower().Equals("top-down")) { vMode = VMode.TD; }
-            else if (Vertical.ToLower().Equals("bottom-up")) { vMode = VMode.BU; }
-            else { throw new ArgumentException("Invalid value for Mode " + Horizontal + ". Use either top-down orbottom-up"); }
+            if (this.Vertical.ToLower().Equals("top-down")) { vMode = VMode.TD; }
+            else if (this.Vertical.ToLower().Equals("bottom-up")) { vMode = VMode.BU; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Horizontal + ". Use either top-down orbottom-up"); }
         }
 
         [Parameter(Comment = "The index to start counting, e.g. SignalName[index]")]
@@ -113,13 +113,13 @@ namespace GoAhead.Commands.Vivado
         public List<string> Paths = new List<string>();
 
         [Parameter(Comment = "Either row-wise or column-wise")]
-        public string Mode = "row-wise";
+        public String Mode = "row-wise";
 
         [Parameter(Comment = "Either left-to-right or right-to-left")]
-        public string Horizontal = "left-to-right";
+        public String Horizontal = "left-to-right";
 
         [Parameter(Comment = "Either top-down or bottom-up")]
-        public string Vertical = "top-down";
+        public String Vertical = "top-down";
 
         [Parameter(Comment = "Prefix for support hierarchical nets, e.g. system_i/SW2LED_0/U0/")]
         public string Prefix = "";

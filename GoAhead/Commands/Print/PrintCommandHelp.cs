@@ -40,8 +40,8 @@ namespace GoAhead.Commands
                 //htmlBuffer.AppendLine("<font size=5><a name=" + type.Name + " href=#" + type.Name + ">" + type.Name + "</a></font>");
             }
 
-
-            string topLink = "<a href=\"#top\">Top</a>";
+            
+            String topLink = "<a href=\"#top\">Top</a>";
 
             foreach (Type type in CommandStringParser.GetAllCommandTypes().OrderBy(t => t.Name))
             {               
@@ -66,7 +66,7 @@ namespace GoAhead.Commands
                 // synopsis
                 htmlBuffer.AppendLine("<tr>");
                 htmlBuffer.AppendLine("\t<tr><td colspan=3><b> Synopsis </font></b></td></tr>");
-                if (!string.IsNullOrEmpty(command.GetCommandDescription()))
+                if (!String.IsNullOrEmpty(command.GetCommandDescription()))
                 {
                     htmlBuffer.AppendLine("\t<td colspan=3>" + command.GetCommandDescription() + "</td>");
                 }
@@ -77,7 +77,7 @@ namespace GoAhead.Commands
                 htmlBuffer.AppendLine("</tr>");
 
                 // get example form GOAHEAD_HOME
-                string helpFile = command.GetHelpFilePath();
+                String helpFile = command.GetHelpFilePath();
                 htmlBuffer.AppendLine("<tr>");
                 htmlBuffer.AppendLine("\t<td colspan=3><b> Example </font></b></td>");
                 htmlBuffer.AppendLine("</tr>");
@@ -86,7 +86,7 @@ namespace GoAhead.Commands
                     FileInfo fi = new FileInfo(helpFile);
                     if (fi.Length > 0)
                     {
-                        string help = GetHelpFromFileAndInsertSyntaxHighlighting(helpFile);    
+                        String help = this.GetHelpFromFileAndInsertSyntaxHighlighting(helpFile);    
                         htmlBuffer.AppendLine("\t<td colspan=3>");
                         // help contains alignement tabs already
                         htmlBuffer.AppendLine(help);
@@ -105,7 +105,7 @@ namespace GoAhead.Commands
                 htmlBuffer.AppendLine("</tr>");
 
                 // insert additional note (if the note file is present)
-                string noteFile = command.GetNoteFilePath();
+                String noteFile = command.GetNoteFilePath();
                 if (File.Exists(noteFile))
                 {
                     htmlBuffer.AppendLine("<tr>");
@@ -114,7 +114,7 @@ namespace GoAhead.Commands
                     FileInfo fi = new FileInfo(noteFile);
                     if (fi.Length > 0)
                     {
-                        string help = InsertHTLMBlanks(File.ReadAllText(noteFile));
+                        String help = this.InsertHTLMBlanks(File.ReadAllText(noteFile));
                         htmlBuffer.AppendLine("\t<td colspan=3>");
                         htmlBuffer.AppendLine("\t\t" + help);
                         htmlBuffer.AppendLine("\t</td>");
@@ -166,20 +166,20 @@ namespace GoAhead.Commands
             htmlBuffer.AppendLine("</frameset>");
             htmlBuffer.AppendLine("</body>");
             htmlBuffer.AppendLine("</html>");
-            OutputManager.WriteOutput(htmlBuffer.ToString());
+            this.OutputManager.WriteOutput(htmlBuffer.ToString());
         }
 
-        private string GetHelpFromFileAndInsertSyntaxHighlighting(string helpFile)
+        private String GetHelpFromFileAndInsertSyntaxHighlighting(String helpFile)
         {
             StreamReader streamReader = new StreamReader(helpFile);
-            string content = streamReader.ReadToEnd();
+            String content = streamReader.ReadToEnd();
             streamReader.Close();
             
             CommandStringParser parser = new CommandStringParser(content);
-            foreach (string cmdStr in parser.Parse())
+            foreach (String cmdStr in parser.Parse())
             {
                 Command cmd;
-                string errorDescr;
+                String errorDescr;
                 bool valid = parser.ParseCommand(cmdStr, true, out cmd, out errorDescr);
             }            
 
@@ -189,7 +189,7 @@ namespace GoAhead.Commands
             {
                 int start = t.Item2.Item1;
                 int end = t.Item2.Item2;
-                string color = "";
+                String color = "";
 
                 //<FONT COLOR="#cc6600">sample text</FONT>
                 switch (t.Item1)
@@ -207,8 +207,8 @@ namespace GoAhead.Commands
                         continue;
                 }
 
-                string openTag = "<font color =" + color + ">";
-                string closeTag = "</font>";
+                String openTag = "<font color =" + color + ">";
+                String closeTag = "</font>";
                 content = content.Insert(start + offset, openTag);
                 offset += openTag.Length;
                 content = content.Insert(end + offset, closeTag);                                
@@ -229,14 +229,14 @@ namespace GoAhead.Commands
             // ... HTML blanks
             content = InsertHTLMBlanks(content);
             // ... and HTML line breaks
-            content = content.Replace(Environment.NewLine, "<br>" + Environment.NewLine + "\t");
+            content = content.Replace(System.Environment.NewLine, "<br>" + System.Environment.NewLine + "\t");
 
             return content;
         }
 
-        private string InsertHTLMBlanks(string content)
+        private String InsertHTLMBlanks(String content)
         {
-            string nbsp = "";
+            String nbsp = "";
             bool insideBraces = false;
             for (int i = 0; i < content.Length; i++)
             {

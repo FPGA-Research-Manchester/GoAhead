@@ -15,18 +15,18 @@ namespace GoAhead.Commands.InterfaceManager
 
         public AddSignal(Signal s)
         {
-            SignalName = s.SignalName;
-            SignalMode = s.SignalMode;
-            SignalDirection = s.SignalDirection.ToString();
-            PartialRegion = s.PartialRegion;
-            Column = s.Column;
+            this.SignalName = s.SignalName;
+            this.SignalMode = s.SignalMode;
+            this.SignalDirection = s.SignalDirection.ToString();
+            this.PartialRegion = s.PartialRegion;
+            this.Column = s.Column;
         }
 
         protected override void DoCommandAction()
         {
-            FPGATypes.InterfaceDirection dir = (FPGATypes.InterfaceDirection)Enum.Parse(typeof(FPGATypes.InterfaceDirection), SignalDirection);
+            FPGATypes.InterfaceDirection dir = (FPGATypes.InterfaceDirection)Enum.Parse(typeof(FPGATypes.InterfaceDirection), this.SignalDirection);
            
-            Signal s = new Signal(SignalName, SignalMode, dir, PartialRegion, Column);
+            Signal s = new Signal(this.SignalName, this.SignalMode, dir, this.PartialRegion, this.Column);
 
             Objects.InterfaceManager.Instance.Add(s);
         }
@@ -37,16 +37,16 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of signal")]
-        public string SignalName = "s";
+        public String SignalName = "s";
 
         [Parameter(Comment = "The signal direction (in, out, stream)")]
-        public string SignalMode = "stream";
+        public String SignalMode = "stream";
 
         [Parameter(Comment = "The signal direction (e.g. East)")]
-        public string SignalDirection = "East";
+        public String SignalDirection = "East";
 
         [Parameter(Comment = "The name of partial region this interface signal belongs to")]
-        public string PartialRegion = "";
+        public String PartialRegion = "";
 
         [Parameter(Comment = "The column index for interleaving")]
         public int Column = 0;

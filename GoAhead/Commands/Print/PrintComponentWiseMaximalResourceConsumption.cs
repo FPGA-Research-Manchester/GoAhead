@@ -19,7 +19,7 @@ namespace GoAhead.Commands
             int dspMax = 0;
             int bramMax = 0;
 
-            foreach (string fileName in Files.Where(s => !string.IsNullOrEmpty(s)))
+            foreach (String fileName in this.Files.Where(s => !String.IsNullOrEmpty(s)))
             {
                 int slices = 0;
                 int dsp = 0;
@@ -33,15 +33,15 @@ namespace GoAhead.Commands
 
                 foreach (Instance inst in inContainer.Instances)
                 {
-                    if (IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.CLB)) 
+                    if (Objects.IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.CLB)) 
                     { 
                         slices++; 
                     }
-                    if (IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.DSP)) 
+                    if (Objects.IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.DSP)) 
                     { 
                         dsp++; 
                     }
-                    if (IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.BRAM)) 
+                    if (Objects.IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.BRAM)) 
                     { 
                         bram++; 
                     }
@@ -54,7 +54,7 @@ namespace GoAhead.Commands
             }
 
             // two slices per CLB
-            OutputManager.WriteOutput("CLBs: " + slicesMax / 2 + " DSPs: " + dspMax + " BRAMs: " + bramMax);
+            this.OutputManager.WriteOutput("CLBs: " + slicesMax / 2 + " DSPs: " + dspMax + " BRAMs: " + bramMax);
         }
 
         public override void Undo()
@@ -64,6 +64,6 @@ namespace GoAhead.Commands
 
 
         [Parameter(Comment = "The netlists to read in")]
-        public List<string> Files = new List<string>();
+        public List<String> Files = new List<String>();
     }
 }

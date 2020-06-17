@@ -13,7 +13,7 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             foreach (XDLNet net in nlc.Nets)
             {
@@ -21,7 +21,7 @@ namespace GoAhead.Commands.Debug
                 foreach (XDLPip pip in net.Pips)
                 {
                     Tile t = FPGA.FPGA.Instance.GetTile(pip.Location);
-                    if (TileSelectionManager.Instance.IsSelected(t.TileKey))
+                    if (FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey))
                     {
                         netCrossesSelection = true;
                         break;
@@ -29,7 +29,7 @@ namespace GoAhead.Commands.Debug
                 }
                 if (netCrossesSelection)
                 {
-                    OutputManager.WriteOutput(net.Name);
+                    this.OutputManager.WriteOutput(net.Name);
                 }
             }
         }

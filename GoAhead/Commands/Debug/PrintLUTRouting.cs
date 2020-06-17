@@ -16,16 +16,16 @@ namespace GoAhead.Commands.Debug
 
             Dictionary<Port, List<Tuple<Port, Port>>> result = new Dictionary<Port, List<Tuple<Port, Port>>>();
 
-            foreach (string portName in EndPorts)
+            foreach (string portName in this.EndPorts)
             {
                 Port endPort = new Port(portName);
                 result.Add(endPort, new List<Tuple<Port, Port>>());
 
-                foreach (Port imux in interconnect.SwitchMatrix.GetDrivenPorts(endPort).Where(p => Regex.IsMatch(p.Name, IMUX)))
+                foreach (Port imux in interconnect.SwitchMatrix.GetDrivenPorts(endPort).Where(p => Regex.IsMatch(p.Name, this.IMUX)))
                 {
                     Location l = Navigator.GetDestinations(interconnect, imux).FirstOrDefault();
 
-                    foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(l.Pip).Where(p => Regex.IsMatch(p.Name, LUTInPortFilter)))
+                    foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(l.Pip).Where(p => Regex.IsMatch(p.Name, this.LUTInPortFilter)))
                     {
                         result[endPort].Add(new Tuple<Port,Port>(imux,lutInPort));
                     }
@@ -36,7 +36,7 @@ namespace GoAhead.Commands.Debug
             bool noMatches = result.Values.Any(l => l.Count == 0);
             if (noMatches)
             {
-                OutputManager.WriteWarning("Could not enter LUT via all ports -> exit command");
+                this.OutputManager.WriteWarning("Could not enter LUT via all ports -> exit command");
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace GoAhead.Commands.Debug
                     if (others.All(t => t.Value.Count == 0 || t.Value.Any(p => !p.Equals(tuple.Item2))))
                     {
                         // found mapping 
-                        OutputManager.WriteOutput(portTupleList.Key.Name + " -> " + tuple.Item1.Name + " -> " + tuple.Item2.Name);
+                        this.OutputManager.WriteOutput(portTupleList.Key.Name + " -> " + tuple.Item1.Name + " -> " + tuple.Item2.Name);
                         takenInput = tuple.Item2;
                         break;
                     }
@@ -62,7 +62,7 @@ namespace GoAhead.Commands.Debug
                 }
                 if(takenInput == null)
                 {
-                    OutputManager.WriteWarning("Did not find an unique LUT inpt for " + portTupleList.Key.Name + " -> exit command");
+                    this.OutputManager.WriteWarning("Did not find an unique LUT inpt for " + portTupleList.Key.Name + " -> exit command");
                     return;
                 }
                 foreach (KeyValuePair<Port, List<Tuple<Port, Port>>> t in result)

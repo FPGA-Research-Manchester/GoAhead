@@ -10,13 +10,13 @@ namespace GoAhead.Commands.Selection
     {
        protected override void DoCommandAction()
         {
-            TileSelectionManager.Instance.ClearSelection();
+            FPGA.TileSelectionManager.Instance.ClearSelection();
             foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles())
             {
-                TileSelectionManager.Instance.AddToSelection(tile.TileKey, false);
+                FPGA.TileSelectionManager.Instance.AddToSelection(tile.TileKey, false);
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         public override void Undo()

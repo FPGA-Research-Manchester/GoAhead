@@ -18,10 +18,10 @@ namespace GoAhead.Commands.DeviceInfo
             }
             hashes.Sort();
 
-            OutputManager.WriteOutput("The FPGA contains " + FPGA.FPGA.Instance.SwitchMatrixCount + " Switchmatrices with the following hashcodes");
+            this.OutputManager.WriteOutput("The FPGA contains " + FPGA.FPGA.Instance.SwitchMatrixCount + " Switchmatrices with the following hashcodes");
             foreach (int hash in hashes)
             {
-                OutputManager.WriteOutput(hash.ToString());
+                this.OutputManager.WriteOutput(hash.ToString());
             }
         }
 

@@ -12,11 +12,11 @@ namespace GoAhead.Commands.VHDL
     {
         protected sealed override void DoCommandAction()
         {
-            VHDLFile vhdlFile = new VHDLFile(EntityName);
+            VHDLFile vhdlFile = new VHDLFile(this.EntityName);
 
-            InstantiationFilter = Regex.Replace(InstantiationFilter, "\\\"", "");
+            this.InstantiationFilter = Regex.Replace(this.InstantiationFilter, "\\\"", "");
 
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(i => Regex.IsMatch(i.InstanceName, InstantiationFilter)))
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(i => Regex.IsMatch(i.InstanceName, this.InstantiationFilter)))
             {
                 LibraryElement libElement = Objects.Library.Instance.GetElement(inst.LibraryElementName);
 
@@ -30,15 +30,15 @@ namespace GoAhead.Commands.VHDL
             }
 
             // call base class implementation
-            PrintVHDLCode(vhdlFile);
+            this.PrintVHDLCode(vhdlFile);
         }
 
         protected abstract void PrintVHDLCode(VHDLFile vhdlFile);
 
         [Parameter(Comment = "Only consider those library lelement instantiations whose name matches this filter")]
-        public string InstantiationFilter = ".*";
+        public String InstantiationFilter = ".*";
 
         [Parameter(Comment = "The entity name of the VHDL wrapper")]
-        public string EntityName = "PartialSubsystem";
+        public String EntityName = "PartialSubsystem";
     }
 }

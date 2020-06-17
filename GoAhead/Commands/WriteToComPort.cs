@@ -14,7 +14,7 @@ namespace GoAhead.Commands
         protected override void DoCommandAction()
         {
             SerialPort serialPort = new SerialPort();
-            serialPort.PortName = ComPort;
+            serialPort.PortName = this.ComPort;
             serialPort.BaudRate = 115200;
             serialPort.Parity = Parity.None;
             serialPort.DataBits = 8;
@@ -25,7 +25,7 @@ namespace GoAhead.Commands
 
             serialPort.Open();
 
-            byte[] fileBytes = File.ReadAllBytes(Filename);
+            byte[] fileBytes = File.ReadAllBytes(this.Filename);
 
             int index = 0;
             while (true)
@@ -43,7 +43,7 @@ namespace GoAhead.Commands
                     break;
                 }
                 index += 1024;
-                Thread.Sleep(Delay);
+                System.Threading.Thread.Sleep(this.Delay);
             }
 
             serialPort.Close();
@@ -58,9 +58,9 @@ namespace GoAhead.Commands
         public int Delay = 1000;    
 
         [Parameter(Comment = "The com port to use")]
-        public string ComPort = "COM1";    
+        public String ComPort = "COM1";    
 
         [Parameter(Comment = "The binary file to wrtie to the com port")]
-        public string Filename = "bin.data";      
+        public String Filename = "bin.data";      
     }
 }

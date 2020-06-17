@@ -12,21 +12,21 @@ namespace GoAhead.Commands.BlockingShared
         protected override void DoCommandAction()
         {
             // port filter
-            Regex portFilter = new Regex(PortNameRegexp, RegexOptions.Compiled);
+            Regex portFilter = new Regex(this.PortNameRegexp, RegexOptions.Compiled);
             // progress 
             int tileCount = 0;
 
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)tileCount++ / (double)TileSelectionManager.Instance.NumberOfSelectedTiles * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)tileCount++ / (double)FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles * this.ProgressShare);
 
                 foreach (Port port in tile.SwitchMatrix.Ports.Where(p => portFilter.IsMatch(p.Name)))
                 {
-                    if (IncludeAllPorts)
+                    if (this.IncludeAllPorts)
                     {
                         ExcludePortsFromBlocking cmd = new ExcludePortsFromBlocking();
-                        cmd.CheckForExistence = CheckForExistence;
-                        cmd.IncludeAllPorts = IncludeAllPorts;
+                        cmd.CheckForExistence = this.CheckForExistence;
+                        cmd.IncludeAllPorts = this.IncludeAllPorts;
                         cmd.Location = tile.Location;
                         cmd.PortName = port.Name;
                         CommandExecuter.Instance.Execute(cmd);
@@ -34,7 +34,7 @@ namespace GoAhead.Commands.BlockingShared
                     else
                     {
                         // TODO ExcludePortsFromBlocking.BlockPort
-                        ExcludePortsFromBlocking.BlockPort(tile, port.Name, CheckForExistence);
+                        ExcludePortsFromBlocking.BlockPort(tile, port.Name, this.CheckForExistence);
                     }
                 }
             }
@@ -46,7 +46,7 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The port name to be blocked, e.g. E2BEG5")]
-        public string PortNameRegexp = "E2BEG5";
+        public String PortNameRegexp = "E2BEG5";
 
         [Parameter(Comment = "Check for existence of ports")]
         public bool CheckForExistence = false;

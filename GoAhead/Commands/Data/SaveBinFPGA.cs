@@ -18,9 +18,9 @@ namespace GoAhead.Commands.Data
             OutputManager.WriteOutput("The current FPGA has " + FPGA.FPGA.Instance.GetAllTiles().Count(t => t.HasNonstopoverBlockedPorts) + " tiles with blocked ports");
 
 			//Opens a file and serializes m_fpga into it in binary format.
-			Stream stream = File.Open(FileName, FileMode.Create);
+			Stream stream = File.Open(this.FileName, FileMode.Create);
             GZipStream gz = null;
-            if (Compress)
+            if (this.Compress)
             {
                 gz = new GZipStream(stream, CompressionMode.Compress);
             };
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.Data
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-                if (Compress)
+                if (this.Compress)
                 {
                     formatter.Serialize(gz, FPGA.FPGA.Instance);
                     gz.Flush();
@@ -45,7 +45,7 @@ namespace GoAhead.Commands.Data
             {
                 throw new ArgumentException("Could not serialize FPGA: " + error.Message);
             }
-            if (Compress)
+            if (this.Compress)
             {
                 gz.Close();
             }
@@ -55,7 +55,7 @@ namespace GoAhead.Commands.Data
             
             // remember for other stuff how we read in this FPGA
             OpenBinFPGA loadCmd = new OpenBinFPGA();
-            loadCmd.FileName = FileName;
+            loadCmd.FileName = this.FileName;
 
             Objects.Blackboard.Instance.LastLoadCommandForFPGA = loadCmd.ToString();
 		}
@@ -66,7 +66,7 @@ namespace GoAhead.Commands.Data
 		}
 
         [Parameter(Comment = "The name of the file to save the FPGA in")]
-		public string FileName = "";
+		public String FileName = "";
 
         [Parameter(Comment = "Wheter to compress the resultiung file or not")]
         public bool Compress = false;

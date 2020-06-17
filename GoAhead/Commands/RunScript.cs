@@ -25,12 +25,12 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            if (!File.Exists(FileName))
+            if (!File.Exists(this.FileName))
             {
-                throw new ArgumentException("File " + FileName + " does not exist");
+                throw new ArgumentException("File " + this.FileName + " does not exist");
             }
 
-            FileInfo fi = new FileInfo(FileName);
+            FileInfo fi = new FileInfo(this.FileName);
 
             switch (fi.Extension.ToLower())
             {
@@ -38,11 +38,11 @@ namespace GoAhead.Commands
                     CommandExecuter.Instance.Execute(fi);
                     break;
                 case ".cs":
-                    Assembly compiledScript = CompileCode(fi.FullName);
+                    Assembly compiledScript = RunScript.CompileCode(fi.FullName);
                     if (compiledScript != null)
                     {
 
-                        int result = RunAssembly(compiledScript);
+                        int result = RunScript.RunAssembly(compiledScript);
                     }
                     break;
 		        default:
@@ -108,7 +108,7 @@ namespace GoAhead.Commands
                         // Get the constructor for the current type
                         // you can also specify what creation parameter types you want to pass to it,
                         // so you could possibly pass in data it might need, or a class that it can use to query the host application
-                        ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                        ConstructorInfo constructor = type.GetConstructor(System.Type.EmptyTypes);
                         if (constructor != null && constructor.IsPublic)
                         {
                             // lets be friendly and only do things legitimitely by only using valid constructors
@@ -145,6 +145,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The name of the script to run")]
-        public string FileName = "script.goa";
+        public String FileName = "script.goa";
     }
 }

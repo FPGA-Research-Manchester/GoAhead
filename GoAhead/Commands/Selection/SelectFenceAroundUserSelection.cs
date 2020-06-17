@@ -11,17 +11,17 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {           
-            Tile ul = TileSelectionManager.Instance.GetUserSelectedTile("", UserSelectionType, FPGATypes.Placement.UpperLeft);
-            Tile lr = TileSelectionManager.Instance.GetUserSelectedTile("", UserSelectionType, FPGATypes.Placement.LowerRight);
+            Tile ul = FPGA.TileSelectionManager.Instance.GetUserSelectedTile("", this.UserSelectionType, FPGATypes.Placement.UpperLeft);
+            Tile lr = FPGA.TileSelectionManager.Instance.GetUserSelectedTile("", this.UserSelectionType, FPGATypes.Placement.LowerRight);
 
             List<Tile> fenceTiles = new List<Tile>();
-            for (int x = ul.TileKey.X - Size; x <= lr.TileKey.X + Size; x++)
+            for (int x = ul.TileKey.X - this.Size; x <= lr.TileKey.X + this.Size; x++)
             {
-                for (int y = ul.TileKey.Y - Size; y <= lr.TileKey.Y + Size; y++)
+                for (int y = ul.TileKey.Y - this.Size; y <= lr.TileKey.Y + this.Size; y++)
                 {
                     TileKey key = new TileKey(x, y);
                    
-                    if(!TileSelectionManager.Instance.IsUserSelected(key, UserSelectionType) && FPGA.FPGA.Instance.Contains(x, y))
+                    if(!FPGA.TileSelectionManager.Instance.IsUserSelected(key, this.UserSelectionType) && FPGA.FPGA.Instance.Contains(x, y))
                     {
                         Tile t = FPGA.FPGA.Instance.GetTile(key);
                         bool resMatch =
@@ -57,7 +57,7 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "The name of the user selection type to select around")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
 
         [Parameter(Comment = "The size of the fence in tiles")]
         public int Size = 5;

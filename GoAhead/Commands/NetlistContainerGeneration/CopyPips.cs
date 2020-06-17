@@ -14,11 +14,11 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
             FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE); 
 
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex sourceNetFilter = new Regex(SourceNetsRegexp, RegexOptions.Compiled);
-            Regex targetNetFilter = new Regex(TargetNetsRegexp, RegexOptions.Compiled);
-            Regex pipFilter = new Regex(PipFilter, RegexOptions.Compiled);
+            Regex sourceNetFilter = new Regex(this.SourceNetsRegexp, RegexOptions.Compiled);
+            Regex targetNetFilter = new Regex(this.TargetNetsRegexp, RegexOptions.Compiled);
+            Regex pipFilter = new Regex(this.PipFilter, RegexOptions.Compiled);
 
             XDLNet targetNet = (XDLNet) netlistContainer.Nets.FirstOrDefault(n => targetNetFilter.IsMatch(n.Name));
             if (targetNet == null)
@@ -43,12 +43,12 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
 
         [Parameter(Comment = "Only copy pips that are located on tiles that match this regular expression")]
-        public string PipFilter = "^INT_";
+        public String PipFilter = "^INT_";
 
         [Parameter(Comment = "Copy pips from all nets whose identifier match this regular expression")]
-        public string SourceNetsRegexp = "index_[0-3]_loop";
+        public String SourceNetsRegexp = "index_[0-3]_loop";
 
         [Parameter(Comment = "Copy pips to the first net whose identifier matches this regular expression")]
-        public string TargetNetsRegexp = "^RBB_Blocker";
+        public String TargetNetsRegexp = "^RBB_Blocker";
     }
 }

@@ -15,55 +15,55 @@ namespace GoAhead.Commands.LibraryElementInstantiation
     {
         protected override void DoCommandAction()
         {
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
-            Tile anchor = FPGA.FPGA.Instance.GetTile(AnchorLocation);
+            Tile anchor = FPGA.FPGA.Instance.GetTile(this.AnchorLocation);
 
             if (libElement.ResourceShape.Anchor.AnchorSliceNumber >= anchor.Slices.Count)
             {
                 throw new ArgumentException("Too few slices on tile " + anchor.Location + ". Expecting " + libElement.ResourceShape.Anchor.AnchorSliceNumber + " but found " + anchor.Slices.Count + " slice.");
             }
 
-            if (IdentifierManager.Instance.IsMatch(anchor.Location, IdentifierManager.RegexTypes.Interconnect))
+            if (Objects.IdentifierManager.Instance.IsMatch(anchor.Location, IdentifierManager.RegexTypes.Interconnect))
             {
                 anchor = FPGATypes.GetCLTile(anchor).FirstOrDefault();
             }
 
-            if (AutoClearModuleSlot)
+            if (this.AutoClearModuleSlot)
             {
                 //this.FastAutoClearModuleSlotBeforeInstantiation(libElement, Enumerable.Repeat(anchor, 1));
-                AutoClearModuleSlotBeforeInstantiation(libElement, Enumerable.Repeat(anchor, 1));
+                this.AutoClearModuleSlotBeforeInstantiation(libElement, Enumerable.Repeat(anchor, 1));
             }
 
             LibElemInst instantiation = new LibElemInst();
-            instantiation.AnchorLocation = AnchorLocation;
-            instantiation.InstanceName = Hierarchy + InstanceName;
-            instantiation.LibraryElementName = LibraryElementName;
+            instantiation.AnchorLocation = this.AnchorLocation;
+            instantiation.InstanceName = this.Hierarchy + this.InstanceName;
+            instantiation.LibraryElementName = this.LibraryElementName;
             instantiation.SliceNumber = libElement.ResourceShape.Anchor.AnchorSliceNumber;
             instantiation.SliceName = anchor.Slices[(int)libElement.ResourceShape.Anchor.AnchorSliceNumber].SliceName;
 
-            LibraryElementInstanceManager.Instance.Add(instantiation);
+            Objects.LibraryElementInstanceManager.Instance.Add(instantiation);
 
             // mark source as blocked
             ExcludeInstantiationSourcesFromBlocking markSrc = new ExcludeInstantiationSourcesFromBlocking();
-            markSrc.AnchorLocation = AnchorLocation;
-            markSrc.LibraryElementName = LibraryElementName;
+            markSrc.AnchorLocation = this.AnchorLocation;
+            markSrc.LibraryElementName = this.LibraryElementName;
             CommandExecuter.Instance.Execute(markSrc);
 
             SaveLibraryElementInstantiation saveCmd = new SaveLibraryElementInstantiation();
             saveCmd.AddDesignConfig = false;
             saveCmd.InsertPrefix = true;
-            saveCmd.InstanceName = InstanceName;
-            saveCmd.NetlistContainerName = NetlistContainerName;
+            saveCmd.InstanceName = this.InstanceName;
+            saveCmd.NetlistContainerName = this.NetlistContainerName;
             CommandExecuter.Instance.Execute(saveCmd);
 
-            if (AutoFuse)
+            if (this.AutoFuse)
             {
                 FuseNets fuseCmd = new FuseNets();
-                fuseCmd.NetlistContainerName = NetlistContainerName;
-                fuseCmd.Mute = Mute;
-                fuseCmd.Profile = Profile;
-                fuseCmd.PrintProgress = PrintProgress;
+                fuseCmd.NetlistContainerName = this.NetlistContainerName;
+                fuseCmd.Mute = this.Mute;
+                fuseCmd.Profile = this.Profile;
+                fuseCmd.PrintProgress = this.PrintProgress;
                 CommandExecuter.Instance.Execute(fuseCmd);
             }
         }
@@ -74,6 +74,6 @@ namespace GoAhead.Commands.LibraryElementInstantiation
         }
 
         [Parameter(Comment = "The location string of the anchor")]
-        public string AnchorLocation = "CLB_X4Y3";
+        public String AnchorLocation = "CLB_X4Y3";
     }
 }

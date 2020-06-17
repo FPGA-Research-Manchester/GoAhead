@@ -15,10 +15,10 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void DoCommandAction()
         {
-            Objects.LibraryElement libraryElement = Objects.Library.Instance.GetElement(LibraryElement);
+            Objects.LibraryElement libraryElement = Objects.Library.Instance.GetElement(this.LibraryElement);
 
             VHDLComponent vhdlComponent = new VHDLComponent(libraryElement);
-            OutputManager.WriteVHDLOutput(vhdlComponent.ToString());
+            this.OutputManager.WriteVHDLOutput(vhdlComponent.ToString());
 
             /*
             List<String> buffer = new List<String>();
@@ -45,6 +45,6 @@ namespace GoAhead.Commands.VHDL
         }
 
         [Parameter(Comment = "The name of the library element to use")]
-        public string LibraryElement = "";
+        public String LibraryElement = "";
     }
 }

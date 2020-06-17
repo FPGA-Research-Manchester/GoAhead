@@ -11,13 +11,13 @@ namespace GoAhead.Commands.Selection.Anchor
     {
        protected override void DoCommandAction()
         {
-            m_lastAnchor = Objects.SelectionManager.Instance.Anchor;
+            this.m_lastAnchor = Objects.SelectionManager.Instance.Anchor;
             Objects.SelectionManager.Instance.Anchor = null;
         }
 
         public override void Undo()
         {
-            Objects.SelectionManager.Instance.Anchor = m_lastAnchor;
+            Objects.SelectionManager.Instance.Anchor = this.m_lastAnchor;
         }
 
         /// <summary>

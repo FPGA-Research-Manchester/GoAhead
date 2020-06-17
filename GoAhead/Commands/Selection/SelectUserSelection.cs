@@ -11,17 +11,17 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            foreach (Tile t in TileSelectionManager.Instance.GetAllUserSelectedTiles(UserSelectionType))
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetAllUserSelectedTiles(this.UserSelectionType))
             {
                 // deselect or add the selected tile 
                 // in comd umwandeln
-                if (TileSelectionManager.Instance.IsSelected(t.TileKey))
+                if (FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey))
                 {
-                    TileSelectionManager.Instance.RemoveFromSelection(t.TileKey, false);
+                    FPGA.TileSelectionManager.Instance.RemoveFromSelection(t.TileKey, false);
                 }
                 else
                 {
-                    TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                    FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                 }
 
                 /*
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.Selection
                 CommandExecuter.Instance.Execute(cmd);*/
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         public override void Undo()
@@ -40,6 +40,6 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "The name of the user selection type")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

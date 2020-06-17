@@ -17,7 +17,7 @@ namespace GoAhead.Commands.Data
             CommandExecuter.Instance.Execute(new Reset());
 
 			// create reader & open file
-			XDLStreamReaderWithUndo sr = new XDLStreamReaderWithUndo(FileName);
+			XDLStreamReaderWithUndo sr = new XDLStreamReaderWithUndo(this.FileName);
 
             FPGA.FPGA.Instance.Reset();
 
@@ -28,7 +28,7 @@ namespace GoAhead.Commands.Data
 
             try
             {
-                string line = "";
+                String line = "";
                 while ((line = sr.ReadLine()) != null)
                 {
                     // add space not to match tile_summary or tiles
@@ -36,9 +36,9 @@ namespace GoAhead.Commands.Data
                     {
                         tp.ParseTile(line, sr);
 
-                        if (PrintProgress)
+                        if (this.PrintProgress)
                         {
-                            ProgressInfo.Progress = (int)((double)FPGA.FPGA.Instance.TileCount / (double)FPGA.FPGA.Instance.NumberOfExpectedTiles * (ReadWireStatements ? 20 : 100));                            
+                            this.ProgressInfo.Progress = (int)((double)FPGA.FPGA.Instance.TileCount / (double)FPGA.FPGA.Instance.NumberOfExpectedTiles * (this.ReadWireStatements ? 20 : 100));                            
                         }
                     }
                     //skip commens
@@ -62,45 +62,45 @@ namespace GoAhead.Commands.Data
             }
             
             // read wires in second run
-            if (ReadWireStatements)
+            if (this.ReadWireStatements)
             {
                 ReadWireStatements rw = new ReadWireStatements();
                 rw.ProgressStart = 20;
                 rw.ProgressShare = 30;
-                rw.FileName = FileName;
+                rw.FileName = this.FileName;
                 rw.HandleUnresolvedWires = false;
-                rw.PrintProgress = PrintProgress;
-                rw.Profile = Profile;
-                CommandExecuter.Instance.Execute(rw);
+                rw.PrintProgress = this.PrintProgress;
+                rw.Profile = this.Profile;
+                Commands.CommandExecuter.Instance.Execute(rw);
 
                 // in third run
                 rw = new ReadWireStatements();
                 rw.ProgressStart = 50;
                 rw.ProgressShare = 30;
-                rw.FileName = FileName;
+                rw.FileName = this.FileName;
                 rw.HandleUnresolvedWires = true;
-                rw.PrintProgress = PrintProgress;
-                rw.Profile = Profile;
-                CommandExecuter.Instance.Execute(rw);
+                rw.PrintProgress = this.PrintProgress;
+                rw.Profile = this.Profile;
+                Commands.CommandExecuter.Instance.Execute(rw);
             }
 
-            if (ExcludePipsToBidirectionalWiresFromBlocking)
+            if (this.ExcludePipsToBidirectionalWiresFromBlocking)
             {
                 ExcludePipsToBidirectionalWiresFromBlocking exclCmd = new ExcludePipsToBidirectionalWiresFromBlocking();
-                exclCmd.Profile = Profile;
-                exclCmd.PrintProgress = PrintProgress;
+                exclCmd.Profile = this.Profile;
+                exclCmd.PrintProgress = this.PrintProgress;
                 exclCmd.ProgressStart = 80;
                 exclCmd.ProgressShare = 20;
                 exclCmd.FileName = "";
-                CommandExecuter.Instance.Execute(exclCmd);
+                Commands.CommandExecuter.Instance.Execute(exclCmd);
             }
 
-            CommandExecuter.Instance.Execute(new Reset());
+            Commands.CommandExecuter.Instance.Execute(new Reset());
 
             // no LoadFPGAFamilyScript here! LoadFPGAFamilyScript is called through Reset
             
             // remember for other stuff how we read in this FPGA
-            Objects.Blackboard.Instance.LastLoadCommandForFPGA = ToString();
+            Objects.Blackboard.Instance.LastLoadCommandForFPGA = this.ToString();
 		}
 
 		public override void Undo()
@@ -109,7 +109,7 @@ namespace GoAhead.Commands.Data
 		}
 
         [Parameter(Comment = "The XDL file to read")]
-        public string FileName = "xc6slx16.xdl";
+        public String FileName = "xc6slx16.xdl";
 
         [Parameter(Comment = "Whether to read in wire statements")]
         public bool ReadWireStatements = true;

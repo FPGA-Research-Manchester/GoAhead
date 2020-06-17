@@ -13,11 +13,11 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            NetlistContainer netlistContainer = GetNetlistContainer();
-            XDLNet net = (XDLNet ) netlistContainer.GetNet(Netname);
-            Regex filter = new Regex(PipRegexp, RegexOptions.Compiled);
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
+            XDLNet net = (XDLNet ) netlistContainer.GetNet(this.Netname);
+            Regex filter = new Regex(this.PipRegexp, RegexOptions.Compiled);
             net.Remove(pip => filter.IsMatch(pip.ToString()));
         }
 
@@ -27,9 +27,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "Remove pips in this net")]
-        public string Netname = "blocker";
+        public String Netname = "blocker";
 
         [Parameter(Comment = "Remove all pips that match this regular expression")]
-        public string PipRegexp = "^module";
+        public String PipRegexp = "^module";
     }
 }

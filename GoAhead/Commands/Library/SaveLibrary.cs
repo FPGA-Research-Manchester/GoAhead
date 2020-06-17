@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Library
         protected override void DoCommandAction()
         {
             //Opens a file and serializes  into it in binary format.
-            Stream stream = File.Open(FileName, FileMode.Create);
+            Stream stream = File.Open(this.FileName, FileMode.Create);
 
             try
             {
@@ -32,6 +32,6 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The name of the file to save the library in")]
-        public string FileName = "macroLib.binLibrary";
+        public String FileName = "macroLib.binLibrary";
     }
 }

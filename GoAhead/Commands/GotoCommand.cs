@@ -10,6 +10,6 @@ namespace GoAhead.Commands
         public abstract bool JumpToLabel();
 
         [Parameter(Comment = "The name of the label")]
-        public string LabelName = "label_1";
+        public String LabelName = "label_1";
     }
 }

@@ -13,10 +13,10 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {            
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
             foreach (XDLNet net in nlc.Nets.Where(n => n.OutpinCount == 1 && n.InpinCount > 0 && n.PipCount == 0))
             {
-                OutputManager.WriteOutput(net.Name);
+                this.OutputManager.WriteOutput(net.Name);
             }
         }
 

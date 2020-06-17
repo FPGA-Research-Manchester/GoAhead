@@ -11,13 +11,13 @@ namespace GoAhead.Commands.CommandExecutionSettings
     {
         protected override void DoCommandAction()
         {
-            m_previousValue = CommandExecuter.Instance.PrintWrappedCommands;
+            this.m_previousValue = CommandExecuter.Instance.PrintWrappedCommands;
             CommandExecuter.Instance.PrintWrappedCommands = true;
         }
 
         public override void Undo()
         {
-            CommandExecuter.Instance.PrintWrappedCommands = m_previousValue;
+            CommandExecuter.Instance.PrintWrappedCommands = this.m_previousValue;
         }
 
         /// <summary>

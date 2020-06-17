@@ -12,12 +12,12 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                OutputManager.WriteOutput("Next tile : " + t.Location);
+                this.OutputManager.WriteOutput("Next tile : " + t.Location);
                 PrintTileInfo cmd = new PrintTileInfo();
                 cmd.Location = t.Location;
-                cmd.OutputManager = OutputManager;
+                cmd.OutputManager = this.OutputManager;
                 CommandExecuter.Instance.Execute(cmd);
                 
             }

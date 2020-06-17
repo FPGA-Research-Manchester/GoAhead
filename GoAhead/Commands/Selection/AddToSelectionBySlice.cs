@@ -11,11 +11,11 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            if(!Range.Contains(":"))
+            if(!this.Range.Contains(":"))
             {
-                throw new ArgumentException("Expecting range in foramt SLICE_X8Y55:SLICE_X12Y243, but found " + Range);
+                throw new ArgumentException("Expecting range in foramt SLICE_X8Y55:SLICE_X12Y243, but found " + this.Range);
             }
-            string[] atoms = Range.Split(':');
+            String[] atoms = this.Range.Split(':');
             Slice s1 = FPGA.FPGA.Instance.GetSlice(atoms[0]);
             Slice s2 = FPGA.FPGA.Instance.GetSlice(atoms[1]);
             if (s1 == null)
@@ -46,9 +46,9 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "Only selected those tiles in the given range that match this filter")]
-        public string Filter = ".*";
+        public String Filter = ".*";
 
         [Parameter(Comment = "The rectangle, e.g. SLICE_X8Y55:SLICE_X12Y243")]
-        public string Range = "SLICE_X8Y55:SLICE_X12Y243";
+        public String Range = "SLICE_X8Y55:SLICE_X12Y243";
     }
 }

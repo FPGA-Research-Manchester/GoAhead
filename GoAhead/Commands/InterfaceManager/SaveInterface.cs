@@ -15,7 +15,7 @@ namespace GoAhead.Commands.InterfaceManager
        protected override void DoCommandAction()
         {
             //Opens a file and serializes  into it in binary format.
-            Stream stream = File.Open(FileName, FileMode.Create);
+            Stream stream = File.Open(this.FileName, FileMode.Create);
 
             try
             {
@@ -36,6 +36,6 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of the file to save the interface in")]
-        public string FileName;
+        public String FileName;
     }
 }

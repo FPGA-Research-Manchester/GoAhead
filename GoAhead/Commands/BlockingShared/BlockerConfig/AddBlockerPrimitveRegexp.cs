@@ -7,19 +7,19 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
     {
         protected override void DoCommandAction()
         {
-            if (!File.Exists(Template))
+            if (!File.Exists(this.Template))
             {
-                string fileNameWithotherSeparator = Template.Replace('/', '\\');
+                String fileNameWithotherSeparator = this.Template.Replace('/', '\\');
                 if (File.Exists(fileNameWithotherSeparator))
                 {
-                    Console.WriteLine("Changing " + Template + " to " + fileNameWithotherSeparator);
-                    Objects.BlockerSettings.Instance.AddPrimitveTemplate(FamilyRegexp, PrimitveRegexp, SliceNumberPattern, Template);
+                    Console.WriteLine("Changing " + this.Template + " to " + fileNameWithotherSeparator);
+                    Objects.BlockerSettings.Instance.AddPrimitveTemplate(this.FamilyRegexp, this.PrimitveRegexp, this.SliceNumberPattern, this.Template);
                     return;
                 }
-                throw new ArgumentException("Could not find the template " + Template);
+                throw new ArgumentException("Could not find the template " + this.Template);
             }
 
-            Objects.BlockerSettings.Instance.AddPrimitveTemplate(FamilyRegexp, PrimitveRegexp, SliceNumberPattern, Template);
+            Objects.BlockerSettings.Instance.AddPrimitveTemplate(this.FamilyRegexp, this.PrimitveRegexp, this.SliceNumberPattern, this.Template);
         }
 
         public override void Undo()
@@ -28,12 +28,12 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
         }
 
         [Parameter(Comment = "The configuration template")]
-        public string Template = "";
+        public String Template = "";
 
         [Parameter(Comment = "The regular expression which identifies the primitives to apply the template on")]
-        public string PrimitveRegexp = "";
+        public String PrimitveRegexp = "";
 
         [Parameter(Comment = "The indeces of the slices the blocker will use")]
-        public string SliceNumberPattern = "[0-1]";
+        public String SliceNumberPattern = "[0-1]";
     }
 }

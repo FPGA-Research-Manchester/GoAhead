@@ -15,7 +15,7 @@ namespace GoAhead.Commands
     class PathSearchOnFPGA : CommandWithFileOutput
 	{
         [Parameter(Comment = "The path search module (BFS, DFS, A*)")]
-        public string SearchMode = "BFS";
+        public String SearchMode = "BFS";
 
         [Parameter(Comment = "Whether to search in forward (true) or backward direction (false)")]
         public bool Forward = true;
@@ -27,19 +27,19 @@ namespace GoAhead.Commands
         public bool BlockUsedPorts = false;
 
         [Parameter(Comment = "How to print out the results (XDL, CHAIN, TCL)")]
-        public string OutputMode = "CHAIN";
+        public String OutputMode = "CHAIN";
 
         [Parameter(Comment = "Location string where to start")]
-        public string StartLocation = "";
+        public String StartLocation = "INT_X9Y39";
 
         [Parameter(Comment = "Start port")]
-        public string StartPort = "";
+        public String StartPort = "EL2BEG0";
 
         [Parameter(Comment = "Location string where to go")]
-        public string TargetLocation = "";
+        public String TargetLocation = "INT_X11Y39";
 
         [Parameter(Comment = "Target port")]
-        public string TargetPort = "";
+        public String TargetPort = "EL2BEG0";
 
         [Parameter(Comment = "Stop after the first MaxSolutions path")]
         public int MaxSolutions = 5;
@@ -51,7 +51,7 @@ namespace GoAhead.Commands
         public bool PrintBanner = true;
 
         [Parameter(Comment = "Print Latency")]
-        public List<string> PrintLatency = new List<string>();
+        public List<bool> PrintLatency = new List<bool>() { false, false, false, false };
 
         [Parameter(Comment = "Sort the paths found by the latency attribute")]
         public string SortByAttribute = "";
@@ -59,74 +59,39 @@ namespace GoAhead.Commands
 
         public List<List<Location>> m_paths = new List<List<Location>>();
         private LatencyManager LatencyMan;
-        private List<object> TCL_output = null;
-        private const string line_dash = "---------------------------------------------------------------------------------";
 
         protected override void DoCommandAction()
         {
-            List<Tile> startTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).ToList();
-            List<Tile> targetTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TargetLocation)).OrderBy(t => t.Location).ToList();
+            Tile startTile = FPGA.FPGA.Instance.GetTile(StartLocation);
+            Port startPip = new Port(StartPort);
 
-            // All matched regex start tiles
-            for (int i = 0; i < startTiles.Count; i++)
-            {
-                List<Port> startPorts = startTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, StartPort)).OrderBy(p => p.Name).ToList();
-
-                // All matched regex target tiles
-                for (int j = 0; j < targetTiles.Count; j++)
-                {
-                    List<Port> targetPorts = targetTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, TargetPort)).OrderBy(p => p.Name).ToList();
-
-                    // All matched regex start ports
-                    for (int k = 0; k < startPorts.Count; k++)
-                    {
-                        Location startLocation = new Location(startTiles[i], startPorts[k]);
-
-                        // All matched regex target ports
-                        for (int l = 0; l < targetPorts.Count; l++)
-                        {
-                            Location targetLocation = new Location(targetTiles[j], targetPorts[l]);
-
-                            ExecutePathSearch(startLocation, targetLocation);
-                        }
-                    }
-                }
-            }
-
-            if (OutputMode.ToUpper().Equals("TCL"))
-            {
-                TclDLL.Tcl_SetObjResult(Program.mainInterpreter.ptr, TclAPI.Cs2Tcl(TCL_output));
-            }
-        }
-
-        private void ExecutePathSearch(Location startLocation, Location targetLocation)
-        {
-            m_paths.Clear();
+            Tile targetTile = FPGA.FPGA.Instance.GetTile(TargetLocation);
+            Port targetPip = new Port(TargetPort);
+            
+            Location startLocation = new Location(startTile, startPip);
+            Location targetLocation = new Location(targetTile, targetPip);
 
             CheckExistence(startLocation);
             CheckExistence(targetLocation);
 
-            if (KeepPathsIndependet)
-                LatencyMan = new LatencyManager(KeepPathsIndependet);
-            else
-                LatencyMan = new LatencyManager(PrintLatency, SortByAttribute);
+            LatencyMan = new LatencyManager(PrintLatency);
 
             // print results
-            if (PrintBanner && !OutputMode.ToUpper().Equals("TCL"))
+            if (this.PrintBanner && !OutputMode.ToUpper().Equals("TCL"))
             {
                 OutputManager.WriteOutput(GetBannerWithLatency(startLocation, targetLocation));
             }
 
             RouteNet routeCmd = new RouteNet();
-            routeCmd.Watch = Watch;
+            routeCmd.Watch = this.Watch;
 
-            foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, KeepPathsIndependet))
+            foreach (List<Location> path in routeCmd.Route(this.SearchMode, this.Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, this.MaxDepth, this.KeepPathsIndependet))
             {
-                if (!PathAlreadyFound(path, m_paths))
+                if (!PathSearchOnFPGA.PathAlreadyFound(path, m_paths))
                 {
                     m_paths.Add(path);
 
-                    if (BlockUsedPorts)
+                    if (this.BlockUsedPorts)
                     {
                         foreach (Location l in path)
                         {
@@ -137,9 +102,9 @@ namespace GoAhead.Commands
                         }
                     }
 
-                    ProgressInfo.Progress = ProgressStart + (int)(m_paths.Count / (double)MaxSolutions * ProgressShare);
+                    this.ProgressInfo.Progress = this.ProgressStart + (int)((double)m_paths.Count / (double)this.MaxSolutions * this.ProgressShare);
 
-                    if (m_paths.Count >= MaxSolutions)
+                    if (m_paths.Count >= this.MaxSolutions)
                     {
                         break;
                     }
@@ -148,39 +113,50 @@ namespace GoAhead.Commands
 
             if (m_paths.Count == 0)
             {
-                OutputManager.WriteOutput("No path found");
+                //this.OutputManager.WriteOutput("No path found");
             }
-            else if (OutputMode.ToUpper().Equals("CHAIN"))
+            else if (this.OutputMode.ToUpper().Equals("CHAIN"))
             {
-                PrintAsChain(m_paths);
+                this.PrintAsChain(m_paths);
             }
-            else if (OutputMode.ToUpper().Equals("XDL"))
+            else if (this.OutputMode.ToUpper().Equals("XDL"))
             {
-                OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
+                this.OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
             }
-            else if (OutputMode.ToUpper().Equals("TCL"))
+            else if (this.OutputMode.ToUpper().Equals("TCL"))
             {
-                AddToTCLOutput(m_paths);
+                SendToTCL(m_paths);
             }
         }
 
         public string GetBannerWithLatency(Location start, Location sink)
         {
-            string banner = GetBanner(start, sink);
+            string result = GetBanner(start, sink);
 
-            // Print the latency banner if the user provided input for at least one of PrintLatency or SortByAttribute
-            if (PrintLatency.Where(l => !string.IsNullOrEmpty(l)).Count() > 0 || !string.IsNullOrEmpty(SortByAttribute))
-                banner += LatencyMan.GetLatencyBanner();
+            if (!LatencyMan.Print) return result;
 
-            return banner;            
+            string attributesToPrint = "[";
+            for (int i = 0; i < LatencyMan.PresentAttributesCount; i++) if (PrintLatency[i])
+                    attributesToPrint += LatencyMan.PresentAttributesNames[i] + (i == LatencyMan.PresentAttributesCount - 1 ? "]" : ", ");
+
+            result += "--Latency: " + attributesToPrint + Environment.NewLine;
+            try
+            {
+                Tile.TimeAttributes sortingAttribute = FPGA.FPGA.Instance.GetTimeAttribute(SortByAttribute);
+                result += "--Sorted by: " + SortByAttribute + Environment.NewLine;
+            }
+            catch (Exception) {}
+            result += "---------------------------------------------------------------------------------" + Environment.NewLine;
+
+            return result;
         }
 
         public static string GetBanner(Location start, Location sink)
         {
-            string result = "";
-            result += line_dash + Environment.NewLine;
+            String result = "";
+            result += "---------------------------------------------------------------------------------" + Environment.NewLine;
             result += "--From " + start.Tile.Location + "." + start.Pip.Name + " to " + sink.Tile.Location + "." + sink.Pip.Name + Environment.NewLine;
-            result += line_dash + Environment.NewLine;
+            result += "---------------------------------------------------------------------------------" + Environment.NewLine;
 
             return result;
         }
@@ -198,7 +174,7 @@ namespace GoAhead.Commands
             }
         }
 
-        public static string PathToString(Location start, Location sink, IEnumerable<List<Location>> paths)
+        public static String PathToString(Location start, Location sink, IEnumerable<List<Location>> paths)
         {
             Tile startTile = FPGA.FPGA.Instance.GetTile(start.Tile.Location);
             Port startPip = new Port(start.Pip.Name);
@@ -255,29 +231,77 @@ namespace GoAhead.Commands
                 }
             }
 
+            int attCount = LatencyMan.PresentAttributesCount;
+
+            if (attCount == 0) PrintLatency = new List<bool>();
+            else if (PrintLatency.Count != attCount)
+            {
+                Console.WriteLine("Wrong number of parameters provided. PrintLatency should contain exactly " + attCount + " elements");
+
+                PrintLatency = new List<bool>();
+                for (int j = 0; j < attCount; j++) PrintLatency.Add(false);
+            }
+
+            List<float> latency = new List<float>();
+            for (int j = 0; j < attCount; j++) latency.Add(0);
+
+            Dictionary<Tile.TimeAttributes, int> indices = LatencyMan.PresentAttributesIndices;
+
             // Sorting by attribute
             Dictionary<StringBuilder, float> pathStringsAndLatencies = new Dictionary<StringBuilder, float>();
+            bool sortingAttributePresent = true;
+            Tile.TimeAttributes sortingAttribute = Tile.TimeAttributes.Attribute1;
+            try { sortingAttribute = FPGA.FPGA.Instance.GetTimeAttribute(SortByAttribute); }
+            catch (Exception) { sortingAttributePresent = false; }
 
             foreach (List<Location> path in paths.OrderBy(l => l.Count))
             {
                 StringBuilder buffer = new StringBuilder();
-                LatencyMan.StartLatencyRecorder();
+
+                for (int l = 0; l < latency.Count; l++) latency[l] = 0;
 
                 for (int i = 0; i < path.Count; i++)
                 {
                     string nextLine = path[i].ToString();
+                    bool latencyStringPrinted = false;
 
-                    // Attempt printing latency
-                    string latency = LatencyMan.RecordLatencyForPathSegment(
-                        Forward ? (i == 0 ? null : path[i - 1]) : path[i], 
-                        Forward ? path[i] : (i == 0 ? null : path[i - 1]));
-                    if (!"".Equals(latency)) nextLine += " " + latency;
-                    
+                    for (int j = 0; j < 4; j++)
+                    {
+                        var att = (Tile.TimeAttributes)Enum.Parse(typeof(Tile.TimeAttributes), j.ToString());
+                        if (!indices.ContainsKey(att)) continue;
+
+                        if (PrintLatency[indices[att]])
+                        {
+                            if(!latencyStringPrinted)
+                            {
+                                nextLine += " (Latency: ";
+                                latencyStringPrinted = true;
+                            }
+                            if (path[i].Tile.TimeData != null && i != 0 && path[i].Tile.Equals(path[i - 1].Tile))
+                            {
+                                uint[] pair = new uint[]
+                                {
+                                    path[i-1].Pip.NameKey,
+                                    path[i].Pip.NameKey
+                                };
+
+                                if (path[i].Tile.TimeData.ContainsKey(pair))
+                                {
+                                    int ind = Tile.GetIndexForTimeAttribute(att);
+                                    latency[indices[att]] += path[i].Tile.TimeData[pair][ind];                                  
+                                }
+                            }
+                            nextLine += latency[indices[att]] + ", ";
+                        }
+                    }
+
+                    if (latencyStringPrinted) nextLine = nextLine.Substring(0, nextLine.Length - 2) + ")";
+
                     nextLine = nextLine.PadRight(maxSegmentLength[i]);
                     nextLine += (i < path.Count - 1 ? " -> " : "");
 
-                    // UltraScale mapping - what the hell is this
-                    /*if (i == path.Count - 1)
+                    // UltraScale mapping
+                    if (i == path.Count - 1)
                     {
                         foreach (string v in VariableManager.Instance.GetAllVariableNames())
                         {
@@ -289,16 +313,19 @@ namespace GoAhead.Commands
                                     nextLine += " (" + v + ")";
                                 }
                             }
-                            catch { }
+                            catch
+                            {
+
+                            }
                         }
-                    }*/
+                    }
                     buffer.Append(nextLine);
 
                 }
                 if (path.Count != 0)
                 {
                     //this.OutputManager.WriteOutput(buffer.ToString());
-                    pathStringsAndLatencies.Add(buffer, LatencyMan.StopLatencyRecorder());
+                    pathStringsAndLatencies.Add(buffer, sortingAttributePresent ? latency[indices[sortingAttribute]] : 0);
                 }
             }
 
@@ -308,7 +335,7 @@ namespace GoAhead.Commands
             }
         }
 
-        private void AddToTCLOutput(List<List<Location>> paths)
+        private void SendToTCL(List<List<Location>> paths)
         {
             List<List<string>> convertedFormat = new List<List<string>>();
             for(int i=0; i<paths.Count; i++)
@@ -321,8 +348,7 @@ namespace GoAhead.Commands
                 convertedFormat.Add(path);
             }
 
-            if (TCL_output == null) TCL_output = new List<object>();
-            TCL_output.Add(convertedFormat);
+            TclDLL.Tcl_SetObjResult(Program.mainInterpreter.ptr, TclAPI.Cs2Tcl(convertedFormat));
         }
 
         public static bool PathAlreadyFound(List<Location> path, List<List<Location>> foundPaths)
@@ -358,16 +384,17 @@ namespace GoAhead.Commands
             public List<string> PresentAttributesNames;
             public Dictionary<Tile.TimeAttributes, int> PresentAttributesIndices;
 
-            //public bool Print { get { return PrintLatency != null && PrintLatency.Contains(true); } }
-            private List<Tile.TimeAttributes> PrintLatency = null;
-            private Tile.TimeAttributes? SortingAttribute = null;
+            public bool Print { get { return PrintLatency != null && PrintLatency.Contains(true); } }
+            private List<bool> PrintLatency;
 
-            public LatencyManager(List<string> printLatency, string sortingAttribute)
+            public LatencyManager(List<bool> printLatency)
             {
-                // Determine present attributes
+                PrintLatency = printLatency;
+
                 bool[] timeAttributePresence = Tile.GetPresentTimeAttributes();
                 PresentAttributesIndices = new Dictionary<Tile.TimeAttributes, int>();
                 PresentAttributesNames = new List<string>();
+
                 int pos = 0;
                 if (timeAttributePresence != null)
                 {
@@ -380,277 +407,12 @@ namespace GoAhead.Commands
                         PresentAttributesNames.Add(FPGA.FPGA.Instance.GetTimeModelAttributeName(a));
                         pos++;
                     }
-                }
-                PresentAttributesCount = pos;                
-
-                ValidatePrintLatency(printLatency);
-                ValidateSortByAttribute(sortingAttribute);                
-            }
-
-            private readonly bool keepPathsIndependent = false;
-            public LatencyManager(bool keepPathsIndependent)
-            {
-                this.keepPathsIndependent = keepPathsIndependent;
-            }
-
-            /// <summary>
-            /// Validates the parameter PrintLatency
-            /// </summary>
-            /// <param name="printLatency"></param>
-            private void ValidatePrintLatency(List<string> printLatency)
-            {
-                // If there is any input
-                if (printLatency.Where(l => !"".Equals(l)).Count() > 0)
-                {
-                    // Input list length can't be bigger than the amount of present attributes
-                    if (PresentAttributesCount < printLatency.Count)
-                    {
-                        msg_printLatency = 
-                            "none - Printing latency requested for " + printLatency.Count +
-                            " entries, but the model contains data for " + PresentAttributesCount + 
-                            " attributes.";
-                        return;
-                    }                    
-                }
-                // If no input - exit
-                else
-                {
-                    msg_printLatency = "none";
-                    return;
-                }
-
-                // There is input, prepare for parsing
-                PrintLatency = new List<Tile.TimeAttributes>();
-                bool parsed = false;
-
-                // Try parsing in boolean format first
-                if (PresentAttributesCount == printLatency.Count)
-                {
-                    for (int i = 0; i < printLatency.Count; i++)
-                    {
-                        parsed = true;
-                        if (bool.TryParse(printLatency[i], out bool b))
-                        {
-                            if (b) PrintLatency.Add(FPGA.FPGA.Instance.GetTimeAttribute(PresentAttributesNames[i]));
-                        }
-                        else
-                        {
-                            PrintLatency.Clear();
-                            parsed = false;
-                            break;
-                        }
-                    }
                 }                
 
-                // If that didn't work try the string format
-                if (!parsed)
-                {
-                    try
-                    {
-                        for (int i = 0; i < printLatency.Count; i++)
-                        {
-                            Tile.TimeAttributes attribute = FPGA.FPGA.Instance.GetTimeAttribute(printLatency[i]);
-                            // If the user inputted the same attribute twice, we accept the input but we don't repeat the attribute
-                            if (!PrintLatency.Contains(attribute))
-                            {
-                                PrintLatency.Add(attribute);
-                            }
-                        }
-                        parsed = true;
-                    }
-                    catch (Exception)
-                    {
-                        // Invalid attribute name supplied by the user, abort the printing
-                        PrintLatency = null;
-                    }
-                }
-
-                if (!parsed)
-                {
-                    msg_printLatency = "none - Failed to parse the PrintLatency input.";
-                }
+                PresentAttributesCount = pos;
             }
-
-            /// <summary>
-            /// Validates the parameter SortByAttribute
-            /// </summary>
-            /// <param name="attribute"></param>
-            private void ValidateSortByAttribute(string attribute)
-            {
-                // If there is any input
-                if (!string.IsNullOrEmpty(attribute))
-                {
-                    try
-                    {
-                        Tile.TimeAttributes att = FPGA.FPGA.Instance.GetTimeAttribute(attribute);
-
-                        // Ensure that the attribute is in the model
-                        if (Tile.GetPresentTimeAttributes()[(int)att])
-                        {
-                            SortingAttribute = att;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
-                // If no input - exit
-                else
-                {
-                    msg_sortingAttribute = "none";
-                    return;
-                }
-
-                // Input was not parsed successfully
-                if (SortingAttribute == null)
-                {
-                    msg_sortingAttribute = "none - Supplied sorting attribute was not found in the model.";
-                    return;
-                }
-
-                // Check if sorting attribute is included in PrintLatency
-                if (PrintLatency == null || (SortingAttribute is Tile.TimeAttributes ta && !PrintLatency.Contains(ta)))
-                {
-                    msg_sortingAttribute = "none - Supplied sorting attribute was not enabled in PrintLatency.";
-                }
-            }
-
-            private string msg_printLatency = "";
-            private string msg_sortingAttribute = "";
-
-            public string GetLatencyBanner()
-            {
-                if (keepPathsIndependent)
-                {
-                    return "--Printing latency is not supported with KeepPathsIndependet" + Environment.NewLine +
-                        line_dash + Environment.NewLine;
-                }
-
-                string result = "";
-
-                // Latency
-                string latencyStr = "";
-                
-                if (!"".Equals(msg_printLatency))
-                {
-                    latencyStr = msg_printLatency;
-                }
-                else if (PrintLatency != null && PrintLatency.Count > 0)
-                {
-                    for (int i = 0; i < PrintLatency.Count; i++)
-                    {
-                        latencyStr += FPGA.FPGA.Instance.GetTimeModelAttributeName(PrintLatency[i]) + (i == PrintLatency.Count - 1 ? "" : ",");
-                    }
-                    latencyStr = "[" + latencyStr + "]";
-                }
-
-                // Sorting attribute
-                string saStr = "";
-                if (!"".Equals(msg_sortingAttribute))
-                {
-                    saStr = msg_sortingAttribute;
-                }
-                else if (SortingAttribute is Tile.TimeAttributes att)
-                {
-                    saStr = FPGA.FPGA.Instance.GetTimeModelAttributeName(att);
-                }
-
-                if (!"".Equals(latencyStr))
-                    result += "--Latency: " + latencyStr + Environment.NewLine;
-                if (!"".Equals(saStr))
-                    result += "--Sorted by: " + saStr + Environment.NewLine;
-
-                result += line_dash + Environment.NewLine;
-
-                return result;
-            }
-
-            #region Latency Recorder
-            private bool recording = false;
-            private List<float> rec_latencies = null;
-            private string Rec_latencies_str
-            {
-                get
-                {
-                    string result = "";
-                    if (rec_latencies == null)
-                        return result;
-                    for (int i = 0; i < rec_latencies.Count; i++)
-                        result += rec_latencies[i] + (i == rec_latencies.Count - 1 ? "" : ",");
-                    return "(" + result + ")";
-                }
-            }
-
-            /// <summary>
-            /// Refreshes variables required for latency accumulation for a path.
-            /// RecordLatencyForPathSegment may be called arbitrarily between this and StopLatencyRecorder.
-            /// </summary>
-            public void StartLatencyRecorder()
-            {
-                if (keepPathsIndependent || PrintLatency == null)
-                    return;
-
-                rec_latencies = new List<float>();
-                foreach (var l in PrintLatency)
-                    rec_latencies.Add(0);
-
-                recording = true;
-            }
-
-            /// <summary>
-            /// Used to add the latency of the segment [start,end] to the total accumulated latency since the StartLatencyRecorder call.
-            /// Returns a string displaying the total latency after the processing the segment.
-            /// </summary>
-            /// <param name="start"></param>
-            /// <param name="end"></param>
-            /// <returns></returns>
-            public string RecordLatencyForPathSegment(Location start, Location end)
-            {
-                // If the request is invalid
-                if (!recording || end == null)
-                    return "";
-
-                // If we can't find time data for the required segment
-                if (end.Tile.TimeData == null || start == null || !start.Tile.Equals(end.Tile))
-                    return Rec_latencies_str;
-
-                // Accumulate latencies
-                for (int i = 0; i < PrintLatency.Count; i++)
-                {
-                    rec_latencies[i] += end.Tile.GetTimeData(start.Pip, end.Pip, PrintLatency[i]);
-                }
-
-                return Rec_latencies_str;
-            }
-
-            /// <summary>
-            /// Stops the accumulation of latency started with StartLatencyRecorder.
-            /// Returns the total latency of the sorting attribute, otherwise returns 0.
-            /// </summary>
-            /// <returns></returns>
-            public float StopLatencyRecorder()
-            {
-                float result = 0;
-
-                if (!recording)
-                    return result;
-
-                if (SortingAttribute is Tile.TimeAttributes att)
-                {
-                    int i = PrintLatency.IndexOf(att);
-                    if (i > -1)
-                    {
-                        result = rec_latencies[i];
-                    }
-                }
-
-                recording = false;
-
-                return result;
-            }
-            #endregion
         }
-    }
+	}
 
  
 }

@@ -14,14 +14,14 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput("# e.g. expect outpin left_3 SLICE_X5Y83 CMUX static_to_partial 5 -> expect vector index 5 in netname");
-            OutputManager.WriteOutput("# e.g. expect outpin left_5 SLICE_X342Y283 AMUX static_to_partial x -> no vector");
+            this.OutputManager.WriteOutput("# e.g. expect outpin left_3 SLICE_X5Y83 CMUX static_to_partial 5 -> expect vector index 5 in netname");
+            this.OutputManager.WriteOutput("# e.g. expect outpin left_5 SLICE_X342Y283 AMUX static_to_partial x -> no vector");
                  
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(i => Regex.IsMatch(i.InstanceName, InstantiationFilter)))
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(i => Regex.IsMatch(i.InstanceName, this.InstantiationFilter)))
             {
                 LibraryElement libElement = Objects.Library.Instance.GetElement(inst.LibraryElementName);
 
-                OutputManager.WriteOutput("# expected ports for instance " + inst.InstanceName + " (instance of " + libElement.Name + ")");
+                this.OutputManager.WriteOutput("# expected ports for instance " + inst.InstanceName + " (instance of " + libElement.Name + ")");
 
                 foreach (XDLPort port in libElement.Containter.Ports)
                 {
@@ -37,18 +37,18 @@ namespace GoAhead.Commands.Debug
                     }
 
                     bool hasMapping = inst.PortMapper.HasSignalMapping(port.ExternalName);
-                    string inoutPin = port.Direction == FPGA.FPGATypes.PortDirection.In ? "inpin" : "outpin";
-                    string portName = hasMapping ? inst.PortMapper.GetSignalName(port.ExternalName) : "unknown";
-                    string index = inst.PortMapper.HasIndex(port.ExternalName) ? inst.PortMapper.GetIndex(port.ExternalName).ToString() : "-1";
+                    String inoutPin = port.Direction == FPGA.FPGATypes.PortDirection.In ? "inpin" : "outpin";
+                    String portName = hasMapping ? inst.PortMapper.GetSignalName(port.ExternalName) : "unknown";
+                    String index = inst.PortMapper.HasIndex(port.ExternalName) ? inst.PortMapper.GetIndex(port.ExternalName).ToString() : "-1";
 
                     if (portName.Equals("1"))
                     {
                         index = "0";
                     }
 
-                    string line = "expect " + inoutPin + " " + inst.InstanceName + " " + inst.SliceName + " " + port.SlicePort + " " + portName + " " + index;
+                    String line = "expect " + inoutPin + " " + inst.InstanceName + " " + inst.SliceName + " " + port.SlicePort + " " + portName + " " + index;
 
-                    OutputManager.WriteOutput(line);
+                    this.OutputManager.WriteOutput(line);
                 }                
             }
         }
@@ -59,6 +59,6 @@ namespace GoAhead.Commands.Debug
         }
 
         [Parameter(Comment = "Only consider those library element instantiations whose name matches this filter")]
-        public string InstantiationFilter = ".*";
+        public String InstantiationFilter = ".*";
     }
 }

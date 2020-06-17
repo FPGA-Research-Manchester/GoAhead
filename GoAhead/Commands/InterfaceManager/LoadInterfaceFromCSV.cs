@@ -13,10 +13,10 @@ namespace GoAhead.Commands.InterfaceManager
     {
         protected override void DoCommandAction()
         {
-            TextReader tr = new StreamReader(FileName);
+            TextReader tr = new StreamReader(this.FileName);
 
             Objects.InterfaceManager.Instance.GenerateCommandsForChanges = false;
-            string line = "";
+            String line = "";
             while ((line = tr.ReadLine()) != null)
             {
                 line = line.Replace('[', '(');
@@ -28,34 +28,34 @@ namespace GoAhead.Commands.InterfaceManager
                 // remove tabs
                 line = Regex.Replace(line, @"\s", "");
 
-                if (Regex.IsMatch(line, @"^\s*#") || string.IsNullOrWhiteSpace(line) || string.IsNullOrEmpty(line))
+                if (Regex.IsMatch(line, @"^\s*#") || String.IsNullOrWhiteSpace(line) || String.IsNullOrEmpty(line))
                 {
                     continue;
                 }
                 if (line.Contains(';'))
                 {
-                    foreach (string subSignal in line.Split(';').Where(s => !string.IsNullOrWhiteSpace(s)))
+                    foreach (String subSignal in line.Split(';').Where(s => !String.IsNullOrWhiteSpace(s)))
                     {
-                        AddSignal(subSignal);
+                        this.AddSignal(subSignal);
                     }
                 }
                 else
                 {
-                    AddSignal(line);
+                    this.AddSignal(line);
                 }
             };
 
             tr.Close();
-            Objects.InterfaceManager.Instance.GenerateCommandsForChanges = true;
-            Objects.InterfaceManager.Instance.LoadCommands.Add(ToString());
+            GoAhead.Objects.InterfaceManager.Instance.GenerateCommandsForChanges = true;
+            GoAhead.Objects.InterfaceManager.Instance.LoadCommands.Add(this.ToString());
         }
 
-        private void AddSignal(string subSignal)
+        private void AddSignal(String subSignal)
         {
-            string[] atoms = subSignal.Split(',');
+            String[] atoms = subSignal.Split(',');
             FPGATypes.InterfaceDirection dir = (FPGATypes.InterfaceDirection)Enum.Parse(typeof(FPGATypes.InterfaceDirection), atoms[2]);
 
-            Signal s = new Signal(atoms[0], atoms[1], dir, PartialArea, int.Parse(atoms[3]));
+            Signal s = new Signal(atoms[0], atoms[1], dir, this.PartialArea, Int32.Parse(atoms[3]));
 
             Objects.InterfaceManager.Instance.Add(s);
         }
@@ -66,9 +66,9 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of the file to read the interface from")]
-        public string FileName = "";
+        public String FileName = "";
 
         [Parameter(Comment = "The name of the partial area the read in interface will be assigned to ")]
-        public string PartialArea = "";
+        public String PartialArea = "";
     }
 }

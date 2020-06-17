@@ -7,34 +7,34 @@ namespace GoAhead.Commands
 {
     public class CommandStringParserState
     {   
-        public string LastParserCommand
+        public String LastParserCommand
         {
-            get { return m_lastParsedCommand; }
-            set { m_lastParsedCommand = value; }
+            get { return this.m_lastParsedCommand; }
+            set { this.m_lastParsedCommand = value; }
         }
 
-        public string ParsedFile
+        public String ParsedFile
         {
-            get { return m_parsedFile; }
-            set { m_parsedFile = value; }
+            get { return this.m_parsedFile; }
+            set { this.m_parsedFile = value; }
         }
 
         public int LineNumber
         {
-            get { return m_lineNumber; }
-            set { m_lineNumber = value; }
+            get { return this.m_lineNumber; }
+            set { this.m_lineNumber = value; }
         }
 
         public override string ToString()
         {
             return
-                (!string.IsNullOrEmpty(ParsedFile) ? "Parsing file " + ParsedFile + Environment.NewLine : "") +
-                ("Last successfully parsed command is " + LastParserCommand + Environment.NewLine) +
-                ("The parser was working around line " + LineNumber);
+                (!String.IsNullOrEmpty(this.ParsedFile) ? "Parsing file " + this.ParsedFile + Environment.NewLine : "") +
+                ("Last successfully parsed command is " + this.LastParserCommand + Environment.NewLine) +
+                ("The parser was working around line " + this.LineNumber);
         }
 
-        private string m_parsedFile = "";
-        private string m_lastParsedCommand = ""; 
+        private String m_parsedFile = "";
+        private String m_lastParsedCommand = ""; 
         private int m_lineNumber = 0;   
     }
 }

@@ -11,26 +11,26 @@ namespace GoAhead.Commands.GUI
     {
         protected override void DoCommandAction()
         {
-            if (m_menu == null)
+            if (this.m_menu == null)
             {
                 // prevent tracing this command twice
-                UpdateCommandTrace = false;
+                this.UpdateCommandTrace = false;
                 // postpone execution until GUI comes up
                 ShowGUI.GUICommands.Add(this);
             }
             else
             {
-                m_menu.Visible = true;
+                this.m_menu.Visible = true;
 
                 ToolStripMenuItem menuItem = new ToolStripMenuItem();
                 menuItem.Visible = true;
-                menuItem.Name = Name;
-                menuItem.ToolTipText = string.IsNullOrEmpty(ToolTip) ? (Name + ": " + Command) : ToolTip;
+                menuItem.Name = this.Name;
+                menuItem.ToolTipText = String.IsNullOrEmpty(this.ToolTip) ? (this.Name + ": " + this.Command) : this.ToolTip;
                 menuItem.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
-                menuItem.Text = Name;
-                menuItem.Click += new System.EventHandler(UserDefinedAction);
-                menuItem.Tag = Static;
-                m_menu.DropDownItems.Add(menuItem);
+                menuItem.Text = this.Name;
+                menuItem.Click += new System.EventHandler(this.UserDefinedAction);
+                menuItem.Tag = this.Static;
+                this.m_menu.DropDownItems.Add(menuItem);
             }
         }
 

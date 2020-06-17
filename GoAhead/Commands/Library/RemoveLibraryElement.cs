@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Library
     {
         protected override void DoCommandAction()
         {
-            Objects.Library.Instance.Remove(LibraryElementName);
+            Objects.Library.Instance.Remove(this.LibraryElementName);
         }
 
         public override void Undo()
@@ -20,6 +20,6 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The name of the element to remove, e.g BM_S6_L4_R4_double")]
-        public string LibraryElementName = "BM_S6_L4_R4_double";     
+        public String LibraryElementName = "BM_S6_L4_R4_double";     
     }
 }

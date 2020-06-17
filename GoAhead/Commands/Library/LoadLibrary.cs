@@ -14,7 +14,7 @@ namespace GoAhead.Commands.Library
             //Opens a file and deserializes a new interface from it.
             try
             {
-                stream = File.OpenRead(FileName);
+                stream = File.OpenRead(this.FileName);
 
                 BinaryFormatter formatter = new BinaryFormatter();
 
@@ -36,6 +36,6 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The name of the file to save the library in")]
-        public string FileName = "macroLib.binLibrary";
+        public String FileName = "macroLib.binLibrary";
     }
 }

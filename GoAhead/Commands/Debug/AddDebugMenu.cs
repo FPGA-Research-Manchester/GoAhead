@@ -13,7 +13,7 @@ namespace GoAhead.Commands.Debug
         protected override void DoCommandAction()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            foreach (Type type in asm.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(Command)) && !t.Name.Equals(GetType().Name)))
+            foreach (Type type in asm.GetTypes().Where(t => !t.IsAbstract && t.IsSubclassOf(typeof(Command)) && !t.Name.Equals(this.GetType().Name)))
             {
                 // Namespace may be null -> do not include in Where statement
                 if (type.Namespace.EndsWith("Debug"))

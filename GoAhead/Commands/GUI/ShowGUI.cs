@@ -14,17 +14,17 @@ namespace GoAhead.Commands.GUI
         {         
             CommandExecuter.Instance.GUIActive = true;
             GoAhead.GUI.GUI gui = new GoAhead.GUI.GUI();
-            gui.FormsToLoadOnStartup.AddRange(FormsToLoadOnStartup);
-            gui.CommandToExecuteOnLoad.AddRange(GUICommands.Where(cmd => cmd is OpenScriptInDebugger));
+            gui.FormsToLoadOnStartup.AddRange(this.FormsToLoadOnStartup);
+            gui.CommandToExecuteOnLoad.AddRange(ShowGUI.GUICommands.Where(cmd => cmd is OpenScriptInDebugger));
             
-            foreach (GUICommand addCmd in GUICommands.Where(cmd => cmd is AddUserElement))
+            foreach (GUICommand addCmd in ShowGUI.GUICommands.Where(cmd => cmd is AddUserElement))
             {
                 CommandExecuter.Instance.Execute(addCmd);
             }
-            GUICommands.Clear();
+            ShowGUI.GUICommands.Clear();
 
             // store FPGA View for SaveFPGAViewAsBitmap
-            m_FPGAView = gui.FPGAView;
+            ShowGUI.m_FPGAView = gui.FPGAView;
             try
             {
                 gui.ShowDialog();
@@ -45,7 +45,7 @@ namespace GoAhead.Commands.GUI
 
         public static FPGAViewCtrl FPGAView
         {
-            get { return m_FPGAView; }
+            get { return ShowGUI.m_FPGAView; }
         }
 
         private static FPGAViewCtrl m_FPGAView;
@@ -53,6 +53,6 @@ namespace GoAhead.Commands.GUI
         public static List<GUICommand> GUICommands = new List<GUICommand>();
 
         [Parameter(Comment = "Those forms that match on of this String will be loaded. E.g. InterfaceManager")]
-        public List<string> FormsToLoadOnStartup = new List<string>();
+        public List<String> FormsToLoadOnStartup = new List<String>();
     }
 }

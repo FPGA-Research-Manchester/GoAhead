@@ -14,20 +14,20 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             // look for net with outping
-            XDLNet anyNet = (XDLNet) nlc.Nets.FirstOrDefault(n => n.OutpinCount == 1 && string.IsNullOrEmpty(((XDLNet) n).HeaderExtension));
+            XDLNet anyNet = (XDLNet) nlc.Nets.FirstOrDefault(n => n.OutpinCount == 1 && String.IsNullOrEmpty(((XDLNet) n).HeaderExtension));
 
             if (anyNet == null)
             {
-                throw new ArgumentException("Could not a net with an outpin in " + NetlistContainerName);
+                throw new ArgumentException("Could not a net with an outpin in " + this.NetlistContainerName);
             }
 
             // add outpin and inpin statements
-            foreach (XDLNet net in nlc.Nets.Where(net => OtherArcsFilter(anyNet, net)))
+            foreach (XDLNet net in nlc.Nets.Where(net => this.OtherArcsFilter(anyNet, net)))
             {
                 anyNet.Add(net, false);
                 // ports remain blocked
@@ -38,7 +38,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
         private bool OtherArcsFilter(Net sink, Net other)
         {
-            if (OnlyMoveArcsFromNetsWithoutOutpin)
+            if (this.OnlyMoveArcsFromNetsWithoutOutpin)
             {
                 return !other.Name.Equals(sink.Name) && other.OutpinCount == 0;
             }

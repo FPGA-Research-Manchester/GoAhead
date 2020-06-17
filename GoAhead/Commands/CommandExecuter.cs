@@ -28,53 +28,53 @@ namespace GoAhead.Commands
         {
             foreach (Command cmd in cmds)
             {               
-                if (DoNotExecuteCommandAndUpdateCommandTraceOnly && !(cmd is Set))
+                if (this.DoNotExecuteCommandAndUpdateCommandTraceOnly && !(cmd is Set))
                 {
                     cmd.Execute = false;
                 }
 
-                if (m_pendingWrapperCommands == 0)
+                if (this.m_pendingWrapperCommands == 0)
                 {
-                    if (ProfileAll)
+                    if (this.ProfileAll)
                     {
                         cmd.Profile = true;
                     }
                 }
 
-                if (ProfilePeakMemoryConsumption)
+                if (this.ProfilePeakMemoryConsumption)
                 {
-                    Process currentProcess = Process.GetCurrentProcess();
+                    Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
                     long totalBytesOfMemoryUsed = currentProcess.WorkingSet64;
-                    if(PeakNumberOfBytesOfMemoryUsed < totalBytesOfMemoryUsed)
+                    if(this.PeakNumberOfBytesOfMemoryUsed < totalBytesOfMemoryUsed)
                     {
-                        PeakNumberOfBytesOfMemoryUsed = totalBytesOfMemoryUsed;
+                        this.PeakNumberOfBytesOfMemoryUsed = totalBytesOfMemoryUsed;
                     }
                 }
 
                 // if the next command is a wrapper command ...
-                bool cmdIsWrapper = IsWrapperCommand(cmd);
+                bool cmdIsWrapper = this.IsWrapperCommand(cmd);
                 if (cmdIsWrapper)
                 {
-                    m_pendingWrapperCommands++;
+                    this.m_pendingWrapperCommands++;
                 }
 
                 // update command trace
-                if ( ((m_updateCommandTrace || PrintWrappedCommands) && !MuteCommandTrace && cmd.UpdateCommandTrace) || cmd is UnmuteCommandTrace)
+                if ( ((this.m_updateCommandTrace || this.PrintWrappedCommands) && !this.MuteCommandTrace && cmd.UpdateCommandTrace) || cmd is UnmuteCommandTrace)
                 {
-                    foreach (CommandHook hook in m_hooks)
+                    foreach (CommandHook hook in this.m_hooks)
                     {
                         hook.CommandTrace(cmd);
                     }
                 }
 
                 // for wrapper commands, suppress the output
-                if (m_pendingWrapperCommands > 0)
+                if (this.m_pendingWrapperCommands > 0)
                 {
-                    m_updateCommandTrace = false;
+                    this.m_updateCommandTrace = false;
                 }
 
                 // second hook for e.g. cursor
-                foreach (CommandHook hook in m_hooks)
+                foreach (CommandHook hook in this.m_hooks)
                 {
                     hook.PreRun(cmd);
                 }
@@ -91,7 +91,7 @@ namespace GoAhead.Commands
                         cmd.ErrorThrown = true;
 
                         // error hook
-                        foreach (CommandHook hook in m_hooks)
+                        foreach (CommandHook hook in this.m_hooks)
                         {
                             hook.Error(cmd, error);
                         }
@@ -100,23 +100,23 @@ namespace GoAhead.Commands
 
                 // store command for undo AFTER the exection, thus UnDo will pop the last command before itself
                 // otherwise UnDo would undo itself
-                m_commandStack.Push(cmd);
-                m_commandStrings.Add(cmd.ToString());
+                this.m_commandStack.Push(cmd);
+                this.m_commandStrings.Add(cmd.ToString());
 
                 if (cmdIsWrapper)
                 {
-                    m_pendingWrapperCommands--;
+                    this.m_pendingWrapperCommands--;
                 }
 
                 // and reactivate the output after the wrapper command finished
                 // meanwhile, other NON wrapper commands might have been executed
-                if (m_pendingWrapperCommands == 0)
+                if (this.m_pendingWrapperCommands == 0)
                 {
-                    m_updateCommandTrace = true;
+                    this.m_updateCommandTrace = true;
                 }
 
                 // hook to dump outputs
-                foreach (CommandHook hook in m_hooks)
+                foreach (CommandHook hook in this.m_hooks)
                 {                
                     hook.PostRun(cmd);
                 }
@@ -124,7 +124,7 @@ namespace GoAhead.Commands
                 // prevent endless message boxes
                 if (cmd.ErrorThrown)
                 {
-                    if (GUIActive || OnErrorContinue)
+                    if (this.GUIActive || this.OnErrorContinue)
                     {
                         break;
                     }
@@ -144,22 +144,22 @@ namespace GoAhead.Commands
         public void Execute(FileInfo fi)
         {
             CommandStringParser parser = new CommandStringParser(fi);
-            RunCommandsFromParser(parser);
+            this.RunCommandsFromParser(parser);
         }
 
-        public void Execute(string commandString)
+        public void Execute(String commandString)
 		{            
             CommandStringParser parser = new CommandStringParser(commandString);
-            RunCommandsFromParser(parser);
+            this.RunCommandsFromParser(parser);
 		}
 
         private void RunCommandsFromParser(CommandStringParser parser)
         {
             CommandExecutionContext context = new CommandExecutionContext();
-            foreach (string cmdString in parser.Parse())
+            foreach (String cmdString in parser.Parse())
             {
                 Command parsedCmd = null;
-                string errorDescr;
+                String errorDescr;
                 bool valid = parser.ParseCommand(cmdString, false, out parsedCmd, out errorDescr);
                 if (valid)
                 {
@@ -168,7 +168,7 @@ namespace GoAhead.Commands
                 else
                 {
                     // forward parse error to hooks
-                    foreach (CommandHook hook in m_hooks)
+                    foreach (CommandHook hook in this.m_hooks)
                     {
                         hook.ParseError(cmdString, errorDescr);
                     }
@@ -184,17 +184,17 @@ namespace GoAhead.Commands
         /// <summary>
         /// No labels here!!
         /// </summary>
-        public void ExecuteWithOutContext(string commandString)
+        public void ExecuteWithOutContext(String commandString)
         {
             CommandStringParser parser = new CommandStringParser(commandString);
-            foreach (string cmdString in parser.Parse())
+            foreach (String cmdString in parser.Parse())
             {
                 Command parsedCmd = null;
-                string errorDescr;
+                String errorDescr;
                 bool valid = parser.ParseCommand(cmdString, true, out parsedCmd, out errorDescr);
                 if (valid)
                 {
-                    Execute(parsedCmd);                    
+                    this.Execute(parsedCmd);                    
                 }
                 else
                 {
@@ -203,9 +203,9 @@ namespace GoAhead.Commands
             }
         }
 
-        public List<string> ReadCommandFile(string commandFile)
+        public List<String> ReadCommandFile(String commandFile)
         {
-            List<string> commandString = new List<string>();
+            List<String> commandString = new List<String>();
 
             FileStream fs = File.OpenRead(commandFile);
             byte[] byteBuffer = new byte[fs.Length];
@@ -214,7 +214,7 @@ namespace GoAhead.Commands
             fs.Close();
 
             CommandStringParser parser = new CommandStringParser(byteBuffer, length);
-            foreach (string cmd in parser.Parse())
+            foreach (String cmd in parser.Parse())
             {
                 commandString.Add(cmd);
             }
@@ -224,12 +224,12 @@ namespace GoAhead.Commands
 
         public Command PopLastCommand()
         {
-            return m_commandStack.Pop();
+            return this.m_commandStack.Pop();
         }
 
         public IEnumerable<Command> GetAllCommands()
         {
-            foreach (Command cmd in m_commandStack)
+            foreach (Command cmd in this.m_commandStack)
             {
                 yield return cmd;
             }
@@ -249,12 +249,12 @@ namespace GoAhead.Commands
 
         public void AddHook(CommandHook hook)
         {
-            m_hooks.Add(hook);
+            this.m_hooks.Add(hook);
         }
 
         public IEnumerable<CommandHook> GetAllHooks()
         {
-            foreach (CommandHook hook in m_hooks)
+            foreach (CommandHook hook in this.m_hooks)
             {
                 yield return hook;
             }
@@ -265,12 +265,12 @@ namespace GoAhead.Commands
         /// </summary>
         public int CommandCount
         {
-            get { return m_commandStrings.Count; }
+            get { return this.m_commandStrings.Count; }
         }
 
-        public string GetCommandString(int i)
+        public String GetCommandString(int i)
         {
-            return m_commandStrings[i];
+            return this.m_commandStrings[i];
         }
 
 		/// <summary>
@@ -278,7 +278,7 @@ namespace GoAhead.Commands
 		/// </summary>
         private Stack<Command> m_commandStack = new Stack<Command>();
 
-		private List<string> m_commandStrings = new List<string>();
+		private List<String> m_commandStrings = new List<String>();
         
         private List<CommandHook> m_hooks = new List<CommandHook>();
         

@@ -10,12 +10,12 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            if (!FPGA.TileSelectionManager.Instance.HasUserSelection(UserSelectionType))
+            if (!FPGA.TileSelectionManager.Instance.HasUserSelection(this.UserSelectionType))
             {
-                throw new ArgumentException("User selection type " + UserSelectionType + " does not exist");
+                throw new ArgumentException("User selection type " + this.UserSelectionType + " does not exist");
             }
 
-            FPGA.TileSelectionManager.Instance.RemoveUserSelection(UserSelectionType);
+            FPGA.TileSelectionManager.Instance.RemoveUserSelection(this.UserSelectionType);
         }
 
         public override void Undo()
@@ -24,6 +24,6 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "The name of the user selection type")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

@@ -11,8 +11,8 @@ namespace GoAhead.Commands.Identifier
     {
         protected override void DoCommandAction()
         {
-            BRAMDSPSettingsManager.Instance.SetBRAMParameters(FamilyRegexp, Width, Height, LeftRightHandling, ButtomLeft, ButtomRight);
-            IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.BRAM, FamilyRegexp, IdentifierRegexp);
+            Objects.BRAMDSPSettingsManager.Instance.SetBRAMParameters(this.FamilyRegexp, this.Width, this.Height, this.LeftRightHandling, this.ButtomLeft, this.ButtomRight);
+            Objects.IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.BRAM, this.FamilyRegexp, this.IdentifierRegexp);
         }
 
         public override void Undo()
@@ -30,10 +30,10 @@ namespace GoAhead.Commands.Identifier
         public bool LeftRightHandling = false;
 
         [Parameter(Comment = "")]
-        public string ButtomLeft = "_L_";
+        public String ButtomLeft = "_L_";
 
         [Parameter(Comment = "")]
-        public string ButtomRight = "_R_";    
+        public String ButtomRight = "_R_";    
     }
 
     [CommandDescription(Description = "Set the regexp GoAhead uses to identify DSP tiles for the given Family", Wrapper = false, Publish = true)]
@@ -41,8 +41,8 @@ namespace GoAhead.Commands.Identifier
     {
        protected override void DoCommandAction()
         {
-            BRAMDSPSettingsManager.Instance.SetDSPParameters(FamilyRegexp, Width, Height, LeftRightHandling, ButtomLeft, ButtomRight);
-            IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.DSP, FamilyRegexp, IdentifierRegexp);
+            Objects.BRAMDSPSettingsManager.Instance.SetDSPParameters(this.FamilyRegexp, this.Width, this.Height, this.LeftRightHandling, this.ButtomLeft, this.ButtomRight);
+            Objects.IdentifierManager.Instance.SetRegex(IdentifierManager.RegexTypes.DSP, this.FamilyRegexp, this.IdentifierRegexp);
         }
 
         public override void Undo()
@@ -60,9 +60,9 @@ namespace GoAhead.Commands.Identifier
         public bool LeftRightHandling = false;
 
         [Parameter(Comment = "")]
-        public string ButtomLeft = "_L_";
+        public String ButtomLeft = "_L_";
 
         [Parameter(Comment = "")]
-        public string ButtomRight = "_R_";
+        public String ButtomRight = "_R_";
     }
 }

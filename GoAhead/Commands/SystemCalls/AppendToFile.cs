@@ -11,7 +11,7 @@ namespace GoAhead.Commands.SystemCalls
     {
         protected override void DoCommandAction()
         {
-            File.AppendAllText(FileName, Text + (Text.EndsWith(Environment.NewLine) ? "" : Environment.NewLine));
+            System.IO.File.AppendAllText(this.FileName, this.Text + (this.Text.EndsWith(System.Environment.NewLine) ? "" : System.Environment.NewLine));
         }
 
         public override void Undo()
@@ -20,9 +20,9 @@ namespace GoAhead.Commands.SystemCalls
         }
 
         [Parameter(Comment = "The filename")]
-        public string FileName = "";
+        public String FileName = "";
 
         [Parameter(Comment = "The text to print out")]
-        public string Text = "";
+        public String Text = "";
     }
 }

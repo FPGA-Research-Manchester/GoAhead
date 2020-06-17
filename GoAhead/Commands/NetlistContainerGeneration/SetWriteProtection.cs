@@ -12,15 +12,15 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex netFilter = new Regex(NetNameRegexp, RegexOptions.Compiled);
+            Regex netFilter = new Regex(this.NetNameRegexp, RegexOptions.Compiled);
 
             // output to be removed nets for later writing them to file
             foreach (XDLNet net in netlistContainer.Nets.Where(n => netFilter.IsMatch(n.Name)))
             {
                 net.ReadOnly = true;
-                OutputManager.WriteOutput("Setting write protection for net " + net.Name);
+                this.OutputManager.WriteOutput("Setting write protection for net " + net.Name);
             }
         }
 
@@ -30,6 +30,6 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "All nets whose name matches this regular expression will write protected")]
-        public string NetNameRegexp = "^module";
+        public String NetNameRegexp = "^module";
     }
 }

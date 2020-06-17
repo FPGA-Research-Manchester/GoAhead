@@ -13,17 +13,17 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            string t1Identifier = "";
-            string t2Identifier = "";
+            String t1Identifier = "";
+            String t2Identifier = "";
             bool validIdentifierFound = false;
 
-            if (UpperLeftIdentifierPrefices.Count == 0)
+            if (this.UpperLeftIdentifierPrefices.Count == 0)
             {
                 bool t1Found = false;
                 for (int i = 0; i < IdentifierPrefixManager.Instance.Prefices.Count; i++)
                 {
-                    string prefix = IdentifierPrefixManager.Instance.Prefices[i];
-                    t1Identifier = prefix + "X" + UpperLeftX + "Y" + UpperLeftY;
+                    String prefix = IdentifierPrefixManager.Instance.Prefices[i];
+                    t1Identifier = prefix + "X" + this.UpperLeftX + "Y" + this.UpperLeftY;
                     if (FPGA.FPGA.Instance.Contains(t1Identifier))
                     {
                         t1Found = true;
@@ -34,8 +34,8 @@ namespace GoAhead.Commands.Selection
                 bool t2Found = false;
                 for (int i = 0; i < IdentifierPrefixManager.Instance.Prefices.Count; i++)
                 {
-                    string prefix = IdentifierPrefixManager.Instance.Prefices[i];
-                    t2Identifier = prefix + "X" + LowerRightX + "Y" + LowerRightY;
+                    String prefix = IdentifierPrefixManager.Instance.Prefices[i];
+                    t2Identifier = prefix + "X" + this.LowerRightX + "Y" + this.LowerRightY;
                     if (FPGA.FPGA.Instance.Contains(t2Identifier))
                     {
                         t2Found = true;
@@ -47,10 +47,10 @@ namespace GoAhead.Commands.Selection
             }
             else
             {
-                for (int i = 0; i < UpperLeftIdentifierPrefices.Count; i++)
+                for (int i = 0; i < this.UpperLeftIdentifierPrefices.Count; i++)
                 {
-                    t1Identifier = UpperLeftIdentifierPrefices[i] + "X" + UpperLeftX + "Y" + UpperLeftY;
-                    t2Identifier = LowerRightIdentifierPrefices[i] + "X" + LowerRightX + "Y" + LowerRightY;
+                    t1Identifier = this.UpperLeftIdentifierPrefices[i] + "X" + this.UpperLeftX + "Y" + this.UpperLeftY;
+                    t2Identifier = this.LowerRightIdentifierPrefices[i] + "X" + this.LowerRightX + "Y" + this.LowerRightY;
 
                     if (FPGA.FPGA.Instance.Contains(t1Identifier) && FPGA.FPGA.Instance.Contains(t2Identifier))
                     {
@@ -84,14 +84,14 @@ namespace GoAhead.Commands.Selection
                     TileKey key = new TileKey(x, y);
 
                     //deselect or add the selected tile 
-                    if (TileSelectionManager.Instance.IsSelected(x, y))
-                        TileSelectionManager.Instance.RemoveFromSelection(key, false);
+                    if (FPGA.TileSelectionManager.Instance.IsSelected(x, y))
+                        FPGA.TileSelectionManager.Instance.RemoveFromSelection(key, false);
                     else
-                        TileSelectionManager.Instance.AddToSelection(key, false);
+                        FPGA.TileSelectionManager.Instance.AddToSelection(key, false);
                 }
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
         
         public override void Undo()
@@ -101,9 +101,9 @@ namespace GoAhead.Commands.Selection
         // TOOD default value ("INT_BRAM_, INT_DSP_, INT_");
 
         [Parameter(Comment = "The possible prefices of the tile identifier that will be composed the X and Y values")]
-        public List<string> UpperLeftIdentifierPrefices = new List<string>();
+        public List<String> UpperLeftIdentifierPrefices = new List<String>();
         [Parameter(Comment = "The possible prefices of the tile identifier that will be composed the X and Y values")]
-        public List<string> LowerRightIdentifierPrefices = new List<string>();
+        public List<String> LowerRightIdentifierPrefices = new List<String>();
         [Parameter(Comment = "The X value of the upper left tile identifier (the X value from e.g INT_X10Y24")]
         public int UpperLeftX = 10;
         [Parameter(Comment = "The Y value of the upper left tile identifier (the Y value from e.g INT_X10Y24")]

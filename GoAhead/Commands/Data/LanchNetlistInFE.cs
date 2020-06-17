@@ -16,30 +16,30 @@ namespace GoAhead.Commands.Data
         {
         }
 
-        public LanchNetlistInFE(List<string> macroNames, string nmcFile, bool includePorts, bool includeDummyNets, bool runFEScript, bool launchFE)
+        public LanchNetlistInFE(List<String> macroNames, String nmcFile, bool includePorts, bool includeDummyNets, bool runFEScript, bool launchFE)
         {
-            MacroNames = macroNames;
-            NMCFile = nmcFile;
-            IncludePorts = includePorts;
-            RunFEScript = runFEScript;
-            LaunchFE = launchFE;
-            IncludeDummyNets = includeDummyNets;
+            this.MacroNames = macroNames;
+            this.NMCFile = nmcFile;
+            this.IncludePorts = includePorts;
+            this.RunFEScript = runFEScript;
+            this.LaunchFE = launchFE;
+            this.IncludeDummyNets = includeDummyNets;
         }
 
         protected override void DoCommandAction()
         {
             // read env
-            string xilinxDir = Environment.GetEnvironmentVariable("XILINX");
+            String xilinxDir = Environment.GetEnvironmentVariable("XILINX");
             if (xilinxDir[xilinxDir.Length - 1].Equals(Path.DirectorySeparatorChar))
             {
                 xilinxDir += Path.DirectorySeparatorChar;
             }
 
-            string tempXDLFile = Path.ChangeExtension(Path.GetTempFileName(), "xdl");
-            string tempNCDFile = Path.ChangeExtension(Path.GetTempFileName(), "ncd");
-            string tempSCRFile = Path.ChangeExtension(Path.GetTempFileName(), "scr");
-            string tempBatchFile = Path.ChangeExtension(Path.GetTempFileName(), "bat");
-            string tempLogFile = Path.ChangeExtension(Path.GetTempFileName(), "log");        
+            String tempXDLFile = Path.ChangeExtension(Path.GetTempFileName(), "xdl");
+            String tempNCDFile = Path.ChangeExtension(Path.GetTempFileName(), "ncd");
+            String tempSCRFile = Path.ChangeExtension(Path.GetTempFileName(), "scr");
+            String tempBatchFile = Path.ChangeExtension(Path.GetTempFileName(), "bat");
+            String tempLogFile = Path.ChangeExtension(Path.GetTempFileName(), "log");        
 
             // create xdl
             // CommandExecuter.Instance.Execute(new GenerateXDL(tempXDLFile, this.MacroNames, this.IncludePorts, this.IncludeDummyNets, true, true, true));
@@ -48,35 +48,35 @@ namespace GoAhead.Commands.Data
             genXDLCmd.DesignName = "blocker";
             genXDLCmd.FileName = tempXDLFile;
             genXDLCmd.IncludeDesignStatement = true;
-            genXDLCmd.IncludeDummyNets = IncludeDummyNets;
+            genXDLCmd.IncludeDummyNets = this.IncludeDummyNets;
             genXDLCmd.IncludeDesignStatement = true;
             genXDLCmd.IncludeModuleHeader= false;
             genXDLCmd.IncludeModuleFooter = false;
-            genXDLCmd.IncludePorts = IncludePorts;
-            genXDLCmd.NetlistContainerNames = MacroNames;
+            genXDLCmd.IncludePorts = this.IncludePorts;
+            genXDLCmd.NetlistContainerNames = this.MacroNames;
             genXDLCmd.SortInstancesBySliceName = false;
             CommandExecuter.Instance.Execute(genXDLCmd);
 
-            if (RunFEScript)
+            if (this.RunFEScript)
             {
                 // create fe
-                CommandExecuter.Instance.Execute(new GenerateFEScript(tempSCRFile, tempNCDFile, MacroNames));
+                CommandExecuter.Instance.Execute(new GenerateFEScript(tempSCRFile, tempNCDFile, this.MacroNames));
             }
 
             // convert xdl2ncd, run fe script and launch fe in from batch file
             StreamWriter batchFile = new StreamWriter(tempBatchFile);
-            string conversionCmd = "xdl -xdl2ncd \"" + tempXDLFile + "\" \"" + tempNCDFile + "\" -nodrc";
+            String conversionCmd = "xdl -xdl2ncd \"" + tempXDLFile + "\" \"" + tempNCDFile + "\" -nodrc";
             batchFile.WriteLine(conversionCmd);
             // no need for fe script when including port statements
-            if (RunFEScript)
+            if (this.RunFEScript)
             {
                 batchFile.WriteLine("fpga_edline -p \"" + tempSCRFile + "\" >> \"" + tempLogFile + "\"");
             }
-            if (!string.IsNullOrEmpty(NMCFile))
+            if (!String.IsNullOrEmpty(this.NMCFile))
             {
-                batchFile.WriteLine("copy \"" + tempNCDFile + "\" \"" + NMCFile + "\" /Y");
+                batchFile.WriteLine("copy \"" + tempNCDFile + "\" \"" + this.NMCFile + "\" /Y");
             }
-            if (LaunchFE)
+            if (this.LaunchFE)
             {
                 batchFile.WriteLine("start fpga_editor \"" + tempNCDFile + "\"");
             }
@@ -95,10 +95,10 @@ namespace GoAhead.Commands.Data
         }
 
         [Parameter(Comment = "A list of macro names that will be considered for this script")]
-        public List<string> MacroNames = new List<string>();
+        public List<String> MacroNames = new List<String>();
 
         [Parameter(Comment = "File in which to save the NMC")]
-        public string NMCFile = "";
+        public String NMCFile = "";
 
         [Parameter(Comment = "Wheter to include XDL ports or not")]
         public bool IncludePorts = false;

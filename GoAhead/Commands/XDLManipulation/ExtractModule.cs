@@ -13,15 +13,15 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            if (TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
+            if (FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
             {
-                OutputManager.WriteOutput("Warning: No tiles selected");
+                this.OutputManager.WriteOutput("Warning: No tiles selected");
             }
 
             // read file
-            DesignParser parser = DesignParser.CreateDesignParser(XDLInFile);
+            DesignParser parser = DesignParser.CreateDesignParser(this.XDLInFile);
             // into design
             NetlistContainer inContainer = new XDLContainer();
             parser.ParseDesign(inContainer, this);
@@ -30,15 +30,15 @@ namespace GoAhead.Commands.XDLManipulation
             XDLContainer outContainer = (XDLContainer)inContainer.GetSelectedDesignElements();
 
             // write design to file
-            StreamWriter sw = new StreamWriter(XDLOutFile, false);
+            StreamWriter sw = new StreamWriter(this.XDLOutFile, false);
             outContainer.WriteCodeToFile(sw);
             sw.Close();
 
-            if (!string.IsNullOrEmpty(BinaryNetlist))
+            if (!String.IsNullOrEmpty(this.BinaryNetlist))
             {
                 SaveXDLLibraryElementAsBinaryLibraryElement saveCmd = new SaveXDLLibraryElementAsBinaryLibraryElement();
-                saveCmd.FileName = BinaryNetlist;
-                saveCmd.XDLFileName = XDLOutFile;
+                saveCmd.FileName = this.BinaryNetlist;
+                saveCmd.XDLFileName = this.XDLOutFile;
                 CommandExecuter.Instance.Execute(saveCmd);
             }
         }
@@ -49,12 +49,12 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "The name of the file to read in")]
-        public string XDLInFile = "in.xdl";
+        public String XDLInFile = "in.xdl";
 
         [Parameter(Comment = "The optional (may be left empty) name of the file to write the new XDL design to")]
-        public string XDLOutFile = "out.xdl";
+        public String XDLOutFile = "out.xdl";
 
         [Parameter(Comment = "The optional (may be left empty) name of the file to save a binary netlist in (this filename without extension will be come the module name)")]
-        public string BinaryNetlist = "module.binNetlist";
+        public String BinaryNetlist = "module.binNetlist";
     }
 }

@@ -12,9 +12,9 @@ namespace GoAhead.Commands.Library
     {
         protected override void DoCommandAction()
         {
-            if (!Objects.Library.Instance.Contains(LibraryElementName))
+            if (!Objects.Library.Instance.Contains(this.LibraryElementName))
             {
-                throw new ArgumentException("A library element named " + LibraryElementName + " was not found");
+                throw new ArgumentException("A library element named " + this.LibraryElementName + " was not found");
             }
 
             if (TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
@@ -22,12 +22,12 @@ namespace GoAhead.Commands.Library
                 throw new ArgumentException("No tiles are selected, can not derive module shape");
             }
 
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
             // enrich library element with selection command for auto clear            
             libElement.ResourceShape = new Shape();
 
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
                 libElement.ResourceShape.Add(t.Location);
             }
@@ -69,6 +69,6 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The name of the library element to modify")]
-        public string LibraryElementName = "libelement";
+        public String LibraryElementName = "libelement";
     }
 }

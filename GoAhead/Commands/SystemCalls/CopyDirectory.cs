@@ -12,10 +12,10 @@ namespace GoAhead.Commands.SystemCalls
     {
        protected override void DoCommandAction()
         {
-            DirectoryInfo diSource = new DirectoryInfo(SourceDirectory);
-            DirectoryInfo diTarget = new DirectoryInfo(TargetDirectory);
+            DirectoryInfo diSource = new DirectoryInfo(this.SourceDirectory);
+            DirectoryInfo diTarget = new DirectoryInfo(this.TargetDirectory);
 
-            CopyAll(diSource, diTarget);
+            this.CopyAll(diSource, diTarget);
         }
          
         private void CopyAll(DirectoryInfo source, DirectoryInfo target)
@@ -48,9 +48,9 @@ namespace GoAhead.Commands.SystemCalls
         }
 
         [Parameter(Comment = "The name of the directory to copy")]
-        public string SourceDirectory = "";
+        public String SourceDirectory = "";
 
         [Parameter(Comment = "The name of the target directory")]
-        public string TargetDirectory = "";
+        public String TargetDirectory = "";
     }
 }

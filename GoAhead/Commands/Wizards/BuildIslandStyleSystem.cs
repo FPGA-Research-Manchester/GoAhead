@@ -13,22 +13,22 @@ namespace GoAhead.Commands.Wizards
         protected override void DoCommandAction()
         {
             IslandStyleSystemParameter systemParameter = new IslandStyleSystemParameter();
-            systemParameter.Read(XMLSpecification);
+            systemParameter.Read(this.XMLSpecification);
 
-            string staticProjectDir = systemParameter.StaticParameter[IslandStyleSystemParameter.ISEProjectDir].InnerText;
-            string partialProjectDir = systemParameter.PartialParameter[IslandStyleSystemParameter.ISEProjectDir].InnerText;
-            List<string> partialAreaPlaceholderVHDLFiles = new List<string>();
-            List<string> partialAreas = new List<string>();
+            String staticProjectDir = systemParameter.StaticParameter[IslandStyleSystemParameter.ISEProjectDir].InnerText;
+            String partialProjectDir = systemParameter.PartialParameter[IslandStyleSystemParameter.ISEProjectDir].InnerText;
+            List<String> partialAreaPlaceholderVHDLFiles = new List<String>();
+            List<String> partialAreas = new List<String>();
 
             // the blokcer around the partial areas
-            List<string> staticPlaceHolder = new List<string>();
-            List<string> modulesPerArea = new List<string>();
+            List<String> staticPlaceHolder = new List<String>();
+            List<String> modulesPerArea = new List<String>();
 
             // run the selection commands as the BuildIslandStyleStaticSystem works on them
-            foreach (KeyValuePair<string, PartialAreaSetting> tupel in systemParameter.PartialAreas)
+            foreach (KeyValuePair<String, PartialAreaSetting> tupel in systemParameter.PartialAreas)
             {
-                string selCommand = tupel.Value.Settings[IslandStyleSystemParameter.Geometry];
-                string prName = tupel.Key;
+                String selCommand = tupel.Value.Settings[IslandStyleSystemParameter.Geometry];
+                String prName = tupel.Key;
 
                 partialAreas.Add(tupel.Key);
                 partialAreaPlaceholderVHDLFiles.Add(staticProjectDir + "partial_area_placeholder_" + tupel.Key + ".vhd");
@@ -54,8 +54,8 @@ namespace GoAhead.Commands.Wizards
                 }
             }
 
-            List<string> connectionPrimitives = new List<string>();
-            foreach (KeyValuePair<string, PartialAreaSetting> tupel in systemParameter.PartialAreas)
+            List<String> connectionPrimitives = new List<String>();
+            foreach (KeyValuePair<String, PartialAreaSetting> tupel in systemParameter.PartialAreas)
             {
                 connectionPrimitives.Add(tupel.Value.Settings[IslandStyleSystemParameter.ConnectionPrimitive]);
             }
@@ -88,12 +88,12 @@ namespace GoAhead.Commands.Wizards
         }
 
         [Parameter(Comment = "The XML system specification")]
-        public string XMLSpecification = "";
+        public String XMLSpecification = "";
     }
 
     public class IslandStyleSystemParameter
     {
-        public void Read(string XMLSpecification)
+        public void Read(String XMLSpecification)
         {
             m_xmlDoc.Load(XMLSpecification);
 
@@ -101,47 +101,47 @@ namespace GoAhead.Commands.Wizards
 
             foreach (XmlNode xmlNode in xmlEl.ChildNodes)
             {
-                if (Regex.IsMatch(xmlNode.Name, "(" + Device + ")|(" + ConnectionPrimitive + ")"))
+                if (Regex.IsMatch(xmlNode.Name, "(" + IslandStyleSystemParameter.Device + ")|(" + IslandStyleSystemParameter.ConnectionPrimitive + ")"))
                 {
                     //this.SystemParameter[xmlNode.Name] = xmlNode.InnerText;
-                    SystemParameter[xmlNode.Name] = xmlNode;
+                    this.SystemParameter[xmlNode.Name] = xmlNode;
                 }
-                else if (Regex.IsMatch(xmlNode.Name, StaticInfo))
+                else if (Regex.IsMatch(xmlNode.Name, IslandStyleSystemParameter.StaticInfo))
                 {
                     foreach (XmlNode innerNode in xmlNode.ChildNodes)
                     {
-                        StaticParameter[innerNode.Name] = innerNode;
+                        this.StaticParameter[innerNode.Name] = innerNode;
                     }
                 }
-                else if (Regex.IsMatch(xmlNode.Name, PartialInfo))
+                else if (Regex.IsMatch(xmlNode.Name, IslandStyleSystemParameter.PartialInfo))
                 {
                     foreach (XmlNode innerNode in xmlNode.ChildNodes)
                     {
-                        PartialParameter[innerNode.Name] = innerNode;
+                        this.PartialParameter[innerNode.Name] = innerNode;
                     }
                 }
-                else if (Regex.IsMatch(xmlNode.Name, PartialArea))
+                else if (Regex.IsMatch(xmlNode.Name, IslandStyleSystemParameter.PartialArea))
                 {
-                    string name = xmlNode.Attributes[0].Value;
-                    if (PartialAreas.ContainsKey(name))
+                    String name = xmlNode.Attributes[0].Value;
+                    if (this.PartialAreas.ContainsKey(name))
                     {
                         throw new ArgumentException("A partial area named " + name + " already exists");
                     }
-                    PartialAreas.Add(name, new PartialAreaSetting());
+                    this.PartialAreas.Add(name, new PartialAreaSetting());
 
                     foreach (XmlNode innerNode in xmlNode.ChildNodes)
                     {
-                        if (innerNode.Name.Equals(Module))
+                        if (innerNode.Name.Equals(IslandStyleSystemParameter.Module))
                         {
                             ModuleSetting moduleSettings = new ModuleSetting();
-                            PartialAreas[name].Modules.Add(moduleSettings);
+                            this.PartialAreas[name].Modules.Add(moduleSettings);
                             for (int i = 0; i < innerNode.Attributes.Count; i++)
                             {
                                 moduleSettings.Settings[innerNode.Attributes[i].Name] = innerNode.Attributes[i].Value;
                             }
                         }
-                        PartialAreas[name].Settings[innerNode.Name] = innerNode.InnerText;
-                        PartialAreas[name].Nodes[innerNode.Name] = innerNode;
+                        this.PartialAreas[name].Settings[innerNode.Name] = innerNode.InnerText;
+                        this.PartialAreas[name].Nodes[innerNode.Name] = innerNode;
                     }
                 }
             }
@@ -149,44 +149,44 @@ namespace GoAhead.Commands.Wizards
 
         public XmlDocument XmlDoc
         {
-            get { return m_xmlDoc; }
-            set { m_xmlDoc = value; }
+            get { return this.m_xmlDoc; }
+            set { this.m_xmlDoc = value; }
         }
 
-        public const string StaticInfo = "static_info";
-        public const string PartialInfo = "partial_info";
-        public const string PartialArea = "partial_area";
-        public const string ISEProjectDir = "ise_project_dir";
-        public const string ConnectionPrimitive = "connection_primitive";
-        public const string Device = "device";
-        public const string Geometry = "geometry";
-        public const string Interface = "interface";
-        public const string VHDL = "vhdl";
-        public const string Module = "module";
-        public const string Netlist = "netlist";
+        public const String StaticInfo = "static_info";
+        public const String PartialInfo = "partial_info";
+        public const String PartialArea = "partial_area";
+        public const String ISEProjectDir = "ise_project_dir";
+        public const String ConnectionPrimitive = "connection_primitive";
+        public const String Device = "device";
+        public const String Geometry = "geometry";
+        public const String Interface = "interface";
+        public const String VHDL = "vhdl";
+        public const String Module = "module";
+        public const String Netlist = "netlist";
 
-        public Dictionary<string, PartialAreaSetting> PartialAreas = new Dictionary<string, PartialAreaSetting>();
+        public Dictionary<String, PartialAreaSetting> PartialAreas = new Dictionary<String, PartialAreaSetting>();
 
         //public Dictionary<String, String> SystemParameter = new Dictionary<String, String>();
-        public Dictionary<string, XmlNode> SystemParameter = new Dictionary<string, XmlNode>();
+        public Dictionary<String, XmlNode> SystemParameter = new Dictionary<String, XmlNode>();
 
-        public Dictionary<string, XmlNode> PartialParameter = new Dictionary<string, XmlNode>();
-        public Dictionary<string, XmlNode> StaticParameter = new Dictionary<string, XmlNode>();
+        public Dictionary<String, XmlNode> PartialParameter = new Dictionary<String, XmlNode>();
+        public Dictionary<String, XmlNode> StaticParameter = new Dictionary<String, XmlNode>();
 
-        public Dictionary<string, XmlNode> PartialAreaNodes = new Dictionary<string, XmlNode>();
+        public Dictionary<String, XmlNode> PartialAreaNodes = new Dictionary<String, XmlNode>();
 
         private XmlDocument m_xmlDoc = new XmlDocument();
     }
 
     public class ModuleSetting
     {
-        public Dictionary<string, string> Settings = new Dictionary<string, string>();
+        public Dictionary<String, String> Settings = new Dictionary<String, String>();
     }
 
     public class PartialAreaSetting
     {
-        public Dictionary<string, string> Settings = new Dictionary<string, string>();
-        public Dictionary<string, XmlNode> Nodes = new Dictionary<string, XmlNode>();
+        public Dictionary<String, String> Settings = new Dictionary<String, String>();
+        public Dictionary<String, XmlNode> Nodes = new Dictionary<String, XmlNode>();
         public List<ModuleSetting> Modules = new List<ModuleSetting>();
         public XmlNode Node = null;
     }

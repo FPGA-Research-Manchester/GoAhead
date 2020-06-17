@@ -9,7 +9,7 @@ namespace GoAhead.Commands.Identifier
     {
         protected override void DoCommandAction()
         {
-            Objects.IdentifierPrefixManager.Instance.Prefices = DefaultIdentifierPrefices;
+            Objects.IdentifierPrefixManager.Instance.Prefices = this.DefaultIdentifierPrefices;
         }
 
         public override void Undo()
@@ -18,6 +18,6 @@ namespace GoAhead.Commands.Identifier
         }
 
         [Parameter(Comment = "The possible identifier prefices used in AddToSelectionByIdentifier (you may however overload this setting when using AddToSelectionByIdentifier)")]
-        public List<string> DefaultIdentifierPrefices = new List<string>();
+        public List<String> DefaultIdentifierPrefices = new List<String>();
     }
 }

@@ -23,13 +23,13 @@ namespace GoAhead.Commands
             }
 
             NetlistContainerManager.Instance.Reset();
-            TileSelectionManager.Instance.Reset();
-            RAMSelectionManager.Instance.Reset();
-            LibraryElementInstanceManager.Instance.Reset();
+            FPGA.TileSelectionManager.Instance.Reset();
+            FPGA.RAMSelectionManager.Instance.Reset();
+            Objects.LibraryElementInstanceManager.Instance.Reset();
             Objects.InterfaceManager.Instance.Reset();
             Objects.Library.Instance.Reset();
 
-            foreach (Interfaces.IResetable reset in ObjectsToReset)
+            foreach (Interfaces.IResetable reset in Reset.ObjectsToReset)
             {
                 if (reset != null)
                 {
@@ -40,10 +40,10 @@ namespace GoAhead.Commands
             // add a default net list container
             AddNetlistContainer addDefaultNetlistContainerCommand = new AddNetlistContainer();
             addDefaultNetlistContainerCommand.NetlistContainerName = NetlistContainerManager.DefaultNetlistContainerName;
-            CommandExecuter.Instance.Execute(addDefaultNetlistContainerCommand);
+            Commands.CommandExecuter.Instance.Execute(addDefaultNetlistContainerCommand);
 
             // call family specific hook
-            CommandExecuter.Instance.Execute(new LoadFPGAFamilyScript());
+            Commands.CommandExecuter.Instance.Execute(new LoadFPGAFamilyScript());
         }
 
         public override void Undo()

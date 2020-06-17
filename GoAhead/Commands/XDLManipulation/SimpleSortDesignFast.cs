@@ -11,23 +11,23 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            string bufferFileName = "";
-            string instBufferFileName = Path.GetTempFileName();
-            string netBufferFileName = Path.GetTempFileName();
+            String bufferFileName = "";
+            String instBufferFileName = Path.GetTempFileName();
+            String netBufferFileName = Path.GetTempFileName();
 
-            if (XDLInFile.Equals(XDLOutFile))
+            if (this.XDLInFile.Equals(this.XDLOutFile))
             {
                 bufferFileName = Path.GetTempFileName();
             }
             else
             {
-                bufferFileName = XDLOutFile;
+                bufferFileName = this.XDLOutFile;
             }
 
             TextWriter result = new StreamWriter(bufferFileName, false);
             TextWriter instBuffer = new StreamWriter(instBufferFileName, false);
             TextWriter netBuffer = new StreamWriter(netBufferFileName, false);
-            StreamReader inFile = new StreamReader(XDLInFile);
+            StreamReader inFile = new StreamReader(this.XDLInFile);
 
             bool scanForKeyWord = true;
             bool readDesign = false;
@@ -37,9 +37,9 @@ namespace GoAhead.Commands.XDLManipulation
             bool readConfig = false;
 
             StringBuilder blockBuffer = new StringBuilder();
-            string keyWordBuffer = "";
+            String keyWordBuffer = "";
 
-            foreach(string c in Read(inFile))
+            foreach(String c in this.Read(inFile))
             {
                 blockBuffer.Append(c);
 
@@ -135,7 +135,7 @@ namespace GoAhead.Commands.XDLManipulation
 
             // append inst and net buffer to result
             TextReader rd = new StreamReader(instBufferFileName);
-            string buffer = "";
+            String buffer = "";
             while ((buffer = rd.ReadLine()) != null)
             {
                 result.WriteLine(buffer);
@@ -152,23 +152,23 @@ namespace GoAhead.Commands.XDLManipulation
             result.Close();
 
             // overwrite XDLOutfile with temp file and delete temp file
-            if (XDLInFile.Equals(XDLOutFile))
+            if (this.XDLInFile.Equals(this.XDLOutFile))
             {
-                File.Copy(bufferFileName, XDLOutFile, true);
+                File.Copy(bufferFileName, this.XDLOutFile, true);
                 File.Delete(bufferFileName);
             }
         }
 
-        private IEnumerable<string> Read(StreamReader sr)
+        private IEnumerable<String> Read(StreamReader sr)
         {
-            string line = "";
+            String line = "";
             while((line = sr.ReadLine()) != null)
             {
                 if (!Regex.IsMatch(line, @"^\s*#") && line.Length > 0)
                 {
                     for(int i=0;i<line.Length;i++)
                     {
-                        yield return new string(line[i], 1);
+                        yield return new String(line[i], 1);
                     }
                     yield return Environment.NewLine;
                 }
@@ -182,10 +182,10 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "The unsorted XDL-File to read in")]
-        public string XDLInFile = "no file given";
+        public String XDLInFile = "no file given";
 
         [Parameter(Comment = "The resulting sorted XDL-File")]
-        public string XDLOutFile = "no file given";
+        public String XDLOutFile = "no file given";
 
 
     }

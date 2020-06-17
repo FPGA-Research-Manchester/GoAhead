@@ -11,19 +11,19 @@ namespace GoAhead.Commands.DeviceInfo
     {
        protected override void DoCommandAction()
         {
-            if (!FPGA.FPGA.Instance.Contains(Location))
+            if (!FPGA.FPGA.Instance.Contains(this.Location))
             {
-                throw new ArgumentException("Tile " + Location + " not found");
+                throw new ArgumentException("Tile " + this.Location + " not found");
             }
 
-            Tile where = FPGA.FPGA.Instance.GetTile(Location);
+            Tile where = FPGA.FPGA.Instance.GetTile(this.Location);
 
             foreach (Wire wire in where.WireList)
             {
-                if ((wire.LocalPipIsDriver && PrintBeginPips) || (!wire.LocalPipIsDriver && PrintEndPips))
+                if ((wire.LocalPipIsDriver && this.PrintBeginPips) || (!wire.LocalPipIsDriver && this.PrintEndPips))
                 {
-                    string nextLine = wire.LocalPip + ";" + wire.XIncr + ";" + wire.YIncr + ";" + wire.PipOnOtherTile;
-                    OutputManager.WriteOutput(nextLine);
+                    String nextLine = wire.LocalPip + ";" + wire.XIncr + ";" + wire.YIncr + ";" + wire.PipOnOtherTile;
+                    this.OutputManager.WriteOutput(nextLine);
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace GoAhead.Commands.DeviceInfo
         }
 
         [Parameter(Comment = "The tile to print, e.g. INT_X3Y143")]
-        public string Location = "INT_X3Y143";
+        public String Location = "INT_X3Y143";
 
         [Parameter(Comment = "Print wires which start in the given tile")]
         public bool PrintBeginPips = true;

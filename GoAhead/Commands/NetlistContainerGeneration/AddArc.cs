@@ -14,20 +14,20 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
         }
 
-		public AddArc(string netlistContainerName, string from, string to)
+		public AddArc(String netlistContainerName, String from, String to)
 		{
-            NetlistContainerName = netlistContainerName;
-			From = from;
-			To = to;
+            this.NetlistContainerName = netlistContainerName;
+			this.From = from;
+			this.To = to;
 		}
 
         protected override void DoCommandAction()
 		{
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            XDLContainer netlistContainer = (XDLContainer) GetNetlistContainer();
-            Port from = new Port(From);
-            Port to = new Port(To);
+            XDLContainer netlistContainer = (XDLContainer) this.GetNetlistContainer();
+            Port from = new Port(this.From);
+            Port to = new Port(this.To);
 
             if(!FPGA.FPGA.Instance.Current.SwitchMatrix.Contains(from, to))
             {
@@ -69,10 +69,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 		}
 
         [Parameter(Comment = "The name pip where the arc starts")]
-        public string From = "";
+        public String From = "";
 
         [Parameter(Comment = "The name pip where the arc end")]
-        public string To = "";
+        public String To = "";
 
 	}
 }

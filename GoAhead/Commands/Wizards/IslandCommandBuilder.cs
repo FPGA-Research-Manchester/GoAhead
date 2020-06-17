@@ -20,43 +20,43 @@ namespace GoAhead.Commands.Wizards
     {
         public enum Target { Static = 0, Module = 1 }
 
-        public string IslandName
+        public String IslandName
         {
-            get { return m_islandName; }
-            set { m_islandName = value; }
+            get { return this.m_islandName; }
+            set { this.m_islandName = value; }
         }
 
-        public string VHDLWrapper
+        public String VHDLWrapper
         {
-            get { return m_vhdWrapper; }
-            set { m_vhdWrapper = value; }
+            get { return this.m_vhdWrapper; }
+            set { this.m_vhdWrapper = value; }
         }
 
-        public string UCFFile
+        public String UCFFile
         {
-            get { return m_ucfFile; }
-            set { m_ucfFile = value; }
+            get { return this.m_ucfFile; }
+            set { this.m_ucfFile = value; }
         }
 
-        public string ConnectionPrimitiveName
+        public String ConnectionPrimitiveName
         {
-            get { return m_macroName; }
-            set { m_macroName = value; }
+            get { return this.m_macroName; }
+            set { this.m_macroName = value; }
         }
 
         public Target BuildTarget
         {
-            get { return m_target; }
-            set { m_target = value; }
+            get { return this.m_target; }
+            set { this.m_target = value; }
         }
 
         public List<Command> GetCommands()
         {
-            switch (BuildTarget)
+            switch (this.BuildTarget)
             {
-                case Target.Static: { return GetCommandsForStaticSystem(); }
-                case Target.Module: { return GetCommandsForModule(); }
-                default: { throw new ArgumentException("BuildTarget " + BuildTarget + " not implemented"); }
+                case IslandCommandBuilder.Target.Static: { return this.GetCommandsForStaticSystem(); }
+                case IslandCommandBuilder.Target.Module: { return this.GetCommandsForModule(); }
+                default: { throw new ArgumentException("BuildTarget " + this.BuildTarget + " not implemented"); }
             }
         }
 
@@ -65,29 +65,29 @@ namespace GoAhead.Commands.Wizards
             List<Command> cmds = new List<Command>();
 
             // shared by static and partial
-            cmds.AddRange(GetSelectAreaCommands());
+            cmds.AddRange(this.GetSelectAreaCommands());
 
             List<Command> tunnelCommnds = new List<Command>();
             // i/o
             foreach (FPGATypes.InterfaceDirection direction in Enum.GetValues(typeof(FPGATypes.InterfaceDirection)))
             {
                 // how many columns of connection macros will we instantiate?
-                IEnumerable<Signal> signals = Objects.InterfaceManager.Instance.Signals.Where(s => s.SignalDirection.Equals(direction) && s.PartialRegion.Equals(IslandName) && (s.SignalMode.Equals("in") || s.SignalMode.Equals("out")));
+                IEnumerable<Signal> signals = Objects.InterfaceManager.Instance.Signals.Where(s => s.SignalDirection.Equals(direction) && s.PartialRegion.Equals(this.IslandName) && (s.SignalMode.Equals("in") || s.SignalMode.Equals("out")));
                 int ioColumns = 1;
                 if (signals.Any())
                 {
                     ioColumns = 1 + signals.Max(s => s.Column);
-                    List<Command> placementCommands = GetPlacementCommands(direction, ConnectionPrimitiveName, IslandName + "_" + direction + "_", ioColumns, 4);
+                    List<Command> placementCommands = this.GetPlacementCommands(direction, this.ConnectionPrimitiveName, this.IslandName + "_" + direction + "_", ioColumns, 4);
 
-                    cmds.AddRange(GetTunnelCommands(direction, placementCommands));
+                    cmds.AddRange(this.GetTunnelCommands(direction, placementCommands));
                     cmds.AddRange(placementCommands);
                 }
             }
 
             PrintVHDLWrapper printCmd = new PrintVHDLWrapper();
-            printCmd.InstantiationFilter = "^" + IslandName;
-            printCmd.EntityName = "static_placeholder_" + IslandName;
-            printCmd.FileName = VHDLWrapper;
+            printCmd.InstantiationFilter = "^" + this.IslandName;
+            printCmd.EntityName = "static_placeholder_" + this.IslandName;
+            printCmd.FileName = this.VHDLWrapper;
             printCmd.Append = false;
             printCmd.CreateBackupFile = true;
             cmds.Add(printCmd);
@@ -97,10 +97,10 @@ namespace GoAhead.Commands.Wizards
             cmds.Add(invCmd);
 
             // insert a * to match all if the generate labels
-            cmds.AddRange(GetProhibitAndLocationConstraints("*inst_static_placeholder_" + IslandName + "/"));
+            cmds.AddRange(this.GetProhibitAndLocationConstraints("*inst_static_placeholder_" + this.IslandName + "/"));
 
             SelectFenceAroundUserSelection selFenceCmd = new SelectFenceAroundUserSelection();
-            selFenceCmd.UserSelectionType = IslandName;
+            selFenceCmd.UserSelectionType = this.IslandName;
             selFenceCmd.Size = 12;
             selFenceCmd.Comment = "we could block the current selection, however blocking only a fence around the partial area is faster, thus select a fence around the partial area";
             cmds.Add(selFenceCmd);
@@ -108,7 +108,7 @@ namespace GoAhead.Commands.Wizards
             // add the tunnel commands
             cmds.AddRange(tunnelCommnds);
 
-            cmds.AddRange(GetBlockCommands());
+            cmds.AddRange(this.GetBlockCommands());
 
             return cmds;
         }
@@ -117,43 +117,43 @@ namespace GoAhead.Commands.Wizards
         {
             List<Command> cmds = new List<Command>();
 
-            cmds.AddRange(GetSelectAreaCommands());
+            cmds.AddRange(this.GetSelectAreaCommands());
 
             // i/o
             foreach (FPGATypes.InterfaceDirection direction in Enum.GetValues(typeof(FPGATypes.InterfaceDirection)))
             {
                 // how many columns of connection macros will we instantiate?
-                IEnumerable<Signal> signals = Objects.InterfaceManager.Instance.Signals.Where(s => s.SignalDirection.Equals(direction) && s.PartialRegion.Equals(IslandName) && (s.SignalMode.Equals("in") || s.SignalMode.Equals("out")));
+                IEnumerable<Signal> signals = Objects.InterfaceManager.Instance.Signals.Where(s => s.SignalDirection.Equals(direction) && s.PartialRegion.Equals(this.IslandName) && (s.SignalMode.Equals("in") || s.SignalMode.Equals("out")));
                 int ioColumns = 1;
                 if (signals.Any())
                 {
                     ioColumns = 1 + signals.Max(s => s.Column);
-                    List<Command> placementCommands = GetPlacementCommands(direction, ConnectionPrimitiveName, IslandName + "_" + direction + "_", ioColumns, 4);
+                    List<Command> placementCommands = this.GetPlacementCommands(direction, this.ConnectionPrimitiveName, this.IslandName + "_" + direction + "_", ioColumns, 4);
 
-                    cmds.AddRange(GetTunnelCommands(direction, placementCommands));
+                    cmds.AddRange(this.GetTunnelCommands(direction, placementCommands));
                     cmds.AddRange(placementCommands);
                 }
             }
 
             PrintVHDLWrapper printCmd = new PrintVHDLWrapper();
-            printCmd.InstantiationFilter = "^" + IslandName;
-            printCmd.EntityName = IslandName;
-            printCmd.FileName = VHDLWrapper;
+            printCmd.InstantiationFilter = "^" + this.IslandName;
+            printCmd.EntityName = this.IslandName;
+            printCmd.FileName = this.VHDLWrapper;
             printCmd.Append = false;
             printCmd.CreateBackupFile = true;
             cmds.Add(printCmd);
 
-            string instantiationTemplate = Path.GetDirectoryName(VHDLWrapper) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(VHDLWrapper) + "_instantation" + Path.GetExtension(VHDLWrapper);
+            String instantiationTemplate = Path.GetDirectoryName(this.VHDLWrapper) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(this.VHDLWrapper) + "_instantation" + Path.GetExtension(this.VHDLWrapper);
             PrintVHDLWrapperInstantiation printInstCmd = new PrintVHDLWrapperInstantiation();
-            printInstCmd.InstantiationFilter = "^" + IslandName;
-            printInstCmd.EntityName = IslandName;
+            printInstCmd.InstantiationFilter = "^" + this.IslandName;
+            printInstCmd.EntityName = this.IslandName;
             printInstCmd.FileName = instantiationTemplate;
             printInstCmd.Append = false;
             printInstCmd.CreateBackupFile = true;
             cmds.Add(printInstCmd);
 
-            cmds.AddRange(GetProhibitAndLocationConstraints("inst_" + IslandName + "/"));
-            cmds.AddRange(GetBlockCommands());
+            cmds.AddRange(this.GetProhibitAndLocationConstraints("inst_" + this.IslandName + "/"));
+            cmds.AddRange(this.GetBlockCommands());
 
             return cmds;
         }
@@ -167,26 +167,26 @@ namespace GoAhead.Commands.Wizards
             {
                 AddSingleInstantiationByTile addCmd = (AddSingleInstantiationByTile)placeCmd;
                 Tile clb = FPGA.FPGA.Instance.GetTile(addCmd.AnchorLocation);
-                Tile interconnect = FPGATypes.GetInterconnectTile(clb);
+                Tile interconnect = FPGA.FPGATypes.GetInterconnectTile(clb);
 
                 ExcludePortsFromBlockingOnTileByRegexp exclude = new ExcludePortsFromBlockingOnTileByRegexp();
                 exclude.CheckForExistence = false;
                 exclude.IncludeAllPorts = false;
                 exclude.Location = interconnect.Location;
 
-                if (BuildTarget == Target.Static && direction == FPGATypes.InterfaceDirection.East)
+                if (this.BuildTarget == Target.Static && direction == FPGATypes.InterfaceDirection.East)
                 {
                     exclude.PortNameRegexp = "(WW2E[0|1|2|3])|(EE2B[0|1|2|3])";
                 }
-                else if (BuildTarget == Target.Static && direction == FPGATypes.InterfaceDirection.West)
+                else if (this.BuildTarget == Target.Static && direction == FPGATypes.InterfaceDirection.West)
                 {
                     exclude.PortNameRegexp = "(EE2E[0|1|2|3])|(WW2B[0|1|2|3])";
                 }
-                else if (BuildTarget == Target.Module && direction == FPGATypes.InterfaceDirection.East)
+                else if (this.BuildTarget == Target.Module && direction == FPGATypes.InterfaceDirection.East)
                 {
                     exclude.PortNameRegexp = "(EE2E[0|1|2|3])|(WW2B[0|1|2|3])";
                 }
-                else if (BuildTarget == Target.Module && direction == FPGATypes.InterfaceDirection.West)
+                else if (this.BuildTarget == Target.Module && direction == FPGATypes.InterfaceDirection.West)
                 {
                     exclude.PortNameRegexp = "(WW2E[0|1|2|3])|(EE2B[0|1|2|3])";
                 }
@@ -206,7 +206,7 @@ namespace GoAhead.Commands.Wizards
             return result;
         }
 
-        private List<Command> GetProhibitAndLocationConstraints(string instancePrefix)
+        private List<Command> GetProhibitAndLocationConstraints(String instancePrefix)
         {
             List<Command> cmds = new List<Command>();
 
@@ -215,17 +215,17 @@ namespace GoAhead.Commands.Wizards
             prohibitCmd.Append = true;
             prohibitCmd.Mute = true;
             prohibitCmd.ExcludeUsedSlices = true;
-            prohibitCmd.FileName = UCFFile;
-            prohibitCmd.Comment = "create prohibit statements that prevent the placer from using logic within the (currently selected) partial area " + IslandName;
+            prohibitCmd.FileName = this.UCFFile;
+            prohibitCmd.Comment = "create prohibit statements that prevent the placer from using logic within the (currently selected) partial area " + this.IslandName;
             cmds.Add(prohibitCmd);
 
             // print placement constraints for macros
             PrintLocationConstraints placeCmd = new PrintLocationConstraints();
             placeCmd.Append = true;
             placeCmd.Mute = true;
-            placeCmd.FileName = UCFFile;
+            placeCmd.FileName = this.UCFFile;
             placeCmd.HierarchyPrefix = instancePrefix;
-            placeCmd.InstantiationFilter = IslandName;
+            placeCmd.InstantiationFilter = this.IslandName;
             placeCmd.Comment = "create placement constraints for the connection primitives and append them to the UCF file used above ";
             cmds.Add(placeCmd);
 
@@ -240,7 +240,7 @@ namespace GoAhead.Commands.Wizards
         {
             List<Command> cmds = new List<Command>();
             // create blocker
-            string blockerName = IslandName + "_blocker";
+            String blockerName = this.IslandName + "_blocker";
             AddNetlistContainer addCmd = new AddNetlistContainer();
             addCmd.NetlistContainerName = blockerName;
             addCmd.Comment = "add a netlist container that will contain the blocker";
@@ -268,18 +268,18 @@ namespace GoAhead.Commands.Wizards
             clearCmd.Comment = "clear selections from previous commands";
             cmds.Add(clearCmd);
 
-            List<Command> addSelCmds = TileSelectionManager.Instance.GetListOfAddToSelectionXYCommandsForUserSelection(IslandName);
+            List<Command> addSelCmds = FPGA.TileSelectionManager.Instance.GetListOfAddToSelectionXYCommandsForUserSelection(this.IslandName);
             foreach (Command cmd in addSelCmds)
             {
-                cmd.Comment = "select tiles in the reconfigurable area " + IslandName;
+                cmd.Comment = "select tiles in the reconfigurable area " + this.IslandName;
             }
             cmds.AddRange(addSelCmds);
             // the last command is not the ExpandSelection,
             cmds[cmds.Count - 1].Comment = "expand the current selection such that we always select interconnect tiles along with the CLBs and always full DSP and RAM blocks";
 
             StoreCurrentSelectionAs storeCmd = new StoreCurrentSelectionAs();
-            storeCmd.UserSelectionType = IslandName;
-            storeCmd.Comment = "store the above selected tiles as a user selection named " + IslandName + ". we may later refer to this name";
+            storeCmd.UserSelectionType = this.IslandName;
+            storeCmd.Comment = "store the above selected tiles as a user selection named " + this.IslandName + ". we may later refer to this name";
             cmds.Add(storeCmd);
 
             return cmds;
@@ -295,12 +295,12 @@ namespace GoAhead.Commands.Wizards
         /// <param name="maxWiresPerRow"></param>
         /// <param name="prefix">The prefix that can be sued for subsequent AnnotateSignal commands</param>
         /// <returns></returns>
-        private List<Command> GetPlacementCommands(FPGA.FPGATypes.InterfaceDirection dir, string connectionPrimitiveName, string instance, int columns, int maxWiresPerRow)
+        private List<Command> GetPlacementCommands(FPGA.FPGATypes.InterfaceDirection dir, String connectionPrimitiveName, String instance, int columns, int maxWiresPerRow)
         {
             LibraryElement libElement = Objects.Library.Instance.GetElement(connectionPrimitiveName);
             List<Tile> tilesToReleaseWiresOn = null;
 
-            List<Tile> anchors = GetAnchors(dir, columns, false, out tilesToReleaseWiresOn);
+            List<Tile> anchors = this.GetAnchors(dir, columns, false, out tilesToReleaseWiresOn);
 
             Dictionary<int, List<Signal>> inputsPerColumn = new Dictionary<int, List<Signal>>();
             Dictionary<int, List<Signal>> outputsPerColumn = new Dictionary<int, List<Signal>>();
@@ -316,11 +316,11 @@ namespace GoAhead.Commands.Wizards
                 // equalize both list with open signals, the signal paramteres are dont care
                 while (inputs.Count % maxWiresPerRow != 0 || inputs.Count < outputs.Count)
                 {
-                    inputs.Add(new Signal("open", "in", dir, IslandName, column));
+                    inputs.Add(new Signal("open", "in", dir, this.IslandName, column));
                 }
                 while (outputs.Count < inputs.Count)
                 {
-                    outputs.Add(new Signal("open", "out", dir, IslandName, column));
+                    outputs.Add(new Signal("open", "out", dir, this.IslandName, column));
                 }
 
                 inputsPerColumn[column] = inputs;
@@ -351,13 +351,13 @@ namespace GoAhead.Commands.Wizards
                         outputsOnTile[currentAnchor].Add(output);
                     }
 
-                    currentAnchor = MoveAnchorToNextColumn(dir, currentAnchor);
+                    currentAnchor = this.MoveAnchorToNextColumn(dir, currentAnchor);
                 }
             }
 
-            CheckMacroTiles(dir, connectionPrimitiveCLBs);
+            this.CheckMacroTiles(dir, connectionPrimitiveCLBs);
 
-            string prefix = instance + connectionPrimitiveName;
+            String prefix = instance + connectionPrimitiveName;
             // do connection primitive instantiation
             List<Command> result = new List<Command>();
             foreach (Tile anchor in connectionPrimitiveCLBs)
@@ -366,7 +366,7 @@ namespace GoAhead.Commands.Wizards
                 List<Signal> localOutputs = outputsOnTile[anchor];
 
                 // do we need to place a macro here
-                bool placeMacro = HasNonOpenSignal(localInputs) || HasNonOpenSignal(localOutputs);
+                bool placeMacro = this.HasNonOpenSignal(localInputs) || this.HasNonOpenSignal(localOutputs);
                 if (!placeMacro)
                 {
                     continue;
@@ -405,8 +405,8 @@ namespace GoAhead.Commands.Wizards
                 AnnotateSignalNames annotateCmd = new AnnotateSignalNames();
                 annotateCmd.InstantiationFilter = "^" + addByTile.InstanceName;
 
-                string inputSource = BuildTarget == Target.Static ? "I:" : "O:";
-                string outputSource = BuildTarget == Target.Static ? "O:" : "I:";
+                String inputSource = this.BuildTarget == Target.Static ? "I:" : "O:";
+                String outputSource = this.BuildTarget == Target.Static ? "O:" : "I:";
                 annotateCmd.PortMapping.Add(inputSource + localInputs[0].SignalNameWithoutBraces + ":external");
                 annotateCmd.PortMapping.Add(outputSource + localOutputs[0].SignalNameWithoutBraces + ":external");
                 annotateCmd.PortMapping.Add("H:H:internal");
@@ -436,28 +436,28 @@ namespace GoAhead.Commands.Wizards
         {
             foreach (Tile anchor in macroTiles)
             {
-                if (BuildTarget == Target.Static)
+                if (this.BuildTarget == IslandCommandBuilder.Target.Static)
                 {
-                    if (!TileSelectionManager.Instance.IsUserSelected(anchor.TileKey, IslandName))
+                    if (!FPGA.TileSelectionManager.Instance.IsUserSelected(anchor.TileKey, this.IslandName))
                     {
-                        throw new ArgumentException("The interface of " + IslandName + " is too large to be placed in the selected area (" + dir + ")");
+                        throw new ArgumentException("The interface of " + this.IslandName + " is too large to be placed in the selected area (" + dir + ")");
                     }
                 }
-                if (BuildTarget == Target.Module)
+                if (this.BuildTarget == IslandCommandBuilder.Target.Module)
                 {
-                    if (TileSelectionManager.Instance.IsUserSelected(anchor.TileKey, IslandName))
+                    if (FPGA.TileSelectionManager.Instance.IsUserSelected(anchor.TileKey, this.IslandName))
                     {
-                        throw new ArgumentException("The interface of " + IslandName + " is too large to be placed in the selected area (" + dir + ")");
+                        throw new ArgumentException("The interface of " + this.IslandName + " is too large to be placed in the selected area (" + dir + ")");
                     }
                 }
             }
         }
 
-        private List<Signal> GetSignals(FPGA.FPGATypes.InterfaceDirection dir, int column, string mode)
+        private List<Signal> GetSignals(FPGA.FPGATypes.InterfaceDirection dir, int column, String mode)
         {
             List<Signal> inputs = Objects.InterfaceManager.Instance.GetFlatSignalList(
                 s => s.SignalMode.Equals(mode) && s.Column == column &&
-                     s.PartialRegion.Equals(IslandName) && s.SignalDirection.Equals(dir));
+                     s.PartialRegion.Equals(this.IslandName) && s.SignalDirection.Equals(dir));
             return inputs;
         }
 
@@ -487,9 +487,9 @@ namespace GoAhead.Commands.Wizards
                 default: { throw new ArgumentException("Can not hanlde direction " + dir); }
             }
 
-            Tile anchor = TileSelectionManager.Instance.GetUserSelectedTile(
+            Tile anchor = FPGA.TileSelectionManager.Instance.GetUserSelectedTile(
                 IdentifierManager.Instance.GetRegex(IdentifierManager.RegexTypes.CLB),
-                IslandName,
+                this.IslandName,
                 placement);
 
             // move this way to collect anchors for columns
@@ -500,13 +500,13 @@ namespace GoAhead.Commands.Wizards
                 case FPGATypes.InterfaceDirection.East: { xIncrement = -1; yIncrement = 0; break; }
                 case FPGATypes.InterfaceDirection.West: { xIncrement = 1; yIncrement = 0; break; }
             }
-            xIncrement *= m_columnStepWidth;
-            yIncrement *= m_columnStepWidth;
+            xIncrement *= this.m_columnStepWidth;
+            yIncrement *= this.m_columnStepWidth;
 
             // for module anchors move the anchors out of the partial area
-            if (BuildTarget == Target.Module)
+            if (this.BuildTarget == IslandCommandBuilder.Target.Module)
             {
-                if (m_islandName.Equals("pr5"))
+                if (this.m_islandName.Equals("pr5"))
                 {
                 }
 
@@ -517,8 +517,8 @@ namespace GoAhead.Commands.Wizards
                     case FPGATypes.InterfaceDirection.East: { xAnchorShift = 1; yAnchorShift = 0; break; }
                     case FPGATypes.InterfaceDirection.West: { xAnchorShift = -1; yAnchorShift = 0; break; }
                 }
-                xAnchorShift *= m_columnStepWidth;
-                yAnchorShift *= m_columnStepWidth;
+                xAnchorShift *= this.m_columnStepWidth;
+                yAnchorShift *= this.m_columnStepWidth;
 
                 // TODO here, we assume double lines
                 Tile start = anchor;
@@ -558,10 +558,10 @@ namespace GoAhead.Commands.Wizards
             return result;
         }
 
-        private string m_islandName = "";
-        private string m_vhdWrapper = "";
-        private string m_ucfFile = "";
-        private string m_macroName = "";
+        private String m_islandName = "";
+        private String m_vhdWrapper = "";
+        private String m_ucfFile = "";
+        private String m_macroName = "";
         private Target m_target = Target.Static;
         private int m_columnStepWidth = 1;
     }

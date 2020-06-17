@@ -23,11 +23,11 @@ namespace GoAhead.Commands
         {
             ExpressionParser ep = new ExpressionParser();
             int evaluationResult = 0;
-            bool valid = ep.Evaluate(Condition, out evaluationResult);
+            bool valid = ep.Evaluate(this.Condition, out evaluationResult);
             return (evaluationResult != 0);
         }
 
         [Parameter(Comment = "The condition is an arithmetic expression that is considered as false if it evaluates to 0 and considered as true if it evalauates to a value not equal to 0")]
-        public string Condition = "a<10000";
+        public String Condition = "a<10000";
     }
 }

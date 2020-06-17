@@ -14,13 +14,13 @@ namespace GoAhead.Commands.UCF
             // progress 
             int tileCount = 0;            
             
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)tileCount++ / (double)TileSelectionManager.Instance.NumberOfSelectedTiles * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)tileCount++ / (double)FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles * this.ProgressShare);
 
-                foreach (string prohibitStatment in PrintProhibitStatement.GetProhibitStatments(tile.Location, ExcludeUsedSlices))
+                foreach (String prohibitStatment in PrintProhibitStatement.GetProhibitStatments(tile.Location, this.ExcludeUsedSlices))
                 {
-                    OutputManager.WriteUCFOutput(prohibitStatment);
+                    this.OutputManager.WriteUCFOutput(prohibitStatment);
                 }
 
                 /*

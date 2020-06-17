@@ -12,91 +12,91 @@ namespace GoAhead.Commands.Misc
     {
         class Adjacency
         {
-            public Adjacency(List<string> sinks, string firstSectionFilter, string secondSectionFilter)
+            public Adjacency(List<String> sinks, String firstSectionFilter, String secondSectionFilter)
             {
-                m_sinks = sinks;
-                m_1stSection = firstSectionFilter;
-                m_2ndSection = secondSectionFilter;
+                this.m_sinks = sinks;
+                this.m_1stSection = firstSectionFilter;
+                this.m_2ndSection = secondSectionFilter;
             }
 
-            public void AddConnection(string from, string to)
+            public void AddConnection(String from, String to)
             {
-                if (!m_connections.ContainsKey(from))
+                if (!this.m_connections.ContainsKey(from))
                 {
-                    m_connections.Add(from, new Dictionary<string, bool>());
+                    this.m_connections.Add(from, new Dictionary<String, bool>());
 
-                    foreach (string sink in m_sinks.OrderBy(s => s))
+                    foreach (String sink in this.m_sinks.OrderBy(s => s))
                     {
-                        m_connections[from][sink] = false;
+                        this.m_connections[from][sink] = false;
                     }
                 }
 
-                m_connections[from][to] = true;
+                this.m_connections[from][to] = true;
             }
 
             public override string ToString()
             {
                 StringBuilder buffer = new StringBuilder();
 
-                string header = "endport,";
-                foreach (string sink in m_sinks.OrderBy(s => s))
+                String header = "endport,";
+                foreach (String sink in this.m_sinks.OrderBy(s => s))
                 {
                     header += sink + ",";
                 }
                 buffer.AppendLine(header);
 
-                foreach (KeyValuePair<string, Dictionary<string, bool>> tuple in m_connections.Where(t => Regex.IsMatch(t.Key, m_1stSection)).OrderBy(t => t.Key[t.Key.Length - 1]))
+                foreach (KeyValuePair<String, Dictionary<String, bool>> tuple in this.m_connections.Where(t => Regex.IsMatch(t.Key, this.m_1stSection)).OrderBy(t => t.Key[t.Key.Length - 1]))
                 {
-                    AddLine(buffer, tuple);
+                    this.AddLine(buffer, tuple);
                 }
 
-                foreach (KeyValuePair<string, Dictionary<string, bool>> tuple in m_connections.Where(t => Regex.IsMatch(t.Key, m_2ndSection)).OrderBy(t => t.Key))
+                foreach (KeyValuePair<String, Dictionary<String, bool>> tuple in this.m_connections.Where(t => Regex.IsMatch(t.Key, this.m_2ndSection)).OrderBy(t => t.Key))
                 {
-                    AddLine(buffer, tuple);
+                    this.AddLine(buffer, tuple);
                 }
                 
                 return buffer.ToString();
             }
 
-            private void AddLine(StringBuilder buffer, KeyValuePair<string, Dictionary<string, bool>> tuple)
+            private void AddLine(StringBuilder buffer, KeyValuePair<String, Dictionary<String, bool>> tuple)
             {
-                string line = tuple.Key + ",";
-                foreach (KeyValuePair<string, bool> s in tuple.Value)
+                String line = tuple.Key + ",";
+                foreach (KeyValuePair<String, bool> s in tuple.Value)
                 {
                     line += (s.Value ? "1" : "0") + ",";
                 }
                 buffer.AppendLine(line);
             }
 
-            private readonly string m_1stSection;
-            private readonly string m_2ndSection;
+            private readonly String m_1stSection;
+            private readonly String m_2ndSection;
 
-            private readonly List<string> m_sinks;
-            private Dictionary<string, Dictionary<string, bool>> m_connections = new Dictionary<string, Dictionary<string, bool>>();
+            private readonly List<String> m_sinks;
+            private Dictionary<String, Dictionary<String, bool>> m_connections = new Dictionary<String, Dictionary<String, bool>>();
         }
 
         protected override void DoCommandAction()
         {
-            Tile clb = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB));
-            Tile interconnect = FPGATypes.GetInterconnectTile(clb);
+            Tile clb = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => Objects.IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB));
+            Tile interconnect = FPGA.FPGATypes.GetInterconnectTile(clb);
 
-            List<string> lutInPorts = new List<string>();
-            foreach (Port lutInPort in clb.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, LUTInPortFilter)))
+            List<String> lutInPorts = new List<String>();
+            foreach (Port lutInPort in clb.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, this.LUTInPortFilter)))
             {
                 lutInPorts.Add(lutInPort.Name);
             }
             
-            Adjacency adjacency = new Adjacency(lutInPorts, EndPortFilter, LUTOutPortFilter);
+            Adjacency adjacency = new Adjacency(lutInPorts, this.EndPortFilter, this.LUTOutPortFilter);
 
             // section 1
-            foreach(Port endPort in interconnect.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, EndPortFilter)).OrderBy(p => p.Name[p.Name.Length-1]))
+            foreach(Port endPort in interconnect.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, this.EndPortFilter)).OrderBy(p => p.Name[p.Name.Length-1]))
             {
                 foreach (Port logicIn in interconnect.SwitchMatrix.GetDrivenPorts(endPort))
                 {
                     // goto CLB
                     foreach (Location loc in Navigator.GetDestinations(interconnect, logicIn).Where(l => l.Tile.Location.Equals(clb.Location)))
                     {
-                        foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(loc.Pip).Where(l => Regex.IsMatch(l.Name, LUTInPortFilter)))
+                        foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(loc.Pip).Where(l => Regex.IsMatch(l.Name, this.LUTInPortFilter)))
                         {
                             adjacency.AddConnection(endPort.Name, lutInPort.Name);
                         }                        
@@ -105,7 +105,7 @@ namespace GoAhead.Commands.Misc
             }
 
             // section 2
-            foreach (Port lutOutPort in clb.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, LUTOutPortFilter)))
+            foreach (Port lutOutPort in clb.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, this.LUTOutPortFilter)))
             {
                 foreach (Port logicOut in clb.SwitchMatrix.GetDrivenPorts(lutOutPort))
                 {
@@ -116,7 +116,7 @@ namespace GoAhead.Commands.Misc
                         {
                             foreach (Location locClb in Navigator.GetDestinations(interconnect, logicIn).Where(l => l.Tile.Location.Equals(clb.Location)))
                             {
-                                foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(locClb.Pip).Where(l => Regex.IsMatch(l.Name, LUTInPortFilter)))
+                                foreach (Port lutInPort in clb.SwitchMatrix.GetDrivenPorts(locClb.Pip).Where(l => Regex.IsMatch(l.Name, this.LUTInPortFilter)))
                                 {
                                     adjacency.AddConnection(lutOutPort.Name, lutInPort.Name);
                                 }  
@@ -125,7 +125,7 @@ namespace GoAhead.Commands.Misc
                     }
                 }
             }
-            OutputManager.WriteOutput(adjacency.ToString());
+            this.OutputManager.WriteOutput(adjacency.ToString());
         }
 
         public override void Undo()
@@ -134,12 +134,12 @@ namespace GoAhead.Commands.Misc
         }
 
         [Parameter(Comment = "Which ports to use for section endport->LUT")]
-        public string EndPortFilter = "(EE)|(WW)E2[0-3]";
+        public String EndPortFilter = "(EE)|(WW)E2[0-3]";
 
         [Parameter(Comment = "Which ports to use for section LUT->LUT")]
-        public string LUTOutPortFilter = "(MUX)|([A-D]$)";
+        public String LUTOutPortFilter = "(MUX)|([A-D]$)";
 
         [Parameter(Comment = "Which ports to use")]
-        public string LUTInPortFilter = "[A-D][1-6]";
+        public String LUTInPortFilter = "[A-D][1-6]";
     }
 }

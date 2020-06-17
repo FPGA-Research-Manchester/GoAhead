@@ -18,15 +18,15 @@ namespace GoAhead.Commands.BlockingShared
         {
             BlockOnlyMarkedPortsScope = BlockOnlyMarkedPorts;
 
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
 
             // prevent repeated error message from subcommands
-            if (!NetlistContainerManager.Instance.Contains(NetlistContainerName))
+            if (!NetlistContainerManager.Instance.Contains(this.NetlistContainerName))
             {
-                throw new ArgumentException("The netlist container " + NetlistContainerName + " does not exist. Use the command AddNetlistContainer to add a netlist container.");
+                throw new ArgumentException("The netlist container " + this.NetlistContainerName + " does not exist. Use the command AddNetlistContainer to add a netlist container.");
             }
 
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
             Net blockerNet = null;
 
             bool useExistingNet = false;
@@ -34,7 +34,7 @@ namespace GoAhead.Commands.BlockingShared
             {
                 useExistingNet = true;
                 blockerNet = nlc.GetAnyNet();
-                OutputManager.WriteOutput("Adding blocker pips to already existing net " + blockerNet.Name);
+                this.OutputManager.WriteOutput("Adding blocker pips to already existing net " + blockerNet.Name);
             }
             else
             {
@@ -55,15 +55,15 @@ namespace GoAhead.Commands.BlockingShared
 
                 useExistingNet = false;
                 bool outPinAdded = false;
-
+                
                 // the location string of the tile in which we run the outpin
-                string outpinLocation = "";
+                String outpinLocation = "";
 
                 // 1 iterate over all not filtered out tiles to instantiate primitves and to find an outpin
                 switch (FPGA.FPGA.Instance.BackendType)
                 {
                     case FPGATypes.BackendType.ISE:
-                        AddXDLTemplates(nlc, blockerNet, ref outPinAdded, ref outpinLocation);
+                        this.AddXDLTemplates(nlc, blockerNet, ref outPinAdded, ref outpinLocation);
                         break;
                     case FPGATypes.BackendType.Vivado:
                         //this.AddTCLInstances(nlc, blockerNet, ref outPinAdded, ref outpinLocation);
@@ -73,11 +73,11 @@ namespace GoAhead.Commands.BlockingShared
                 }
 
                 // 2 name net according to added outpin
-                blockerNet.Name = Prefix + outpinLocation + "_" + blockerNet.Name;
+                blockerNet.Name = this.Prefix + outpinLocation + "_" + blockerNet.Name;
 
                 if (!outPinAdded)
                 {
-                    OutputManager.WriteOutput("Could not find an outpin");
+                    this.OutputManager.WriteOutput("Could not find an outpin");
                 }
             }
 
@@ -87,10 +87,10 @@ namespace GoAhead.Commands.BlockingShared
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
-                    FindClusteringForISE(clusteredTiles);
+                    this.FindClusteringForISE(clusteredTiles);
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    FindClusteringForVivado(clusteredTiles);
+                    this.FindClusteringForVivado(clusteredTiles);
                     break;
             }
             
@@ -100,32 +100,32 @@ namespace GoAhead.Commands.BlockingShared
             int clusterCount = 0;
             foreach (List<Tile> tiles in clusteredTiles.Values)
             {
-                AddBlockerPaths(blockerNet, tiles[0], tiles);
+                this.AddBlockerPaths(blockerNet, tiles[0], tiles);
 
-                ProgressInfo.Progress = 0 + (int)((double)clusterCount++ / (double)clusteredTiles.Count * 50);
+                this.ProgressInfo.Progress = 0 + (int)((double)clusterCount++ / (double)clusteredTiles.Count * 50);
             }
 
             // 6 and arcs
             clusterCount = 0;
             foreach (List<Tile> tiles in clusteredTiles.Values)
             {
-                AddArcs(blockerNet, tiles[0], tiles);
+                this.AddArcs(blockerNet, tiles[0], tiles);
 
-                ProgressInfo.Progress = 50 + (int)((double)clusterCount++ / (double)clusteredTiles.Count * 50);
+                this.ProgressInfo.Progress = 50 + (int)((double)clusterCount++ / (double)clusteredTiles.Count * 50);
             }
 
             // 7 check blocking
-            if (PrintUnblockedPorts)
+            if (this.PrintUnblockedPorts)
             {
-                foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(
+                foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(
                     t => !BlockerSettings.Instance.SkipTile(t) && IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
                 {
-                    CheckForUnblockedPorts(t);
+                    this.CheckForUnblockedPorts(t);
                 }
             }
 
             // clean up indeces
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
             {
                 tile.SwitchMatrix.ClearBlockingPortList();
             }
@@ -139,7 +139,7 @@ namespace GoAhead.Commands.BlockingShared
 
         private void FindClusteringForISE(Dictionary<int, List<Tile>> clusteredTiles)
         {
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
             {
                 int clusterKey = tile.HasNonstopoverBlockedPorts ? tile.Location.GetHashCode() : clusterKey = tile.SwitchMatrixHashCode;
 
@@ -153,7 +153,7 @@ namespace GoAhead.Commands.BlockingShared
 
         private void FindClusteringForVivado(Dictionary<int, List<Tile>> clusteredTiles)
         {
-            var tiles = TileSelectionManager.Instance.GetSelectedTiles().Where(t => 
+            var tiles = FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => 
                 !BlockerSettings.Instance.SkipTile(t) && 
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect));
             // tiles without blocked ports
@@ -190,15 +190,15 @@ namespace GoAhead.Commands.BlockingShared
             }
         }
 
-        private void AddXDLTemplates(NetlistContainer nlc, Net blockerNet, ref bool outPinAdded, ref string outpinLocation)
+        private void AddXDLTemplates(NetlistContainer nlc, Net blockerNet, ref bool outPinAdded, ref String outpinLocation)
         {
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => !BlockerSettings.Instance.SkipTile(t)))
             {
                 // iterate in order
                 for (int i = 0; i < tile.Slices.Count; i++)
                 {
                     Slice s = tile.Slices[i];
-                    string template = "";
+                    String template = "";
                     if (BlockerSettings.Instance.InsertTemplate(s.SliceName, false, i, out template))
                     {
                         AddTemplateConfig.AddTemplate((XDLContainer)nlc, template, tile.Location, i);
@@ -207,7 +207,7 @@ namespace GoAhead.Commands.BlockingShared
                         if (!outPinAdded)
                         {
                             outpinLocation = tile.Location;
-                            outPinAdded = AddXDLOutpin((XDLNet)blockerNet, tile, SliceNumber);
+                            outPinAdded = BlockSelection.AddXDLOutpin((XDLNet)blockerNet, tile, this.SliceNumber);
                         }
                     }
                 }
@@ -235,12 +235,12 @@ namespace GoAhead.Commands.BlockingShared
             bool firstArcInCluster = true;
             foreach (BlockerOrderElement orderEl in BlockerSettings.Instance.GetBlockerOrder())
             {
-                if (!BlockWithEndPips && orderEl.EndPip)
+                if (!this.BlockWithEndPips && orderEl.EndPip)
                 {
                     continue;
                 }
 
-                Regex driverMatch = GetRegex(orderEl.DriverRegexp);
+                Regex driverMatch = this.GetRegex(orderEl.DriverRegexp);
 
                 // as as many arc as possible
                 foreach (Port driver in first.SwitchMatrix.GetAllDriversSortedAscByConnectivity(p =>
@@ -249,7 +249,7 @@ namespace GoAhead.Commands.BlockingShared
                     !BlockerSettings.Instance.SkipPort(p) &&
                     !first.IsPortBlocked(p.Name, Tile.BlockReason.ExcludedFromBlocking)))
                 {
-                    Regex sinkMatch = GetRegex(orderEl.SinkRegexp);
+                    Regex sinkMatch = this.GetRegex(orderEl.SinkRegexp);
 
                     //foreach (Port drivenPort in first.SwitchMatrix.GetDrivenPortsSortedSortedDescByConnectivity(driver, p =>
                     foreach (Port drivenPort in first.SwitchMatrix.GetDrivenPorts(driver).Where(p =>
@@ -315,9 +315,9 @@ namespace GoAhead.Commands.BlockingShared
             // user defined paths
             foreach (BlockerPath bp in BlockerSettings.Instance.GetAllBlockerPaths())
             {
-                Regex hopRegexp = GetRegex(bp.HopRegexp);
-                Regex driverRegexp = GetRegex(bp.DriverRegexp);
-                Regex sinkRegexp = GetRegex(bp.SinkRegexp);
+                Regex hopRegexp = this.GetRegex(bp.HopRegexp);
+                Regex driverRegexp = this.GetRegex(bp.DriverRegexp);
+                Regex sinkRegexp = this.GetRegex(bp.SinkRegexp);
 
                 // TODO add port filter
                 foreach (Port hop in first.SwitchMatrix.Ports.Where(p => hopRegexp.IsMatch(p.Name) && !first.IsPortBlocked(p)))
@@ -383,7 +383,7 @@ namespace GoAhead.Commands.BlockingShared
 
         public static bool AddXDLOutpin(Net blockerNet, Tile t, int sliceNumber)
         {
-            foreach (Port sliceOutPort in GetAllDrivers(t, sliceNumber))
+            foreach (Port sliceOutPort in BlockSelection.GetAllDrivers(t, sliceNumber))
             {
                 foreach (Port target in t.SwitchMatrix.GetDrivenPorts(sliceOutPort).Where(drivenPort => !t.IsPortBlocked(drivenPort) && !BlockerSettings.Instance.SkipPort(drivenPort)))
                 {
@@ -452,13 +452,13 @@ namespace GoAhead.Commands.BlockingShared
             foreach (Port driver in tile.SwitchMatrix.Ports.Where(p =>
                 !BlockerSettings.Instance.SkipPort(p) &&
                 !tile.IsPortBlocked(p) &&
-                !GetRegex(UnblockedPortsToIgnore).IsMatch(p.Name)))
+                !this.GetRegex(this.UnblockedPortsToIgnore).IsMatch(p.Name)))
             {
                 // exit
                 Port exitPort = tile.SwitchMatrix.GetDrivenPorts(driver).FirstOrDefault(p =>
                     !BlockerSettings.Instance.SkipPort(p) &&
                     !tile.IsPortBlocked(p) &&
-                    !GetRegex(UnblockedPortsToIgnore).IsMatch(p.Name)
+                    !this.GetRegex(this.UnblockedPortsToIgnore).IsMatch(p.Name)
                     );
 
                 if (exitPort != null)
@@ -467,14 +467,14 @@ namespace GoAhead.Commands.BlockingShared
                         IdentifierManager.Instance.IsMatch(l.Tile.Location, IdentifierManager.RegexTypes.Interconnect));
                     if (otherInterconnect != null)
                     {
-                        OutputManager.WriteWarning("Possible violaton on " + tile.Location + ": " + driver.Name + "->" + exitPort.Name);
+                        this.OutputManager.WriteWarning("Possible violaton on " + tile.Location + ": " + driver.Name + "->" + exitPort.Name);
 
                         foreach (Tuple<Port, Port> blockingArc in tile.SwitchMatrix.GetAllArcs().Where(a =>
                               !BlockerSettings.Instance.SkipPort(a.Item1) &&
                               !tile.IsPortBlocked(a.Item1) &&
                               a.Item2.Name.Equals(exitPort.Name)))
                         {
-                            OutputManager.WriteWarning("                 use " + blockingArc.ToString());
+                            this.OutputManager.WriteWarning("                 use " + blockingArc.ToString());
                         }
                     }
                 }
@@ -482,12 +482,12 @@ namespace GoAhead.Commands.BlockingShared
                 Port tunnelPort = tile.SwitchMatrix.GetDrivenPorts(driver).FirstOrDefault(p =>
                    !BlockerSettings.Instance.SkipPort(p) &&
                    tile.IsPortBlocked(p, Tile.BlockReason.ExcludedFromBlocking) &&
-                   !GetRegex(UnblockedPortsToIgnore).IsMatch(p.Name)
+                   !this.GetRegex(this.UnblockedPortsToIgnore).IsMatch(p.Name)
                    );
 
                 if (tunnelPort != null)
                 {
-                    OutputManager.WriteWarning("Possible connection into tunnel on " + tile.Location + ": " + driver.Name + "->" + tunnelPort.Name);
+                    this.OutputManager.WriteWarning("Possible connection into tunnel on " + tile.Location + ": " + driver.Name + "->" + tunnelPort.Name);
                 }
             }
         }
@@ -525,12 +525,12 @@ namespace GoAhead.Commands.BlockingShared
 
         public Regex GetRegex(string pattern)
         {
-            if (!m_regex.ContainsKey(pattern))
+            if (!this.m_regex.ContainsKey(pattern))
             {
                 Regex r = new Regex(pattern, RegexOptions.Compiled);
-                m_regex.Add(pattern, r);
+                this.m_regex.Add(pattern, r);
             }
-            return m_regex[pattern];
+            return this.m_regex[pattern];
         }
 
         private static bool BlockOnlyMarkedPortsScope = false;
@@ -559,7 +559,7 @@ namespace GoAhead.Commands.BlockingShared
         public string UnblockedPortsToIgnore = "";
 
         [Parameter(Comment = "The prefix for nets and ports")]
-        public string Prefix = "RBB_Blocker";
+        public String Prefix = "RBB_Blocker";
 
         [Parameter(Comment = "Whether to use end pips as drivers for blocking")]
         public bool BlockWithEndPips = true;

@@ -11,15 +11,15 @@ namespace GoAhead.Commands.BlockingShared
     {
         protected override void DoCommandAction()
         {
-            Tile tile = FPGA.FPGA.Instance.GetTile(Location);
+            Tile tile = FPGA.FPGA.Instance.GetTile(this.Location);
 
-            Regex filter = new Regex(PortNameRegexp, RegexOptions.Compiled);
+            Regex filter = new Regex(this.PortNameRegexp, RegexOptions.Compiled);
 
             foreach (Port port in tile.SwitchMatrix.Ports.Where(p => filter.IsMatch(p.Name)))
             {
                 ExcludePortsFromBlocking cmd = new ExcludePortsFromBlocking();
-                cmd.CheckForExistence = CheckForExistence;
-                cmd.IncludeAllPorts = IncludeAllPorts;
+                cmd.CheckForExistence = this.CheckForExistence;
+                cmd.IncludeAllPorts = this.IncludeAllPorts;
                 cmd.Location = tile.Location;
                 cmd.PortName = port.Name;
                 CommandExecuter.Instance.Execute(cmd);
@@ -32,7 +32,7 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The port name to be blocked, e.g. E2BEG5")]
-        public string PortNameRegexp = "";
+        public String PortNameRegexp = "";
 
         [Parameter(Comment = "Check for existence of ports")]
         public bool CheckForExistence = false;
@@ -41,6 +41,6 @@ namespace GoAhead.Commands.BlockingShared
         public bool IncludeAllPorts = true;
 
         [Parameter(Comment = "The location string  of the tile to block, e.g CLBLL_X2Y78")]
-        public string Location = "CLBLL_X2Y78";
+        public String Location = "CLBLL_X2Y78";
     }
 }

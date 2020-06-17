@@ -23,7 +23,7 @@ namespace GoAhead.Commands.Data
             bool decompress = false;
             //Opens a file and deserialize it into FPGA.FPGA.Instance
 
-            StreamDecorator stream = new StreamDecorator(FileName, this);
+            StreamDecorator stream = new StreamDecorator(this.FileName, this);
 			
             BinaryFormatter formatter = new BinaryFormatter();
 
@@ -54,12 +54,12 @@ namespace GoAhead.Commands.Data
 
             FPGA.FPGA.Instance.DoPostSerializationTasks();
 
-            CommandExecuter.Instance.Execute(new Reset());
-            CommandExecuter.Instance.Execute(new GC());
+            Commands.CommandExecuter.Instance.Execute(new Reset());
+            Commands.CommandExecuter.Instance.Execute(new GC());
             // no LoadFPGAFamilyScript here! LoadFPGAFamilyScript is called through Reset
 
             // remember for other stuff how we read in this FPGA
-            Blackboard.Instance.LastLoadCommandForFPGA = ToString();
+            Objects.Blackboard.Instance.LastLoadCommandForFPGA = this.ToString();
 
             // familiy related warnings
             if (FPGA.FPGA.Instance.Family == FPGATypes.FPGAFamily.Spartan6 && FPGA.FPGA.Instance.GetAllTiles().Count(t => t.HasNonstopoverBlockedPorts) == 0)
@@ -102,86 +102,86 @@ namespace GoAhead.Commands.Data
 		}
         
         [Parameter(Comment = "The name of the file to read the FPGA from")]
-		public string FileName = "";
+		public String FileName = "";
 	}
 
     public class StreamDecorator : Stream
     {
-        public StreamDecorator(string fileName, Command cmd)
+        public StreamDecorator(String fileName, Command cmd)
         {
-            m_stream = File.OpenRead(fileName);
-            m_cmd = cmd;
+            this.m_stream = File.OpenRead(fileName);
+            this.m_cmd = cmd;
         }
 
         public override void Close()
         {
             base.Close();
-            m_stream.Close();
+            this.m_stream.Close();
         }
 
         public override bool CanRead
         {
-            get { return m_stream.CanRead; }
+            get { return this.m_stream.CanRead; }
         }
 
         public override bool CanSeek
         {
-            get { return m_stream.CanSeek; }
+            get { return this.m_stream.CanSeek; }
         }
 
         public override bool CanWrite
         {
-            get { return m_stream.CanWrite; }
+            get { return this.m_stream.CanWrite; }
         }
 
         public override void Flush()
         {
-            m_stream.Flush();
+            this.m_stream.Flush();
         }
 
         public override long Length
         {
-            get { return m_stream.Length; }
+            get { return this.m_stream.Length; }
         }
 
         public override long Position
         {
             get
             {
-                return m_stream.Position;
+                return this.m_stream.Position;
             }
             set
             {
-                m_stream.Position = value;
+                this.m_stream.Position = value;
             }
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (m_cmd != null)
+            if (this.m_cmd != null)
             {
-                int currentProgress = (int)((double)Position / (double)Length * 100);
-                if (m_cmd.ProgressInfo.Progress != currentProgress)
+                int currentProgress = (int)((double)this.Position / (double)this.Length * 100);
+                if (this.m_cmd.ProgressInfo.Progress != currentProgress)
                 {
-                    m_cmd.ProgressInfo.Progress = currentProgress;
+                    this.m_cmd.ProgressInfo.Progress = currentProgress;
                 }
             }
-            return m_stream.Read(buffer, offset, count);
+            return this.m_stream.Read(buffer, offset, count);
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            return m_stream.Seek(offset, origin);
+            return this.m_stream.Seek(offset, origin);
         }
 
         public override void SetLength(long value)
         {
-            m_stream.SetLength(value);
+            this.m_stream.SetLength(value);
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            m_stream.Write(buffer, offset, count);
+            this.m_stream.Write(buffer, offset, count);
         }
 
         private readonly Command m_cmd;

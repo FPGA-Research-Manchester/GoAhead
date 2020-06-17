@@ -15,50 +15,50 @@ namespace GoAhead.Commands.LibraryElementInstantiation
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
-            Slice anchor = FPGA.FPGA.Instance.GetSlice(SliceName);
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
+            Slice anchor = FPGA.FPGA.Instance.GetSlice(this.SliceName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
             if (anchor == null)
             {
-                throw new ArgumentException("Can not find Slice " + SliceName);
+                throw new ArgumentException("Can not find Slice " + this.SliceName);
             }
 
-            if (AutoClearModuleSlot)
+            if (this.AutoClearModuleSlot)
             {
-                AutoClearModuleSlotBeforeInstantiation(libElement, Enumerable.Repeat(anchor.ContainingTile, 1));
+                this.AutoClearModuleSlotBeforeInstantiation(libElement, Enumerable.Repeat(anchor.ContainingTile, 1));
             }
 
             LibElemInst instantiation = new LibElemInst();
             instantiation.AnchorLocation = anchor.ContainingTile.Location;
-            instantiation.InstanceName = Hierarchy + InstanceName;
-            instantiation.LibraryElementName = LibraryElementName;
-            instantiation.SliceNumber = anchor.ContainingTile.GetSliceNumberByName(SliceName);
-            instantiation.SliceName = SliceName;
+            instantiation.InstanceName = this.Hierarchy + this.InstanceName;
+            instantiation.LibraryElementName = this.LibraryElementName;
+            instantiation.SliceNumber = anchor.ContainingTile.GetSliceNumberByName(this.SliceName);
+            instantiation.SliceName = this.SliceName;
 
-            LibraryElementInstanceManager.Instance.Add(instantiation);
+            Objects.LibraryElementInstanceManager.Instance.Add(instantiation);
 
             // mark source as blocked
             ExcludeInstantiationSourcesFromBlocking markSrc = new ExcludeInstantiationSourcesFromBlocking();
             markSrc.AnchorLocation = anchor.ContainingTile.Location;
-            markSrc.LibraryElementName = LibraryElementName;
+            markSrc.LibraryElementName = this.LibraryElementName;
 
             CommandExecuter.Instance.Execute(markSrc);
 
             SaveLibraryElementInstantiation saveCmd = new SaveLibraryElementInstantiation();
             saveCmd.AddDesignConfig = false;
             saveCmd.InsertPrefix = true;
-            saveCmd.InstanceName = InstanceName;
-            saveCmd.NetlistContainerName = NetlistContainerName;
+            saveCmd.InstanceName = this.InstanceName;
+            saveCmd.NetlistContainerName = this.NetlistContainerName;
             CommandExecuter.Instance.Execute(saveCmd);
 
-            if (AutoFuse)
+            if (this.AutoFuse)
             {
                 FuseNets fuseCmd = new FuseNets();
-                fuseCmd.NetlistContainerName = NetlistContainerName;
-                fuseCmd.Mute = Mute;
-                fuseCmd.Profile = Profile;
-                fuseCmd.PrintProgress = PrintProgress;
+                fuseCmd.NetlistContainerName = this.NetlistContainerName;
+                fuseCmd.Mute = this.Mute;
+                fuseCmd.Profile = this.Profile;
+                fuseCmd.PrintProgress = this.PrintProgress;
                 CommandExecuter.Instance.Execute(fuseCmd);
             }
         }
@@ -69,6 +69,6 @@ namespace GoAhead.Commands.LibraryElementInstantiation
         }
 
         [Parameter(Comment = "The slice name")]
-        public string SliceName = "SLICEM_X34Y34";
+        public String SliceName = "SLICEM_X34Y34";
     }
 }

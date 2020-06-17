@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,7 +12,7 @@ namespace GoAhead.Commands
     {
         public Parameter()
         {
-            PrintParameter = true;
+            this.PrintParameter = true;
         }
 
         /// <summary>
@@ -21,17 +20,17 @@ namespace GoAhead.Commands
         /// </summary>
         public bool PrintParameter
         {
-            get { return m_printParamater; }
-            set { m_printParamater = value; }
+            get { return this.m_printParamater; }
+            set { this.m_printParamater = value; }
         }
 
         /// <summary>
         /// Some comment on the Parameter
         /// </summary>
-        public string Comment
+        public String Comment
         {
-            get { return m_comment; }
-            set { m_comment = value; }
+            get { return this.m_comment; }
+            set { this.m_comment = value; }
         }
 
         /// <summary>
@@ -40,26 +39,26 @@ namespace GoAhead.Commands
         /// </summary>
         public FPGA.FPGATypes.BackendType Backend
         {
-            get { return m_backendTypes; }
-            set { m_backendTypes = value; }
+            get { return this.m_backendTypes; }
+            set { this.m_backendTypes = value; }
         }
 
         private bool m_printParamater = false;
         private FPGA.FPGATypes.BackendType m_backendTypes = FPGA.FPGATypes.BackendType.All;
-        private string m_comment = "";
+        private String m_comment = "";
     }
 
     public class CommandDescription : Attribute
     {
-        public string Description { get; set; }
+        public String Description { get; set; }
         public bool Wrapper { get; set; }
         public bool Publish { get; set; }
 
         public CommandDescription()
         {
-            Description = "";
-            Wrapper = false;
-            Publish = true;
+            this.Description = "";
+            this.Wrapper = false;
+            this.Publish = true;
         }
     }
 
@@ -68,25 +67,25 @@ namespace GoAhead.Commands
     {
         public CommandExecutionProgressInfo(Command cmd)
         {
-            m_command = cmd;
+            this.m_command = cmd;
         }
 
         public int Progress
         {
             get 
             { 
-                return m_progress; 
+                return this.m_progress; 
             }
             set 
             { 
-                m_progress = value;             
+                this.m_progress = value;             
 
-                if (m_command.PrintProgress && m_progress >= m_nextHookShredshold)
+                if (this.m_command.PrintProgress && this.m_progress >= this.m_nextHookShredshold)
                 {
-                    m_nextHookShredshold += 1;
+                    this.m_nextHookShredshold += 1;
                     foreach (CommandHook hook in CommandExecuter.Instance.GetAllHooks())
                     {
-                        hook.ProgressUpdate(m_command);
+                        hook.ProgressUpdate(this.m_command);
                     }
                 }
             }
@@ -108,17 +107,17 @@ namespace GoAhead.Commands
         public void Do()
         {
             // best place??
-            m_progressInfo = new CommandExecutionProgressInfo(this);
+            this.m_progressInfo = new CommandExecutionProgressInfo(this);
 
             // clean results from previous executions of the same instance
-            m_errorThrown = false;
+            this.m_errorThrown = false;
 
-            OutputManager.Start();
+            this.OutputManager.Start();
             
             // call base class hook
-            DoCommandAction();
+            this.DoCommandAction();
 
-            OutputManager.Stop();
+            this.OutputManager.Stop();
         
         }
 
@@ -132,16 +131,16 @@ namespace GoAhead.Commands
         /// Print a parseable representation of the command for the command trace
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
+        public override String ToString()
         {
-            string call = "";
-            if (!string.IsNullOrEmpty(Comment))
+            String call = "";
+            if (!String.IsNullOrEmpty(this.Comment))
             {                
-                call += (Comment.StartsWith("#") ? "" : "# ") + Comment + Environment.NewLine;
+                call += (this.Comment.StartsWith("#") ? "" : "# ") + this.Comment + System.Environment.NewLine;
             }
-            call += GetType().Name;
+            call += this.GetType().Name;
          
-            foreach (FieldInfo fi in GetType().GetFields())
+            foreach (FieldInfo fi in this.GetType().GetFields())
             {
                 // find ParamterField attr
                 foreach (object obj in fi.GetCustomAttributes(true).Where(o => o is Parameter))
@@ -160,10 +159,19 @@ namespace GoAhead.Commands
                         continue;
                     }
 
-                    string value = "";
-                    if (fi.FieldType.IsGenericType && fi.FieldType.GetGenericTypeDefinition() == typeof(List<>))
+                    String value = "";
+                    // detect list of strings
+                    if (fi.FieldType == typeof(List<String>))
                     {
-                        List<object> list = ((IEnumerable)fi.GetValue(this)).Cast<object>().ToList();
+                        List<String> list = (List<String>)fi.GetValue(this);
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            value += list[i] + (i == list.Count - 1 ? "" : ",");
+                        }
+                    }
+                    else if (fi.FieldType == typeof(List<int>))
+                    {
+                        List<int> list = (List<int>)fi.GetValue(this);
                         for (int i = 0; i < list.Count; i++)
                         {
                             value += list[i] + (i == list.Count - 1 ? "" : ",");
@@ -171,10 +179,10 @@ namespace GoAhead.Commands
                     }
                     else
                     {
-                        value = GetPrimitiveValue(fi);
+                        value = this.GetPrimitiveValue(fi);
                         // optionally replace paths by %GOAHEAD_HOME%
-                        string goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
-                        if (!string.IsNullOrEmpty(goaheadHome))
+                        String goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
+                        if (!String.IsNullOrEmpty(goaheadHome))
                         {
                             if (value.StartsWith(goaheadHome))
                             {
@@ -222,7 +230,7 @@ namespace GoAhead.Commands
             return call;
         }
 
-        protected virtual string GetPrimitiveValue(FieldInfo fi)
+        protected virtual String GetPrimitiveValue(FieldInfo fi)
         {
             if (fi.GetValue(this) == null)
             {
@@ -236,16 +244,16 @@ namespace GoAhead.Commands
 
         public void WriteProfilingResultsToOutput()
         {
-            OutputManager.WriteOutput(Watch.GetResults());
+            this.OutputManager.WriteOutput(this.Watch.GetResults());
         }
 
         /// <summary>
         /// Return the command description that is part of the class definition
         /// </summary>
         /// <returns></returns>
-        public string GetCommandDescription()
+        public String GetCommandDescription()
         {
-            Attribute attr = Attribute.GetCustomAttributes(GetType()).FirstOrDefault(a => a is CommandDescription);
+            Attribute attr = Attribute.GetCustomAttributes(this.GetType()).FirstOrDefault(a => a is CommandDescription);
             if (attr != null)
             {
                 CommandDescription descr = (CommandDescription)attr;
@@ -261,7 +269,7 @@ namespace GoAhead.Commands
         {
             get
             {
-                Attribute attr = Attribute.GetCustomAttributes(GetType()).FirstOrDefault(a => a is CommandDescription);
+                Attribute attr = Attribute.GetCustomAttributes(this.GetType()).FirstOrDefault(a => a is CommandDescription);
                 if (attr == null)
                 {
                     // publish commands without description 
@@ -277,15 +285,15 @@ namespace GoAhead.Commands
         
         public string GetHelpFilePath()
         {
-            string goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
-            string helpFile = goaheadHome + System.IO.Path.DirectorySeparatorChar + "Help" + System.IO.Path.DirectorySeparatorChar + "Examples" + System.IO.Path.DirectorySeparatorChar + GetType().Name + ".txt";
+            String goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
+            String helpFile = goaheadHome + System.IO.Path.DirectorySeparatorChar + "Help" + System.IO.Path.DirectorySeparatorChar + "Examples" + System.IO.Path.DirectorySeparatorChar + this.GetType().Name + ".txt";
             return helpFile;
         }
 
         public string GetNoteFilePath()
         {
-            string goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
-            string helpFile = goaheadHome + System.IO.Path.DirectorySeparatorChar + "Help" + System.IO.Path.DirectorySeparatorChar + "Examples" + System.IO.Path.DirectorySeparatorChar + GetType().Name + "_note.txt";
+            String goaheadHome = Environment.GetEnvironmentVariable("GOAHEAD_HOME");
+            String helpFile = goaheadHome + System.IO.Path.DirectorySeparatorChar + "Help" + System.IO.Path.DirectorySeparatorChar + "Examples" + System.IO.Path.DirectorySeparatorChar + this.GetType().Name + "_note.txt";
             return helpFile;
         }
 
@@ -295,8 +303,8 @@ namespace GoAhead.Commands
         /// </summary>
         public bool Execute 
         {
-            get { return m_execute; }
-            set { m_execute = value; }
+            get { return this.m_execute; }
+            set { this.m_execute = value; }
         }
         private bool m_execute = true;
 
@@ -305,44 +313,44 @@ namespace GoAhead.Commands
         /// </summary>
         public bool ErrorThrown
         {
-            get { return m_errorThrown; }
-            set { m_errorThrown = value; }
+            get { return this.m_errorThrown; }
+            set { this.m_errorThrown = value; }
         }
         private bool m_errorThrown = false;
         
         /// <summary>
         /// This comment will be printed into the command trace
         /// </summary>
-        public string Comment
+        public String Comment
         {
-            get { return m_comment; }
-            set { m_comment = value; }
+            get { return this.m_comment; }
+            set { this.m_comment = value; }
         }
-        private string m_comment = "";
+        private String m_comment = "";
 
         /// <summary>
         /// Whether the command will be printed to the command trace
         /// </summary>
         public bool UpdateCommandTrace 
         {
-            get { return m_updateCommandTrace; }
-            set { m_updateCommandTrace = value; }
+            get { return this.m_updateCommandTrace; }
+            set { this.m_updateCommandTrace = value; }
         }
         private bool m_updateCommandTrace = true;
 
         /// <summary>
         /// The original parsed in string represantion before any Defines or Variables have been resolved
         /// </summary>
-        public string OriginalCommandString
+        public String OriginalCommandString
         {
             get { return m_originalCommandString; }
             set { m_originalCommandString = value; }
         }         
-        private string m_originalCommandString = "";
+        private String m_originalCommandString = "";
 
         public CommandExecutionProgressInfo ProgressInfo
         {
-            get { return m_progressInfo; }
+            get { return this.m_progressInfo; }
         }
         private CommandExecutionProgressInfo m_progressInfo = null;
 
@@ -350,13 +358,13 @@ namespace GoAhead.Commands
         {
             get 
             {
-                if (m_outputManager == null)
+                if (this.m_outputManager == null)
                 {
-                    m_outputManager = new CommandOutputManager();
+                    this.m_outputManager = new CommandOutputManager();
                 }
-                return m_outputManager;
+                return this.m_outputManager;
             }
-            set { m_outputManager = value; }
+            set { this.m_outputManager = value; }
         }
         private CommandOutputManager m_outputManager = null;
 
@@ -367,8 +375,8 @@ namespace GoAhead.Commands
         /// </summary>
         public int ProgressShare
         {
-            get { return m_progressShare; }
-            set { m_progressShare = value; }
+            get { return this.m_progressShare; }
+            set { this.m_progressShare = value; }
         }
         private int m_progressShare = 100;
 
@@ -379,8 +387,8 @@ namespace GoAhead.Commands
         /// </summary>
         public int ProgressStart
         {
-            get { return m_progressStart; }
-            set { m_progressStart = value; }
+            get { return this.m_progressStart; }
+            set { this.m_progressStart = value; }
         }
         private int m_progressStart = 0;
 
@@ -391,13 +399,13 @@ namespace GoAhead.Commands
         {
             get 
             {
-                if (m_watch == null)
+                if (this.m_watch == null)
                 {
-                    m_watch = new Watch();
+                    this.m_watch = new Watch();
                 }
-                return m_watch; 
+                return this.m_watch; 
             }
-            set { m_watch = value; }
+            set { this.m_watch = value; }
         }
         private Watch m_watch = null;
 

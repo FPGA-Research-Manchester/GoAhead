@@ -13,23 +13,23 @@ namespace GoAhead.Commands
         {
         }
 
-        public ExecuteAlias(List<string> overriddenDefaults)
+        public ExecuteAlias(List<String> overriddenDefaults)
         {
-            m_overriddenDefaults = overriddenDefaults;
+            this.m_overriddenDefaults = overriddenDefaults;
         }
 
         protected override void DoCommandAction()
         {
-            CommandStringParser parser = new CommandStringParser(Commands);
-            foreach(string cmdString in parser.Parse())
+            CommandStringParser parser = new CommandStringParser(this.Commands);
+            foreach(String cmdString in parser.Parse())
             {
                 Command cmd = null;
-                string errorDescr = "";
+                String errorDescr = "";
                 parser.ParseCommand(cmdString, true, out cmd, out errorDescr);
                 // only the alias it self shall appear in the command trace
                 cmd.UpdateCommandTrace = false;                
                 string errorDescription = "";
-                parser.SetParamters(cmd, true, m_overriddenDefaults, ref errorDescription);
+                parser.SetParamters(cmd, true, this.m_overriddenDefaults, ref errorDescription);
                 CommandExecuter.Instance.Execute(cmd);
             }
         }
@@ -41,16 +41,16 @@ namespace GoAhead.Commands
 
         public override string ToString()
         {
-            return AliasName + (AliasName.EndsWith(";") ? "" : ";");
+            return this.AliasName + (this.AliasName.EndsWith(";") ? "" : ";");
         }
 
 
         [Parameter(Comment = "The name of alias")]
-        public string AliasName = "select_an_area";
+        public String AliasName = "select_an_area";
 
         [Parameter(Comment = "A semicolon seperated list of GoAhead commands that will be executed if the alias name is used as a command.")]
-        public string Commands = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";
+        public String Commands = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";
 
-        private readonly List<string> m_overriddenDefaults = new List<string>();
+        private readonly List<String> m_overriddenDefaults = new List<string>();
     }
 }

@@ -16,7 +16,7 @@ namespace GoAhead.Commands.Library
         protected override void DoCommandAction()
         {
             TCLContainer nlc = new TCLContainer("VivadoLibraryElement");
-            DesignParser parser = DesignParser.CreateDesignParser(FileName);
+            DesignParser parser = DesignParser.CreateDesignParser(this.FileName);
 
             try
             {
@@ -25,15 +25,15 @@ namespace GoAhead.Commands.Library
             catch (Exception e)
             {
                 
-                throw new ArgumentException("Error during parsing the design " + FileName + ": " + e.Message + ". Are you trying to open the design on the correct device?");
+                throw new ArgumentException("Error during parsing the design " + this.FileName + ": " + e.Message + ". Are you trying to open the design on the correct device?");
             }
             
             LibraryElement libElement = new LibraryElement();
             libElement.VivadoConnectionPrimitive = false;
-            libElement.PrimitiveName = Path.GetFileNameWithoutExtension(FileName);
+            libElement.PrimitiveName = Path.GetFileNameWithoutExtension(this.FileName);
             libElement.Containter = nlc;
-            libElement.Name = Path.GetFileNameWithoutExtension(FileName);
-            libElement.LoadCommand = ToString();
+            libElement.Name = Path.GetFileNameWithoutExtension(this.FileName);
+            libElement.LoadCommand = this.ToString();
 
             libElement.ResourceShape = new Shape();
 
@@ -92,6 +92,6 @@ namespace GoAhead.Commands.Library
 
 
         [Parameter(Comment = "The vivado netlist to read in (*.viv_rpt)")]
-        public string FileName = "design.xdl";
+        public String FileName = "design.xdl";
     }
 }

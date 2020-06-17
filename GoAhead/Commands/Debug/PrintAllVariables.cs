@@ -12,18 +12,18 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            foreach (string varName in VariableManager.Instance.GetAllVariableNames())
+            foreach (String varName in VariableManager.Instance.GetAllVariableNames())
             {
-                string value = VariableManager.Instance.GetValue(varName);
-                OutputManager.WriteOutput(varName + " is " + value);
+                String value = VariableManager.Instance.GetValue(varName);
+                this.OutputManager.WriteOutput(varName + " is " + value);
             }
 
-            if (PrintEnvironementVariables)
+            if (this.PrintEnvironementVariables)
             {
                 IDictionary	environmentVariables = Environment.GetEnvironmentVariables();
                 foreach (DictionaryEntry de in environmentVariables)
                 {
-                    OutputManager.WriteOutput(de.Key + " is " + de.Value);
+                    this.OutputManager.WriteOutput(de.Key + " is " + de.Value);
                 }
             }
         }

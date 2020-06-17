@@ -14,9 +14,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex netFilter = new Regex(NetNameRegexp, RegexOptions.Compiled);
+            Regex netFilter = new Regex(this.NetNameRegexp, RegexOptions.Compiled);
 
             foreach (XDLNet netToUnrotue in netlistContainer.Nets.Where(n => netFilter.IsMatch(n.Name) && !n.ReadOnly))
             {
@@ -30,6 +30,6 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "All nets whose name matches this regular expression will be unrouted (e.g. ^module removes all nets woth prefix module, $netname$ remove a particular net name)")]
-        public string NetNameRegexp = "^module";
+        public String NetNameRegexp = "^module";
     }
 }

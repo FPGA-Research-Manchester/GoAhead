@@ -20,32 +20,32 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
             if (FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
             {
-                OutputManager.WriteOutput("Warning: No tiles selected");
+                this.OutputManager.WriteOutput("Warning: No tiles selected");
             }
 
-            NetlistContainer netlistContainer = (NetlistContainer)GetNetlistContainer();
+            NetlistContainer netlistContainer = (NetlistContainer)this.GetNetlistContainer();
 
             // store selected parts in outDesign
             NetlistContainer outContainer = netlistContainer.GetSelectedDesignElements();
 
             // write design to file
-            StreamWriter sw = new StreamWriter(OutFile, false);
+            StreamWriter sw = new StreamWriter(this.OutFile, false);
             outContainer.WriteCodeToFile(sw);
             sw.Close();
 
             if (FPGA.FPGA.Instance.BackendType == FPGA.FPGATypes.BackendType.ISE)
             {
-                if (!string.IsNullOrEmpty(BinaryNetlist))
+                if (!String.IsNullOrEmpty(this.BinaryNetlist))
                 {
                     SaveXDLLibraryElementAsBinaryLibraryElement saveCmd = new SaveXDLLibraryElementAsBinaryLibraryElement();
-                    saveCmd.FileName = BinaryNetlist;
-                    saveCmd.XDLFileName = OutFile;
+                    saveCmd.FileName = this.BinaryNetlist;
+                    saveCmd.XDLFileName = this.OutFile;
                     CommandExecuter.Instance.Execute(saveCmd);
                 }
             }
             else if (FPGA.FPGA.Instance.BackendType == FPGA.FPGATypes.BackendType.Vivado)
             {
-                if (!string.IsNullOrEmpty(BinaryNetlist))
+                if (!String.IsNullOrEmpty(this.BinaryNetlist))
                 {
                     // TODO
                     //SaveXDLLibraryElementAsBinaryLibraryElement fuer SetResourceShapeInfo dann weiter relokieren
@@ -59,9 +59,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The optional (may be left empty) name of the file to write the new design to (*.xdl or *.viv_rpt")]
-        public string OutFile = "out.xdl";
+        public String OutFile = "out.xdl";
 
         [Parameter(Comment = "The optional (may be left empty) name of the file to save a binary netlist in (this filename without extension will become the module name)")]
-        public string BinaryNetlist = "module.binNetlist";
+        public String BinaryNetlist = "module.binNetlist";
     }
 }

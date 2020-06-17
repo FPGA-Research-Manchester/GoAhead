@@ -16,22 +16,22 @@ namespace GoAhead.Commands.LibraryElementInstantiation
     {     
         protected void AutoClearModuleSlotBeforeInstantiation(LibraryElement libraryElement, IEnumerable<Tile> upperLeftAnchors, int progressStart = 0, int progressShare = 100)
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
 
             if (libraryElement.ResourceShape == null)
             {
                 throw new ArgumentException("Library element " + libraryElement.Name + " does not provide any module shape information");
             }
 
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            Dictionary<string, bool> targetLocations = new Dictionary<string, bool>();
-            foreach (string originalTileIdnetifier in libraryElement.ResourceShape.GetContainedTileIdentifier().Where(s => !s.StartsWith("NULL")))
+            Dictionary<String, bool> targetLocations = new Dictionary<String, bool>();
+            foreach (String originalTileIdnetifier in libraryElement.ResourceShape.GetContainedTileIdentifier().Where(s => !s.StartsWith("NULL")))
             {
                 bool validTargetTileFound = false;
                 foreach (Tile anchor in upperLeftAnchors)
                 {
-                    string targetLocation = "";
+                    String targetLocation = "";
                     bool success = libraryElement.GetTargetLocation(originalTileIdnetifier, anchor, out targetLocation);
                     if (!targetLocations.ContainsKey(targetLocation))
                     {
@@ -44,7 +44,7 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                 }
                 if (!validTargetTileFound)
                 {
-                    OutputManager.WriteWarning("Could not relocate " + originalTileIdnetifier);
+                    this.OutputManager.WriteWarning("Could not relocate " + originalTileIdnetifier);
                 }
             }
 
@@ -54,8 +54,8 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                 case FPGATypes.BackendType.ISE:
                     foreach (XDLNet net in nlc.Nets.Where(n => !n.ReadOnly))
                     {
-                        ProgressInfo.Progress = progressStart + (int)((double)netsDone++ / (double)nlc.NetCount * progressShare);
-                        RemovePipsFromNet((XDLContainer)nlc, targetLocations, net);
+                        this.ProgressInfo.Progress = progressStart + (int)((double)netsDone++ / (double)nlc.NetCount * progressShare);
+                        this.RemovePipsFromNet((XDLContainer)nlc, targetLocations, net);
                     }
                     // remove all nets that are now empty
                     nlc.Remove(new Predicate<Net>(n => n.PipCount == 0 && n.InpinCount == 0 && n.OutpinCount == 0));
@@ -63,18 +63,18 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                 case FPGATypes.BackendType.Vivado:
                     foreach (TCLNet net in nlc.Nets)
                     {
-                        ProgressInfo.Progress = (int)((double)netsDone++ / (double)nlc.NetCount * 100);
+                        this.ProgressInfo.Progress = (int)((double)netsDone++ / (double)nlc.NetCount * 100);
                         // only flatten in we will really remove something, otherwise keep the tree structure to save processing later
-                        if(net.RoutingTree.GetAllRoutingNodes().Any(n => !n.VirtualNode && TileSelectionManager.Instance.IsSelected(n.Tile)))
+                        if(net.RoutingTree.GetAllRoutingNodes().Any(n => !n.VirtualNode && FPGA.TileSelectionManager.Instance.IsSelected(n.Tile)))
                         {
                             net.FlattenNet();
-                            net.Remove(node => !node.VirtualNode && TileSelectionManager.Instance.IsSelected(node.Tile));
-                            net.Remove(new Predicate<NetPin>(np => TileSelectionManager.Instance.IsSelected(np.TileName)));
+                            net.Remove(node => !node.VirtualNode && FPGA.TileSelectionManager.Instance.IsSelected(node.Tile));
+                            net.Remove(new Predicate<NetPin>(np => FPGA.TileSelectionManager.Instance.IsSelected(np.TileName)));
 
                             // remove the outpins instance if it is selected
                             if (net.OutpinInstance != null)
                             {
-                                if (TileSelectionManager.Instance.IsSelected(net.OutpinInstance.Location))
+                                if (FPGA.TileSelectionManager.Instance.IsSelected(net.OutpinInstance.Location))
                                 {
                                     net.OutpinInstance = null;
                                 }
@@ -89,7 +89,7 @@ namespace GoAhead.Commands.LibraryElementInstantiation
             nlc.Remove(inst => targetLocations.ContainsKey(inst.Location));
         }
 
-        private void RemovePipsFromNet(XDLContainer netlistContainer, Dictionary<string, bool> targetLocations, XDLNet net)
+        private void RemovePipsFromNet(XDLContainer netlistContainer, Dictionary<String, bool> targetLocations, XDLNet net)
         {           
             int pipCount = net.PipCount;
           
@@ -107,13 +107,13 @@ namespace GoAhead.Commands.LibraryElementInstantiation
         public bool AutoFuse = true;
 
         [Parameter(Comment = "The instance name, e.g BM_S6_L4_R4_double. For multiple instantiations and index will be added as a postifx")]
-        public string InstanceName = "instance_name";
+        public String InstanceName = "instance_name";
 
         [Parameter(Comment = "The hiearchy to add before the instance name")]
-        public string Hierarchy = "";
+        public String Hierarchy = "";
 
         [Parameter(Comment = "The name of the library element, e.g. BM_S6_L4_R4_double")]
-        public string LibraryElementName = "BM_S6_L4_R4_double";
+        public String LibraryElementName = "BM_S6_L4_R4_double";
 
         [Parameter(Comment = "Whether to automatically free the resource slot denoted by the anchor")]
         public bool AutoClearModuleSlot = false;

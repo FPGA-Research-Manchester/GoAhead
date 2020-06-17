@@ -12,7 +12,7 @@ namespace GoAhead.Commands.Misc.FPL2013
     {
         protected override void DoCommandAction()
         {
-            FileStream fs = File.OpenRead(OverlayScript);
+            FileStream fs = File.OpenRead(this.OverlayScript);
             byte[] byteBuffer = new byte[fs.Length];
             int length = Convert.ToInt32(fs.Length);
             fs.Read(byteBuffer, 0, length);
@@ -22,13 +22,13 @@ namespace GoAhead.Commands.Misc.FPL2013
 
             CommandStringParser parser = new CommandStringParser(byteBuffer, length);
 
-            TextWriter sl = new StreamWriter(SearchLoad, false);
-            TextWriter fence = new StreamWriter(Fence, false);
+            TextWriter sl = new StreamWriter(this.SearchLoad, false);
+            TextWriter fence = new StreamWriter(this.Fence, false);
 
-            foreach (string cmdString in parser.Parse())
+            foreach (String cmdString in parser.Parse())
             {
                 Command resolvedCommand = null;
-                string errorDescr;
+                String errorDescr;
 
                 bool valid = parser.ParseCommand(cmdString, true, out resolvedCommand, out errorDescr);
 
@@ -37,7 +37,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                     CommandExecuter.Instance.Execute(resolvedCommand);
 
                     Set setCmd = (Set) resolvedCommand;
-                    string value = setCmd.Value;
+                    String value = setCmd.Value;
                     if(Objects.IdentifierManager.Instance.IsMatch(value, Objects.IdentifierManager.RegexTypes.CLB))
                     {
                         AddToSelectionLoc addCmd = new AddToSelectionLoc();
@@ -70,12 +70,12 @@ namespace GoAhead.Commands.Misc.FPL2013
         }
 
         [Parameter(Comment = "The name of the script to run")]
-        public string OverlayScript = "script.goa";
+        public String OverlayScript = "script.goa";
 
         [Parameter(Comment = "")]
-        public string SearchLoad = "out.txt";
+        public String SearchLoad = "out.txt";
 
         [Parameter(Comment = "")]
-        public string Fence = "out.txt";
+        public String Fence = "out.txt";
     }
 }

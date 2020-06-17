@@ -14,13 +14,13 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
             // extract net names as we may not remve during iteration
             List<XDLNet> netNamesToDecompose = new List<XDLNet>();
-            foreach(string netName in NetNames)
+            foreach(String netName in this.NetNames)
             {
                 XDLNet n = (XDLNet) netlistContainer.GetNet(netName);
                 netNamesToDecompose.Add(n);
@@ -49,7 +49,7 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "All nets whose name matches this regular expression will be decomposed (e.g. ^module removes all nets woth prefix module, $netname$ remove a particular net name)")]
-        public List<string> NetNames = new List<string>();
+        public List<String> NetNames = new List<String>();
     }
 
 }

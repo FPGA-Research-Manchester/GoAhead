@@ -10,19 +10,19 @@ namespace GoAhead.Commands.GUI
     {
         protected override void DoCommandAction()
         {
-            if (m_menu == null)
+            if (this.m_menu == null)
             {
                 // prevent tracing this command twice
-                UpdateCommandTrace = false;
+                this.UpdateCommandTrace = false;
                 // postpone execution until GUI comes up
                 ShowGUI.GUICommands.Add(this);
             }
             else
             {                
-                Delete();
-                if (m_menu.DropDownItems.Count == 0)
+                this.Delete();
+                if (this.m_menu.DropDownItems.Count == 0)
                 {
-                    m_menu.Visible = false;
+                    this.m_menu.Visible = false;
                 }
             }
         }
@@ -30,9 +30,9 @@ namespace GoAhead.Commands.GUI
         private void Delete()
         {
             List<ToolStripMenuItem> itemsToRemove = new List<ToolStripMenuItem>();
-            foreach (ToolStripMenuItem item in m_menu.DropDownItems)
+            foreach (ToolStripMenuItem item in this.m_menu.DropDownItems)
             {
-                string tag = item.Tag.ToString();
+                String tag = item.Tag.ToString();
                 if (this is ClearStaticUserMenu)
                 {
                     if (tag.Equals("True"))
@@ -51,7 +51,7 @@ namespace GoAhead.Commands.GUI
 
             foreach (ToolStripMenuItem item in itemsToRemove)
             {
-                m_menu.DropDownItems.Remove(item);
+                this.m_menu.DropDownItems.Remove(item);
             }
         }
         

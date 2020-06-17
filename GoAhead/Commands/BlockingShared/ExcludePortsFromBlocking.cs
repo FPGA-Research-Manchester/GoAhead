@@ -10,27 +10,27 @@ namespace GoAhead.Commands.BlockingShared
     {
         protected override void DoCommandAction() 
         {
-            BlockPortAndReachablePorts(Location, PortName, CheckForExistence, IncludeAllPorts);
+            ExcludePortsFromBlocking.BlockPortAndReachablePorts(this.Location, this.PortName, this.CheckForExistence, this.IncludeAllPorts);
         }
 
-        public static void BlockPortAndReachablePorts(string location, string portName, bool checkForExistence, bool includeAllPorts)
+        public static void BlockPortAndReachablePorts(String location, String portName, bool checkForExistence, bool includeAllPorts)
         {
             Tile where = FPGA.FPGA.Instance.GetTile(location);
 
             // block 
-            BlockPort(where, portName, checkForExistence);
+            ExcludePortsFromBlocking.BlockPort(where, portName, checkForExistence);
 
             // follow wire if required
             if (includeAllPorts && where.WireList != null)
             {
                 foreach (Location l in Navigator.GetDestinations(where.Location, portName))
                 {
-                    BlockPort(l.Tile, l.Pip.Name, checkForExistence);
+                    ExcludePortsFromBlocking.BlockPort(l.Tile, l.Pip.Name, checkForExistence);
                 }
             }
         }
 
-        public static void BlockPort(Tile where, string portName, bool checkForExistence)
+        public static void BlockPort(Tile where, String portName, bool checkForExistence)
         {
             if (checkForExistence && !where.SwitchMatrix.Contains(portName))
             {
@@ -49,10 +49,10 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The port name to be blocked, e.g. E2BEG5")]
-        public string PortName = "E2BEG5";
+        public String PortName = "E2BEG5";
 
         [Parameter(Comment = "The location string, e.g. INT_X2Y34")]
-        public string Location = "INT_X2Y34";
+        public String Location = "INT_X2Y34";
 
         [Parameter(Comment = "Check for existence of ports")]
         public bool CheckForExistence = false;

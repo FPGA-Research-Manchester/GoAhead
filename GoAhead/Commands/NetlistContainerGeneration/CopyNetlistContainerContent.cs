@@ -16,9 +16,9 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
             FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE, FPGA.FPGATypes.BackendType.Vivado);
 
-            NetlistContainer target = NetlistContainerManager.Instance.Get(Target);
+            NetlistContainer target = Objects.NetlistContainerManager.Instance.Get(this.Target);
 
-            foreach (NetlistContainer other in NetlistContainerManager.Instance.NetlistContainer.Where(o => !o.Name.Equals(Target)))
+            foreach (NetlistContainer other in Objects.NetlistContainerManager.Instance.NetlistContainer.Where(o => !o.Name.Equals(this.Target)))
             {
                 foreach (Instance inst in other.Instances.Where(i => FPGA.TileSelectionManager.Instance.IsSelected(i.TileKey)))
                 {
@@ -27,10 +27,10 @@ namespace GoAhead.Commands.NetlistContainerGeneration
 
                 switch (FPGA.FPGA.Instance.BackendType)
                 {
-                    case FPGA.FPGATypes.BackendType.ISE:
+                    case GoAhead.FPGA.FPGATypes.BackendType.ISE:
                         CopyXDLNets(target, (XDLContainer)other);
                         break;
-                    case FPGA.FPGATypes.BackendType.Vivado:
+                    case GoAhead.FPGA.FPGATypes.BackendType.Vivado:
                         CopyVivadoNets(target, other);
                         break;                   
                 }               
@@ -42,7 +42,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
             foreach (XDLNet net in other.Nets)
             {
-                XDLNet copy = (XDLNet)Net.CreateNet(Target + "_" + net.Name);
+                XDLNet copy = (XDLNet)Net.CreateNet(this.Target + "_" + net.Name);
                 foreach (NetPin pin in net.NetPins.Where(p => FPGA.TileSelectionManager.Instance.IsSelected(other.GetInstance(p).TileKey)))
                 {
                     copy.Add(pin);
@@ -62,7 +62,7 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         {
             foreach (Net net in other.Nets)
             {
-                Net copy = Net.CreateNet(Target + "_" + net.Name);
+                Net copy = Net.CreateNet(this.Target + "_" + net.Name);
                 /*
                 foreach (NetPin pin in net.NetPins.Where(p => FPGA.TileSelectionManager.Instance.IsSelected(other.GetInstance(p).TileKey)))
                 {
@@ -85,6 +85,6 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }
 
         [Parameter(Comment = "The name of the target netlist container")]
-        public string Target = "nlc";
+        public String Target = "nlc";
     }
 }

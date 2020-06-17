@@ -21,16 +21,16 @@ namespace GoAhead.Commands.LibraryElementInstantiation
 
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGA.FPGATypes.BackendType.ISE, FPGA.FPGATypes.BackendType.Vivado);
 
             SortMode mode = SortMode.Undefined;
             HMode hMode = HMode.Undefined;
             VMode vMode = VMode.Undefined;
 
-            SetSortModes(ref mode, ref hMode, ref vMode);
+            this.SetSortModes(ref mode, ref hMode, ref vMode);
 
             List<TileKey> keys = new List<TileKey>();
-            foreach (Tile clb in TileSelectionManager.Instance.GetSelectedTiles().Where(t =>
+            foreach (Tile clb in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t =>
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB) || 
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.DSP) || 
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.BRAM))) 
@@ -67,7 +67,7 @@ namespace GoAhead.Commands.LibraryElementInstantiation
             }
 
             // apply filter
-            tilesInFinalOrder.RemoveAll(t => !Regex.IsMatch(t.Location, Filter));
+            tilesInFinalOrder.RemoveAll(t => !Regex.IsMatch(t.Location, this.Filter));
 
             /*
             // check prior to plaecment of valid placement
@@ -83,10 +83,10 @@ namespace GoAhead.Commands.LibraryElementInstantiation
             }
             */
             
-            if (AutoClearModuleSlot)
+            if (this.AutoClearModuleSlot)
             {
-                LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
-                AutoClearModuleSlotBeforeInstantiation(libElement, tilesInFinalOrder);
+                LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
+                this.AutoClearModuleSlotBeforeInstantiation(libElement, tilesInFinalOrder);
             }
 
             foreach (Tile t in tilesInFinalOrder)
@@ -103,21 +103,21 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                 switch (FPGA.FPGA.Instance.BackendType)
                 {
                     case FPGATypes.BackendType.ISE:
-                        AddISEInstantiation(t);
+                        this.AddISEInstantiation(t);
                         break;
                     case FPGATypes.BackendType.Vivado:
-                        AddVivadoInstantiation(t);
+                        this.AddVivadoInstantiation(t);
                         break;
                 }
             }
 
-            if (AutoFuse)
+            if (this.AutoFuse)
             {
                 FuseNets fuseCmd = new FuseNets();
-                fuseCmd.NetlistContainerName = NetlistContainerName;
-                fuseCmd.Mute = Mute;
-                fuseCmd.Profile = Profile;
-                fuseCmd.PrintProgress = PrintProgress;
+                fuseCmd.NetlistContainerName = this.NetlistContainerName;
+                fuseCmd.Mute = this.Mute;
+                fuseCmd.Profile = this.Profile;
+                fuseCmd.PrintProgress = this.PrintProgress;
                 CommandExecuter.Instance.Execute(fuseCmd);
             }
         }
@@ -126,29 +126,29 @@ namespace GoAhead.Commands.LibraryElementInstantiation
         {
             LibElemInst instance = new LibElemInst();
             instance.AnchorLocation = t.Location;
-            instance.InstanceName = GetNextInstanceName();
-            instance.LibraryElementName = LibraryElementName;
-            instance.SliceNumber = SliceNumber;
-            instance.SliceName = t.Slices[(int)SliceNumber].SliceName;
-            LibraryElementInstanceManager.Instance.Add(instance);
+            instance.InstanceName = this.GetNextInstanceName();
+            instance.LibraryElementName = this.LibraryElementName;
+            instance.SliceNumber = this.SliceNumber;
+            instance.SliceName = t.Slices[(int)this.SliceNumber].SliceName;
+            Objects.LibraryElementInstanceManager.Instance.Add(instance);
 
             // mark source as blocked
             ExcludeInstantiationSourcesFromBlocking markSrc = new ExcludeInstantiationSourcesFromBlocking();
             markSrc.AnchorLocation = t.Location;
-            markSrc.LibraryElementName = LibraryElementName;
+            markSrc.LibraryElementName = this.LibraryElementName;
             CommandExecuter.Instance.Execute(markSrc);
 
             SaveLibraryElementInstantiation saveCmd = new SaveLibraryElementInstantiation();
             saveCmd.AddDesignConfig = false;
             saveCmd.InsertPrefix = true;
             saveCmd.InstanceName = instance.InstanceName;
-            saveCmd.NetlistContainerName = NetlistContainerName;
+            saveCmd.NetlistContainerName = this.NetlistContainerName;
             CommandExecuter.Instance.Execute(saveCmd);
         }
 
         private void AddVivadoInstantiation(Tile t)
         {            
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
             if (libElement.VivadoConnectionPrimitive)
             {
@@ -159,11 +159,11 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                 {
                     LibElemInst instance = new LibElemInst();
                     instance.AnchorLocation = t.Location;
-                    instance.InstanceName = GetNextInstanceName();
+                    instance.InstanceName = this.GetNextInstanceName();
                     instance.LibraryElementName = other.Name;
-                    instance.SliceNumber = SliceNumber;
-                    instance.SliceName = t.Slices[(int)SliceNumber].SliceName;
-                    LibraryElementInstanceManager.Instance.Add(instance);
+                    instance.SliceNumber = this.SliceNumber;
+                    instance.SliceName = t.Slices[(int)this.SliceNumber].SliceName;
+                    Objects.LibraryElementInstanceManager.Instance.Add(instance);
 
                     ExcludeInstantiationSourcesFromBlocking markSrc = new ExcludeInstantiationSourcesFromBlocking();
                     markSrc.AnchorLocation = t.Location;
@@ -177,40 +177,40 @@ namespace GoAhead.Commands.LibraryElementInstantiation
                     saveCmd.AddDesignConfig = false;
                     saveCmd.InsertPrefix = true;
                     saveCmd.InstanceName = instance.InstanceName;
-                    saveCmd.NetlistContainerName = NetlistContainerName;
+                    saveCmd.NetlistContainerName = this.NetlistContainerName;
                     CommandExecuter.Instance.Execute(saveCmd);
                 }
             }
             else
             {
                 // for normal moduleas use ISE code
-                AddISEInstantiation(t);
+                this.AddISEInstantiation(t);
             }
         }
 
-        private string GetNextInstanceName()
+        private String GetNextInstanceName()
         {
-            string instanceName = Hierarchy + InstanceName + "_" + m_instanceIndex++;
-            while (LibraryElementInstanceManager.Instance.HasInstanceName(instanceName))
+            String instanceName = this.Hierarchy + this.InstanceName + "_" + this.m_instanceIndex++;
+            while (Objects.LibraryElementInstanceManager.Instance.HasInstanceName(instanceName))
             {
-                instanceName = InstanceName + "_" + m_instanceIndex++;
+                instanceName = this.InstanceName + "_" + this.m_instanceIndex++;
             }
             return instanceName;
         }
         
         private void SetSortModes(ref SortMode mode, ref HMode hMode, ref VMode vMode)
         {
-            if (Mode.ToLower().Equals("row-wise")) { mode = SortMode.R; }
-            else if (Mode.ToLower().Equals("column-wise")) { mode = SortMode.C; }
-            else { throw new ArgumentException("Invalid value for Mode " + Mode + ". Use either row-wise or column-wise"); }
+            if (this.Mode.ToLower().Equals("row-wise")) { mode = SortMode.R; }
+            else if (this.Mode.ToLower().Equals("column-wise")) { mode = SortMode.C; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Mode + ". Use either row-wise or column-wise"); }
 
-            if (Horizontal.ToLower().Equals("left-to-right")) { hMode = HMode.L2R; }
-            else if (Horizontal.ToLower().Equals("right-to-left")) { hMode = HMode.R2L; }
-            else { throw new ArgumentException("Invalid value for Mode " + Horizontal + ". Use either left-to-right or right-to-left"); }
+            if (this.Horizontal.ToLower().Equals("left-to-right")) { hMode = HMode.L2R; }
+            else if (this.Horizontal.ToLower().Equals("right-to-left")) { hMode = HMode.R2L; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Horizontal + ". Use either left-to-right or right-to-left"); }
 
-            if (Vertical.ToLower().Equals("top-down")) { vMode = VMode.TD; }
-            else if (Vertical.ToLower().Equals("bottom-up")) { vMode = VMode.BU; }
-            else { throw new ArgumentException("Invalid value for Mode " + Horizontal + ". Use either top-down orbottom-up"); }
+            if (this.Vertical.ToLower().Equals("top-down")) { vMode = VMode.TD; }
+            else if (this.Vertical.ToLower().Equals("bottom-up")) { vMode = VMode.BU; }
+            else { throw new ArgumentException("Invalid value for Mode " + this.Horizontal + ". Use either top-down orbottom-up"); }
         }
 
         /// <summary>
@@ -224,13 +224,13 @@ namespace GoAhead.Commands.LibraryElementInstantiation
         }
 
         [Parameter(Comment = "Either row-wise or column-wise")]
-        public string Mode   = "row-wise";
+        public String Mode   = "row-wise";
 
         [Parameter(Comment = "Either left-to-right or right-to-left")]
-        public string Horizontal = "left-to-right";
+        public String Horizontal = "left-to-right";
 
         [Parameter(Comment = "Either top-down or bottom-up")]
-        public string Vertical = "top-down";
+        public String Vertical = "top-down";
         
         [Parameter(Comment = "The slice number to instantiate on the anchor")]
         public int SliceNumber = 0;

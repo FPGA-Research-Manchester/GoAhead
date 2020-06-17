@@ -13,7 +13,7 @@ namespace GoAhead.Commands.InterfaceManager
 
        protected override void DoCommandAction()
         {
-            Objects.InterfaceManager.Instance.Remove(SignalName);
+            Objects.InterfaceManager.Instance.Remove(this.SignalName);
         }
 
         public override void Undo()
@@ -22,7 +22,7 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of signal to delete")]
-        public string SignalName = "s";
+        public String SignalName = "s";
 
 
     }

@@ -11,7 +11,7 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
     {
         protected override void DoCommandAction()
         {
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(inst => Regex.IsMatch(inst.InstanceName, InstantiationFilter)))
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations().Where(inst => Regex.IsMatch(inst.InstanceName, this.InstantiationFilter)))
             {
                 inst.PortMapper.Clear();
             }
@@ -23,6 +23,6 @@ namespace GoAhead.Commands.LibraryElementInstantiationManager
         }
 
         [Parameter(Comment = "Only consider those library element instantiations whose name matches this filter")]
-        public string InstantiationFilter = ".*";
+        public String InstantiationFilter = ".*";
     }
 }

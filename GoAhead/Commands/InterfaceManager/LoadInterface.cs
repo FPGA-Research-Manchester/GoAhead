@@ -17,7 +17,7 @@ namespace GoAhead.Commands.InterfaceManager
             //Opens a file and deserializes a new interface from it.
 		    try
 		    {
-                stream = File.OpenRead(FileName);
+                stream = File.OpenRead(this.FileName);
 
                 BinaryFormatter formatter = new BinaryFormatter();
                 BindingList<Signal> loadedSignals = (BindingList<Signal>)formatter.Deserialize(stream);
@@ -25,9 +25,9 @@ namespace GoAhead.Commands.InterfaceManager
                 // assign item by item to fire change event to grid vieew
                 foreach (Signal s in loadedSignals)
                 {
-                    Objects.InterfaceManager.Instance.Add(s);
+                    GoAhead.Objects.InterfaceManager.Instance.Add(s);
                 }
-                Objects.InterfaceManager.Instance.LoadCommands.Add(ToString());
+                GoAhead.Objects.InterfaceManager.Instance.LoadCommands.Add(this.ToString());
             }
 		    catch (Exception error)
 		    {
@@ -45,6 +45,6 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The name of the file to save the interface in")]
-        public string FileName;
+        public String FileName;
     }
 }

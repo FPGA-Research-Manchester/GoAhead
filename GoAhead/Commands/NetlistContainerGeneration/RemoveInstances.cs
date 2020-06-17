@@ -14,14 +14,14 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex filter = new Regex(InstanceNameRegexp, RegexOptions.Compiled);
+            Regex filter = new Regex(this.InstanceNameRegexp, RegexOptions.Compiled);
 
             // output to be removed nets for later writing them to file
             foreach (Instance inst in netlistContainer.Instances.Where(n => filter.IsMatch(n.Name)))
             {
-                OutputManager.WriteOutput(inst.ToString());
+                this.OutputManager.WriteOutput(inst.ToString());
             }
 
             netlistContainer.Remove(new Predicate<Instance>(n => filter.IsMatch(n.Name)));
@@ -33,6 +33,6 @@ namespace GoAhead.Commands.NetlistContainerGeneration
         }        
         
         [Parameter(Comment = "All instances whose name matches this regular expression will be removed")]
-        public string InstanceNameRegexp = "^inst$";
+        public String InstanceNameRegexp = "^inst$";
     }
 }

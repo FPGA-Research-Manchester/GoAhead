@@ -13,18 +13,18 @@ namespace GoAhead.Commands.BlockingShared
         {
             int tileCount = 0;
 
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)tileCount++ / (double)TileSelectionManager.Instance.NumberOfSelectedTiles * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)tileCount++ / (double)FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles * this.ProgressShare);
 
                 // direct block (fast)
-                if (!IncludeAllPorts)
+                if (!this.IncludeAllPorts)
                 {
-                    ExcludePortsFromBlocking.BlockPort(t, PortName, CheckForExistence);
+                    ExcludePortsFromBlocking.BlockPort(t, this.PortName, this.CheckForExistence);
                 }
-                else if(t.SwitchMatrix.Contains(PortName))
+                else if(t.SwitchMatrix.Contains(this.PortName))
                 {
-                    ExcludePortsFromBlocking.BlockPortAndReachablePorts(t.Location, PortName, CheckForExistence, IncludeAllPorts);
+                    ExcludePortsFromBlocking.BlockPortAndReachablePorts(t.Location, this.PortName, this.CheckForExistence, this.IncludeAllPorts);
                     /*
                     ExcludePortsFromBlocking cmd = new ExcludePortsFromBlocking();
                     cmd.CheckForExistence = this.CheckForExistence;
@@ -44,7 +44,7 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The port name to be blocked, e.g. E2BEG5")]
-        public string PortName = "";
+        public String PortName = "";
 
         [Parameter(Comment = "Check for existence of ports")]
         public bool CheckForExistence = false;

@@ -10,9 +10,9 @@ namespace GoAhead.Commands.DeviceInfo
     {
         protected override void DoCommandAction()
         {
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                OutputManager.WriteOutput(t.Location);
+                this.OutputManager.WriteOutput(t.Location);
             }
         }
 

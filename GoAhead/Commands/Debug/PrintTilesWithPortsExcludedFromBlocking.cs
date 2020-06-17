@@ -13,7 +13,7 @@ namespace GoAhead.Commands.Debug
         {
             foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => t.GetAllBlockedPorts(Tile.BlockReason.ExcludedFromBlocking).Any()))
             {
-                OutputManager.WriteOutput("Tile " + tile.Location + " contains ports that are excluded from blocking");
+                this.OutputManager.WriteOutput("Tile " + tile.Location + " contains ports that are excluded from blocking");
             }
         }
 

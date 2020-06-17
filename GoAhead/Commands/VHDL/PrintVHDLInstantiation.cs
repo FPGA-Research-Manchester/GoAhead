@@ -14,12 +14,12 @@ namespace GoAhead.Commands.VHDL
     {
         protected override void DoCommandAction()
         {
-            PortMapping = Regex.Replace(PortMapping, "\\\"", "");
-            InstantiationFilter = Regex.Replace(InstantiationFilter, "\\\"", "");
+            this.PortMapping = Regex.Replace(this.PortMapping, "\\\"", "");
+            this.InstantiationFilter = Regex.Replace(this.InstantiationFilter, "\\\"", "");
 
             Queue<LibElemInst> instantiations = new Queue<LibElemInst>();
-            Dictionary<string, bool> libraryElementNames = new Dictionary<string, bool>();
-            foreach (LibElemInst inst in LibraryElementInstanceManager.Instance.GetAllInstantiations())
+            Dictionary<String, bool> libraryElementNames = new Dictionary<String, bool>();
+            foreach (LibElemInst inst in Objects.LibraryElementInstanceManager.Instance.GetAllInstantiations())
             {
                 // collect all macro names
                 if (!libraryElementNames.ContainsKey(inst.LibraryElementName))
@@ -28,24 +28,24 @@ namespace GoAhead.Commands.VHDL
                 }
 
                 // filter
-                if (Regex.IsMatch(inst.InstanceName, InstantiationFilter))
+                if (Regex.IsMatch(inst.InstanceName, this.InstantiationFilter))
                 {
                     instantiations.Enqueue(inst);
                 }
             }
 
-            Dictionary<string, string> portMapping = PortMappingHandler.GetPortMapping(PortMapping);
-            Dictionary<string, int> indeces = new Dictionary<string, int>();
+            Dictionary<String, String> portMapping = PortMappingHandler.GetPortMapping(this.PortMapping);
+            Dictionary<String, int> indeces = new Dictionary<String, int>();
 
-            foreach (string key in portMapping.Keys)
+            foreach (String key in portMapping.Keys)
             {
                 indeces.Add(key, 0);
             }
 
             StringBuilder instanceCode = new StringBuilder();
 
-            SortedDictionary<string, int> signalWidths = new SortedDictionary<string, int>();
-            Dictionary<string, string> directions = new Dictionary<string, string>();
+            SortedDictionary<String, int> signalWidths = new SortedDictionary<String, int>();
+            Dictionary<String, String> directions = new Dictionary<String, String>();
 
             while (instantiations.Count > 0)
             {
@@ -56,14 +56,14 @@ namespace GoAhead.Commands.VHDL
                 instanceCode.AppendLine(inst.InstanceName + " : " + libElement.PrimitiveName);
                 instanceCode.AppendLine("Port Map (");
 
-                List<string> mappings = new List<string>();
+                List<String> mappings = new List<String>();
 
                 foreach (XDLPort port in ((XDLContainer)libElement.Containter).Ports)
                 {
-                    string key;
+                    String key;
                     if (PortMappingHandler.HasMapping(port, portMapping, out key))
                     {
-                        string rightHandSide = portMapping[key];
+                        String rightHandSide = portMapping[key];
 
                         // do not vectorize allready indeced ports
                         bool vector = Regex.IsMatch(port.ExternalName, @"\d+$") && !Regex.IsMatch(rightHandSide, @"\(\d+\)$");
@@ -123,7 +123,7 @@ namespace GoAhead.Commands.VHDL
                     else
                     {
                         // no mapping, issue warning
-                        OutputManager.WriteOutput("Warning: Could not find a right hand side for port " + port.ExternalName + ". Misspelled mapping? Note that the mapping is case sensistive.");
+                        this.OutputManager.WriteOutput("Warning: Could not find a right hand side for port " + port.ExternalName + ". Misspelled mapping? Note that the mapping is case sensistive.");
 
                         //mappings.Add("\t" + port.ExternalName + " => ,");
                     }
@@ -133,44 +133,44 @@ namespace GoAhead.Commands.VHDL
 
                 // update tool info 
                 Tile t = FPGA.FPGA.Instance.GetTile(inst.AnchorLocation);
-                Blackboard.Instance.ClearToolTipInfo(t);
+                Objects.Blackboard.Instance.ClearToolTipInfo(t);
 
-                foreach (string str in mappings)
+                foreach (String str in mappings)
                 {
                     instanceCode.AppendLine(str);
 
                     // update tool info 
                     if (!str.EndsWith(" => ,"))
                     {
-                        string toolTip = str;
+                        String toolTip = str;
                         toolTip = Regex.Replace(toolTip, @"^\s+", "");
                         toolTip = Regex.Replace(toolTip, ",", "");
                         toolTip += Environment.NewLine;
-                        Blackboard.Instance.AddToolTipInfo(t, toolTip);
+                        Objects.Blackboard.Instance.AddToolTipInfo(t, toolTip);
                     }
                 }
 
                 instanceCode.AppendLine(");");
             }
 
-            if (EmbedInstantionInEntity)
+            if (this.EmbedInstantionInEntity)
             {
-                OutputManager.WriteVHDLOutput("library IEEE;");
-                OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.ALL;");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("library IEEE;");
+                this.OutputManager.WriteVHDLOutput("use IEEE.STD_LOGIC_1164.ALL;");
+                this.OutputManager.WriteVHDLOutput("");
 
-                OutputManager.WriteVHDLOutput("entity " + EntityName + " is port (");
+                this.OutputManager.WriteVHDLOutput("entity " + this.EntityName + " is port (");
 
                 // we need signalWidths as a list ...
-                List<KeyValuePair<string, int>> interfaceSignals = new List<KeyValuePair<string, int>>();
-                foreach (KeyValuePair<string, int> tupel in signalWidths)
+                List<KeyValuePair<String, int>> interfaceSignals = new List<KeyValuePair<String, int>>();
+                foreach (KeyValuePair<String, int> tupel in signalWidths)
                 {
                     interfaceSignals.Add(tupel);
                 }
                 for (int i = 0; i < interfaceSignals.Count; i++)
                 {
-                    string signalName = interfaceSignals[i].Key;
-                    string line = signalName + " : " + directions[signalName] + " std_logic_vector(" + interfaceSignals[i].Value + " downto 0)";
+                    String signalName = interfaceSignals[i].Key;
+                    String line = signalName + " : " + directions[signalName] + " std_logic_vector(" + interfaceSignals[i].Value + " downto 0)";
                     // ... to find the last index
                     if (i < interfaceSignals.Count - 1)
                     {
@@ -180,53 +180,53 @@ namespace GoAhead.Commands.VHDL
                     {
                         line += ");";
                     }
-                    OutputManager.WriteVHDLOutput(line);
+                    this.OutputManager.WriteVHDLOutput(line);
                 }
-                OutputManager.WriteVHDLOutput("end " + EntityName + ";");
-                OutputManager.WriteVHDLOutput("");
-                OutputManager.WriteVHDLOutput("architecture Behavioral of " + EntityName + " is");
-                OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("end " + this.EntityName + ";");
+                this.OutputManager.WriteVHDLOutput("");
+                this.OutputManager.WriteVHDLOutput("architecture Behavioral of " + this.EntityName + " is");
+                this.OutputManager.WriteVHDLOutput("");
 
                 // use command
-                foreach (string libraryElementName in libraryElementNames.Keys)
+                foreach (String libraryElementName in libraryElementNames.Keys)
                 {
                     PrintComponentDeclaration printWrapperCmd = new PrintComponentDeclaration();
                     printWrapperCmd.LibraryElement = libraryElementName;
                     printWrapperCmd.Do();
-                    OutputManager.WriteVHDLOutput(printWrapperCmd.OutputManager.GetVHDLOuput());
+                    this.OutputManager.WriteVHDLOutput(printWrapperCmd.OutputManager.GetVHDLOuput());
                 }
 
-                OutputManager.WriteVHDLOutput("begin");
+                this.OutputManager.WriteVHDLOutput("begin");
             }
 
 
             // print out signals declarations
-            if (PrintSignalDeclarations)
+            if (this.PrintSignalDeclarations)
             {
-                OutputManager.WriteVHDLOutput("--attribute s : string;");
+                this.OutputManager.WriteVHDLOutput("--attribute s : string;");
 
-                foreach (KeyValuePair<string, int> tupel in signalWidths)
+                foreach (KeyValuePair<String, int> tupel in signalWidths)
                 {
-                    string decl = "signal " + tupel.Key + " : std_logic_vector(" + tupel.Value + " downto 0) := (others => '1');";
-                    OutputManager.WriteVHDLOutput(decl);
+                    String decl = "signal " + tupel.Key + " : std_logic_vector(" + tupel.Value + " downto 0) := (others => '1');";
+                    this.OutputManager.WriteVHDLOutput(decl);
                 }
 
-                foreach (KeyValuePair<string, int> tupel in signalWidths)
+                foreach (KeyValuePair<String, int> tupel in signalWidths)
                 {
-                    string attr = "attribute s of " + tupel.Key + " : signal is \"true\";";
-                    OutputManager.WriteVHDLOutput(attr);
+                    String attr = "attribute s of " + tupel.Key + " : signal is \"true\";";
+                    this.OutputManager.WriteVHDLOutput(attr);
                 }
             }
 
             // print out instances
-            if (PrintInstantiations)
+            if (this.PrintInstantiations)
             {
-                OutputManager.WriteVHDLOutput(instanceCode.ToString());
+                this.OutputManager.WriteVHDLOutput(instanceCode.ToString());
             }
 
-            if (EmbedInstantionInEntity)
+            if (this.EmbedInstantionInEntity)
             {
-                OutputManager.WriteVHDLOutput("end architecture Behavioral;");
+                this.OutputManager.WriteVHDLOutput("end architecture Behavioral;");
             }
         }
 
@@ -236,10 +236,10 @@ namespace GoAhead.Commands.VHDL
         }
 
         [Parameter(Comment = "How to map macro ports to VHDL signals. e.g. LI:staticToPartial,LO:static_from_partial,L_RST=>0")]
-        public string PortMapping = "I:StaticToPartial,O:StaticFromPartial,H:1";
+        public String PortMapping = "I:StaticToPartial,O:StaticFromPartial,H:1";
 
         [Parameter(Comment = "Only consider those library lelement instantiations whose name matches this filter")]
-        public string InstantiationFilter = ".*";
+        public String InstantiationFilter = ".*";
 
         [Parameter(Comment = "Wheter to print out the instantiations")]
         public bool PrintInstantiations = true;
@@ -251,6 +251,6 @@ namespace GoAhead.Commands.VHDL
         public bool EmbedInstantionInEntity = false;
 
         [Parameter(Comment = "The name of the entity to embed the macor instantiations in, applies only if EmbeddInstantionInEntity is true")]
-        public string EntityName = "PartialSubsystem";
+        public String EntityName = "PartialSubsystem";
     }
 }

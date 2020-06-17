@@ -10,7 +10,7 @@ namespace GoAhead.Commands.Identifier
     {
         protected override void DoCommandAction()
         {
-            Objects.SliceCompare.Instance.Add(FamilyRegexp, RequiredSliceType, PossibleTargetSliceType);
+            Objects.SliceCompare.Instance.Add(this.FamilyRegexp, this.RequiredSliceType, this.PossibleTargetSliceType);
         }
 
         public override void Undo()
@@ -19,12 +19,12 @@ namespace GoAhead.Commands.Identifier
         }
 
         [Parameter(Comment = "e.g. Spartan6")]
-        public string FamilyRegexp = "Spartan6";
+        public String FamilyRegexp = "Spartan6";
 
         [Parameter(Comment = "Required slice type (from to be placed macro)")]
-        public string RequiredSliceType = "SLICEX";
+        public String RequiredSliceType = "SLICEX";
 
         [Parameter(Comment = "A possible target slice type (the slice type where an instance shall be relocated to)")]
-        public string PossibleTargetSliceType = "SLICEX";
+        public String PossibleTargetSliceType = "SLICEX";
     }
 }

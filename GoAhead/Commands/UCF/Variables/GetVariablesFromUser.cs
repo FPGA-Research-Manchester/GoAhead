@@ -13,10 +13,10 @@ namespace GoAhead.Commands.Variables
         /// </summary>
         public enum DomainType { AnyValue = 0, TileIdentifier = 1, TileSelection = 2, Range = 3 }
     
-        public string VariableName;
+        public String VariableName;
         public DomainType Domain;        
-        public string Value;
-        public List<string> ExplicitRange = new List<string>();
+        public String Value;
+        public List<String> ExplicitRange = new List<String>();
     }
 
     class GetVariablesFromUser : Command
@@ -25,23 +25,23 @@ namespace GoAhead.Commands.Variables
         {
             List<Set> setCommands = new List<Set>();
             
-            if (Mode.ToUpper().Equals("GUI"))
+            if (this.Mode.ToUpper().Equals("GUI"))
             {
-                SetVariablesForm dlg = new SetVariablesForm(GetInputs().ToList());
+                SetVariablesForm dlg = new SetVariablesForm(this.GetInputs().ToList());
                 dlg.Show();
 
                 setCommands = dlg.GetSetCommands();
             }
-            else if (Mode.ToUpper().Equals("CONSOLE"))
+            else if (this.Mode.ToUpper().Equals("CONSOLE"))
             {
-                foreach (Input input in GetInputs())
+                foreach (Input input in this.GetInputs())
                 {
                     Console.WriteLine("# Type value for variable " + input.VariableName + " (Domain is " + input.Domain + ")");
                     if (input.Domain == Input.DomainType.Range)
                     {
                         Console.WriteLine("# Possible values are " + string.Join(" ", input.ExplicitRange));
                     }
-                    string value = "";
+                    String value = "";
                     while (true)
                     {
                         value = Console.ReadLine();
@@ -69,7 +69,7 @@ namespace GoAhead.Commands.Variables
                 throw new ArgumentException("Use either Console or GUI for paramter Mode");
             }
 
-            foreach (Set cmd in setCommands.Where(c => string.IsNullOrEmpty(c.Variable) && !string.IsNullOrEmpty(c.Value)))
+            foreach (Set cmd in setCommands.Where(c => String.IsNullOrEmpty(c.Variable) && !String.IsNullOrEmpty(c.Value)))
             {
                 CommandExecuter.Instance.Execute(cmd);
             }
@@ -77,11 +77,11 @@ namespace GoAhead.Commands.Variables
 
         private IEnumerable<Input> GetInputs()
         {
-            foreach (string tupel in Variables)
+            foreach (String tupel in this.Variables)
             {
-                string[] varAtoms = tupel.Split(':');
-                string variableName = varAtoms[0];
-                string variableDomain = varAtoms[1];
+                String[] varAtoms = tupel.Split(':');
+                String variableName = varAtoms[0];
+                String variableDomain = varAtoms[1];
 
                 Input input = new Input();
                 input.VariableName = variableName;
@@ -89,8 +89,8 @@ namespace GoAhead.Commands.Variables
                 if (Regex.IsMatch(variableDomain, @"^\(.*\)$"))
                 {
                     input.Domain = Input.DomainType.Range;
-                    string[] possibleValues = variableDomain.Split(')', '(', ' ');
-                    foreach (string possibleValue in possibleValues.Where(s => !string.IsNullOrEmpty(s)))
+                    String[] possibleValues = variableDomain.Split(')', '(', ' ');
+                    foreach (String possibleValue in possibleValues.Where(s => !String.IsNullOrEmpty(s)))
                     {
                         input.ExplicitRange.Add(possibleValue);
                     }
@@ -103,7 +103,7 @@ namespace GoAhead.Commands.Variables
                 // expect four values for TileSelection
                 if (input.Domain == Input.DomainType.TileSelection)
                 {
-                    string[] varNames = variableName.Split(' ');
+                    String[] varNames = variableName.Split(' ');
                     if (varNames.Length != 4)
                     {
                         throw new ArgumentException("Ranges of type TileSelection required four variables, e.g. (X1, Y1, X2, Y2)");
@@ -120,9 +120,9 @@ namespace GoAhead.Commands.Variables
         }
 
         [Parameter(Comment = "Whether to get the values from Console or GUI (use either Console or GUI)")]
-        public string Mode = "GUI";
+        public String Mode = "GUI";
 
         [Parameter(Comment = "The list of the variable and their domain")]
-        public List<string> Variables = new List<string>();
+        public List<String> Variables = new List<String>();
     }
 }

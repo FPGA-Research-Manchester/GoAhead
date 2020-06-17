@@ -9,19 +9,19 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            Regex filter = new Regex(Filter);
+            Regex filter = new Regex(this.Filter);
 
-            TileSelectionManager.Instance.ClearSelection();
+            FPGA.TileSelectionManager.Instance.ClearSelection();
             foreach (Tile t in FPGA.FPGA.Instance.GetAllTiles())
             {
                 if (!filter.IsMatch(t.Location))
                 {
                     continue;
                 }
-                TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
             }
 
-            TileSelectionManager.Instance.SelectionChanged();           
+            FPGA.TileSelectionManager.Instance.SelectionChanged();           
         }
 
         public override void Undo()
@@ -30,6 +30,6 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "Only selected those tiles in the given range that match this filter")]
-        public string Filter = "^CL";
+        public String Filter = "^CL";
     }
 }

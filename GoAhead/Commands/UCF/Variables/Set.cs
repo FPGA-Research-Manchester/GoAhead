@@ -15,21 +15,21 @@ namespace GoAhead.Commands.Variables
 
         public Set(bool valueIsString)
         {
-            m_valueIsString = valueIsString;
+            this.m_valueIsString = valueIsString;
         }
 
         protected override void DoCommandAction()
         {
-            if (m_digitFilter.IsMatch(Value) || m_valueIsString)
+            if (Set.m_digitFilter.IsMatch(this.Value) || this.m_valueIsString)
             {
                 // e.g Set Variable=CI_location Value="right";
-                VariableManager.Instance.Set(Variable, Value);
+                VariableManager.Instance.Set(this.Variable, this.Value);
             }
             else
             {
                 int evaluationResult = 0;
-                bool valid = m_ep.Evaluate(Value, out evaluationResult);
-                VariableManager.Instance.Set(Variable, evaluationResult.ToString());
+                bool valid = Set.m_ep.Evaluate(this.Value, out evaluationResult);
+                VariableManager.Instance.Set(this.Variable, evaluationResult.ToString());
             }
         }
 
@@ -43,9 +43,9 @@ namespace GoAhead.Commands.Variables
         private readonly bool m_valueIsString = false;
 
         [Parameter(Comment = "The name of the variable to set (e.g. a)")]
-        public string Variable = "";
+        public String Variable = "";
 
         [Parameter(Comment = "The new value of the variable, a constant value or an arithmetic expression (e.g. %a%+5")]
-        public string Value = "";
+        public String Value = "";
     }
 }

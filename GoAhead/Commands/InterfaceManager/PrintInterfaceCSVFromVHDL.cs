@@ -12,14 +12,14 @@ namespace GoAhead.Commands.InterfaceManager
     {
        protected override void DoCommandAction()
         {
-            if(!File.Exists(VHDlFile))
+            if(!File.Exists(this.VHDlFile))
             {
-                throw new ArgumentException(VHDlFile + " does not exits");
+                throw new ArgumentException(this.VHDlFile + " does not exits");
             }
 
             //open,in,East,pr0,0;
 
-            VHDLParser parser = new VHDLParser(VHDlFile);
+            VHDLParser parser = new VHDLParser(this.VHDlFile);
 
             foreach (VHDLParserEntity entity in parser.GetEntities())
             {                
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.InterfaceManager
                     {
                         interfaces.Add(signal.MetaData.Direction, new StringBuilder());
                     }
-                    foreach (string csvString in GetCSVString(entity, signal, signal.MetaData.Direction))
+                    foreach (String csvString in this.GetCSVString(entity, signal, signal.MetaData.Direction))
                     {
                         interfaces[signal.MetaData.Direction].AppendLine(csvString);
                     }
@@ -40,30 +40,30 @@ namespace GoAhead.Commands.InterfaceManager
                 {
                 }
 
-                OutputManager.WriteOutput("############################################");
-                OutputManager.WriteOutput("# interface derived from entity " + entity.EntityName);
-                OutputManager.WriteOutput("############################################");
+                this.OutputManager.WriteOutput("############################################");
+                this.OutputManager.WriteOutput("# interface derived from entity " + entity.EntityName);
+                this.OutputManager.WriteOutput("############################################");
                 foreach (KeyValuePair<FPGA.FPGATypes.Direction, StringBuilder> tupel in interfaces)
                 {
-                    OutputManager.WriteOutput("# " + tupel.Key);
-                    OutputManager.WriteOutput(tupel.Value.ToString());
+                    this.OutputManager.WriteOutput("# " + tupel.Key);
+                    this.OutputManager.WriteOutput(tupel.Value.ToString());
                 }
-                OutputManager.WriteOutput("############################################");
-                OutputManager.WriteOutput("# end of interface for entity " + entity.EntityName);
-                OutputManager.WriteOutput("############################################");
+                this.OutputManager.WriteOutput("############################################");
+                this.OutputManager.WriteOutput("# end of interface for entity " + entity.EntityName);
+                this.OutputManager.WriteOutput("############################################");
             }
 
             
         }
 
-        private IEnumerable<string> GetCSVString(VHDLParserEntity entity, HDLEntitySignal signal, FPGA.FPGATypes.Direction direction)
+        private IEnumerable<String> GetCSVString(VHDLParserEntity entity, HDLEntitySignal signal, FPGA.FPGATypes.Direction direction)
         {
             int to = Math.Max(signal.MSB, signal.LSB);
             int from = Math.Min(signal.MSB, signal.LSB);
             for (int index = to; index >= from; index--)
             {
                 // no nam
-                string line = signal.SignalName + "(" + index + ")," + signal.SignalDirection + "," + direction+ "," + entity.EntityName + "," + signal.MetaData.Column;
+                String line = signal.SignalName + "(" + index + ")," + signal.SignalDirection + "," + direction+ "," + entity.EntityName + "," + signal.MetaData.Column;
                 yield return line;
             }
         }
@@ -74,6 +74,6 @@ namespace GoAhead.Commands.InterfaceManager
         }
         
         [Parameter(Comment = "The VHDL file with the entity to read")]
-        public string VHDlFile = "entity.vhd";
+        public String VHDlFile = "entity.vhd";
     }
 }

@@ -23,7 +23,7 @@ namespace GoAhead.Commands.Vivado
                 {
                     string currentResourceString = "";
                     int i = 0;
-                    while (currentResourceString.Length < ResourceString.Length)
+                    while (currentResourceString.Length < this.ResourceString.Length)
                     {
                         // left FPGA
                         if (!FPGA.FPGA.Instance.Contains(x + i, y))
@@ -44,7 +44,7 @@ namespace GoAhead.Commands.Vivado
 
                         currentResourceString += current.Location[0];
                         Console.WriteLine(currentResourceString);
-                        if (currentResourceString.Equals(ResourceString))
+                        if (currentResourceString.Equals(this.ResourceString))
                         {
                             x1 = x;
                             x2 = x+i-1;
@@ -70,7 +70,7 @@ namespace GoAhead.Commands.Vivado
                         hCount++;
                     }
 
-                    if (hCount == Height - 1)
+                    if (hCount == this.Height - 1)
                     {
                         y1 = y;
                         y2 = y + h;

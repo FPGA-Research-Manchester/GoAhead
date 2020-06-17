@@ -12,22 +12,22 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            Regex netFilter = new Regex(NetNameRegexp, RegexOptions.Compiled);
+            Regex netFilter = new Regex(this.NetNameRegexp, RegexOptions.Compiled);
 
             // output to be removed nets for later writing them to file
             foreach (XDLNet netToRemove in netlistContainer.Nets.Where(n => netFilter.IsMatch(n.Name)))
             {
-                OutputManager.WriteOutput(netToRemove.ToString());
+                this.OutputManager.WriteOutput(netToRemove.ToString());
             }
         }
 
         private NetlistContainer GetNetlistContainer()
         {
-            string netlistContainerName = string.IsNullOrEmpty(NetlistContainerName) ? NetlistContainerManager.DefaultNetlistContainerName : NetlistContainerName;
+            String netlistContainerName = String.IsNullOrEmpty(this.NetlistContainerName) ? NetlistContainerManager.DefaultNetlistContainerName : this.NetlistContainerName;
 
-            return NetlistContainerManager.Instance.Get(netlistContainerName);
+            return Objects.NetlistContainerManager.Instance.Get(netlistContainerName);
         }
 
         public override void Undo()
@@ -36,9 +36,9 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "The netlist container this command works on. Leave this parameter empty to work on the default netlist")]
-        public string NetlistContainerName = "";
+        public String NetlistContainerName = "";
 
         [Parameter(Comment = "All nets whose name matches this regular expression will be written to file)")]
-        public string NetNameRegexp = "^module";
+        public String NetNameRegexp = "^module";
     }
 }

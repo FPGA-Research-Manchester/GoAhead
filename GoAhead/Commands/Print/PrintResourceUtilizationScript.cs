@@ -11,22 +11,22 @@ namespace GoAhead.Commands
         protected override void DoCommandAction()
         {
             OpenDesign openCmd = new OpenDesign();
-            openCmd.FileName = XDLInFile;
-            OutputManager.WriteOutput(openCmd.ToString());
+            openCmd.FileName = this.XDLInFile;
+            this.OutputManager.WriteOutput(openCmd.ToString());
 
-            OutputManager.WriteOutput("ClearSelection;");            
-            foreach (Command cmd in FPGA.TileSelectionManager.Instance.GetListOfAddToSelectionXYCommandsForUserSelection(UserSelectionType))
+            this.OutputManager.WriteOutput("ClearSelection;");            
+            foreach (Command cmd in FPGA.TileSelectionManager.Instance.GetListOfAddToSelectionXYCommandsForUserSelection(this.UserSelectionType))
             {
-                OutputManager.WriteOutput(cmd.ToString());
+                this.OutputManager.WriteOutput(cmd.ToString());
             }
 
             Print printTextCmd = new Print();
-            printTextCmd.Text = "resource utilization for " + XDLInFile;
-            OutputManager.WriteOutput(printTextCmd.ToString());
+            printTextCmd.Text = "resource utilization for " + this.XDLInFile;
+            this.OutputManager.WriteOutput(printTextCmd.ToString());
 
             PrintResourceConsumptionInSelection printCmd = new PrintResourceConsumptionInSelection();
-            OutputManager.WriteOutput(printCmd.ToString());
-            OutputManager.WriteOutput("Reset;");
+            this.OutputManager.WriteOutput(printCmd.ToString());
+            this.OutputManager.WriteOutput("Reset;");
         }
 
         public override void Undo()
@@ -35,9 +35,9 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The netlist to analyze")]
-        public string XDLInFile = "";
+        public String XDLInFile = "";
 
         [Parameter(Comment = "The name of the user selection type (= module shape)")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

@@ -15,8 +15,8 @@ namespace GoAhead.Commands
         {
             byte[] result = null;
             int lastLength = 0;
-            string lastFile = "";
-            foreach (string f in Inputs)
+            String lastFile = "";
+            foreach (String f in this.Inputs)
             {
                 byte[] bytes = File.ReadAllBytes(f);
                 if (result == null)
@@ -44,7 +44,7 @@ namespace GoAhead.Commands
                     result[i] |= bytes[i];
                 }
             }
-            File.WriteAllBytes(Output, result);
+            File.WriteAllBytes(this.Output, result);
         }
 
         public override void Undo()
@@ -54,9 +54,9 @@ namespace GoAhead.Commands
 
 
         [Parameter(Comment = "The result (overwritten if it already exists)")]
-        public string Output = "out.bin";
+        public String Output = "out.bin";
 
         [Parameter(Comment = "A list of files")]
-        public List<string> Inputs = new List<string>();
+        public List<String> Inputs = new List<String>();
     }
 }

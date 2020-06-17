@@ -12,13 +12,13 @@ namespace GoAhead.Commands.NetlistContainerGeneration
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             // find inpins/outpins which reside on unknown primitives 
             int netCount = 0;
             foreach (XDLNet net in nlc.Nets)
             {
-                ProgressInfo.Progress = (int)((double)(netCount++) / (double)nlc.NetCount * 100);
+                this.ProgressInfo.Progress = (int)((double)(netCount++) / (double)nlc.NetCount * 100);
                 net.RemoveAllPinStatements(np => !nlc.Instances.Any(i => i.SliceName.Equals(np.InstanceName)));              
             }
         }

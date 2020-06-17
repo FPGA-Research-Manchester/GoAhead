@@ -13,33 +13,33 @@ namespace GoAhead.Commands
     {
         public CommandStringParser(byte[] charBuffer, int length)
         {
-            m_byteBuffer = charBuffer;
-            m_length = length;
+            this.m_byteBuffer = charBuffer;
+            this.m_length = length;
         }
 
-        public CommandStringParser(string cmdString)
+        public CommandStringParser(String cmdString)
         {
-            string command = cmdString;
+            String command = cmdString;
             if (command.StartsWith("\"") && command.EndsWith("\""))
             {
                 command = command.Remove(0, 1);
                 command = command.Remove(command.Length - 1, 1);
             }
             ASCIIEncoding enc = new ASCIIEncoding();
-            m_byteBuffer = enc.GetBytes(command);
-            m_length = command.Length;
+            this.m_byteBuffer = enc.GetBytes(command);
+            this.m_length = command.Length;
         }
 
         public CommandStringParser(FileInfo fi)
         {
-            m_byteBuffer = File.ReadAllBytes(fi.FullName);
-            m_length = m_byteBuffer.Length;
-            m_state.ParsedFile = fi.FullName;
+            this.m_byteBuffer = File.ReadAllBytes(fi.FullName);
+            this.m_length = this.m_byteBuffer.Length;
+            this.m_state.ParsedFile = fi.FullName;
         }
 
-        public IEnumerable<string> Parse()
+        public IEnumerable<String> Parse()
         {
-            m_topology = new CommandStringTopology();
+            this.m_topology = new CommandStringTopology();
 
             bool pendingQuote = false;
             bool pendingApostroph = false;
@@ -55,39 +55,39 @@ namespace GoAhead.Commands
             int lastValueFrom = 0;
             int lastCommandTagFrom = 0;
 
-            while (charIndex < m_length)
+            while (charIndex < this.m_length)
             {
-                char c = (char)m_byteBuffer[charIndex++];
+                char c = (char)this.m_byteBuffer[charIndex++];
 
                 if (c == '\n')
                 {
-                    m_state.LineNumber++;
+                    this.m_state.LineNumber++;
                 }
 
                 // consume unqouted(!) comments
-                while (c == '#' && !(pendingQuote || pendingApostroph) && charIndex < m_byteBuffer.Length)
+                while (c == '#' && !(pendingQuote || pendingApostroph) && charIndex < this.m_byteBuffer.Length)
                 {
                     int commentStart = charIndex - 1;
                     while (true)
                     {
-                        c = (char)m_byteBuffer[charIndex++];
+                        c = (char)this.m_byteBuffer[charIndex++];
                         // comment an end of ile
-                        if (charIndex >= m_length-1)
+                        if (charIndex >= this.m_length-1)
                         {
-                            m_topology.Add(CommandStringTopology.TopologyType.Comment, commentStart, charIndex - 2);
+                            this.m_topology.Add(CommandStringTopology.TopologyType.Comment, commentStart, charIndex - 2);
                             commentAtEndOfFile = true;
                             break;
                         }
                         if (c == '\n')
                         {
                             // store comment 
-                            m_topology.Add(CommandStringTopology.TopologyType.Comment, commentStart, charIndex - 2);
-                            m_state.LineNumber++;
+                            this.m_topology.Add(CommandStringTopology.TopologyType.Comment, commentStart, charIndex - 2);
+                            this.m_state.LineNumber++;
                             break;
                         }
                     }
                     // comment at end of file
-                    if (charIndex >= m_byteBuffer.Length)
+                    if (charIndex >= this.m_byteBuffer.Length)
                     {
                         break;
                     }
@@ -121,13 +121,13 @@ namespace GoAhead.Commands
                 {
                     if (c == ';')
                     {
-                        m_topology.Add(CommandStringTopology.TopologyType.CommandTag, from, charIndex - 1);
-                        m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, from, charIndex);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.CommandTag, from, charIndex - 1);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, from, charIndex);
                         lastCommandTagFrom = from;
                     }
                     else if (!char.IsLetter(c) && c != '\n')
                     {
-                        m_topology.Add(CommandStringTopology.TopologyType.CommandTag, from, charIndex - 1);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.CommandTag, from, charIndex - 1);
                         lastCommandTagFrom = from;
                         parseCommandTag = false;
                         scanForArgument = true;
@@ -140,7 +140,7 @@ namespace GoAhead.Commands
                         // the last argument was complete, while skipping blank (scanning for the next argument) we encounter a ";",  e.g., 
                         // If Condition=%RowCount%=5 Then="Set Variable=LeftHalfOnly Value=True;" Else="NOP;"\s\s\s";"
 
-                        m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, lastCommandTagFrom, charIndex);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, lastCommandTagFrom, charIndex);
                     }
                     if (char.IsLetter(c))
                     {
@@ -151,16 +151,16 @@ namespace GoAhead.Commands
                 }
                 else if(parseArgumentPart)
                 {
-                    string debug = new string(cmdBuffer, 0, cmdBufferIndex);
+                    String debug = new String(cmdBuffer, 0, cmdBufferIndex);
                     if (c == '=' && !(pendingQuote || pendingApostroph) && !scanForEndOfValue)
                     {
-                        m_topology.Add(CommandStringTopology.TopologyType.ArgumentNames, from, charIndex-1);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.ArgumentNames, from, charIndex-1);
                         lastValueFrom = charIndex;
                         scanForEndOfValue = true;
                     }
                     else if (scanForEndOfValue && !(pendingQuote || pendingApostroph) && (c == ' ' || c == '\r' || c == '\n'))
                     {
-                        m_topology.Add(CommandStringTopology.TopologyType.ArgumentValues, lastValueFrom, charIndex - 1);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.ArgumentValues, lastValueFrom, charIndex - 1);
                         scanForEndOfValue = false;
                         scanForArgument = true;
                     }
@@ -168,7 +168,7 @@ namespace GoAhead.Commands
                     if (c == ';' && !(pendingQuote || pendingApostroph))
                     {
                         //this.m_topology.Add(CommandStringTopology.TopologyType.ArgumentNames, from, charIndex - 1);
-                        m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, lastCommandTagFrom, charIndex);
+                        this.m_topology.Add(CommandStringTopology.TopologyType.CompleteCommand, lastCommandTagFrom, charIndex);
                         // flags are reset upon yield return
                     }
                 }
@@ -176,7 +176,7 @@ namespace GoAhead.Commands
                 // no semicolon found
                 if (cmdBufferIndex >= cmdBuffer.Length)
                 {
-                    throw new ArgumentException("The current command is too long (> 8192 chars):" + new string(cmdBuffer, 0, 128) + "... " + m_state.ToString());
+                    throw new ArgumentException("The current command is too long (> 8192 chars):" + new String(cmdBuffer, 0, 128) + "... " + this.m_state.ToString());
                 }
                 
                 cmdBuffer[cmdBufferIndex++] = c;
@@ -186,9 +186,9 @@ namespace GoAhead.Commands
                     // do not return stand alone semicolons
                     if (cmdBuffer[0] != ';')
                     {
-                        string command = new string(cmdBuffer, 0, cmdBufferIndex);
+                        String command = new String(cmdBuffer, 0, cmdBufferIndex);
                         command = Regex.Replace(command, @"^\s*", "");
-                        m_state.LastParserCommand = command;
+                        this.m_state.LastParserCommand = command;
                         yield return command;
                     }
 
@@ -223,7 +223,7 @@ namespace GoAhead.Commands
 
                 if (!lineFeedsOnly)
                 {
-                    throw new ArgumentException("Detected an incomplete command at the end. Missing semicolon or quotes? " + m_state.ToString());
+                    throw new ArgumentException("Detected an incomplete command at the end. Missing semicolon or quotes? " + this.m_state.ToString());
                 }
                 //yield return new String(cmdBuffer, 0, cmdBufferIndex);
             }
@@ -234,7 +234,7 @@ namespace GoAhead.Commands
             get { return m_topology; }
         }
 
-        public bool ParseCommand(string commandString, bool setFields,  out Command command, out string errorDescription)
+        public bool ParseCommand(String commandString, bool setFields,  out Command command, out String errorDescription)
         {
             command = new NOP();
             errorDescription = "";
@@ -250,25 +250,25 @@ namespace GoAhead.Commands
             }
 
             // skip comments
-            if (string.IsNullOrEmpty(commandString) || m_commentsRegexp.IsMatch(commandString))
+            if (String.IsNullOrEmpty(commandString) || CommandStringParser.m_commentsRegexp.IsMatch(commandString))
             {
                 errorDescription = "Comment or empty string";
                 return false;
             }
 
             // preserve original command string version
-            string orgCmd = commandString;
+            String orgCmd = commandString;
              
             // resolve envirnonement variable (if any) for windows style env var %MY_VAR%
-            ResolveWindowsStypeVariables(ref commandString);
+            this.ResolveWindowsStypeVariables(ref commandString);
 
             // resolve envirnonement variable (if any) for unix style env var ${MY_VAR}
-            MatchCollection matches = m_envVarUnixRegexp.Matches(commandString);
+            MatchCollection matches = CommandStringParser.m_envVarUnixRegexp.Matches(commandString);
             foreach (Match match in matches)
             {
-                string varName = match.Groups[0].Value;
+                String varName = match.Groups[0].Value;
                 // remove ${}
-                string varValue = Environment.GetEnvironmentVariable(Regex.Replace(varName, @"{|}|\$", ""));
+                String varValue = System.Environment.GetEnvironmentVariable(Regex.Replace(varName, @"{|}|\$", ""));
                 if (varValue != null)
                 {
                     // regep does not work with { ??
@@ -282,8 +282,10 @@ namespace GoAhead.Commands
                 }
             }
 
-            bool valid = SplitCommand(commandString, out string cmdTag, out string argumentPart);
-
+            String cmdTag;
+            String argumentPart;
+            bool valid = this.SplitCommand(commandString, out cmdTag, out argumentPart);
+            
             if (!valid)
             {
                 errorDescription = "Found an invalid command string: " + commandString;
@@ -291,13 +293,13 @@ namespace GoAhead.Commands
             }
 
             // argumentPart
-            List<string> arguments = new List<string>();
+            List<String> arguments = new List<String>();
 
-            if (!string.IsNullOrEmpty(argumentPart))
+            if (!String.IsNullOrEmpty(argumentPart))
             {
-                foreach (NameValuePair nameValuePair in GetNameValuePairs(argumentPart))
+                foreach (NameValuePair nameValuePair in this.GetNameValuePairs(argumentPart))
                 {
-                    string parameter = nameValuePair.Name + "=" + nameValuePair.Value;
+                    String parameter = nameValuePair.Name + "=" + nameValuePair.Value;
                     //parameter = Regex.Replace(parameter, "^\"*", "");
                     //parameter = Regex.Replace(parameter, "^'", "");
                     parameter = Regex.Replace(parameter, @"^\s+", "");
@@ -317,14 +319,14 @@ namespace GoAhead.Commands
                 return true;
             }
 
-            int hits = GetAllCommandTypes().Count(t => t.Name.Equals(cmdTag));            
+            int hits = CommandStringParser.GetAllCommandTypes().Count(t => t.Name.Equals(cmdTag));            
             if (hits == 0)
             {
-                string candidateNames = GetSimiliarCommandNames(cmdTag);
+                String candidateNames = this.GetSimiliarCommandNames(cmdTag);
                 errorDescription = 
                     "Can not handle unknown command name " + cmdTag +
                     (candidateNames.Length > 0 ? ". Did you mean " + candidateNames + "?" : "") + Environment.NewLine + 
-                    m_state.ToString();
+                    this.m_state.ToString();
                 return false;
             }
             if(hits > 1)
@@ -333,7 +335,7 @@ namespace GoAhead.Commands
                 return false;
             }
 
-            Type type = GetAllCommandTypes().FirstOrDefault(t => t.Name.Equals(cmdTag));
+            Type type = CommandStringParser.GetAllCommandTypes().FirstOrDefault(t => t.Name.Equals(cmdTag));
             
             command = (Command)Activator.CreateInstance(type);
             // store the unresolved command string along with each command (goto label)
@@ -342,28 +344,28 @@ namespace GoAhead.Commands
             return SetParamters(command, setFields, arguments, ref errorDescription);
         }
 
-        public bool SetParamters(Command command,bool setFields, List<string> arguments, ref string errorDescription)
+        public bool SetParamters(Command command,bool setFields, List<String> arguments, ref String errorDescription)
         {
             // map each name=value to a paramter field
             for (int i = 0; i < arguments.Count; i++)
             {
-                string[] atoms = arguments[i].Split(new char[] { '=' }, 2);
+                String[] atoms = arguments[i].Split(new char[] { '=' }, 2);
                 if (atoms.Length != 2)
                 {
                     errorDescription = "Bad command line found : " + arguments[i];
                     return false;
                 }
-                string name = atoms[0];
-                string value = atoms[1];
+                String name = atoms[0];
+                String value = atoms[1];
 
                 FieldInfo fi = command.GetType().GetFields().FirstOrDefault(f => f.GetCustomAttributes(true).Count(attr => attr is Parameter) == 1 && f.Name.Equals(name));
                 if (fi == null)
                 {
-                    string candidateNames = GetSimiliarArgumentNames(command.GetType(), name);
+                    String candidateNames = this.GetSimiliarArgumentNames(command.GetType(), name);
                     errorDescription =
                         "Could not map argument " + arguments[i] + " to command " + command.GetType().Name +
-                        ". Missing semicolon?" + (!string.IsNullOrEmpty(candidateNames) ? " Did you mean " + candidateNames + "?" : "") + Environment.NewLine +
-                        m_state.ToString();
+                        ". Missing semicolon?" + (!String.IsNullOrEmpty(candidateNames) ? " Did you mean " + candidateNames + "?" : "") + Environment.NewLine +
+                        this.m_state.ToString();
                     return false;
                 }
 
@@ -373,7 +375,7 @@ namespace GoAhead.Commands
                     break;
                 }
 
-                value = VariableManager.Instance.Resolve(value);
+                value = Objects.VariableManager.Instance.Resolve(value);
 
                 //NetName=quote(name[3]) -> name[3]
                 if (m_quoteRegexp.IsMatch(value))
@@ -383,11 +385,11 @@ namespace GoAhead.Commands
                 }
                 else
                 {
-                    ResolveEmbeddedArithmeticExpressions(ref value);
+                    this.ResolveEmbeddedArithmeticExpressions(ref value);
                 }
 
 
-                bool validParamter = SetParameterByName(command, fi, name, value);
+                bool validParamter = this.SetParameterByName(command, fi, name, value);
                 if (!validParamter)
                 {
                     errorDescription = "Can not handle type " + fi.FieldHandle.ToString() + " of type " + fi.FieldType.Name;
@@ -400,12 +402,12 @@ namespace GoAhead.Commands
         private bool SetParameterByName(Command command, FieldInfo fi, string name, string value)
         {
             // the following type comparisons 
-            if (fi.FieldType == typeof(string))
+            if (fi.FieldType == typeof(String))
             {
                 fi.SetValue(command, value);
                 return true;
             }
-            else if (fi.FieldType == typeof(int))
+            else if (fi.FieldType == typeof(Int32))
             {
                 ExpressionParser ep = new ExpressionParser();
                 int evaluationResult = 0;
@@ -415,12 +417,12 @@ namespace GoAhead.Commands
             }
             else if (fi.FieldType == typeof(bool))
             {
-                fi.SetValue(command, bool.Parse(value));
+                fi.SetValue(command, Boolean.Parse(value));
                 return true;
             }
-            else if (fi.FieldType == typeof(List<string>))
+            else if (fi.FieldType == typeof(List<String>))
             {
-                List<string> list = new List<string>();
+                List<String> list = new List<String>();
                 list.AddRange(value.Split(','));
                 fi.SetValue(command, list);
                 return true;
@@ -428,9 +430,9 @@ namespace GoAhead.Commands
             else if (fi.FieldType == typeof(List<int>))
             {
                 List<int> list = new List<int>();
-                foreach (string intAsString in value.Split(','))
+                foreach (String intAsString in value.Split(','))
                 {
-                    list.Add(int.Parse(intAsString));
+                    list.Add(Int32.Parse(intAsString));
                 }
                 fi.SetValue(command, list);
                 return true;
@@ -452,13 +454,13 @@ namespace GoAhead.Commands
 
         }
 
-        private void ResolveEmbeddedArithmeticExpressions(ref string argumentValue)
+        private void ResolveEmbeddedArithmeticExpressions(ref String argumentValue)
         {
-            MatchCollection matches = m_embeddedArithmeticExpression.Matches(argumentValue);
+            MatchCollection matches = CommandStringParser.m_embeddedArithmeticExpression.Matches(argumentValue);
             
             foreach (Match match in matches)
             {
-                string arithmeticExpression = match.Groups[0].Value;
+                String arithmeticExpression = match.Groups[0].Value;
                 // remove brackets
                 arithmeticExpression = arithmeticExpression.Replace("[", "");
                 arithmeticExpression = arithmeticExpression.Replace("]", "");
@@ -473,14 +475,14 @@ namespace GoAhead.Commands
             }
         }
     
-        private void ResolveWindowsStypeVariables(ref string commandString)
+        private void ResolveWindowsStypeVariables(ref String commandString)
         {
-            MatchCollection matches = m_envVarWindowsStyleRegexp.Matches(commandString);
+            MatchCollection matches = CommandStringParser.m_envVarWindowsStyleRegexp.Matches(commandString);
             foreach (Match match in matches)
             {
-                string varName = match.Groups[0].Value;
+                String varName = match.Groups[0].Value;
                 // remove %%
-                string varValue = Environment.GetEnvironmentVariable(Regex.Replace(varName, "%", ""));
+                String varValue = System.Environment.GetEnvironmentVariable(Regex.Replace(varName, "%", ""));
                 if (varValue != null)
                 {
                     commandString = Regex.Replace(commandString, varName, varValue);
@@ -489,17 +491,17 @@ namespace GoAhead.Commands
             }
         }
 
-        private string GetSimiliarCommandNames(string mispelledName)
+        private String GetSimiliarCommandNames(String mispelledName)
         {
-            string candidateNames = "";
+            String candidateNames = "";
             int candidatesCount = 0;
-            foreach (Type type in GetAllCommandTypes())
+            foreach (Type type in CommandStringParser.GetAllCommandTypes())
             {                
-                foreach (string subString in mispelledName.Substrings(5))
+                foreach (String subString in mispelledName.Substrings(5))
                 {
                     if (type.Name.Contains(subString))
                     {
-                        candidateNames += (string.IsNullOrEmpty(candidateNames) ? "" : " or ") + type.Name;
+                        candidateNames += (String.IsNullOrEmpty(candidateNames) ? "" : " or ") + type.Name;
                         candidatesCount++;
                         break;
                     };
@@ -514,16 +516,16 @@ namespace GoAhead.Commands
             return candidateNames;
         }
 
-        private string GetSimiliarArgumentNames(Type commandType, string mispelledName)
+        private String GetSimiliarArgumentNames(Type commandType, String mispelledName)
         {
-            string candidateNames = "";
+            String candidateNames = "";
             foreach (FieldInfo candidate in commandType.GetFields().Where(f => f.GetCustomAttributes(true).Count(attr => attr is Parameter) == 1))
             {                
-                foreach (string subString in mispelledName.Substrings(4))
+                foreach (String subString in mispelledName.Substrings(4))
                 {
                     if (candidate.Name.Contains(subString))
                     {
-                        candidateNames += (string.IsNullOrEmpty(candidateNames) ? "" : " or ") + candidate.Name;
+                        candidateNames += (String.IsNullOrEmpty(candidateNames) ? "" : " or ") + candidate.Name;
                         break;
                     };
                 }
@@ -538,16 +540,16 @@ namespace GoAhead.Commands
         /// <param name="cmdTag"></param>
         /// <param name="argumentPart"></param>
         /// <returns></returns>
-        public bool SplitCommand(string command, out string cmdTag, out string argumentPart)
+        public bool SplitCommand(String command, out String cmdTag, out String argumentPart)
         {
             cmdTag = "";
             argumentPart = "";
 
-            string trimmedCommand = Regex.Replace(command, @"^\s+", "");
+            String trimmedCommand = Regex.Replace(command, @"^\s+", "");
             trimmedCommand = Regex.Replace(trimmedCommand, @"\s+$", "");
 
             // split command into arguments
-            string[] cmdAtoms = Regex.Split(trimmedCommand, @"\s");
+            String[] cmdAtoms = Regex.Split(trimmedCommand, @"\s");
 
             // skip empty lines
             if (cmdAtoms.Length == 0)
@@ -576,10 +578,10 @@ namespace GoAhead.Commands
             return true;
         }
 
-        public IEnumerable<NameValuePair> GetNameValuePairs(string argumentPart)
+        public IEnumerable<NameValuePair> GetNameValuePairs(String argumentPart)
         {
             int index = 0;
-            string str = argumentPart;
+            String str = argumentPart;
 
             bool pendingQuote = false;
             bool pendingApostroph = false;
@@ -588,7 +590,7 @@ namespace GoAhead.Commands
             {
                 NameValuePair current = new NameValuePair();
 
-                while (index < str.Length && IsSeparator(str[index]))
+                while (index < str.Length && this.IsSeparator(str[index]))
                 {
                     index++;
                 }
@@ -599,7 +601,7 @@ namespace GoAhead.Commands
                 }
 
                 current.NameFrom = index;
-                while (index < str.Length && !IsSeparator(str[index]) && str[index] != '=')
+                while (index < str.Length && !this.IsSeparator(str[index]) && str[index] != '=')
                 {
                     current.Name += str[index++];
                 }
@@ -607,7 +609,7 @@ namespace GoAhead.Commands
                 current.ValueFrom = index;
 
 
-                while (index < str.Length && ((!IsSeparator(str[index]) && str[index] != ';') || (pendingQuote || pendingApostroph)))
+                while (index < str.Length && ((!this.IsSeparator(str[index]) && str[index] != ';') || (pendingQuote || pendingApostroph)))
                 {
                     if (str[index] == '"')
                     {
@@ -645,7 +647,7 @@ namespace GoAhead.Commands
 
         public CommandStringParserState State
         {
-            get { return m_state; }
+            get { return this.m_state; }
         }
 
         private static Regex m_commentsRegexp = new Regex(@"^\s*#", RegexOptions.Compiled);
@@ -669,8 +671,8 @@ namespace GoAhead.Commands
 
     public class NameValuePair
     {
-        public string Name = "";
-        public string Value = "";
+        public String Name = "";
+        public String Value = "";
         public int NameFrom = 0;
         public int NameTo = 0;
         public int ValueFrom = 0;
@@ -678,11 +680,11 @@ namespace GoAhead.Commands
 
         public void Trim()
         {
-            Trim(ref Name);
-            Trim(ref Value);
+            this.Trim(ref this.Name);
+            this.Trim(ref this.Value);
         }
 
-        private void Trim(ref string str)
+        private void Trim(ref String str)
         {
             if (str.Length == 0)
             {
@@ -714,7 +716,7 @@ namespace GoAhead.Commands
         /// <param name="s"></param>
         /// <param name="minimalLength"></param>
         /// <returns></returns>
-        public static IEnumerable<string> Substrings(this string s, int minimalLength = 1)
+        public static IEnumerable<String> Substrings(this String s, int minimalLength = 1)
         {
             var subStrings =
                         from start in Enumerable.Range(0, s.Length)

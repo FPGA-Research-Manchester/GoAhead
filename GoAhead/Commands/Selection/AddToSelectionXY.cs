@@ -15,22 +15,22 @@ namespace GoAhead.Commands.Selection
 
         public AddToSelectionXY(int x1, int y1, int x2, int y2)
         {
-            UpperLeftX = Math.Min(x1, x2);
-            UpperLeftY = Math.Min(y1, y2);
-            LowerRightX = Math.Max(x1, x2);
-            LowerRightY = Math.Max(y1, y2);
+            this.UpperLeftX = Math.Min(x1, x2);
+            this.UpperLeftY = Math.Min(y1, y2);
+            this.LowerRightX = Math.Max(x1, x2);
+            this.LowerRightY = Math.Max(y1, y2);
         }
 
         protected override void DoCommandAction()
         {
-            Regex filter = new Regex(Filter);
+            Regex filter = new Regex(this.Filter);
 
             // run form min to max
-            int startX = Math.Min(UpperLeftX, LowerRightX);
-            int endX = Math.Max(UpperLeftX, LowerRightX);
+            int startX = Math.Min(this.UpperLeftX, this.LowerRightX);
+            int endX = Math.Max(this.UpperLeftX, this.LowerRightX);
 
-            int startY = Math.Min(UpperLeftY, LowerRightY);
-            int endY = Math.Max(UpperLeftY, LowerRightY);
+            int startY = Math.Min(this.UpperLeftY, this.LowerRightY);
+            int endY = Math.Max(this.UpperLeftY, this.LowerRightY);
             
             for (int x = startX; x <= endX; x++)
             {
@@ -51,18 +51,18 @@ namespace GoAhead.Commands.Selection
                     }
 
                     //deselect or add the selected tile 
-                    if (TileSelectionManager.Instance.IsSelected(x, y))
+                    if (FPGA.TileSelectionManager.Instance.IsSelected(x, y))
                     {
-                        TileSelectionManager.Instance.RemoveFromSelection(key, false);
+                        FPGA.TileSelectionManager.Instance.RemoveFromSelection(key, false);
                     }
                     else
                     {
-                        TileSelectionManager.Instance.AddToSelection(key, false);
+                        FPGA.TileSelectionManager.Instance.AddToSelection(key, false);
                     }
                 }
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
 
         public override void Undo()
@@ -70,16 +70,16 @@ namespace GoAhead.Commands.Selection
             throw new NotImplementedException();
         }
 
-        protected override string GetPrimitiveValue(System.Reflection.FieldInfo fi)
+        protected override String GetPrimitiveValue(System.Reflection.FieldInfo fi)
         {
             // make coordinates relative
             Tile anchor = Objects.SelectionManager.Instance.Anchor;
-            string xName = Objects.SelectionManager.Instance.XAnchorName;
-            string yName = Objects.SelectionManager.Instance.YAnchorName;
+            String xName = Objects.SelectionManager.Instance.XAnchorName;
+            String yName = Objects.SelectionManager.Instance.YAnchorName;
             if (anchor != null)
             {
-                int x = int.Parse(fi.GetValue(this).ToString());
-                int y = int.Parse(fi.GetValue(this).ToString());
+                int x = Int32.Parse(fi.GetValue(this).ToString());
+                int y = Int32.Parse(fi.GetValue(this).ToString());
                 if (fi.Name.EndsWith("X"))
                 {
                     if (x > anchor.TileKey.X)
@@ -111,7 +111,7 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "Only selected those tiles in the given range that match this filter")]
-        public string Filter = ".*";
+        public String Filter = ".*";
 
         [Parameter(Comment = "The X coordinate of the upper left tile")]
         public int UpperLeftX = 0;

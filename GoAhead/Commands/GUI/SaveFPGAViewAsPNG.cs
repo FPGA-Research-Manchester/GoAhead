@@ -15,7 +15,7 @@ namespace GoAhead.Commands.GUI
                 throw new ArgumentException("Can not save the FPGA view as no GUI is open");
             }
 
-            ShowGUI.FPGAView.SaveFPGAViewAsPNG(FileName);
+            ShowGUI.FPGAView.SaveFPGAViewAsPNG(this.FileName);
         }
 
         public override void Undo()

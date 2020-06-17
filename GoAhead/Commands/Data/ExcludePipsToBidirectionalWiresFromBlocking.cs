@@ -21,7 +21,7 @@ namespace GoAhead.Commands.Data
 
             foreach (Tile t in FPGA.FPGA.Instance.GetAllTiles())
             {
-                ProgressInfo.Progress = ProgressStart + ((int)((double)tileCount++ / (double)FPGA.FPGA.Instance.TileCount * ProgressShare));
+                this.ProgressInfo.Progress = this.ProgressStart + ((int)((double)tileCount++ / (double)FPGA.FPGA.Instance.TileCount * this.ProgressShare));
 
                 if (t.WireList == null)
                 {
@@ -56,7 +56,7 @@ namespace GoAhead.Commands.Data
 
             foreach (Tile t in tilesWithBidirectionalWires)
             {                
-                OutputManager.WriteOutput("Excluded ports from blocking on " + t.Location);
+                this.OutputManager.WriteOutput("Excluded ports from blocking on " + t.Location);
             }
         }
 

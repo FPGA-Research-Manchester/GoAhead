@@ -10,15 +10,15 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            if (!File.Exists(FileName))
+            if (!File.Exists(this.FileName))
             {
-                throw new ArgumentException("File " + FileName + " does not exist");
+                throw new ArgumentException("File " + this.FileName + " does not exist");
             }
 
             CommandExecuter.Instance.DoNotExecuteCommandAndUpdateCommandTraceOnly = true;
 
             // read script and execute commands
-            FileInfo fi = new FileInfo(FileName);
+            FileInfo fi = new FileInfo(this.FileName);
             CommandExecuter.Instance.Execute(fi);
 
             CommandExecuter.Instance.DoNotExecuteCommandAndUpdateCommandTraceOnly = false;
@@ -30,6 +30,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The name of the script to print the command trace for")]
-        public string FileName = "script.goa";
+        public String FileName = "script.goa";
     }
 }

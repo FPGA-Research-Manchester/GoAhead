@@ -13,32 +13,32 @@ namespace GoAhead.Commands.GUI
     {
         protected override void DoCommandAction()
         {
-            if (m_toolStrip == null)
+            if (this.m_toolStrip == null)
             {
                 // prevent tracing this command twice
-                UpdateCommandTrace = false;
+                this.UpdateCommandTrace = false;
                 // postpone execution until GUI comes up
                 ShowGUI.GUICommands.Add(this);
             }
             else
             {
-                m_toolStrip.Visible = true;
-                m_toolStrip.SuspendLayout();
+                this.m_toolStrip.Visible = true;
+                this.m_toolStrip.SuspendLayout();
 
-                bool useIcon = System.IO.File.Exists(Image);
+                bool useIcon = System.IO.File.Exists(this.Image);
 
                 ToolStripButton userBtn = new ToolStripButton();
                 userBtn.Visible = true;
-                userBtn.Name = useIcon ? "" : Name;
-                userBtn.ToolTipText = string.IsNullOrEmpty(ToolTip) ? Name + ": " + Command : ToolTip;
+                userBtn.Name = useIcon ? "" : this.Name;
+                userBtn.ToolTipText = String.IsNullOrEmpty(this.ToolTip) ? this.Name + ": " + this.Command : this.ToolTip;
                 userBtn.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
-                userBtn.Text = useIcon ? "" : Name;
-                userBtn.Image = useIcon ? System.Drawing.Image.FromFile(Image) : null;
-                userBtn.Click += new System.EventHandler(UserDefinedAction);
+                userBtn.Text = useIcon ? "" : this.Name;
+                userBtn.Image = useIcon ? Bitmap.FromFile(this.Image) : null;
+                userBtn.Click += new System.EventHandler(this.UserDefinedAction);
 
-                m_toolStrip.Items.Add(userBtn);
-                m_toolStrip.Items.Add(new ToolStripSeparator());
-                m_toolStrip.ResumeLayout();
+                this.m_toolStrip.Items.Add(userBtn);
+                this.m_toolStrip.Items.Add(new ToolStripSeparator());
+                this.m_toolStrip.ResumeLayout();
             }
         }
 
@@ -58,6 +58,6 @@ namespace GoAhead.Commands.GUI
         private ToolStrip m_toolStrip = null;
         
         [Parameter(Comment = "The optional icon for the user button")]
-        public string Image = "icon.bmp";
+        public String Image = "icon.bmp";
     }
 }

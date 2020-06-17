@@ -14,21 +14,21 @@ namespace GoAhead.Commands.UCF
         {
             int tileCount = 0;
 
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                ProgressInfo.Progress = ProgressStart + (int)((double)tileCount++ / (double)TileSelectionManager.Instance.NumberOfSelectedTiles * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)tileCount++ / (double)FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles * this.ProgressShare);
 
                 PrintLocationConstraint cmd = new PrintLocationConstraint();
-                cmd.InstanceName = InstanceName;
+                cmd.InstanceName = this.InstanceName;
                 cmd.Location = t.Location;
-                cmd.SliceNumber = SliceNumber;
+                cmd.SliceNumber = this.SliceNumber;
 
                 CommandExecuter.Instance.Execute(cmd);
 
                 // copy output
                 if (cmd.OutputManager.HasUCFOutput)
                 {
-                    OutputManager.WriteWrapperOutput(cmd.OutputManager.GetUCFOuput());
+                    this.OutputManager.WriteWrapperOutput(cmd.OutputManager.GetUCFOuput());
                 }
             }
         }
@@ -40,6 +40,6 @@ namespace GoAhead.Commands.UCF
         [Parameter(Comment = "The index of the slice the blocker will use")]
         public int SliceNumber;
         [Parameter(Comment = "The instance name")]
-        public string InstanceName;
+        public String InstanceName;
     }
 }

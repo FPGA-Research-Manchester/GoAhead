@@ -11,181 +11,181 @@ namespace GoAhead.Commands
     public class CommandOutputManager
     {
         #region Write
-        public void WriteOutput(string msg)
+        public void WriteOutput(String msg)
         {
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_output.Append(msg);
-                m_outputEndsWithNewLine = true;
+                this.m_output.Append(msg);
+                this.m_outputEndsWithNewLine = true;
             }
             else
             {
-                m_output.AppendLine(msg);
-                m_outputEndsWithNewLine = false;
+                this.m_output.AppendLine(msg);
+                this.m_outputEndsWithNewLine = false;
             }
         }
-        public void WriteWarning(string msg)
+        public void WriteWarning(String msg)
         {
-            string msgWithDash = Regex.IsMatch(msg, @"\s*#") ? msg : "# " + msg;
+            String msgWithDash = Regex.IsMatch(msg, @"\s*#") ? msg : "# " + msg;
 
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_warnings.Append(msgWithDash);
-                m_warningEndsWithNewLine = true;
+                this.m_warnings.Append(msgWithDash);
+                this.m_warningEndsWithNewLine = true;
             }
             else
             {
-                m_warnings.AppendLine(msgWithDash);
-                m_warningEndsWithNewLine = false;
+                this.m_warnings.AppendLine(msgWithDash);
+                this.m_warningEndsWithNewLine = false;
             }
         }
-        public void WriteUCFOutput(string msg)
+        public void WriteUCFOutput(String msg)
         {
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_UCFTrace.Append(msg);
-                m_UCFTraceEndsWithNewLine = true;
+                this.m_UCFTrace.Append(msg);
+                this.m_UCFTraceEndsWithNewLine = true;
             }
             else
             {
-                m_UCFTrace.AppendLine(msg);
-                m_UCFTraceEndsWithNewLine = false;
+                this.m_UCFTrace.AppendLine(msg);
+                this.m_UCFTraceEndsWithNewLine = false;
             }
         }
-        public void WriteTCLOutput(string msg)
+        public void WriteTCLOutput(String msg)
         {
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_TCLTrace.Append(msg);
-                m_TCLTraceEndsWithNewLine = true;
+                this.m_TCLTrace.Append(msg);
+                this.m_TCLTraceEndsWithNewLine = true;
             }
             else
             {
-                m_TCLTrace.AppendLine(msg);
-                m_TCLTraceEndsWithNewLine = false;
+                this.m_TCLTrace.AppendLine(msg);
+                this.m_TCLTraceEndsWithNewLine = false;
             }
         }
-        public void WriteVHDLOutput(string msg)
+        public void WriteVHDLOutput(String msg)
         {
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_VHDLTrace.Append(msg);
-                m_VHDLTraceEndsWithNewLine = true;
+                this.m_VHDLTrace.Append(msg);
+                this.m_VHDLTraceEndsWithNewLine = true;
             }
             else
             {
-                m_VHDLTrace.AppendLine(msg);
-                m_VHDLTraceEndsWithNewLine = false;
+                this.m_VHDLTrace.AppendLine(msg);
+                this.m_VHDLTraceEndsWithNewLine = false;
             }
         }
-        public void WriteWrapperOutput(string msg)
+        public void WriteWrapperOutput(String msg)
         {
-            if (msg.EndsWith(Environment.NewLine))
+            if (msg.EndsWith(System.Environment.NewLine))
             {
-                m_wrapperTrace.Append(msg);
-                m_wrapperTraceEndsWithNewLine = true;
+                this.m_wrapperTrace.Append(msg);
+                this.m_wrapperTraceEndsWithNewLine = true;
             }
             else
             {
-                m_wrapperTrace.AppendLine(msg);
-                m_wrapperTraceEndsWithNewLine = false;
+                this.m_wrapperTrace.AppendLine(msg);
+                this.m_wrapperTraceEndsWithNewLine = false;
             }
         }
         #endregion Write
 
         #region Get
-        public string GetOutput()
+        public String GetOutput()
         {
-            return m_output.ToString();
+            return this.m_output.ToString();
         }
-        public string GetWarnings()
+        public String GetWarnings()
         {
-            return m_warnings.ToString();
+            return this.m_warnings.ToString();
         }
-        public string GetVHDLOuput()
+        public String GetVHDLOuput()
         {
-            return m_VHDLTrace.ToString();
+            return this.m_VHDLTrace.ToString();
         }
-        public string GetUCFOuput()
+        public String GetUCFOuput()
         {
-            return m_UCFTrace.ToString();
+            return this.m_UCFTrace.ToString();
         }
-        public string GetTCLOuput()
+        public String GetTCLOuput()
         {
-            return m_TCLTrace.ToString();
+            return this.m_TCLTrace.ToString();
         }
-        public string GetWrapperOuput()
+        public String GetWrapperOuput()
         {
-            return m_wrapperTrace.ToString();
+            return this.m_wrapperTrace.ToString();
         }
 
         public bool OutputEndsWithNewLine
         {
-            get { return m_outputEndsWithNewLine; }
+            get { return this.m_outputEndsWithNewLine; }
         }
         public bool WarningsEndsWithNewLine
         {
-            get { return m_warningEndsWithNewLine; }
+            get { return this.m_warningEndsWithNewLine; }
         }
         public bool UCFTraceEndsWithNewLine
         {
-            get { return m_UCFTraceEndsWithNewLine; }
+            get { return this.m_UCFTraceEndsWithNewLine; }
         }
         public bool TCLTraceEndsWithNewLine
         {
-            get { return m_TCLTraceEndsWithNewLine; }
+            get { return this.m_TCLTraceEndsWithNewLine; }
         }
         public bool VHDLTraceEndsWithNewLine
         {
-            get { return m_VHDLTraceEndsWithNewLine; }
+            get { return this.m_VHDLTraceEndsWithNewLine; }
         }
         public bool WrapperTraceEndsWithNewLine
         {
-            get { return m_wrapperTraceEndsWithNewLine; }
+            get { return this.m_wrapperTraceEndsWithNewLine; }
         }
         #endregion Write
 
         #region Has
         public bool HasOutput
         {
-            get { return m_output.Length > 0; }
+            get { return this.m_output.Length > 0; }
         }
         public bool HasWarnings
         {
-            get { return m_warnings.Length > 0; }
+            get { return this.m_warnings.Length > 0; }
         }
         public bool HasVHDLOutput
         {
-            get { return m_VHDLTrace.Length > 0; }
+            get { return this.m_VHDLTrace.Length > 0; }
         }
         public bool HasUCFOutput
         {
-            get { return m_UCFTrace.Length > 0; }
+            get { return this.m_UCFTrace.Length > 0; }
         }
         public bool HasTCLOutput
         {
-            get { return m_TCLTrace.Length > 0; }
+            get { return this.m_TCLTrace.Length > 0; }
         }
         public bool HasWrapperOutput
         {
-            get { return m_wrapperTrace.Length > 0; }
+            get { return this.m_wrapperTrace.Length > 0; }
         }
         #endregion Write
 
         public void Start()
         {
-            m_output.Clear();
-            m_warnings.Clear();
-            m_UCFTrace.Clear();
-            m_TCLTrace.Clear();
-            m_VHDLTrace.Clear();
-            m_wrapperTrace.Clear();
-            m_outputEndsWithNewLine = false;
-            m_warningEndsWithNewLine = false;
-            m_UCFTraceEndsWithNewLine = false;
-            m_TCLTraceEndsWithNewLine = false;
-            m_VHDLTraceEndsWithNewLine = false;
-            m_wrapperTraceEndsWithNewLine = false;
+            this.m_output.Clear();
+            this.m_warnings.Clear();
+            this.m_UCFTrace.Clear();
+            this.m_TCLTrace.Clear();
+            this.m_VHDLTrace.Clear();
+            this.m_wrapperTrace.Clear();
+            this.m_outputEndsWithNewLine = false;
+            this.m_warningEndsWithNewLine = false;
+            this.m_UCFTraceEndsWithNewLine = false;
+            this.m_TCLTraceEndsWithNewLine = false;
+            this.m_VHDLTraceEndsWithNewLine = false;
+            this.m_wrapperTraceEndsWithNewLine = false;
         }
 
         public void Stop()

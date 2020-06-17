@@ -13,30 +13,30 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
             int instIdentifierWidth = (int) Math.Ceiling(Math.Log((double)nlc.InstanceCount, (double)2.0d));
             int netIdentifierWidth = (int)Math.Ceiling(Math.Log((double)nlc.NetCount, (double)2.0d));
 
-            Dictionary<string, string> instanceReplacements = SimplifyInstanceIdentifier(nlc);
+            Dictionary<String, String> instanceReplacements = this.SimplifyInstanceIdentifier(nlc);
             
             // restart with nets
-            m_identifier = 0;
-            SimplifyNetIdentifier(nlc, instanceReplacements);
+            this.m_identifier = 0;
+            this.SimplifyNetIdentifier(nlc, instanceReplacements);
         }
 
-        private void SimplifyNetIdentifier(NetlistContainer nlc, Dictionary<string, string> instanceReplacements)
+        private void SimplifyNetIdentifier(NetlistContainer nlc, Dictionary<String, String> instanceReplacements)
         {
-            Dictionary<string, string> netReplacements = new Dictionary<string, string>();
+            Dictionary<String, String> netReplacements = new Dictionary<String, String>();
             int done = 0;
             foreach (XDLNet net in nlc.Nets)
             {
-                ProgressInfo.Progress = 80 + (int)((double)done++ / (double)nlc.NetCount * 10);                
+                this.ProgressInfo.Progress = 80 + (int)((double)done++ / (double)nlc.NetCount * 10);                
 
-                if (!string.IsNullOrEmpty(net.Config))
+                if (!String.IsNullOrEmpty(net.Config))
                 {
-                    string newConfig = net.Config;
-                    foreach (string identifier in instanceReplacements.Keys)
+                    String newConfig = net.Config;
+                    foreach (String identifier in instanceReplacements.Keys)
                     {
                         if (net.Config.Contains(identifier))
                         {
@@ -47,7 +47,7 @@ namespace GoAhead.Commands.XDLManipulation
                     net.Config = newConfig;
                 }
 
-                string newIdentifier = "i" + GetNextIdentfier();
+                String newIdentifier = "i" + this.GetNextIdentfier();
 
                 netReplacements.Add(net.Name, newIdentifier);
                 // update header (if any) ...
@@ -65,9 +65,9 @@ namespace GoAhead.Commands.XDLManipulation
             }
         }
 
-        private Dictionary<string, string> SimplifyInstanceIdentifier(NetlistContainer nlc)
+        private Dictionary<String, String> SimplifyInstanceIdentifier(NetlistContainer nlc)
         {
-            Dictionary<string, string> instanceReplacements = new Dictionary<string, string>();
+            Dictionary<String, String> instanceReplacements = new Dictionary<String, String>();
 
             Regex belprop = new Regex("_BEL_PROP::(A|B|C|D)(5|6)LUT$");
             Regex whiteSpace = new Regex(@"\s");
@@ -75,18 +75,18 @@ namespace GoAhead.Commands.XDLManipulation
             int done = 0;
             foreach (XDLInstance inst in nlc.Instances)
             {
-                ProgressInfo.Progress = (int) ((double)done++ / (double)nlc.InstanceCount * 90);
+                this.ProgressInfo.Progress = (int) ((double)done++ / (double)nlc.InstanceCount * 90);
 
-                string newIdentifier = "n" + GetNextIdentfier();
+                String newIdentifier = "n" + this.GetNextIdentfier();
                 instanceReplacements.Add(inst.Name, newIdentifier);
-                string code = inst.ToString();
+                String code = inst.ToString();
 
                 if (IdentifierManager.Instance.IsMatch(inst.Location, IdentifierManager.RegexTypes.CLB))
                 {
-                    string fixedCode = "";
+                    String fixedCode = "";
 
                     bool insideIdentifier = false;
-                    string buffer = "";
+                    String buffer = "";
                     for (int i = 0; i < code.Length; i++)
                     {
                         // discard any _INST_PROP code
@@ -148,7 +148,7 @@ namespace GoAhead.Commands.XDLManipulation
                 else
                 {
                     inst.Clear();
-                    string fixedCode = code.Replace("\"" + inst.Name + "\"", "\"" + newIdentifier + "\"");
+                    String fixedCode = code.Replace("\"" + inst.Name + "\"", "\"" + newIdentifier + "\"");
                     inst.AddCode(fixedCode);
                 }
 
@@ -157,10 +157,10 @@ namespace GoAhead.Commands.XDLManipulation
             return instanceReplacements;
         }
 
-        private string GetNextIdentfier()
+        private String GetNextIdentfier()
         {
-            string result = m_identifier.ToString("X");
-            m_identifier++;
+            String result = this.m_identifier.ToString("X");
+            this.m_identifier++;
             return result;
         }
 

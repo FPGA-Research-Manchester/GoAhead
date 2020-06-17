@@ -13,18 +13,18 @@ namespace GoAhead.Commands
         {            
             ExpressionParser ep = new ExpressionParser();
             int evaluationResult = 0;
-            bool valid = ep.Evaluate(Condition, out evaluationResult);
+            bool valid = ep.Evaluate(this.Condition, out evaluationResult);
             
             if (!valid)
             {
-                throw new ArgumentException("Condition" + Condition + " is not a valid arithmetic expression");
+                throw new ArgumentException("Condition" + this.Condition + " is not a valid arithmetic expression");
             }
 
-            CommandStringParser parser = new CommandStringParser(evaluationResult != 0 ? Then : Else);
-            foreach (string cmdString in parser.Parse())
+            CommandStringParser parser = new CommandStringParser(evaluationResult != 0 ? this.Then : this.Else);
+            foreach (String cmdString in parser.Parse())
             {
                 Command cmd = null;
-                string errorDescr = "";
+                String errorDescr = "";
                 parser.ParseCommand(cmdString, true, out cmd, out errorDescr);
                 // only the alias it self shall appear in the command trace
                 cmd.UpdateCommandTrace = false;
@@ -38,13 +38,13 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The condition is an arithmetic expression that is considered as false if it evaluates to 0 and considered as true otherwise")]
-        public string Condition = "a<10000";
+        public String Condition = "a<10000";
 
         [Parameter(Comment = "Execute these commands if condition evaluates to true")]
-        public string Then = "ClearSelection;InvertSelection;";
+        public String Then = "ClearSelection;InvertSelection;";
 
         [Parameter(Comment = "Execute these commands if condition evaluates to false")]
-        public string Else = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";        
+        public String Else = "ClearSelection;AddToSelectionXY UpperLeftX=138 UpperLeftY=85 LowerRightX=145 LowerRightY=125;ExpandSelection;";        
 
     }
 }

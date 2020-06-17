@@ -15,7 +15,7 @@ namespace GoAhead.Commands.Debug
             foreach(Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(
                 tile => Objects.IdentifierManager.Instance.IsMatch(tile.Location, Objects.IdentifierManager.RegexTypes.Interconnect)))
             {
-                Dictionary<string, int> connectedWire = new Dictionary<string, int>();
+                Dictionary<String, int> connectedWire = new Dictionary<String,int>();
                 foreach (Wire wire in tile.WireList.Where(w => w.LocalPipIsDriver))
                 {
                     if (!connectedWire.ContainsKey(wire.LocalPip))
@@ -33,7 +33,7 @@ namespace GoAhead.Commands.Debug
             }
 
             double result = sum / count;
-            OutputManager.WriteOutput(result.ToString());
+            this.OutputManager.WriteOutput(result.ToString());
         }
 
         public override void Undo()

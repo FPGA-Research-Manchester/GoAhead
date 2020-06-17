@@ -16,23 +16,23 @@ namespace GoAhead.Commands.InterfaceManager
 
         public ModifiySignal(Signal s)
         {
-            NewSignalName = s.SignalName;
-            NewSignalMode = s.SignalMode;
-            NewSignaDirection = s.SignalDirection.ToString();
-            PartialRegion = s.PartialRegion;
-            Columns = s.Column;
+            this.NewSignalName = s.SignalName;
+            this.NewSignalMode = s.SignalMode;
+            this.NewSignaDirection = s.SignalDirection.ToString();
+            this.PartialRegion = s.PartialRegion;
+            this.Columns = s.Column;
         }
 
         protected override void DoCommandAction()
         {
-            Signal signalToMidify = Objects.InterfaceManager.Instance.GetSignal(CurrentSignalName);
-            FPGATypes.InterfaceDirection dir = (FPGATypes.InterfaceDirection)Enum.Parse(typeof(FPGATypes.InterfaceDirection), NewSignaDirection);
+            Signal signalToMidify = Objects.InterfaceManager.Instance.GetSignal(this.CurrentSignalName);
+            FPGATypes.InterfaceDirection dir = (FPGATypes.InterfaceDirection)Enum.Parse(typeof(FPGATypes.InterfaceDirection), this.NewSignaDirection);
             
-            signalToMidify.SignalName = NewSignalName;
-            signalToMidify.SignalMode = NewSignalMode;
+            signalToMidify.SignalName = this.NewSignalName;
+            signalToMidify.SignalMode = this.NewSignalMode;
             signalToMidify.SignalDirection = dir;
-            signalToMidify.PartialRegion = PartialRegion;
-            signalToMidify.Column = Columns;
+            signalToMidify.PartialRegion = this.PartialRegion;
+            signalToMidify.Column = this.Columns;
         }
 
         public override void Undo()
@@ -41,22 +41,22 @@ namespace GoAhead.Commands.InterfaceManager
         }
 
         [Parameter(Comment = "The current of signal to modify")]
-        public string CurrentSignalName = "s";
+        public String CurrentSignalName = "s";
 
         [Parameter(Comment = "The new name of the signal")]
-        public string NewSignalName = "s";
+        public String NewSignalName = "s";
 
         [Parameter(Comment = "The new signal direction (in, out, stream)")]
-        public string NewSignalMode = "stram";
+        public String NewSignalMode = "stram";
 
         [Parameter(Comment = "The new signal widht in bits")]
         public int NewSignalWidth = 32;
 
         [Parameter(Comment = "The new signal direction (e.g. East)")]
-        public string NewSignaDirection = "East";
+        public String NewSignaDirection = "East";
 
         [Parameter(Comment = "The new partial region")]
-        public string PartialRegion = "";
+        public String PartialRegion = "";
 
         [Parameter(Comment = "The new column value")]
         public int Columns = 0;

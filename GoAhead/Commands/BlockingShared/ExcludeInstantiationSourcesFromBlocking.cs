@@ -11,14 +11,14 @@ namespace GoAhead.Commands.BlockingShared
     {
         protected override void DoCommandAction()
         {
-            LibraryElement libElement = Objects.Library.Instance.GetElement(LibraryElementName);
+            LibraryElement libElement = Objects.Library.Instance.GetElement(this.LibraryElementName);
 
-            if (!FPGA.FPGA.Instance.Contains(AnchorLocation))
+            if (!FPGA.FPGA.Instance.Contains(this.AnchorLocation))
             {
-                throw new ArgumentException("FPGA does not contain location " + AnchorLocation);
+                throw new ArgumentException("FPGA does not contain location " + this.AnchorLocation);
             }
 
-            Tile anchor = FPGA.FPGA.Instance.GetTile(AnchorLocation);
+            Tile anchor = FPGA.FPGA.Instance.GetTile(this.AnchorLocation);
             foreach (Tuple<Tile, List<Port>> t in libElement.GetPortsToBlock(anchor))
             {
                 t.Item2.ForEach(p => t.Item1.BlockPort(p, Tile.BlockReason.OccupiedByMacro));
@@ -36,7 +36,7 @@ namespace GoAhead.Commands.BlockingShared
                 switch (FPGA.FPGA.Instance.BackendType)
 	            {
 		            case FPGATypes.BackendType.ISE:
-                        if (target.Usage != FPGATypes.SliceUsage.Free && CheckResources)
+                        if (target.Usage != FPGATypes.SliceUsage.Free && this.CheckResources)
                         {
                             throw new ArgumentException("Can not place library element at " + target + " as this slice is already used");
                             // TODO warum geht das beim BRAM nicht
@@ -45,7 +45,7 @@ namespace GoAhead.Commands.BlockingShared
                         break;
                     case FPGATypes.BackendType.Vivado:
                         // in Vivado we set usage at the bel level, however, the slice shoule be free
-                        if (target.Usage != FPGATypes.SliceUsage.Free && CheckResources)
+                        if (target.Usage != FPGATypes.SliceUsage.Free && this.CheckResources)
                         {
                             throw new ArgumentException("Can not place library element at " + target + " as this slice is already used");
                         }
@@ -81,10 +81,10 @@ namespace GoAhead.Commands.BlockingShared
         }
 
         [Parameter(Comment = "The name of the library element to use")]
-        public string LibraryElementName = "libElement";
+        public String LibraryElementName = "libElement";
 
         [Parameter(Comment = "The location string of the tile in which the macro anchor resided, e.g CLExL_X4Y43")]
-        public string AnchorLocation = "CLEXL_X4Y43";
+        public String AnchorLocation = "CLEXL_X4Y43";
 
         [Parameter(Comment = "Whether or not to check that the whole slice is free (rather ISE only")]
         public bool CheckResources = true;

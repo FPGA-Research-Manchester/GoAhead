@@ -11,11 +11,11 @@ namespace GoAhead.Commands.Data
     {
         protected override void DoCommandAction()
         {
-            if (!System.IO.Directory.Exists(Directory))
+            if (!System.IO.Directory.Exists(this.Directory))
             {
-                throw new ArgumentException("Directory " + Directory + " does not exist");
+                throw new ArgumentException("Directory " + this.Directory + " does not exist");
             }
-            string[] files = System.IO.Directory.GetFiles(Directory).Where(s =>
+            string[] files = System.IO.Directory.GetFiles(this.Directory).Where(s =>
                 s.EndsWith("xdl", StringComparison.OrdinalIgnoreCase) ||
                 s.EndsWith("viv_rpt", StringComparison.OrdinalIgnoreCase)).ToArray();
 
@@ -25,7 +25,7 @@ namespace GoAhead.Commands.Data
                 string binFPGAFile = Path.ChangeExtension(file, "binFPGA");
                 if (File.Exists(binFPGAFile))
                 {
-                    OutputManager.WriteOutput("File " + binFPGAFile + " already exists, skipping " + file);
+                    this.OutputManager.WriteOutput("File " + binFPGAFile + " already exists, skipping " + file);
                     continue;
                 }
 
@@ -33,18 +33,18 @@ namespace GoAhead.Commands.Data
                 {
                     ReadXDL readCmd = new ReadXDL();
                     readCmd.FileName = file;
-                    readCmd.PrintProgress = PrintProgress;
-                    readCmd.Profile = Profile;
-                    readCmd.ExcludePipsToBidirectionalWiresFromBlocking = ExcludePipsToBidirectionalWiresFromBlocking;
+                    readCmd.PrintProgress = this.PrintProgress;
+                    readCmd.Profile = this.Profile;
+                    readCmd.ExcludePipsToBidirectionalWiresFromBlocking = this.ExcludePipsToBidirectionalWiresFromBlocking;
                     CommandExecuter.Instance.Execute(readCmd);
                 }
                 else if (file.EndsWith("viv_rpt", StringComparison.OrdinalIgnoreCase))
                 {
                     ReadVivadoFPGA readCmd = new ReadVivadoFPGA();
                     readCmd.FileName = file;
-                    readCmd.PrintProgress = PrintProgress;
-                    readCmd.Profile = Profile;
-                    readCmd.ExcludePipsToBidirectionalWiresFromBlocking = ExcludePipsToBidirectionalWiresFromBlocking;
+                    readCmd.PrintProgress = this.PrintProgress;
+                    readCmd.Profile = this.Profile;
+                    readCmd.ExcludePipsToBidirectionalWiresFromBlocking = this.ExcludePipsToBidirectionalWiresFromBlocking;
                     CommandExecuter.Instance.Execute(readCmd);
                 }
                 else
@@ -55,7 +55,7 @@ namespace GoAhead.Commands.Data
                 saveCmd.FileName = binFPGAFile;
                 CommandExecuter.Instance.Execute(saveCmd);
 
-                ProgressInfo.Progress = (int)((double)fileCount++ / (double)files.Length);
+                this.ProgressInfo.Progress = (int)((double)fileCount++ / (double)files.Length);
             }
         }
 
@@ -68,6 +68,6 @@ namespace GoAhead.Commands.Data
         public bool ExcludePipsToBidirectionalWiresFromBlocking = true;
 
         [Parameter(Comment = "The directory to look for *.xdl or *.viv_rpt and files. Resulting binFPGAs will also be stored here")]
-        public string Directory = "";
+        public String Directory = "";
     }
 }

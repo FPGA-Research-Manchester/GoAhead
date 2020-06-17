@@ -10,7 +10,7 @@ namespace GoAhead.Commands.Identifier
     {
         protected override void DoCommandAction()
         {
-            Objects.ColumnTypeNameManager.Instance.AddTypeNameByResource(ColumnTypeName, Resources);
+            Objects.ColumnTypeNameManager.Instance.AddTypeNameByResource(this.ColumnTypeName, this.Resources);
         }
 
         public override void Undo()
@@ -19,9 +19,9 @@ namespace GoAhead.Commands.Identifier
         }
 
         [Parameter(Comment = "The name of colum type")]
-        public string ColumnTypeName = "L";
+        public String ColumnTypeName = "L";
 
         [Parameter(Comment = "The resource string that we define a name for")]
-        public string Resources = "SLICEL,SLICEL";
+        public String Resources = "SLICEL,SLICEL";
     }
 }

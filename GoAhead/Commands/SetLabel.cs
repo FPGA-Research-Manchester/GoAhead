@@ -19,6 +19,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The name of the label")]
-        public string LabelName = "label_1";
+        public String LabelName = "label_1";
     }
 }

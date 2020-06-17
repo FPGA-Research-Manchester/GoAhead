@@ -9,7 +9,7 @@ namespace GoAhead.Commands.Selection
     {
         protected override void DoCommandAction()
         {
-            TileSelectionManager.Instance.AddCurrentSelectionToUserSelection(UserSelectionType);
+            FPGA.TileSelectionManager.Instance.AddCurrentSelectionToUserSelection(this.UserSelectionType);
         }
 
         public override void Undo()
@@ -18,6 +18,6 @@ namespace GoAhead.Commands.Selection
         }
 
         [Parameter(Comment = "The name of the user selection type")]
-        public string UserSelectionType = "PartialArea";
+        public String UserSelectionType = "PartialArea";
     }
 }

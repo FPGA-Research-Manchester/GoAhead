@@ -13,7 +13,7 @@ namespace GoAhead.Commands.Debug
         {
             foreach (LibraryElement el in Objects.Library.Instance.GetAllElements())
             {
-                OutputManager.WriteOutput(el.ToString());
+                this.OutputManager.WriteOutput(el.ToString());
             }
         }
 

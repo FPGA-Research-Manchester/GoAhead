@@ -9,9 +9,9 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            string[] files = Directory.GetFiles(BitstreamRepository);
-            List<string> bitstreams = new List<string>();
-            foreach (string s in files)
+            String[] files = Directory.GetFiles(this.BitstreamRepository);
+            List<String> bitstreams = new List<String>();
+            foreach (String s in files)
             {
                 if (s.EndsWith("bin"))
                 {
@@ -24,7 +24,7 @@ namespace GoAhead.Commands
                 throw new ArgumentException("Found no bitstreams");
             }
 
-            string referenceBitstream = bitstreams[0];
+            String referenceBitstream = bitstreams[0];
             // pick reference bitstream
             byte[] referenceData = File.ReadAllBytes(referenceBitstream);
 
@@ -32,7 +32,7 @@ namespace GoAhead.Commands
 
             for (int bitstreamIndex = 1; bitstreamIndex < bitstreams.Count; bitstreamIndex++)
             {
-                string bitstream = bitstreams[bitstreamIndex];
+                String bitstream = bitstreams[bitstreamIndex];
                 CompressedBitstream comp = new CompressedBitstream();
                 byte[] otherData = File.ReadAllBytes(bitstream);
 
@@ -43,7 +43,7 @@ namespace GoAhead.Commands
                 uint length = 0;
                 while (offset + length < otherData.Length)
                 {
-                    length = CommonHeaderLength(referenceData, otherData, offset, stepWidth);
+                    length = this.CommonHeaderLength(referenceData, otherData, offset, stepWidth);
                     if (length > 0)
                     {
                         comp.AddReference(referenceData, offset, length);
@@ -72,9 +72,9 @@ namespace GoAhead.Commands
 
                 double independentShare = ((double)positionIndependentData / (double)(positionIndependentData + positionDependentData) * 100);
                 double dependentShare = ((double)positionDependentData / (double)(positionIndependentData + positionDependentData) * 100);
-                OutputManager.WriteOutput(Path.GetFileName(bitstream) + " dependent/independent: " + positionDependentData + "<>" + positionIndependentData);
-                OutputManager.WriteOutput(Path.GetFileName(bitstream) + " dependent/independent: " + dependentShare + "<>" + independentShare);
-                OutputManager.WriteOutput(Path.GetFileName(bitstream) + " compressed with " + comp.NumOfWords + " words and " + comp.NumOfReferenceEntries + " references entries to " + Path.GetFileName(referenceBitstream) + " to " + sizeInBytes + " bytes (command length), rounded up to n*32 " + roundUp);
+                this.OutputManager.WriteOutput(Path.GetFileName(bitstream) + " dependent/independent: " + positionDependentData + "<>" + positionIndependentData);
+                this.OutputManager.WriteOutput(Path.GetFileName(bitstream) + " dependent/independent: " + dependentShare + "<>" + independentShare);
+                this.OutputManager.WriteOutput(Path.GetFileName(bitstream) + " compressed with " + comp.NumOfWords + " words and " + comp.NumOfReferenceEntries + " references entries to " + Path.GetFileName(referenceBitstream) + " to " + sizeInBytes + " bytes (command length), rounded up to n*32 " + roundUp);
             }
         }
 
@@ -143,23 +143,23 @@ namespace GoAhead.Commands
             public void AddReference(byte[] refernceData, uint offset, uint length)
             {
                 ReferenceEntry entry = new ReferenceEntry(offset, length);
-                m_entries.Add(entry);
+                this.m_entries.Add(entry);
             }
 
             public void AddWord(uint data)
             {
                 WordEntry entry = new WordEntry(data, 0);
-                m_entries.Add(entry);
+                this.m_entries.Add(entry);
             }
 
             public int NumOfWords
             {
-                get { return m_entries.Count(e => e is WordEntry); }
+                get { return this.m_entries.Count(e => e is WordEntry); }
             }
 
             public int NumOfReferenceEntries
             {
-                get { return m_entries.Count(e => e is ReferenceEntry); }
+                get { return this.m_entries.Count(e => e is ReferenceEntry); }
             }
 
             private List<DataEntry> m_entries = new List<DataEntry>();
@@ -168,13 +168,13 @@ namespace GoAhead.Commands
             {
                 public DataEntry(uint offset, uint length)
                 {
-                    m_offset = offset;
-                    m_length = length;
+                    this.m_offset = offset;
+                    this.m_length = length;
                 }
 
                 public override string ToString()
                 {
-                    return "Offset=" + m_offset + " Length=" + m_length;
+                    return "Offset=" + this.m_offset + " Length=" + this.m_length;
                 }
 
                 protected readonly uint m_offset = 0;
@@ -199,6 +199,6 @@ namespace GoAhead.Commands
         }
 
         [Parameter(Comment = "The directory in which the bitstreams *.bin are stored")]
-        public string BitstreamRepository = "";
+        public String BitstreamRepository = "";
     }
 }

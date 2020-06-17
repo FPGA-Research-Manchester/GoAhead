@@ -14,24 +14,24 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            if (m_treeView == null)
+            if (this.m_treeView == null)
             {
-                m_treeView = new TreeView();
+                this.m_treeView = new TreeView();
             }
 
-            TreeNode root = new TreeNode(NetlistContainerName);
+            TreeNode root = new TreeNode(this.NetlistContainerName);
             root.Tag = new TreeNodeTag();
             TreeNode topLevel = new TreeNode("Top Level Logic");
             topLevel.Tag = new TreeNodeTag();
-            m_treeView.Nodes.Add(root);
+            this.m_treeView.Nodes.Add(root);
             root.Nodes.Add(topLevel);
 
             foreach (XDLInstance inst in nlc.Instances)
             {
-                string instanceName = inst.Name;
-                string[] atoms = instanceName.Split('/');                            
+                String instanceName = inst.Name;
+                String[] atoms = instanceName.Split('/');                            
 
                 if (atoms.Length == 1)
                 {
@@ -46,7 +46,7 @@ namespace GoAhead.Commands
                     TreeNode currentNode = root;
                     for(int i=0;i<atoms.Length;i++)
                     {
-                        string nodeName = atoms[i];
+                        String nodeName = atoms[i];
                         TreeNode parent = currentNode.Find(nodeName);
                         if (parent == null)
                         {
@@ -77,7 +77,7 @@ namespace GoAhead.Commands
             foreach (TreeNode n in root.Nodes)
             {
                 int count = n.GetNodeCount(true);
-                OutputManager.WriteOutput(n.Text + ": " + count);
+                this.OutputManager.WriteOutput(n.Text + ": " + count);
                 hierarchy++;
             }
         }

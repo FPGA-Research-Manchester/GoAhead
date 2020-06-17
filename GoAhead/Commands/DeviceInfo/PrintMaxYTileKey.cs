@@ -10,7 +10,7 @@ namespace GoAhead.Commands.DeviceInfo
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput(FPGA.FPGA.Instance.MaxY.ToString());
+            this.OutputManager.WriteOutput(FPGA.FPGA.Instance.MaxY.ToString());
         }
 
         public override void Undo()

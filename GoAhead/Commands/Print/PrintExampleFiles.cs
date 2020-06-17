@@ -19,16 +19,16 @@ namespace GoAhead.Commands
                     continue;
                 }
 
-                string helpFile = command.GetHelpFilePath();
+                String helpFile = command.GetHelpFilePath();
 
                 if (!File.Exists(helpFile))
                 {
-                    OutputManager.WriteOutput("Creating " + helpFile);
+                    this.OutputManager.WriteOutput("Creating " + helpFile);
                     File.Create(helpFile);
                 }
                 else
                 {
-                    OutputManager.WriteOutput("File " + helpFile + " already exists");
+                    this.OutputManager.WriteOutput("File " + helpFile + " already exists");
                 }
             }
         }

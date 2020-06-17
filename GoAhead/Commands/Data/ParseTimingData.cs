@@ -9,7 +9,7 @@ using GoAhead.Objects;
 
 namespace GoAhead.Commands.Data
 {
-    [CommandDescription(Description = "Parse a time data file and add it to the model.", Wrapper = true)]
+    [CommandDescription(Description = "", Wrapper = true)]
 	public class ParseTimingData : Command
 	{
         [Parameter(Comment = "The name of the file to read the data from")]

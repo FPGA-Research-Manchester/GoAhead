@@ -15,10 +15,10 @@ namespace GoAhead.Commands.Library
     {
         protected override void DoCommandAction()
         {
-            string libElementName = Path.GetFileNameWithoutExtension(XDLFileName);
+            String libElementName = Path.GetFileNameWithoutExtension(this.XDLFileName);
 
             AddXDLLibraryElement addCmd = new AddXDLLibraryElement();
-            addCmd.FileName = XDLFileName;
+            addCmd.FileName = this.XDLFileName;
             CommandExecuter.Instance.Execute(addCmd);
                         
             SetResourceShapeInfo setCmd = new SetResourceShapeInfo();
@@ -26,7 +26,7 @@ namespace GoAhead.Commands.Library
             CommandExecuter.Instance.Execute(setCmd);
 
             SaveLibraryElement saveCmd = new SaveLibraryElement();
-            saveCmd.FileName = FileName;
+            saveCmd.FileName = this.FileName;
             saveCmd.LibraryElementName = libElementName;
             CommandExecuter.Instance.Execute(saveCmd);
 
@@ -41,9 +41,9 @@ namespace GoAhead.Commands.Library
         }
 
         [Parameter(Comment = "The XDL netlist to read in")]
-        public string XDLFileName = "design.xdl";
+        public String XDLFileName = "design.xdl";
 
         [Parameter(Comment = "The name of the file to save the library element in")]
-        public string FileName = "libelement.binNetlist";
+        public String FileName = "libelement.binNetlist";
     }
 }

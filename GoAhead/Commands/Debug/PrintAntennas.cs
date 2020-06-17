@@ -14,19 +14,19 @@ namespace GoAhead.Commands.Debug
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             int netsDone = 0;
-            int netCount = GetAllNets().Count();
+            int netCount = this.GetAllNets().Count();
 
-            foreach (XDLNet net in GetAllNets().Where(n => n.OutpinCount == 0))
+            foreach (XDLNet net in this.GetAllNets().Where(n => n.OutpinCount == 0))
             { 
-                Print("Found net without outpin: " + net.Name );
+                this.Print("Found net without outpin: " + net.Name );
             }           
 
-            foreach (XDLNet net in GetAllNets())
+            foreach (XDLNet net in this.GetAllNets())
             {           
-                ProgressInfo.Progress = ProgressStart + (int)((double)netsDone++ / (double)netCount * ProgressShare);
+                this.ProgressInfo.Progress = this.ProgressStart + (int)((double)netsDone++ / (double)netCount * this.ProgressShare);
 
                 foreach (XDLPip pip in net.Pips)
                 {
@@ -68,40 +68,40 @@ namespace GoAhead.Commands.Debug
 
                     if (antennaHead)
                     {
-                        Print("-------- Antenna heads --------");
+                        this.Print("-------- Antenna heads --------");
                         if (reachable.Count > 0)
                         {
-                            Print("Net " + net.Name + " has island via " + pip + " as " + pip.To + " is connected to:");
+                            this.Print("Net " + net.Name + " has island via " + pip + " as " + pip.To + " is connected to:");
                             foreach (Location l in reachable)
                             {
-                                Print("--> " + l.ToString() + " which is not continued within the net");
+                                this.Print("--> " + l.ToString() + " which is not continued within the net");
                             }
                         }
                         else
                         {
-                            Print("Net " + net.Name + " has island via " + pip + " which is not continued within the net");
+                            this.Print("Net " + net.Name + " has island via " + pip + " which is not continued within the net");
                         }
                     }
                 }
             }
         }
 
-        private void Print(string output)
+        private void Print(String output)
         {
-            if (m_firstPrint)
+            if (this.m_firstPrint)
             {
-                m_firstPrint = false;
-                NetlistContainer nlc = GetNetlistContainer();
-                OutputManager.WriteOutput("Report for " + nlc.Name);
+                this.m_firstPrint = false;
+                NetlistContainer nlc = this.GetNetlistContainer();
+                this.OutputManager.WriteOutput("Report for " + nlc.Name);
             }
-            OutputManager.WriteOutput(output);
+            this.OutputManager.WriteOutput(output);
         }
 
         public IEnumerable<XDLNet> GetAllNets()
         {
-            NetlistContainer nlc = GetNetlistContainer();
+            NetlistContainer nlc = this.GetNetlistContainer();
 
-            foreach (XDLNet net in nlc.Nets.Where(n => Positive((XDLNet)n) && !Negative((XDLNet) n)))
+            foreach (XDLNet net in nlc.Nets.Where(n => this.Positive((XDLNet)n) && !this.Negative((XDLNet) n)))
             {
                 yield return net;
             }
@@ -109,18 +109,18 @@ namespace GoAhead.Commands.Debug
 
         private bool Positive(XDLNet net)
         {
-            return Regex.IsMatch(net.Name, PositiveFilter);
+            return Regex.IsMatch(net.Name, this.PositiveFilter);
         }
 
         private bool Negative(XDLNet net)
         {
-            if(string.IsNullOrEmpty(NegativeFilter))
+            if(String.IsNullOrEmpty(this.NegativeFilter))
             {
                 return false;
             }
             else
             {
-                return Regex.IsMatch(net.Name, NegativeFilter);
+                return Regex.IsMatch(net.Name, this.NegativeFilter);
             }
         }
 
@@ -132,9 +132,9 @@ namespace GoAhead.Commands.Debug
         private bool m_firstPrint = true;
 
         [Parameter(Comment = "Consider only those nets whose names match this regular expression")]
-        public string PositiveFilter = ".*";
+        public String PositiveFilter = ".*";
 
         [Parameter(Comment = "Do not consider those nets whose names match this regular expression (leave empty to disable this filter")]
-        public string NegativeFilter = "";
+        public String NegativeFilter = "";
     }
 }

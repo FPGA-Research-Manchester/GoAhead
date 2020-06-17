@@ -20,7 +20,7 @@ namespace GoAhead.Commands
                 foreach (Attribute attr in Attribute.GetCustomAttributes(type).Where(a => a is CommandDescription))
                 {
                     CommandDescription descr = (CommandDescription)attr;
-                    if (!string.IsNullOrEmpty(descr.Description))
+                    if (!String.IsNullOrEmpty(descr.Description))
                     {
                         commandDescriptionFound = true;
                         break;
@@ -29,7 +29,7 @@ namespace GoAhead.Commands
                 if (!commandDescriptionFound)
                 
                 {
-                    OutputManager.WriteOutput(type.Name + " has no Command Description");
+                    this.OutputManager.WriteOutput(type.Name + " has no Command Description");
                 }
             }
         }

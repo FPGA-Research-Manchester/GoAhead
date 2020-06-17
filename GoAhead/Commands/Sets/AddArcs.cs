@@ -18,9 +18,9 @@ namespace GoAhead.Commands.Sets
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
 
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
             
             bool arcAdded = false;
 
@@ -36,7 +36,7 @@ namespace GoAhead.Commands.Sets
 
             if (!arcAdded)
             {
-                throw new ArgumentException("Did not find any tile in the current selection that contains the arcs " + From + " -> " + To + ". Misspelled From or To?");
+                throw new ArgumentException("Did not find any tile in the current selection that contains the arcs " + this.From + " -> " + this.To + ". Misspelled From or To?");
             }
         }
 
@@ -44,13 +44,13 @@ namespace GoAhead.Commands.Sets
         {
             // which net to extend?
             TCLNet target;
-            if (netlistContainer.Nets.Any(n => n.Name.Equals(Netname)))
+            if (netlistContainer.Nets.Any(n => n.Name.Equals(this.Netname)))
             {
-                target = (TCLNet)netlistContainer.GetNet(Netname);
+                target = (TCLNet)netlistContainer.GetNet(this.Netname);
             }           
             else
             {
-                target = (TCLNet)Net.CreateNet(Netname);
+                target = (TCLNet)Net.CreateNet(this.Netname);
                 target.IsBlockerNet = true;
                 target.RoutingTree = new TCLRoutingTree();
                 TCLRoutingTreeNode root = new TCLRoutingTreeNode(null, null);
@@ -61,13 +61,13 @@ namespace GoAhead.Commands.Sets
                 netlistContainer.AddGndPrimitive(target);
             }
 
-            Port from = new Port(From);
-            Port to = new Port(To);
+            Port from = new Port(this.From);
+            Port to = new Port(this.To);
 
             bool arcAdded = false;
-            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles().Where(t => AddArcOnThisTile(from, to, t)))
+            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => this.AddArcOnThisTile(from, to, t)))
             {
-                TCLRoutingTreeNode driverNode = target.RoutingTree.Root.Children.FirstOrDefault(tile.Location, From);
+                TCLRoutingTreeNode driverNode = target.RoutingTree.Root.Children.FirstOrDefault(tile.Location, this.From);
                 if (driverNode == null)
                 {
                     driverNode = new TCLRoutingTreeNode(tile, from);
@@ -93,22 +93,22 @@ namespace GoAhead.Commands.Sets
         {
             // which net to extend?
             XDLNet target;
-            if (netlistContainer.Nets.Any(n => n.Name.Equals(Netname)))
+            if (netlistContainer.Nets.Any(n => n.Name.Equals(this.Netname)))
             {
-                target = (XDLNet)netlistContainer.GetNet(Netname);
+                target = (XDLNet)netlistContainer.GetNet(this.Netname);
             }
             else
             {
                 target = (XDLNet)netlistContainer.GetAnyNet();
             }
 
-            Port from = new Port(From);
-            Port to = new Port(To);
+            Port from = new Port(this.From);
+            Port to = new Port(this.To);
 
             bool arcAdded = false;
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(t => AddArcOnThisTile(from, to, t)))
+            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(t => this.AddArcOnThisTile(from, to, t)))
             {
-                target.Add(CommentForPip);
+                target.Add(this.CommentForPip);
                 target.Add(t, from, to);
                 if (!t.IsPortBlocked(from, Tile.BlockReason.Blocked))
                 {
@@ -135,15 +135,15 @@ namespace GoAhead.Commands.Sets
         }
 
         [Parameter(Comment = "The driver to use to block To")]
-        public string From = "";
+        public String From = "";
 
         [Parameter(Comment = "This comment will be added to the pip")]
-        public string CommentForPip = "added_by_AddArcs";
+        public String CommentForPip = "added_by_AddArcs";
 
         [Parameter(Comment = "For each selected tile, add a arc driving this port to a net from the given blocker")]
-        public string To = "";
+        public String To = "";
 
         [Parameter(Comment = "The name of the net to extend (leave empty to extend the first net with an outpin (ISE) or to create a new net called AddArcs (Vivado))")]
-        public string Netname = "";
+        public String Netname = "";
     }
 }

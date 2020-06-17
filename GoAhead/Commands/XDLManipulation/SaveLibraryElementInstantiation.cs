@@ -18,28 +18,28 @@ namespace GoAhead.Commands.XDLManipulation
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
 
-            LibElemInst inst = LibraryElementInstanceManager.Instance.GetInstantiation(InstanceName);
+            LibElemInst inst = Objects.LibraryElementInstanceManager.Instance.GetInstantiation(this.InstanceName);
             LibraryElement libElement = Objects.Library.Instance.GetElement(inst.LibraryElementName);
             Tile anchorCLB = FPGA.FPGA.Instance.GetTile(inst.AnchorLocation);
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
-                    RelocateInstancesForXDL(libElement, anchorCLB, (XDLContainer)netlistContainer);
-                    RelocateNetsForXDL(libElement, anchorCLB, (XDLContainer)netlistContainer);
+                    this.RelocateInstancesForXDL(libElement, anchorCLB, (XDLContainer)netlistContainer);
+                    this.RelocateNetsForXDL(libElement, anchorCLB, (XDLContainer)netlistContainer);
 
                     // add design config
-                    if (AddDesignConfig && libElement.Containter is XDLContainer && ((XDLContainer)netlistContainer).GetDesignConfig().Length == 0)
+                    if (this.AddDesignConfig && libElement.Containter is XDLContainer && ((XDLContainer)netlistContainer).GetDesignConfig().Length == 0)
                     {
                         ((XDLContainer)netlistContainer).AddDesignConfig(((XDLContainer)libElement.Containter).GetDesignConfig());
                     }
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    RelocateInstancesForTCL(libElement, anchorCLB, (TCLContainer)netlistContainer);
-                    RelocateNetsForTCL(libElement, anchorCLB, netlistContainer);
+                    this.RelocateInstancesForTCL(libElement, anchorCLB, (TCLContainer)netlistContainer);
+                    this.RelocateNetsForTCL(libElement, anchorCLB, netlistContainer);
                     break;
             }           
         }
@@ -52,9 +52,9 @@ namespace GoAhead.Commands.XDLManipulation
                 // change LOC property and the other fields carries out the actual relocation
                 Slice targetSlice = tileSliceTupel.Item2.Slices[(int)newInstance.SliceNumber];
                 newInstance.Properties.SetProperty("LOC", targetSlice.SliceName, false);
-                if (InsertPrefix)
+                if (this.InsertPrefix)
                 {
-                    newInstance.Name = InstanceName + "_" + newInstance.Name; // do not use / to avoid creating a new hierarchy for which w do not have a refernce cell
+                    newInstance.Name = this.InstanceName + "_" + newInstance.Name; // do not use / to avoid creating a new hierarchy for which w do not have a refernce cell
                 }
                 newInstance.SliceName = targetSlice.SliceName;
                 newInstance.SliceType = targetSlice.SliceType;
@@ -73,14 +73,14 @@ namespace GoAhead.Commands.XDLManipulation
             foreach (TCLNet net in libElement.Containter.Nets)
             {                
                 TCLNet relocatedNet = TCLNet.Relocate(net, libElement, anchorCLB);
-                relocatedNet.Name = InstanceName + relocatedNet.Name;
+                relocatedNet.Name = this.InstanceName + relocatedNet.Name;
 
                 // relocate NetPins
                 foreach (NetPin pin in relocatedNet.NetPins)
                 {                    
-                    if (InsertPrefix)                        
+                    if (this.InsertPrefix)                        
                     {
-                        pin.InstanceName = InstanceName + pin.InstanceName;
+                        pin.InstanceName = this.InstanceName + pin.InstanceName;
                     }
                 }
 
@@ -96,7 +96,7 @@ namespace GoAhead.Commands.XDLManipulation
                 int sliceNumber = tileSliceTupel.Item1.SliceNumber;
                 Slice slice = tileSliceTupel.Item2.Slices[sliceNumber];
 
-                string xdlCode = tileSliceTupel.Item1.ToString();
+                String xdlCode = tileSliceTupel.Item1.ToString();
 
                 /* in TODO init.goa auslagern
                  * @"placed.*SLICE_X\d+Y\d+";
@@ -108,45 +108,45 @@ namespace GoAhead.Commands.XDLManipulation
                 if (IdentifierManager.Instance.IsMatch(tileSliceTupel.Item1.Location, IdentifierManager.RegexTypes.CLB))
                 {
                     // replace placement information in: inst "right" "SLICEX", placed CLEXL_X9Y33 SLICE_X13Y33
-                    string newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
-                    string oldPlacement = @"placed.*SLICE_X\d+Y\d+";
+                    String newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
+                    String oldPlacement = @"placed.*SLICE_X\d+Y\d+";
                     xdlCode = Regex.Replace(xdlCode, oldPlacement, newPlacement);
                 }
                 else if (IdentifierManager.Instance.IsMatch(tileSliceTupel.Item1.Location, IdentifierManager.RegexTypes.Interconnect))
                 {
-                    string newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
-                    string oldPlacement = @"placed.*TIEOFF_X\d+Y\d+";
+                    String newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
+                    String oldPlacement = @"placed.*TIEOFF_X\d+Y\d+";
                     xdlCode = Regex.Replace(xdlCode, oldPlacement, newPlacement);
                 }
                 else if (IdentifierManager.Instance.IsMatch(tileSliceTupel.Item1.Location, IdentifierManager.RegexTypes.DSP))
                 {
                     int underScoreLocation = tileSliceTupel.Item2.Location.IndexOf("_");
-                    string locationPrefix = tileSliceTupel.Item2.Location.Substring(0, underScoreLocation);
+                    String locationPrefix = tileSliceTupel.Item2.Location.Substring(0, underScoreLocation);
 
-                    string newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
-                    string oldPlacement = "placed.*" + locationPrefix + @"_X\d+Y\d+.*" + tileSliceTupel.Item1.SliceName;
+                    String newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
+                    String oldPlacement = "placed.*" + locationPrefix + @"_X\d+Y\d+.*" + tileSliceTupel.Item1.SliceName;
 
                     xdlCode = Regex.Replace(xdlCode, oldPlacement, newPlacement);
                 }
                 else if (IdentifierManager.Instance.IsMatch(tileSliceTupel.Item1.Location, IdentifierManager.RegexTypes.BRAM))
                 {
                     int underScoreLocation = tileSliceTupel.Item2.Location.IndexOf("_");
-                    string locationPrefix = tileSliceTupel.Item2.Location.Substring(0, underScoreLocation);
+                    String locationPrefix = tileSliceTupel.Item2.Location.Substring(0, underScoreLocation);
 
-                    string newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
-                    string oldPlacement = "placed.*" + locationPrefix + @"_X\d+Y\d+.*" + tileSliceTupel.Item1.SliceName;
+                    String newPlacement = "placed " + tileSliceTupel.Item2.Location + " " + slice.SliceName;
+                    String oldPlacement = "placed.*" + locationPrefix + @"_X\d+Y\d+.*" + tileSliceTupel.Item1.SliceName;
                     //String oldPlacement = @"placed.*RAMB16_X\d+Y\d+";
                     xdlCode = Regex.Replace(xdlCode, oldPlacement, newPlacement);
                 }
 
-                if (InsertPrefix)
+                if (this.InsertPrefix)
                 {
                     // insert instance prefix
                     // remove greedy between double quotes
                     MatchCollection matches = Regex.Matches(xdlCode, "(\".*?\")");
-                    string oldInstanceName = matches[0].ToString();
+                    String oldInstanceName = matches[0].ToString();
                     oldInstanceName = Regex.Replace(oldInstanceName, "\"", "");
-                    string newInstanceName = InstanceName + Regex.Replace(oldInstanceName, "\"", "");
+                    String newInstanceName = this.InstanceName + Regex.Replace(oldInstanceName, "\"", "");
 
                     // replace both the instance name AND slice configuration
                     xdlCode = xdlCode.Replace("\"" + oldInstanceName, "\"" + newInstanceName);
@@ -157,7 +157,7 @@ namespace GoAhead.Commands.XDLManipulation
                     }
 
                     // XDL Shape??
-                    xdlCode = xdlCode.Replace("Shape_", InstanceName + "Shape_");
+                    xdlCode = xdlCode.Replace("Shape_", this.InstanceName + "Shape_");
                 }
 
                 netlistContainer.AddSliceCodeBlock(xdlCode);
@@ -169,18 +169,18 @@ namespace GoAhead.Commands.XDLManipulation
             foreach (XDLNet net in libElement.Containter.Nets)
             {
                 // insert instance prefix
-                XDLNet relocatedNet = new XDLNet(InstanceName + net.Name);
+                XDLNet relocatedNet = new XDLNet(this.InstanceName + net.Name);
                 relocatedNet.HeaderExtension = net.HeaderExtension;
 
                 foreach (NetPin pin in net.NetPins)
                 {
                     NetPin copy = NetPin.Copy(pin);
-                    if (InsertPrefix)
+                    if (this.InsertPrefix)
                     {
                         // insert instance prefix
                         // remove greedy between double quotes
-                        string oldInstanceName = pin.InstanceName;
-                        string newInstanceName = "\"" + InstanceName + Regex.Replace(oldInstanceName, "\"", "") + "\"";
+                        String oldInstanceName = pin.InstanceName;
+                        String newInstanceName = "\"" + this.InstanceName + Regex.Replace(oldInstanceName, "\"", "") + "\"";
                         //xdlCode = Regex.Replace(xdlCode, oldInstanceName, newInstanceName);
                         copy.InstanceName = newInstanceName;
                         copy.InstanceName = copy.InstanceName.Replace("\"", "");
@@ -191,7 +191,7 @@ namespace GoAhead.Commands.XDLManipulation
                 //foreach (NetSegment seg in originalNet.GetAllSegments())
                 foreach (XDLPip pip in net.Pips)
                 {
-                    string targetLocation;
+                    String targetLocation;
                     bool success = libElement.GetTargetLocation(pip.Location, anchorCLB, out targetLocation);
 
                     Tile targetTile = null;
@@ -213,7 +213,7 @@ namespace GoAhead.Commands.XDLManipulation
                     else
                     {
                         // naming fun
-                        relocatedSegment = FPGATypes.RelocatePip(targetTile, pip, relocatedNet);
+                        relocatedSegment = FPGA.FPGATypes.RelocatePip(targetTile, pip, relocatedNet);
                     }
 
                     if (relocatedSegment == null)
@@ -244,7 +244,7 @@ namespace GoAhead.Commands.XDLManipulation
         }
 
         [Parameter(Comment = "The instance name")]
-        public string InstanceName = "inst_BM_S6_L4_R4_double_5";
+        public String InstanceName = "inst_BM_S6_L4_R4_double_5";
 
         [Parameter(Comment = "Whether to insert the InstanceName as a prefix in slices, ports, and nets")]
         public bool InsertPrefix = true;

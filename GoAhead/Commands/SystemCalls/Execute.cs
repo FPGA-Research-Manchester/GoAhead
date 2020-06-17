@@ -16,16 +16,16 @@ namespace GoAhead.Commands.SystemCalls
     {
         protected override void DoCommandAction()
         {
-            string cmdName = Command;
+            String cmdName = this.Command;
 
             //ProcessStartInfo cmdInfo = new ProcessStartInfo(cmdName, arguments);
-            ProcessStartInfo cmdInfo = new ProcessStartInfo("cmd.exe", "/c " + Command);
+            ProcessStartInfo cmdInfo = new ProcessStartInfo("cmd.exe", "/c " + this.Command);
             cmdInfo.UseShellExecute = false;
             cmdInfo.ErrorDialog = true;
             cmdInfo.RedirectStandardOutput = true;
             cmdInfo.RedirectStandardError = true;
             cmdInfo.CreateNoWindow = true;
-            Process process = Process.Start(cmdInfo);
+            Process process = System.Diagnostics.Process.Start(cmdInfo);
             process.WaitForExit();
         }
 
@@ -35,6 +35,6 @@ namespace GoAhead.Commands.SystemCalls
         }
 
         [Parameter(Comment = @"Execute this command, e.g. dir c:\\work")]
-        public string Command = "";
+        public String Command = "";
     }
 }

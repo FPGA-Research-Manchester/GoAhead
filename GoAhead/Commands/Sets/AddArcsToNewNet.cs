@@ -15,15 +15,15 @@ namespace GoAhead.Commands.Sets
     {
         protected override void DoCommandAction()
         {
-            NetlistContainer netlistContainer = GetNetlistContainer();
+            NetlistContainer netlistContainer = this.GetNetlistContainer();
 
-            foreach (Tile probe in TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile probe in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
             {
-                if (probe.SwitchMatrix.GetAllArcs().Any(tupel => tupel.Item1.Name.Equals(From) && tupel.Item2.Name.Equals(To)))
+                if (probe.SwitchMatrix.GetAllArcs().Any(tupel => tupel.Item1.Name.Equals(this.From) && tupel.Item2.Name.Equals(this.To)))
                 {
-                    XDLNet n = new XDLNet(probe.Location + "_" + From + "_" + To);
-                    n.Add(CommentForPip);
-                    n.Add(probe, new Port(From), new Port(To));
+                    XDLNet n = new XDLNet(probe.Location + "_" + this.From + "_" + this.To);
+                    n.Add(this.CommentForPip);
+                    n.Add(probe, new Port(this.From), new Port(this.To));
                     /*
                     probe.BlockPort(new Port(this.From), false);
                     probe.BlockPort(new Port(this.To), false);*/
@@ -31,7 +31,7 @@ namespace GoAhead.Commands.Sets
                 }
                 else
                 {
-                    OutputManager.WriteOutput("Warning: Arc " + From + " -> " + To + " not found on tile " + probe.Location);
+                    this.OutputManager.WriteOutput("Warning: Arc " + this.From + " -> " + this.To + " not found on tile " + probe.Location);
                 }
             }
         }
@@ -42,12 +42,12 @@ namespace GoAhead.Commands.Sets
         }
 
         [Parameter(Comment = "The driver")]
-        public string From = "EE2B0";
+        public String From = "EE2B0";
 
         [Parameter(Comment = "This comment will be added to the pip")]
-        public string CommentForPip = "added_by_AddArcs";
+        public String CommentForPip = "added_by_AddArcs";
 
         [Parameter(Comment = "The sink")]
-        public string To = "EE2E0";
+        public String To = "EE2E0";
     }
 }

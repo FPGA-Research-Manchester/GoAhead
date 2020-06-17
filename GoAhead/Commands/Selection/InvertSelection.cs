@@ -10,12 +10,12 @@ namespace GoAhead.Commands.Selection
     {
        protected override void DoCommandAction()
         {
-            Invert();
+            this.Invert();
         }
 
         public override void Undo()
         {
-            Invert();
+            this.Invert();
         }
 
         private void Invert()
@@ -24,20 +24,20 @@ namespace GoAhead.Commands.Selection
 
             foreach (Tile nextTile in FPGA.FPGA.Instance.GetAllTiles())
             {
-                if (!TileSelectionManager.Instance.IsSelected(nextTile.TileKey))
+                if (!FPGA.TileSelectionManager.Instance.IsSelected(nextTile.TileKey))
                 {
                     inverseSelection.Add(nextTile);
                 }
             }
 
-            TileSelectionManager.Instance.ClearSelection();
+            FPGA.TileSelectionManager.Instance.ClearSelection();
 
             foreach (Tile t in inverseSelection)
             {
-                TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
             }
 
-            TileSelectionManager.Instance.SelectionChanged();
+            FPGA.TileSelectionManager.Instance.SelectionChanged();
         }
     }
 }

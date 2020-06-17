@@ -77,11 +77,11 @@ namespace GoAhead.Commands.Misc
     {       
         protected override void DoCommandAction()
         {
-            foreach (List<Port> subset in SubSetUtils.SubSets<Port>(m_from))
+            foreach (List<Port> subset in SubSetUtils.SubSets<Port>(this.m_from))
             {
-                if (subset.Count == m_to.Count)
+                if (subset.Count == this.m_to.Count)
                 {
-                    ShowPermutations<Port>(subset, subset.Count, m_to, subset.Count);
+                    ShowPermutations<Port>(subset, subset.Count, this.m_to, subset.Count);
                 }
             }
         }
@@ -110,14 +110,14 @@ namespace GoAhead.Commands.Misc
                     StringBuilder buffer = new StringBuilder();
                     for (int i = 0; i < currentFromPermuation.Count; i++)
                     {
-                        string fromStr = currentFromPermuation[i].ToString();
-                        string toStr = currentToPermuation[i].ToString();
+                        String fromStr = currentFromPermuation[i].ToString();
+                        String toStr = currentToPermuation[i].ToString();
                         buffer.AppendLine(fromStr + "->" + toStr);
                     }
                     if (hit)
                     {
-                        OutputManager.WriteOutput(buffer.ToString());
-                        OutputManager.WriteOutput("----------------");
+                        this.OutputManager.WriteOutput(buffer.ToString());
+                        this.OutputManager.WriteOutput("----------------");
                         return;
                     }
                 }

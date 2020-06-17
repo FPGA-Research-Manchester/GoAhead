@@ -12,14 +12,14 @@ namespace GoAhead.Commands.UCF
     {
         protected override void DoCommandAction()
         {
-            FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
+            FPGA.FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE, FPGATypes.BackendType.Vivado);
             switch (FPGA.FPGA.Instance.BackendType)
             {
                 case FPGATypes.BackendType.ISE:
-                    PrintAreaGroupForISE();
+                    this.PrintAreaGroupForISE();
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    PrintAreaGroupForVivado();
+                    this.PrintAreaGroupForVivado();
                     break;
                 default:
                     break;
@@ -31,46 +31,51 @@ namespace GoAhead.Commands.UCF
             //create_pblock ag1;
             //resize_pblock [get_pblocks ag1] -add {SLICE_X0Y44:SLICE_X27Y20
 
-            string pBlockName = Regex.Replace(InstanceName, @"\*", "");
+            String pBlockName = Regex.Replace(this.InstanceName, @"\*", "");
             pBlockName = "pb_" + pBlockName;
-            OutputManager.WriteTCLOutput("create_pblock " + pBlockName + "; # generated_by_GoAhead");
+            this.OutputManager.WriteTCLOutput("create_pblock " + pBlockName + "; # generated_by_GoAhead");
 
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, pBlockName);
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, pBlockName);
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, pBlockName);
-            OutputManager.WriteTCLOutput("add_cells_to_pblock [get_pblocks " + pBlockName + "] [get_cells " + InstanceName + "]; # generated_by_GoAhead");
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, pBlockName);
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, pBlockName);
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, pBlockName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 0 }, pBlockName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, pBlockName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0, 1, 1 }, pBlockName);
+
+            this.OutputManager.WriteTCLOutput("add_cells_to_pblock [get_pblocks " + pBlockName + "] [get_cells " + this.InstanceName + "]; # generated_by_GoAhead");
 
         }
         private void PrintAreaGroupForISE()
         {
             //INST “*reconfig_blue*” AREA_GROUP = "pblock_reconfig_blue";
             //AREA_GROUP "pblock_reconfig_blue" RANGE = SLICE_X28Y64:SLICE_X33Y67;
-            string groupName = Regex.Replace(InstanceName, @"\*", "");
+            String groupName = Regex.Replace(this.InstanceName, @"\*", "");
             groupName = "AG_" + groupName;
 
-            string firstLine = "INST \"" + InstanceName + "\" AREA_GROUP = \"" + groupName + "\"; # generated_by_GoAhead";
-            OutputManager.WriteUCFOutput(firstLine);
+            String firstLine = "INST \"" + this.InstanceName + "\" AREA_GROUP = \"" + groupName + "\"; # generated_by_GoAhead";
+            this.OutputManager.WriteUCFOutput(firstLine);
 
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, groupName);
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, groupName);
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, groupName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, groupName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, groupName);
+            this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, groupName);
 
-            OutputManager.WriteUCFOutput("AREA_GROUP \"" + groupName + "\" GROUP=CLOSED; # generated_by_GoAhead");
-            OutputManager.WriteUCFOutput("AREA_GROUP \"" + groupName + "\" PLACE=CLOSED; # generated_by_GoAhead");
+            this.OutputManager.WriteUCFOutput("AREA_GROUP \"" + groupName + "\" GROUP=CLOSED; # generated_by_GoAhead");
+            this.OutputManager.WriteUCFOutput("AREA_GROUP \"" + groupName + "\" PLACE=CLOSED; # generated_by_GoAhead");
         }
 
-        private void PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes filterType, int[] sliceIndeces, string groupName)
+        private void PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes filterType, int[] sliceIndeces, String groupName)
         {
             int incr1 = 0;
-            int incr2 = 1;
+            int incr2 = 1;    // why = 1?
+            //int incr2 = 0;
 
-            bool success = Print(incr1, incr2, FPGATypes.Placement.LowerLeft, FPGATypes.Placement.UpperRight, filterType, sliceIndeces, groupName);
+            bool success = this.Print(incr1, incr2, FPGATypes.Placement.LowerLeft, FPGATypes.Placement.UpperRight, filterType, sliceIndeces, groupName);
 
             if (!success)
             {
                 incr1 = 1;
                 incr2 = 0;
-                success = Print(incr1, incr2, FPGATypes.Placement.LowerLeft, FPGATypes.Placement.UpperRight, filterType, sliceIndeces, groupName);
+                success = this.Print(incr1, incr2, FPGATypes.Placement.LowerLeft, FPGATypes.Placement.UpperRight, filterType, sliceIndeces, groupName);
 
                 if (!success)
                 {
@@ -80,11 +85,11 @@ namespace GoAhead.Commands.UCF
             }
         }
 
-        private bool Print(int incr1, int incr2, FPGATypes.Placement placement1, FPGATypes.Placement placement2, IdentifierManager.RegexTypes filterType, int[] sliceIndeces, string groupName)
+        private bool Print(int incr1, int incr2, FPGATypes.Placement placement1, FPGATypes.Placement placement2, IdentifierManager.RegexTypes filterType, int[] sliceIndeces, String groupName)
         {
-            string filter = IdentifierManager.Instance.GetRegex(filterType);
-            Tile tile1 = TileSelectionManager.Instance.GetSelectedTile(filter, placement1);
-            Tile tile2 = TileSelectionManager.Instance.GetSelectedTile(filter, placement2);
+            String filter = IdentifierManager.Instance.GetRegex(filterType);
+            Tile tile1 = FPGA.TileSelectionManager.Instance.GetSelectedTile(filter, placement1);
+            Tile tile2 = FPGA.TileSelectionManager.Instance.GetSelectedTile(filter, placement2);
 
             if (tile1 == null || tile2 == null)
             {
@@ -105,15 +110,15 @@ namespace GoAhead.Commands.UCF
                         {
                             throw new ArgumentException("Unexpected number of slices in Virtex6 RAM tile");
                         }
-                        string lowerLeftSlice = tile1.Slices[0].ToString();
-                        string upperRightSlice = tile2.Slices[1].ToString();
-                        string firstLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
-                        OutputManager.WriteUCFOutput(firstLine);
+                        String lowerLeftSlice = tile1.Slices[0].ToString();
+                        String upperRightSlice = tile2.Slices[1].ToString();
+                        String firstLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
+                        this.OutputManager.WriteUCFOutput(firstLine);
 
-                        string lowerLeftRAMB36Slice = tile1.Slices[2].ToString();
-                        string upperRightRAMB36Slice = tile2.Slices[2].ToString();
-                        string secondLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftRAMB36Slice + ":" + upperRightRAMB36Slice + "; # generated_by_GoAhead";
-                        OutputManager.WriteUCFOutput(secondLine);
+                        String lowerLeftRAMB36Slice = tile1.Slices[2].ToString();
+                        String upperRightRAMB36Slice = tile2.Slices[2].ToString();
+                        String secondLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftRAMB36Slice + ":" + upperRightRAMB36Slice + "; # generated_by_GoAhead";
+                        this.OutputManager.WriteUCFOutput(secondLine);
                     }
                     else if (FPGA.FPGA.Instance.Family == FPGATypes.FPGAFamily.Virtex6 && filterType == IdentifierManager.RegexTypes.DSP)
                     {
@@ -121,33 +126,33 @@ namespace GoAhead.Commands.UCF
                         {
                             throw new ArgumentException("Unexpected number of slices in Virtex6 DSP tile");
                         }
-                        string lowerLeftSlice = tile1.Slices[0].ToString();
-                        string upperRightSlice = tile2.Slices[1].ToString();
-                        string firstLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
-                        OutputManager.WriteUCFOutput(firstLine);
+                        String lowerLeftSlice = tile1.Slices[0].ToString();
+                        String upperRightSlice = tile2.Slices[1].ToString();
+                        String firstLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
+                        this.OutputManager.WriteUCFOutput(firstLine);
                     }
                     else
                     {
                         // other devices "genericly"
                         for (int i = 0; i < sliceIndeces.Length; i += 2)
                         {
-                            string lowerLeftSlice = tile1.Slices[sliceIndeces[i + incr1]].ToString();
-                            string upperRightSlice = tile2.Slices[sliceIndeces[i + incr2]].ToString();
+                            String lowerLeftSlice = tile1.Slices[sliceIndeces[i + incr1]].ToString();
+                            String upperRightSlice = tile2.Slices[sliceIndeces[i + incr2]].ToString();
 
-                            string secondLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
+                            String secondLine = "AREA_GROUP \"" + groupName + "\"" + " RANGE = " + lowerLeftSlice + ":" + upperRightSlice + "; # generated_by_GoAhead";
 
-                            OutputManager.WriteUCFOutput(secondLine);
+                            this.OutputManager.WriteUCFOutput(secondLine);
                         }
                     }
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    for (int i = 0; i < sliceIndeces.Length; i += 2)
+                    for (int i = 0; i < sliceIndeces.Length; i += 2) // why < Length?
                     {
                         string lowerLeftSlice = tile1.Slices[sliceIndeces[i + incr1]].ToString();
                         string upperRightSlice = tile2.Slices[sliceIndeces[i + incr2]].ToString();
 
                         string secondLine = "resize_pblock [get_pblocks " + groupName + "] -add {" + lowerLeftSlice + ":" + upperRightSlice + "}; # generated_by_GoAhead";
-                        OutputManager.WriteTCLOutput(secondLine);
+                        this.OutputManager.WriteTCLOutput(secondLine);
                     }
                     break;
             }
@@ -160,6 +165,6 @@ namespace GoAhead.Commands.UCF
         }
 
         [Parameter(Comment = "The name of the instance. You may add '*' as a suffix or prefix. The instance name will become the group name of the AREA constraint, however the '*' will be removed")]
-        public string InstanceName = "*inst_mod*";
+        public String InstanceName = "*inst_mod*";
     }
 }

@@ -15,10 +15,10 @@ namespace GoAhead.Commands.Data
             // reset PRIOR to reading to reset high lighter 
             CommandExecuter.Instance.Execute(new Reset());
             FPGA.FPGA.Instance.Reset();
-            FPGA.FPGA.Instance.BackendType = FPGATypes.BackendType.Altera;
+            FPGA.FPGA.Instance.BackendType = FPGA.FPGATypes.BackendType.Altera;
 
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(FileName);
+            xmlDoc.Load(this.FileName);
 
             XmlElement xmlEl = xmlDoc.DocumentElement;
             Dictionary<string, XmlNode> blockTypes = new Dictionary<string, XmlNode>();
@@ -100,15 +100,15 @@ namespace GoAhead.Commands.Data
                                 {
                                     if (attr.Name.Equals("x"))
                                     {
-                                        x = int.Parse(attr.Value);
+                                        x = Int32.Parse(attr.Value);
                                     }
                                     if (attr.Name.Equals("y"))
                                     {
-                                        y = int.Parse(attr.Value);
+                                        y = Int32.Parse(attr.Value);
                                     }
                                     if (attr.Name.Equals("z"))
                                     {
-                                        z = int.Parse(attr.Value);
+                                        z = Int32.Parse(attr.Value);
                                     }
                                     if (attr.Name.Equals("name"))
                                     {
@@ -148,6 +148,6 @@ namespace GoAhead.Commands.Data
         }
 
         [Parameter(Comment = "The file to read")]
-        public string FileName = "cycloneive.arch";
+        public String FileName = "cycloneive.arch";
     }
 }

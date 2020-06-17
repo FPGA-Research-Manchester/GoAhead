@@ -13,29 +13,29 @@ namespace GoAhead.Commands.Library
     {
         protected override void DoCommandAction()
         {
-            CheckParameter();
+            this.CheckParameter();
 
             
             LibraryElement main;
-            if(Objects.Library.Instance.Contains(Name))
+            if(Objects.Library.Instance.Contains(this.Name))
             {
-                main = Objects.Library.Instance.GetElement(Name);
+                main = Objects.Library.Instance.GetElement(this.Name);
             }
             else
             {
                 main = new LibraryElement();
-                main.Name = Name;
+                main.Name = this.Name;
                 main.VivadoConnectionPrimitive = true;
                 main.Containter = new NetlistContainer();
                 Objects.Library.Instance.Add(main);
             }
-            for (int i = 0; i < BELs.Count; i++)
+            for (int i = 0; i < this.BELs.Count; i++)
             {
-                string bel = BELs[i];                
-                string prefix = InputBELinputPortPrefix[i];
-                string outputPort = BELOutputPorts[i];
-                string initValue = InitValues[i];
-                LibraryElement elem = GetLibraryElement(bel, false, prefix, outputPort, initValue);
+                string bel = this.BELs[i];                
+                string prefix = this.InputBELinputPortPrefix[i];
+                string outputPort = this.BELOutputPorts[i];
+                string initValue = this.InitValues[i];
+                LibraryElement elem = this.GetLibraryElement(bel, false, prefix, outputPort, initValue);
 
                 main.Add(elem);
                 Objects.Library.Instance.Add(elem);
@@ -62,23 +62,23 @@ namespace GoAhead.Commands.Library
 
         private void CheckParameter()
         {
-            if (string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(this.Name))
             {
                 throw new ArgumentException("Name must not be empty");
             }
-            if(BELs.Any(s => Regex.IsMatch(s, @"[A-D]LUT6$^")))
+            if(this.BELs.Any(s => Regex.IsMatch(s, @"[A-D]LUT6$^")))
             {
                 throw new ArgumentException("InputBEL must be included in A..DLUT6");
             }
-            if (BELs.Count != InputBELinputPortPrefix.Count)
+            if (this.BELs.Count != this.InputBELinputPortPrefix.Count)
             {
                 throw new ArgumentException("All list arguments must be of the same size (1)");
             }            
-            if (BELs.Count != InitValues.Count)
+            if (this.BELs.Count != this.InitValues.Count)
             {
                 throw new ArgumentException("All list arguments must be of the same size (2)");
             }            
-            if (BELs.Count != BELOutputPorts.Count)
+            if (this.BELs.Count != this.BELOutputPorts.Count)
             {
                 throw new ArgumentException("All list arguments must be of the same size (3)");
             }
@@ -86,17 +86,17 @@ namespace GoAhead.Commands.Library
 
         private LibraryElement GetLibraryElement(string belName, bool makeInputsConstant, string inputPortPrefix, string outputPort, string initValue)
         {
-            if (BELType.Equals("LUT6"))
+            if (this.BELType.Equals("LUT6"))
             {
                 return GetLUT(belName, makeInputsConstant, inputPortPrefix, outputPort, initValue);
             }
-            else if (BELType.Equals("FDRE"))
+            else if (this.BELType.Equals("FDRE"))
             {
                 return GetFF(belName, makeInputsConstant, inputPortPrefix, outputPort);
             }
             else
             {
-                throw new ArgumentException("Unsupportd BEL " + BELType);
+                throw new ArgumentException("Unsupportd BEL " + this.BELType);
             }
         }
 
@@ -104,11 +104,11 @@ namespace GoAhead.Commands.Library
         {
             int lutSize = 6;
             LibraryElement el = new LibraryElement();
-            el.SliceNumber = SliceNumber;
+            el.SliceNumber = this.SliceNumber;
             el.Name = belName;
-            el.PrimitiveName = BELType;
+            el.PrimitiveName = this.BELType;
             el.BEL = belName;
-            el.LoadCommand = ToString();
+            el.LoadCommand = this.ToString();
             el.Containter = new NetlistContainer();
             el.VHDLGenericMap = "generic map ( INIT => X\"" + initValue + "\" )";
             el.Containter = new XDLModule();
@@ -125,11 +125,11 @@ namespace GoAhead.Commands.Library
             // six inputs I=..I5
             for (int i = 0; i < lutSize; i++)
             {
-                AddXDLPort(el, "I", i, FPGATypes.PortDirection.In, makeInputsConstant);
+                this.AddXDLPort(el, "I", i, FPGATypes.PortDirection.In, makeInputsConstant);
             }
 
             Tile clb = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB));
-            Tile interconnect = FPGATypes.GetInterconnectTile(clb);
+            Tile interconnect = FPGA.FPGATypes.GetInterconnectTile(clb);
 
             List<string> lutPortNames = new List<string>();
             // see LUTRouting tab
@@ -138,7 +138,7 @@ namespace GoAhead.Commands.Library
                 lutPortNames.Add(inputPortPrefix + i);
             }
 
-            foreach (string stopOverPortName in StopOverPorts)
+            foreach (string stopOverPortName in this.StopOverPorts)
             {
                 el.AddPortToBlock(interconnect, new Port(stopOverPortName));
             }
@@ -149,11 +149,11 @@ namespace GoAhead.Commands.Library
         private LibraryElement GetFF(string belName, bool makeInputsConstant, string inputPortPrefix, string outputPort)
         {
             LibraryElement el = new LibraryElement();
-            el.SliceNumber = SliceNumber;
+            el.SliceNumber = this.SliceNumber;
             el.Name = belName;
-            el.PrimitiveName = BELType;
+            el.PrimitiveName = this.BELType;
             el.BEL = belName;
-            el.LoadCommand = ToString();
+            el.LoadCommand = this.ToString();
             el.Containter = new NetlistContainer();
             el.VHDLGenericMap = "generic map ( INIT => '0' )";
             el.Containter = new XDLModule();
@@ -185,9 +185,9 @@ namespace GoAhead.Commands.Library
             };
 
             Tile clb = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB));
-            Tile interconnect = FPGATypes.GetInterconnectTile(clb);
+            Tile interconnect = FPGA.FPGATypes.GetInterconnectTile(clb);
 
-            foreach (string stopOverPortName in StopOverPorts)
+            foreach (string stopOverPortName in this.StopOverPorts)
             {
                 el.AddPortToBlock(interconnect, new Port(stopOverPortName));
             }
@@ -214,25 +214,25 @@ namespace GoAhead.Commands.Library
         public string Name = "VivadoConnectionPrimitive";
 
         [Parameter(Comment = "The type of BEl that is instantiated (currently only LUT6 is supported/tested")]
-        public string BELType = "LUT6";
+        public String BELType = "LUT6";
 
         [Parameter(Comment = "The list of BELs incorporated in this connection primitive, used for conected wires (currently only the default is supported")]
-        public List<string> BELs = new List<string> { "A6LUT", "B6LUT", "C6LUT", "D6LUT" };
+        public List<String> BELs = new List<string> { "A6LUT", "B6LUT", "C6LUT", "D6LUT" };
 
         [Parameter(Comment = "We need to provide the prefix for the input bel input ports (namely LUT input ports)")]
-        public List<string> InputBELinputPortPrefix = new List<string> { "_L_A", "_L_B", "_L_C", "_L_D" };
+        public List<String> InputBELinputPortPrefix = new List<string> { "_L_A", "_L_B", "_L_C", "_L_D" };
 
         [Parameter(Comment = "Which ports in the interconnect tile shall be blocked to allow stop over routing, e.g. WW2END3 -> FAN_ALT3 -> FAN_BOUNCE3 -> IMUX_L21 -> CLBLM_IMUX21 -> CLBLM_L_C4. These port will be excluded from blocking as they are needed by this connection primitive ")]
-        public List<string> StopOverPorts = new List<string> { "WW2END3", "FAN_ALT3", "FAN_BOUNCE3", "IMUX_L21" };
+        public List<String> StopOverPorts = new List<string> { "WW2END3", "FAN_ALT3", "FAN_BOUNCE3", "IMUX_L21" };
 
         [Parameter(Comment = "Init values for BELs, i.e. generic value for generic map ( INIT => X\"ABCDABCDABCDABCD\" ) ")]
-        public List<string> InitValues = new List<string> { "FFFF0000FFFF0000", "CCCCCCCCCCCCCCCC", "FF00FF00FF00FF00", "F0F0F0F0F0F0F0F0" };
+        public List<String> InitValues = new List<string> { "FFFF0000FFFF0000", "CCCCCCCCCCCCCCCC", "FF00FF00FF00FF00", "F0F0F0F0F0F0F0F0" };
         
         [Parameter(Comment = "")]
-        public List<string> BELInputPorts = new List<string> { "A", "B", "C", "D" };
+        public List<String> BELInputPorts = new List<string> { "A", "B", "C", "D" };
 
         [Parameter(Comment = "The name of the BEl (currently only 6LUT) output ports")]
-        public List<string> BELOutputPorts = new List<string> { "A", "B", "C", "D" };
+        public List<String> BELOutputPorts = new List<string> { "A", "B", "C", "D" };
 
         [Parameter(Comment = "The slice number where to place the BELs")]
         public int SliceNumber = 0;

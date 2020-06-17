@@ -6,7 +6,7 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
     {
         protected override void DoCommandAction()
         {
-            Objects.BlockerSettings.Instance.AddBlockerOrder(FamilyRegexp, DriverRegexp, SinkRegexp, ConnectAll, EndPip, VivadoPipConnector);
+            Objects.BlockerSettings.Instance.AddBlockerOrder(this.FamilyRegexp, this.DriverRegexp, this.SinkRegexp, this.ConnectAll, this.EndPip, this.VivadoPipConnector);
         }
 
         public override void Undo()
@@ -15,13 +15,13 @@ namespace GoAhead.Commands.BlockingShared.BlockerConfig
         }
 
         [Parameter(Comment = "The regexp that identifies ports to use as drivers. '.*' matches all pips")]
-        public string DriverRegexp = ".*";
+        public String DriverRegexp = ".*";
 
         [Parameter(Comment = "The regexp that identifies ports to use as sinks. '.*' matches all pips")]
-        public string SinkRegexp = ".*";
+        public String SinkRegexp = ".*";
 
         [Parameter(Comment = "The special Vivado pip connector symbol, e.g., <1> for connecting long lines to begin ports")]
-        public string VivadoPipConnector = "";
+        public String VivadoPipConnector = "";
         
 
         [Parameter(Comment = "Wheter to connect all directly reachable other pips (true) or only one (false)")]
