@@ -7,7 +7,7 @@ namespace GoAhead.Commands
 {
     class PrintVersion : Command
     {
-        private const string version = "2.0.6";
+        private const string version = "2.0.7a";
 
         protected override void DoCommandAction()
         {
