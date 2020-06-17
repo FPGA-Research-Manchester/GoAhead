@@ -227,6 +227,7 @@
     <Compile Include="Commands\Debug\PrintTileInfo.cs" />
     <Compile Include="Commands\Debug\PrintTileInfoForSelection.cs" />
     <Compile Include="Commands\Debug\PrintTilesWithPortsExcludedFromBlocking.cs" />
+    <Compile Include="Commands\GUI\OpenTileView.cs" />
     <Compile Include="Commands\Identifier\AddBELInwireIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\AddBELRoute.cs" />
     <Compile Include="Commands\Identifier\AddBELOutwireIdentifierRegexp.cs" />

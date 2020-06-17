@@ -14,6 +14,7 @@ using GoAhead.Settings;
 using GoAhead.Objects;
 using GoAhead.GUI.TileView;
 using GoAhead.GUI.FPGAView;
+using GoAhead.Commands.GUI;
 
 namespace GoAhead.GUI
 {
@@ -740,8 +741,12 @@ namespace GoAhead.GUI
             TileKey clickedKey = GetClickedKey(e.X, e.Y);
             if (FPGA.FPGA.Instance.Contains(clickedKey))
             {
-                TileViewForm tileView = new TileViewForm(FPGA.FPGA.Instance.GetTile(clickedKey));
-                tileView.Show();
+                OpenTileView cmd = new OpenTileView
+                {
+                    X = clickedKey.X,
+                    Y = clickedKey.Y
+                };
+                CommandExecuter.Instance.Execute(cmd);
             }
         }
 
