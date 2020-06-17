@@ -15,9 +15,9 @@ namespace GoAhead.Commands.GridStyle
 
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
-            LibraryElement libraryElement = this.GetLibraryElement();
+            LibraryElement libraryElement = GetLibraryElement();
 
             Objects.Library.Instance.Add(libraryElement);
         }
@@ -30,8 +30,8 @@ namespace GoAhead.Commands.GridStyle
         private LibraryElement GetLibraryElement()
         {
             LibraryElement el = new LibraryElement();
-            el.Name = this.Name;
-            el.PrimitiveName = this.BELType;
+            el.Name = Name;
+            el.PrimitiveName = BELType;
             el.VHDLGenericMap = "generic map ( INIT => X\"ABCDABCDABCDABCD\" )";
             el.Containter = new XDLModule();
             el.VivadoConnectionPrimitive = true;
@@ -47,7 +47,7 @@ namespace GoAhead.Commands.GridStyle
             // add inpins
             for (int i = 0; i < LUT_SIZE; i++)
             {
-                this.AddXDLPort(el, $"I{i}", FPGATypes.PortDirection.In);
+                AddXDLPort(el, $"I{i}", FPGATypes.PortDirection.In);
             }
 
             return el;
@@ -66,8 +66,8 @@ namespace GoAhead.Commands.GridStyle
 
         private void CheckParameters()
         {
-            bool nameIsCorrect = !String.IsNullOrEmpty(this.Name);
-            bool belTypeIsCorrect = !String.IsNullOrEmpty(this.BELType);
+            bool nameIsCorrect = !string.IsNullOrEmpty(Name);
+            bool belTypeIsCorrect = !string.IsNullOrEmpty(BELType);
 
             if(!nameIsCorrect || !belTypeIsCorrect)
             {
@@ -79,6 +79,6 @@ namespace GoAhead.Commands.GridStyle
         public string Name = "VivadoConnectionPrimitive";
 
         [Parameter(Comment = "The type of BEL that is used.")]
-        public String BELType = "LUT6";
+        public string BELType = "LUT6";
     }
 }

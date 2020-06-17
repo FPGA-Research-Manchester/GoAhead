@@ -11,14 +11,14 @@ namespace GoAhead.Commands.GridStyle
 
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
             for(int i = 0; i < SIGNALS_PER_TILE; i++)
             {
-                this.PortIndex = i;
+                PortIndex = i;
 
-                int signalIndex = this.StartIndex + i;
-                this.SignalIndex = signalIndex;
+                int signalIndex = StartIndex + i;
+                SignalIndex = signalIndex;
 
                 base.DoCommandAction();
             }
@@ -26,7 +26,7 @@ namespace GoAhead.Commands.GridStyle
 
         private void CheckParameters()
         {
-            bool startIndexIsCorrect = this.StartIndex >= 0;
+            bool startIndexIsCorrect = StartIndex >= 0;
 
             if(!startIndexIsCorrect)
             {

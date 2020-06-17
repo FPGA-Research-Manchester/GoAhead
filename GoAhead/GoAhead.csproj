@@ -246,7 +246,6 @@
     <Compile Include="Commands\Identifier\AddBELWireIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\SetOrientedBlockIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\SetColumnType.cs" />
-    <Compile Include="Commands\Library\AddLUTConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\AddVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />

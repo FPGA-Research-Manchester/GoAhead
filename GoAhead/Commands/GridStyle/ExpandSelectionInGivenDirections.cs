@@ -22,7 +22,7 @@ namespace GoAhead.Commands.GridStyle
             List<Direction> dirs = new List<Direction>();
 
             // parse List<String> to List<Direction>
-            foreach(String s in this.Directions)
+            foreach(string s in Directions)
             {
                 dirs.Add((Direction) Enum.Parse(typeof(Direction), s, true));
             }
@@ -37,12 +37,12 @@ namespace GoAhead.Commands.GridStyle
 
         private void ExpandSelection(List<Direction> dirs)
         {
-            bool startInUserSelection = this.StartInUserSelection();
+            bool startInUserSelection = StartInUserSelection();
 
             List<Tile> tiles = new List<Tile>();
 
             // add expanded tiles to the list
-            foreach (Tile tile in FPGA.TileSelectionManager.Instance.GetSelectedTiles())
+            foreach (Tile tile in TileSelectionManager.Instance.GetSelectedTiles())
             {
                 foreach (Direction dir in dirs)
                 {
@@ -53,13 +53,13 @@ namespace GoAhead.Commands.GridStyle
             // add expansion to current selection
             foreach (Tile t in tiles)
             {
-                if (!FPGA.TileSelectionManager.Instance.IsSelected(t.TileKey))
+                if (!TileSelectionManager.Instance.IsSelected(t.TileKey))
                 {
-                    FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                    TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                 }
             }
 
-            FPGA.TileSelectionManager.Instance.SelectionChanged();
+            TileSelectionManager.Instance.SelectionChanged();
         }
 
         private List<Tile> ExpandTile(Tile start, Direction dir, bool startInUserSelection)
@@ -73,8 +73,8 @@ namespace GoAhead.Commands.GridStyle
             {
                 Tile other = FPGA.FPGA.Instance.GetTile(x, y);
 
-                if ((FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && startInUserSelection) ||
-                    (!FPGA.TileSelectionManager.Instance.IsUserSelected(other.TileKey, this.UserSelectionType) && !startInUserSelection))
+                if ((TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && startInUserSelection) ||
+                    (!TileSelectionManager.Instance.IsUserSelected(other.TileKey, UserSelectionType) && !startInUserSelection))
                 {
                     tiles.Add(other);
                 }
@@ -108,14 +108,14 @@ namespace GoAhead.Commands.GridStyle
 
         private bool StartInUserSelection()
         {
-            if (FPGA.TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
+            if (TileSelectionManager.Instance.NumberOfSelectedTiles == 0)
             {
                 throw new ArgumentException("No tiles selected.");
             }
 
             // the selection should be either all outside or all inside the user selection
-            bool allUserSelected = FPGA.TileSelectionManager.Instance.GetSelectedTiles().All(t => FPGA.TileSelectionManager.Instance.IsUserSelected(t.TileKey, this.UserSelectionType));
-            bool noneUserSelected = FPGA.TileSelectionManager.Instance.GetSelectedTiles().All(t => !FPGA.TileSelectionManager.Instance.IsUserSelected(t.TileKey, this.UserSelectionType));
+            bool allUserSelected = TileSelectionManager.Instance.GetSelectedTiles().All(t => TileSelectionManager.Instance.IsUserSelected(t.TileKey, UserSelectionType));
+            bool noneUserSelected = TileSelectionManager.Instance.GetSelectedTiles().All(t => !TileSelectionManager.Instance.IsUserSelected(t.TileKey, UserSelectionType));
 
             if (!allUserSelected && !noneUserSelected)
             {
@@ -126,9 +126,9 @@ namespace GoAhead.Commands.GridStyle
         }
 
         [Parameter(Comment = "The directions to expand.")]
-        public List<String> Directions = new List<String>();
+        public List<string> Directions = new List<string>();
 
         [Parameter(Comment = "The name of the user selection that limits the extent of the selection expanding")]
-        public String UserSelectionType = "PartialArea";
+        public string UserSelectionType = "PartialArea";
     }
 }

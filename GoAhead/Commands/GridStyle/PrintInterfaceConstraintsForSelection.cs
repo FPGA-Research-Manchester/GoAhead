@@ -30,18 +30,18 @@ namespace GoAhead.Commands.GridStyle
 
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
-            List<Tile> backupSelection = FPGA.TileSelectionManager.Instance.GetSelectedTiles().ToList();
+            List<Tile> backupSelection = TileSelectionManager.Instance.GetSelectedTiles().ToList();
 
-            bool append = this.Append;
+            bool append = Append;
 
-            foreach (string spec in this.InterfaceSpecs)
+            foreach (string spec in InterfaceSpecs)
             {
                 List<TileKey> intTiles = new List<TileKey>();
 
                 // filter interconnect tiles from selection
-                foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(
+                foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(
                          tile => IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
                 {
                     intTiles.Add(t.TileKey);
@@ -61,14 +61,14 @@ namespace GoAhead.Commands.GridStyle
                 {
                     IEnumerable<IGrouping<int, TileKey>> clusters = null;
 
-                    if (this.Border.Equals(WEST) || this.Border.Equals(EAST))
+                    if (Border.Equals(WEST) || Border.Equals(EAST))
                     {
                         clusters =
                             from key in intTiles
                             group key by key.X into cluster
                             select cluster;
                     }
-                    else if (this.Border.Equals(NORTH) || this.Border.Equals(SOUTH))
+                    else if (Border.Equals(NORTH) || Border.Equals(SOUTH))
                     {
                         clusters =
                             from key in intTiles
@@ -80,11 +80,11 @@ namespace GoAhead.Commands.GridStyle
                         throw new ArgumentException("Unexpected format in parameter InterfaceSpecs.");
                     }
 
-                    if (this.Border.Equals(NORTH) || this.Border.Equals(WEST))
+                    if (Border.Equals(NORTH) || Border.Equals(WEST))
                     {
                         clusters = clusters.OrderBy(c => c.Key).Take(length);
                     }
-                    else if (this.Border.Equals(EAST) || this.Border.Equals(SOUTH))
+                    else if (Border.Equals(EAST) || Border.Equals(SOUTH))
                     {
                         clusters = clusters.OrderByDescending(c => c.Key).Take(length);
                     }
@@ -99,37 +99,37 @@ namespace GoAhead.Commands.GridStyle
                         }
                     }
 
-                    FPGA.TileSelectionManager.Instance.ClearSelection();
+                    TileSelectionManager.Instance.ClearSelection();
 
                     // select interface tiles
                     foreach (Tile t in interfaceTiles)
                     {
-                        FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                        TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                     }
 
                     PrintPartitionPinConstraintsForSelection command = new PrintPartitionPinConstraintsForSelection();
                     command.Mode = MODE_ROW_WISE;
                     command.Horizontal = HORIZONTAL_LEFT_TO_RIGHT;
                     command.Vertical = VERTICAL_TOP_DOWN;
-                    command.CardinalDirection = this.GetCardinalDirection(this.Border, direction);
+                    command.CardinalDirection = GetCardinalDirection(Border, direction);
                     command.Length = length;
                     command.IndexOffset = indexOffset;
-                    command.PortKind = this.GetPortKind(direction);
-                    command.NumberOfSignals = this.NumberOfSignals;
-                    command.FileName = this.FileName;
-                    command.InstanceName = this.InstanceName;
-                    command.SignalName = $"{this.SignalPrefix}_{signalName}";
-                    command.PreventBlocking = this.PreventWiresFromBlocking;
+                    command.PortKind = GetPortKind(direction);
+                    command.NumberOfSignals = NumberOfSignals;
+                    command.FileName = FileName;
+                    command.InstanceName = InstanceName;
+                    command.SignalName = $"{SignalPrefix}_{signalName}";
+                    command.PreventBlocking = PreventWiresFromBlocking;
                     command.Append = append;
-                    command.CreateBackupFile = this.CreateBackupFile;
+                    command.CreateBackupFile = CreateBackupFile;
                     CommandExecuter.Instance.Execute(command);
 
                     // restore selection
-                    FPGA.TileSelectionManager.Instance.ClearSelection();
+                    TileSelectionManager.Instance.ClearSelection();
 
                     foreach (Tile t in backupSelection)
                     {
-                        FPGA.TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
+                        TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                     }
 
                     indexOffset += interfaceTiles.Count * PrintPartitionPinConstraintsForTile.SIGNALS_PER_TILE;
@@ -196,15 +196,15 @@ namespace GoAhead.Commands.GridStyle
 
         private void CheckParameters()
         {
-            bool interfaceSpecsIsCorrect = this.InterfaceSpecs.Count > 0;
-            bool borderIsCorrect = this.Border.Equals(WEST) ||
-                                   this.Border.Equals(EAST) ||
-                                   this.Border.Equals(SOUTH) ||
-                                   this.Border.Equals(NORTH);
+            bool interfaceSpecsIsCorrect = InterfaceSpecs.Count > 0;
+            bool borderIsCorrect = Border.Equals(WEST) ||
+                                   Border.Equals(EAST) ||
+                                   Border.Equals(SOUTH) ||
+                                   Border.Equals(NORTH);
 
-            bool instanceNameIsCorrect = !String.IsNullOrEmpty(this.InstanceName);
-            bool signalPrefixIsCorrect = !String.IsNullOrEmpty(this.SignalPrefix);
-            bool filenameIsCorrect = !String.IsNullOrEmpty(this.FileName);
+            bool instanceNameIsCorrect = !string.IsNullOrEmpty(InstanceName);
+            bool signalPrefixIsCorrect = !string.IsNullOrEmpty(SignalPrefix);
+            bool filenameIsCorrect = !string.IsNullOrEmpty(FileName);
 
             if(!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect)
             {
@@ -221,16 +221,16 @@ namespace GoAhead.Commands.GridStyle
         public List<string> InterfaceSpecs = new List<string>();
 
         [Parameter(Comment = "The border on the slot (North, East, South, or West)")]
-        public String Border = "West";
+        public string Border = "West";
 
         [Parameter(Comment = "Instance name of the component")]
-        public String InstanceName = "inst_ConnMacro";
+        public string InstanceName = "inst_ConnMacro";
 
         [Parameter(Comment = "The name of the signal")]
-        public String SignalPrefix = "x0y0";
+        public string SignalPrefix = "x0y0";
 
         [Parameter(Comment = "The name of the file.")]
-        public String FileName = "";
+        public string FileName = "";
 
         [Parameter(Comment = "Whether to append the content to the existing file.")]
         public bool Append = true;

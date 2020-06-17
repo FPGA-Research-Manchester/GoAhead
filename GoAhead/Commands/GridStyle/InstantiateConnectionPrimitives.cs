@@ -16,27 +16,27 @@ namespace GoAhead.Commands.GridStyle
     {
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
-            for(int i = 0; i < this.NumberOfPrimitives; i++)
+            for(int i = 0; i < NumberOfPrimitives; i++)
             {
                 LibElemInst instance = new LibElemInst();
-                instance.InstanceName = this.GetNextInstanceName();
-                instance.LibraryElementName = this.LibraryElementName;
-                Objects.LibraryElementInstanceManager.Instance.Add(instance);                
+                instance.InstanceName = GetNextInstanceName();
+                instance.LibraryElementName = LibraryElementName;
+                LibraryElementInstanceManager.Instance.Add(instance);                
             }
         }
 
-        private String GetNextInstanceName()
+        private string GetNextInstanceName()
         {
-            return $"{this.InstanceName}_{m_instanceIndex++}";
+            return $"{InstanceName}_{m_instanceIndex++}";
         }
 
         private void CheckParameters()
         {
-            bool libraryElementNameIsCorrect = !String.IsNullOrEmpty(this.LibraryElementName);
-            bool instanceNameIsCorrect = !String.IsNullOrEmpty(this.InstanceName);
-            bool numberOfPrimitivesIsCorrect = this.NumberOfPrimitives >= 0;
+            bool libraryElementNameIsCorrect = !string.IsNullOrEmpty(LibraryElementName);
+            bool instanceNameIsCorrect = !string.IsNullOrEmpty(InstanceName);
+            bool numberOfPrimitivesIsCorrect = NumberOfPrimitives >= 0;
 
             if(!libraryElementNameIsCorrect || !instanceNameIsCorrect || !numberOfPrimitivesIsCorrect)
             {
@@ -52,10 +52,10 @@ namespace GoAhead.Commands.GridStyle
         private static int m_instanceIndex = 0;
 
         [Parameter(Comment = "The name of the library element")]
-        public String LibraryElementName = "DoubleSliceConnectionPrimitive";
+        public string LibraryElementName = "DoubleSliceConnectionPrimitive";
 
         [Parameter(Comment = "The name of the instantiated connection primitive")]
-        public String InstanceName = "inst";
+        public string InstanceName = "inst";
 
         [Parameter(Comment = "The number of primitives to instantiate")]
         public int NumberOfPrimitives = 4;

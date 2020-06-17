@@ -20,11 +20,11 @@ namespace GoAhead.Commands.GridStyle
 
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
             List<TileKey> intTiles = new List<TileKey>();
 
-            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(tile => 
+            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(tile => 
                      IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
                 intTiles.Add(t.TileKey);
@@ -32,17 +32,17 @@ namespace GoAhead.Commands.GridStyle
 
             var modeClusters =
                 from key in intTiles
-                group key by this.IsRowWise() ? key.Y : key.X into cluster
+                group key by IsRowWise() ? key.Y : key.X into cluster
                 select cluster;
 
             List<Tile> tilesInFinalOrder = new List<Tile>();
 
             // order tiles
-            if (this.IsRowWise())
+            if (IsRowWise())
             {
-                foreach (IGrouping<int, TileKey> group in (this.IsTopDown() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
+                foreach (IGrouping<int, TileKey> group in (IsTopDown() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
                 {
-                    foreach (TileKey key in (this.IsLeftToRight() ? group.OrderBy(k => k.X) : group.OrderBy(k => k.X).Reverse()))
+                    foreach (TileKey key in (IsLeftToRight() ? group.OrderBy(k => k.X) : group.OrderBy(k => k.X).Reverse()))
                     {
                         tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
                     }
@@ -50,26 +50,26 @@ namespace GoAhead.Commands.GridStyle
             }
             else
             {
-                foreach (IGrouping<int, TileKey> group in (this.IsLeftToRight() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
+                foreach (IGrouping<int, TileKey> group in (IsLeftToRight() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
                 {
-                    foreach (TileKey key in (this.IsTopDown() ? group.OrderBy(k => k.Y) : group.OrderBy(k => k.Y).Reverse()))
+                    foreach (TileKey key in (IsTopDown() ? group.OrderBy(k => k.Y) : group.OrderBy(k => k.Y).Reverse()))
                     {
                         tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
                     }
                 }
             }
 
-            int startIndex = this.IndexOffset;
+            int startIndex = IndexOffset;
 
             foreach (Tile t in tilesInFinalOrder)
             {
-                if(startIndex >= this.NumberOfSignals)
+                if(startIndex >= NumberOfSignals)
                 {
                     break;
                 }
 
-                this.SwitchboxName = t.Location;
-                this.StartIndex = startIndex;
+                SwitchboxName = t.Location;
+                StartIndex = startIndex;
 
                 base.DoCommandAction();
 
@@ -79,40 +79,40 @@ namespace GoAhead.Commands.GridStyle
 
         private bool IsRowWise()
         {
-            return this.Mode.Equals(MODE_ROW_WISE);
+            return Mode.Equals(MODE_ROW_WISE);
         }
 
         private bool IsColumnWise()
         {
-            return this.Mode.Equals(MODE_COLUMN_WISE);
+            return Mode.Equals(MODE_COLUMN_WISE);
         }
 
         private bool IsLeftToRight()
         {
-            return this.Horizontal.Equals(HORIZONTAL_LEFT_TO_RIGHT);
+            return Horizontal.Equals(HORIZONTAL_LEFT_TO_RIGHT);
         }
 		
         private bool IsRightToLeft()
         {
-            return this.Horizontal.Equals(HORIZONTAL_RIGHT_TO_LEFT);
+            return Horizontal.Equals(HORIZONTAL_RIGHT_TO_LEFT);
         }
 		
         private bool IsTopDown()
         {
-            return this.Vertical.Equals(VERTICAL_TOP_DOWN);
+            return Vertical.Equals(VERTICAL_TOP_DOWN);
         }
 		
         private bool IsBottomUp()
         {
-            return this.Vertical.Equals(VERTICAL_BOTTOM_UP);
+            return Vertical.Equals(VERTICAL_BOTTOM_UP);
         }
 
         private void CheckParameters()
         {
-            bool modeIsCorrect = this.IsRowWise() || this.IsColumnWise();
-            bool horizontalIsCorrect = this.IsLeftToRight() || this.IsRightToLeft();
-            bool verticalIsCorrect = this.IsTopDown() || this.IsBottomUp();
-            bool indexOffsetIsCorrect = this.IndexOffset >= 0;
+            bool modeIsCorrect = IsRowWise() || IsColumnWise();
+            bool horizontalIsCorrect = IsLeftToRight() || IsRightToLeft();
+            bool verticalIsCorrect = IsTopDown() || IsBottomUp();
+            bool indexOffsetIsCorrect = IndexOffset >= 0;
 
             if(!modeIsCorrect || !horizontalIsCorrect || !verticalIsCorrect || !indexOffsetIsCorrect)
             {
@@ -129,13 +129,13 @@ namespace GoAhead.Commands.GridStyle
         public int NumberOfSignals = 128;
 
         [Parameter(Comment = "Either row-wise or column-wise")]
-        public String Mode = MODE_ROW_WISE;
+        public string Mode = MODE_ROW_WISE;
 
         [Parameter(Comment = "Either left-to-right or right-to-left")]
-        public String Horizontal = HORIZONTAL_LEFT_TO_RIGHT;
+        public string Horizontal = HORIZONTAL_LEFT_TO_RIGHT;
 
         [Parameter(Comment = "Either top-down or bottom-up")]
-        public String Vertical = VERTICAL_TOP_DOWN;
+        public string Vertical = VERTICAL_TOP_DOWN;
 
         [Parameter(Comment = "Either top-down or bottom-up")]
         public int IndexOffset = 0;

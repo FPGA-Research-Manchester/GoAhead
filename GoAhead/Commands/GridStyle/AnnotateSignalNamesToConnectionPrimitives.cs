@@ -23,86 +23,86 @@ namespace GoAhead.Commands.GridStyle
 
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
             AnnotateSignalNames annotateSignalNames = new AnnotateSignalNames();
-            annotateSignalNames.InstantiationFilter = this.InstantiationFilter;
+            annotateSignalNames.InstantiationFilter = InstantiationFilter;
             annotateSignalNames.LibraryElementFilter = REGEX_MATCH_ALL;
             annotateSignalNames.StartIndex = START_INDEX;
             annotateSignalNames.StepWidth = STEP_WIDTH;
-            annotateSignalNames.PortMapping = this.GetPortMapping(this.LookupTableInputPort.ToString());
+            annotateSignalNames.PortMapping = GetPortMapping(LookupTableInputPort.ToString());
             CommandExecuter.Instance.Execute(annotateSignalNames);
         }
 
-        private List<String> GetPortMapping(String portNumber)
+        private List<string> GetPortMapping(string portNumber)
         {
-            List<String> portMapping = new List<String>();
+            List<string> portMapping = new List<string>();
 
-            String portMap = String.Empty;
+            string portMap = string.Empty;
             portMap += $"I({portNumber})";
             portMap += SEPERATOR;
-            portMap += this.GetSignalNameWithPrefix(this.InputSignalName);
+            portMap += GetSignalNameWithPrefix(InputSignalName);
             portMap += SEPERATOR;
-            portMap += this.InputMappingKind;
+            portMap += InputMappingKind;
 
             portMapping.Add(portMap);
 
-            portMap = String.Empty;
-            portMap += this.GetConstantInputPortsPrefix(portNumber);
+            portMap = string.Empty;
+            portMap += GetConstantInputPortsPrefix(portNumber);
             portMap += SEPERATOR;
             portMap += GROUND;
             portMap += SEPERATOR;
-            portMap += this.InputMappingKind;
+            portMap += InputMappingKind;
 
             portMapping.Add(portMap);
 
-            portMap = String.Empty;
+            portMap = string.Empty;
             portMap += "O";
             portMap += SEPERATOR;
-            portMap += this.GetSignalNameWithPrefix(this.OutputSignalName);
+            portMap += GetSignalNameWithPrefix(OutputSignalName);
             portMap += SEPERATOR;
-            portMap += this.OutputMappingKind;
+            portMap += OutputMappingKind;
 
             portMapping.Add(portMap);
 
             return portMapping;
         }
 
-        private String GetSignalNameWithPrefix(String name)
+        private string GetSignalNameWithPrefix(string name)
         {
-            String nameWithPrefix;
+            string nameWithPrefix;
 
-            if(this.SignalPrefix.Equals(String.Empty) || name.Equals(VCC) || name.Equals(GROUND))
+            if(SignalPrefix.Equals(string.Empty) || name.Equals(VCC) || name.Equals(GROUND))
             {
                 nameWithPrefix = name;
             }
             else
             {
-                nameWithPrefix = $"{this.SignalPrefix}_{name}"; 
+                nameWithPrefix = $"{SignalPrefix}_{name}"; 
             }
 
             return nameWithPrefix;
         }
 
-        private String GetConstantInputPortsPrefix(String portNumber)
+        private string GetConstantInputPortsPrefix(string portNumber)
         {
-            String inputPorts = "012345";
+            string inputPorts = "012345";
 
-            inputPorts = inputPorts.Replace(portNumber, String.Empty);
-            inputPorts = String.Join("|", inputPorts.ToCharArray());
+            inputPorts = inputPorts.Replace(portNumber, string.Empty);
+            inputPorts = string.Join("|", inputPorts.ToCharArray());
            
             return $"I({inputPorts})";
         }
 
         private void CheckParameters()
         {
-            bool instantiationFilterIsCorrect = !String.IsNullOrEmpty(this.InstantiationFilter);
-            bool inputMappingKindIsCorrect = this.InputMappingKind.Equals(MAPPING_KIND_EXTERNAL) || this.InputMappingKind.Equals(MAPPING_KIND_INTERNAL);
-            bool outputMappingKindIsCorrect = this.OutputMappingKind.Equals(MAPPING_KIND_EXTERNAL) || this.OutputMappingKind.Equals(MAPPING_KIND_INTERNAL);
-            bool inputSignalNameIsCorrect = !String.IsNullOrEmpty(this.InputSignalName);
-            bool outputSignalNameIsCorrect = !String.IsNullOrEmpty(this.OutputSignalName);
-            bool lookupTableInputPortIsCorrect = this.LookupTableInputPort >= 0 && this.LookupTableInputPort <= 5;
-            bool signalPrefixIsCorrect = !String.IsNullOrEmpty(this.SignalPrefix);
+            bool instantiationFilterIsCorrect = !string.IsNullOrEmpty(InstantiationFilter);
+            bool inputMappingKindIsCorrect = InputMappingKind.Equals(MAPPING_KIND_EXTERNAL) || InputMappingKind.Equals(MAPPING_KIND_INTERNAL);
+            bool outputMappingKindIsCorrect = OutputMappingKind.Equals(MAPPING_KIND_EXTERNAL) || OutputMappingKind.Equals(MAPPING_KIND_INTERNAL);
+            bool inputSignalNameIsCorrect = !string.IsNullOrEmpty(InputSignalName);
+            bool outputSignalNameIsCorrect = !string.IsNullOrEmpty(OutputSignalName);
+            bool lookupTableInputPortIsCorrect = LookupTableInputPort >= 0 && LookupTableInputPort <= 5;
+            bool signalPrefixIsCorrect = !string.IsNullOrEmpty(SignalPrefix);
 
             if (!instantiationFilterIsCorrect || !inputMappingKindIsCorrect || !outputMappingKindIsCorrect || !inputSignalNameIsCorrect ||
                !outputSignalNameIsCorrect || !lookupTableInputPortIsCorrect || !signalPrefixIsCorrect)
@@ -117,24 +117,24 @@ namespace GoAhead.Commands.GridStyle
         }
 
         [Parameter(Comment = "Only consider instantiations that match this filter.")]
-        public String InstantiationFilter = ".*";
+        public string InstantiationFilter = ".*";
 
         [Parameter(Comment = "The mapping kind of the signal connected to the input of the LUTs. Internal signals will be defined within the VHDL component, where external signals will be defined in the entity of the VHDL component.")]
-        public String InputMappingKind = "external";
+        public string InputMappingKind = "external";
 
         [Parameter(Comment = "The mapping kind of the signal connected to the output of the LUTs. Internal signals will be defined within the VHDL component, where external signals will be defined in the entity of the VHDL component.")]
-        public String OutputMappingKind = "external";
+        public string OutputMappingKind = "external";
 
         [Parameter(Comment = "The name of the signal connected to the input of the LUTs")]
-        public String InputSignalName = "s2p";
+        public string InputSignalName = "s2p";
 
         [Parameter(Comment = "The name of the signal connected to the output of the LUTs")]
-        public String OutputSignalName = "p2s";
+        public string OutputSignalName = "p2s";
 
         [Parameter(Comment = "The input port of the LUTs to connect the input signal to.")]
         public int LookupTableInputPort = 3;
 
         [Parameter(Comment = "The prefix of the input and output signals")]
-        public String SignalPrefix = "x0y0";
+        public string SignalPrefix = "x0y0";
     }
 }

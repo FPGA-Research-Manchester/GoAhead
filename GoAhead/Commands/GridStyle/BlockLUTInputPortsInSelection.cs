@@ -12,11 +12,11 @@ namespace GoAhead.Commands.GridStyle
     {
         protected override void DoCommandAction()
         {
-            this.CheckParameters();
+            CheckParameters();
 
             List<Tile> selectionCLB = new List<Tile>();
 
-            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(tile =>
+            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(tile =>
                      IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB)))
             {
                 selectionCLB.Add(t);
@@ -26,14 +26,14 @@ namespace GoAhead.Commands.GridStyle
 
             foreach(Tile clb in selectionCLB)
             {
-                selectionInt.Add(FPGA.FPGATypes.GetInterconnectTile(clb));
+                selectionInt.Add(FPGATypes.GetInterconnectTile(clb));
             }
 
             foreach(Tile clb in selectionCLB)
             {
-                Tile interconnect = FPGA.FPGATypes.GetInterconnectTile(clb);
+                Tile interconnect = FPGATypes.GetInterconnectTile(clb);
 
-                foreach (Tuple<Port, Port> t in clb.SwitchMatrix.GetAllArcs().Where(a => Regex.IsMatch(a.Item2.Name, this.InputPortsRegex)))
+                foreach (Tuple<Port, Port> t in clb.SwitchMatrix.GetAllArcs().Where(a => Regex.IsMatch(a.Item2.Name, InputPortsRegex)))
                 {
                     foreach (Wire w in interconnect.WireList.Where(w => w.PipOnOtherTile.Equals(t.Item1.Name)))
                     {
@@ -45,7 +45,7 @@ namespace GoAhead.Commands.GridStyle
 
         private void CheckParameters()
         {
-            bool inputPortsRegexIsCorrect = !String.IsNullOrEmpty(this.InputPortsRegex);
+            bool inputPortsRegexIsCorrect = !string.IsNullOrEmpty(InputPortsRegex);
 
             if(!inputPortsRegexIsCorrect)
             {

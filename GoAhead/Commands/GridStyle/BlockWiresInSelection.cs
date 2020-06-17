@@ -14,7 +14,7 @@ namespace GoAhead.Commands.GridStyle
         {
             List<Tile> selection = new List<Tile>();
 
-            foreach (Tile t in FPGA.TileSelectionManager.Instance.GetSelectedTiles().Where(tile =>
+            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(tile =>
                      IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
                 selection.Add(t);
@@ -30,7 +30,7 @@ namespace GoAhead.Commands.GridStyle
             {
                 foreach (Port p in tile.SwitchMatrix.Ports)
                 {
-                    if(Regex.IsMatch(p.Name, this.PortsToUnblockRegex))
+                    if(Regex.IsMatch(p.Name, PortsToUnblockRegex))
                     { 
                         bool isInSelection = false;
 
