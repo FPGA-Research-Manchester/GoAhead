@@ -747,8 +747,6 @@ namespace GoAhead.GUI
                     Y = clickedKey.Y
                 };
                 CommandExecuter.Instance.Execute(cmd);
-                //TileViewForm tileView = new TileViewForm(FPGA.FPGA.Instance.GetTile(clickedKey));
-                //tileView.Show();
             }
         }
 
