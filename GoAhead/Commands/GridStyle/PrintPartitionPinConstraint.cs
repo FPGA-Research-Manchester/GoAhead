@@ -48,9 +48,23 @@ namespace GoAhead.Commands.GridStyle
         {
             string portName = string.Empty;
 
-            // port name has following structure: <WWT|EE|SS|NN><LENGTH><BEG|END><INDEX>
+            //// 7-Series port name has following structure: <WWT|EE|SS|NN><LENGTH><BEG|END><INDEX>
+            //portName += CardinalDirection[0].ToString() + CardinalDirection[0].ToString();
+            //portName += Length.ToString();
+            //portName += PortKind.Substring(0, 3).ToUpper();
+            //portName += PortIndex.ToString();
+
+            // UltraScale/UltraScale+ port name has following structure: <WW|EE|SS|NN><LENGTH>_<W|E>_<BEG|END><INDEX>, <WW|EE|SS|NN>12_<BEG|END><INDEX>
             portName += CardinalDirection[0].ToString() + CardinalDirection[0].ToString();
             portName += Length.ToString();
+            if (12 != Length)
+            {
+                portName += "_E_";
+            }
+            else
+            {
+                portName += "_";
+            }
             portName += PortKind.Substring(0, 3).ToUpper();
             portName += PortIndex.ToString();
 
