@@ -1,0 +1,175 @@
+AddAlias AliasName=DoNotBlockDoubleEastBegin Commands="
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_23_INT_OUT CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_25_INT_OUT CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_27_INT_OUT CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_29_INT_OUT CheckForExistence=False IncludeAllPorts=True;	
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_BEG0 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_BEG1 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_BEG2 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_BEG3 CheckForExistence=False IncludeAllPorts=True;
+	";
+AddAlias AliasName=DoNotBlockDoubleEastEnd Commands="
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_END0 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_END1 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_END2 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=EE2_W_END3 CheckForExistence=False IncludeAllPorts=True;
+	";		
+AddAlias AliasName=DoNotBlockDoubleWestBegin Commands="
+	ExcludePortsFromBlockingInSelection PortName=SDNDSW_W_0_FTS CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_120_INT_OUT CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_122_INT_OUT CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=INT_NODE_SINGLE_DOUBLE_124_INT_OUT CheckForExistence=False IncludeAllPorts=True;	
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_BEG0 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_BEG1 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_BEG2 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_BEG3 CheckForExistence=False IncludeAllPorts=True;
+	";	
+AddAlias AliasName=DoNotBlockDoubleWestEnd Commands="
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_END0 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_END1 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_END2 CheckForExistence=False IncludeAllPorts=True; 
+	ExcludePortsFromBlockingInSelection PortName=WW2_W_END3 CheckForExistence=False IncludeAllPorts=True;
+	";		
+
+Set Variable=A6LUTW Value=IMUX_W((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
+Set Variable=A6LUTE Value=IMUX_E((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
+Set Variable=B6LUTW Value=IMUX_W((0$)|(4$)|(17$)|(25$)|(33$)|(41$));
+Set Variable=B6LUTE Value=IMUX_E((0$)|(4$)|(17$)|(25$)|(33$)|(41$));
+Set Variable=C6LUTW Value=IMUX_W((9$)|(13$)|(20$)|(28$)|(36$)|(44$));
+Set Variable=C6LUTE Value=IMUX_E((9$)|(13$)|(20$)|(28$)|(36$)|(44$));
+Set Variable=D6LUTW Value=IMUX_W((8$)|(12$)|(21$)|(29$)|(37$)|(45$));
+Set Variable=D6LUTE Value=IMUX_E((8$)|(12$)|(21$)|(29$)|(37$)|(45$));
+
+Set Variable=MaxDepth Value=4;
+
+##################################################################################################################################################################################################################
+# # FF Out to EE2_W_BEG
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=LOGIC_OUTS_W1$ TargetPortRegexp=EE2_W_BEG0 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=LOGIC_OUTS_W5$ TargetPortRegexp=EE2_W_BEG1 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=LOGIC_OUTS_W9$ TargetPortRegexp=EE2_W_BEG2 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=LOGIC_OUTS_W13$ TargetPortRegexp=EE2_W_BEG3 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+##################################################################################################################################################################################################################
+# # END -> BEG
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END0 TargetPortRegexp=EE2_W_BEG0 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END1 TargetPortRegexp=EE2_W_BEG1 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END2 TargetPortRegexp=EE2_W_BEG2 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END3 TargetPortRegexp=EE2_W_BEG3 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END0 TargetPortRegexp=WW2_W_BEG0 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END1 TargetPortRegexp=WW2_W_BEG1 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END2 TargetPortRegexp=WW2_W_BEG2 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END3 TargetPortRegexp=WW2_W_BEG3 MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+##################################################################################################################################################################################################################
+# END auf LUTs -> FFs
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END(0|1|2|3) TargetPortRegexp=%A6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END(0|1|2|3) TargetPortRegexp=%B6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END(0|1|2|3) TargetPortRegexp=%C6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;                                                                                                                                                     
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=EE2_W_END(0|1|2|3) TargetPortRegexp=%D6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;                                                                                                                                           
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END(0|1|2|3) TargetPortRegexp=%A6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END(0|1|2|3) TargetPortRegexp=%B6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END(0|1|2|3) TargetPortRegexp=%C6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;                                                                                                                                                     
+# PathSearchOnFPGAWithRegexp StartLocation=INT_X1Y179 TargetLocation=INT_X1Y179 StartPortRegexps=WW2_W_END(0|1|2|3) TargetPortRegexp=%D6LUTW% MaxDepth=%MaxDepth% FileName=c:/temp/ku_ff.txt Append=True;        
+# result
+#INT_X1Y179.EE2_W_END0 -> INT_X1Y179.INT_NODE_IMUX_59_INT_OUT 	-> INT_X1Y179.IMUX_W1 (A6LUTW)
+#INT_X1Y179.WW2_W_END0 -> INT_X1Y179.INODE_1_W_3_FTS 			-> INT_X1Y179.IMUX_W1 (A6LUTW)
+#INT_X1Y179.EE2_W_END1 -> INT_X1Y179.INT_NODE_IMUX_126_INT_OUT 	-> INT_X1Y179.IMUX_W25 (B6LUTW)
+#INT_X1Y179.WW2_W_END1 -> INT_X1Y179.INT_NODE_IMUX_124_INT_OUT 	-> INT_X1Y179.IMUX_W25 (B6LUTW)
+#INT_X1Y179.EE2_W_END2 -> INT_X1Y179.INT_NODE_IMUX_100_INT_OUT 	-> INT_X1Y179.IMUX_W28 (C6LUTW)
+#INT_X1Y179.WW2_W_END2 -> INT_X1Y179.INT_NODE_IMUX_97_INT_OUT 	-> INT_X1Y179.IMUX_W28 (C6LUTW)
+#INT_X1Y179.EE2_W_END3 -> INT_X1Y179.INT_NODE_IMUX_104_INT_OUT 	-> INT_X1Y179.IMUX_W29 (D6LUTW)
+#INT_X1Y179.WW2_W_END3 -> INT_X1Y179.INT_NODE_IMUX_102_INT_OUT 	-> INT_X1Y179.IMUX_W29 (D6LUTW)
+##################################################################################################################################################################################################################
+
+# AFF.Q -> EE2_W_BEG0
+# BFF.Q -> EE2_W_BEG1
+# CFF.Q -> EE2_W_BEG2
+# DFF.Q -> EE2_W_BEG
+#Set Variable=FF_TO_BEG Value=LOGIC_OUTS_W1,INT_NODE_SINGLE_DOUBLE_16_INT_OUT,LOGIC_OUTS_W5,INT_NODE_SINGLE_DOUBLE_24_INT_OUT,LOGIC_OUTS_W9,INT_NODE_SINGLE_DOUBLE_26_INT_OUT,LOGIC_OUTS_W13,INT_NODE_SINGLE_DOUBLE_28_INT_OUT;
+# END -> LUT -> FF
+#Set Variable=END_TO_LUT_TO_FF Value=INT_NODE_IMUX_59_INT_OUT,INODE_1_W_3_FTS,INT_NODE_IMUX_126_INT_OUT,INT_NODE_IMUX_124_INT_OUT,INT_NODE_IMUX_100_INT_OUT,INT_NODE_IMUX_97_INT_OUT,INT_NODE_IMUX_104_INT_OUT,INT_NODE_IMUX_102_INT_OUT;
+
+#Set Variable=UltraScaleConnectionPrimitveStopOvers=%FF_TO_BEG%,%END_TO_LUT_TO_FF%
+
+DefineBELType
+	Name="LUT6"
+	VHDLGenericMap="generic map ( INIT => X\"ABCDABCDABCDABCD\" )"
+	OutputPorts="O"
+	InputPorts="I0","I1","I2","I3","I4","I5"
+	InputsConstantValue=false
+	;
+DefineBELType
+	Name="FDRE"
+	VHDLGenericMap="generic map ( INIT => '0' )"
+	OutputPorts="Q"
+	InputPorts="D","C","CE","R"
+	InputsConstantValue=false
+	;
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive	
+	BELs=AFF,BFF,CFF,DFF
+	InputBEL=""
+	StopOverPorts=LOGIC_OUTS_W1,INT_NODE_SINGLE_DOUBLE_16_INT_OUT,LOGIC_OUTS_W5,INT_NODE_SINGLE_DOUBLE_24_INT_OUT,LOGIC_OUTS_W9,INT_NODE_SINGLE_DOUBLE_26_INT_OUT,LOGIC_OUTS_W13,INT_NODE_SINGLE_DOUBLE_28_INT_OUT,INT_NODE_IMUX_59_INT_OUT,INODE_1_W_3_FTS,INT_NODE_IMUX_126_INT_OUT,INT_NODE_IMUX_124_INT_OUT,INT_NODE_IMUX_100_INT_OUT,INT_NODE_IMUX_97_INT_OUT,INT_NODE_IMUX_104_INT_OUT,INT_NODE_IMUX_102_INT_OUT
+ 	InputBELinputPortPrefix="","","",""
+	BELOutputPorts="","","",""
+	BELType=FDRE
+	SliceNumber=0
+	;	
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive	
+	BELs=A6LUT
+	InputBEL=A6LUT
+	StopOverPorts=
+	InputBELinputPortPrefix=A
+	BELOutputPorts=A
+	BELType=LUT6
+	SliceNumber=0
+	;
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive	
+	BELs=B6LUT
+	InputBEL=B6LUT
+	StopOverPorts=
+	InputBELinputPortPrefix=B
+	BELOutputPorts=B
+	BELType=LUT6
+	SliceNumber=0
+	;	
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive	
+	BELs=C6LUT
+	InputBEL=C6LUT
+	StopOverPorts=
+	InputBELinputPortPrefix=C
+	BELOutputPorts=C
+	BELType=LUT6
+	SliceNumber=0
+	;		
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive	
+	BELs=D6LUT
+	InputBEL=D6LUT
+	StopOverPorts=
+	InputBELinputPortPrefix=D
+	BELOutputPorts=D
+	BELType=LUT6
+	SliceNumber=0
+	;					
+# Khoa testing
+AddLUTConnectionPrimitive
+  Name=LUTConnectionPrimitive
+  BELType=LUT6;
+  
+AddAlias 
+  AliasName=DoNotBlockDoubleEast 
+  Commands="DoNotBlockDoubleEastBegin; DoNotBlockDoubleEastEnd;";
+
+AddAlias 
+  AliasName=DoNotBlockQuadEast 
+  Commands="DoNotBlockQuadEastBegin; DoNotBlockQuadEastEnd;";
+  
+AddAlias 
+  AliasName=DoNotBlockDoubleWest 
+  Commands="DoNotBlockDoubleWestBegin; DoNotBlockDoubleWestEnd;";
+
+AddAlias 
+  AliasName=DoNotBlockQuadWest 
+  Commands="DoNotBlockQuadWestBegin; DoNotBlockQuadWestEnd;";

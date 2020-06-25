@@ -134,8 +134,8 @@ namespace GoAhead.Code.VHDL
             }
 
             // update tool info
-            Tile t = FPGA.FPGA.Instance.GetTile(m_instantation.AnchorLocation);
-            Blackboard.Instance.ClearToolTipInfo(t);
+            //Tile t = FPGA.FPGA.Instance.GetTile(m_instantation.AnchorLocation);
+            //Blackboard.Instance.ClearToolTipInfo(t);
 
             foreach (string str in mappings)
             {
@@ -148,7 +148,7 @@ namespace GoAhead.Code.VHDL
                     toolTip = Regex.Replace(toolTip, @"^\s+", "");
                     toolTip = Regex.Replace(toolTip, ",", "");
                     toolTip += Environment.NewLine;
-                    Blackboard.Instance.AddToolTipInfo(t, toolTip);
+                    //Blackboard.Instance.AddToolTipInfo(t, toolTip);
                 }
             }
 

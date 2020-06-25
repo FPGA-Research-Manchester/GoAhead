@@ -35,9 +35,13 @@ namespace GoAhead.Commands.UCF
             pBlockName = "pb_" + pBlockName;
             OutputManager.WriteTCLOutput("create_pblock " + pBlockName + "; # generated_by_GoAhead");
 
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, pBlockName);
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 1 }, pBlockName);
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, pBlockName);
+            //this.PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, pBlockName);
+            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.CLB, new int[] { 0, 0 }, pBlockName);
             PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.BRAM, new int[] { 0, 0, 1, 1 }, pBlockName);
-            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0 }, pBlockName);
+            PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes.DSP, new int[] { 0, 0, 1, 1 }, pBlockName);
+
             OutputManager.WriteTCLOutput("add_cells_to_pblock [get_pblocks " + pBlockName + "] [get_cells " + InstanceName + "]; # generated_by_GoAhead");
 
         }
@@ -62,7 +66,8 @@ namespace GoAhead.Commands.UCF
         private void PrintAreaConstraintForResourceType(IdentifierManager.RegexTypes filterType, int[] sliceIndeces, string groupName)
         {
             int incr1 = 0;
-            int incr2 = 1;
+            int incr2 = 1;    // why = 1?
+            //int incr2 = 0;
 
             bool success = Print(incr1, incr2, FPGATypes.Placement.LowerLeft, FPGATypes.Placement.UpperRight, filterType, sliceIndeces, groupName);
 
@@ -141,7 +146,7 @@ namespace GoAhead.Commands.UCF
                     }
                     break;
                 case FPGATypes.BackendType.Vivado:
-                    for (int i = 0; i < sliceIndeces.Length; i += 2)
+                    for (int i = 0; i < sliceIndeces.Length; i += 2) // why < Length?
                     {
                         string lowerLeftSlice = tile1.Slices[sliceIndeces[i + incr1]].ToString();
                         string upperRightSlice = tile2.Slices[sliceIndeces[i + incr2]].ToString();

@@ -75,7 +75,7 @@ namespace GoAhead.Commands
                 // All matched regex target tiles
                 for (int j = 0; j < targetTiles.Count; j++)
                 {
-                    List<Port> targetPorts = targetTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, TargetPort)).OrderBy(p => p.Name).ToList();
+                    List<Port> targetPorts = targetTiles[j].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, TargetPort)).OrderBy(p => p.Name).ToList();
 
                     // All matched regex start ports
                     for (int k = 0; k < startPorts.Count; k++)
