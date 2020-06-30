@@ -1,4 +1,6 @@
 ﻿using GoAhead.Commands.BlockingShared;
+using GoAhead.FPGA;
+using GoAhead.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,31 @@ namespace GoAhead.Commands.GridStyle
         private const string PORT_KIND_BEGIN = "Begin";
         private const string PORT_KIND_END = "End";
 
+        private const string EAST_OPTION_FOR_SWITCHBOX = "E";
+        private const string WEST_OPTION_FOR_SWITCHBOX = "W";
+
         private const string DIRECTION_WEST = "West";
         private const string DIRECTION_EAST = "East";
         private const string DIRECTION_NORTH = "North";
         private const string DIRECTION_SOUTH = "South";
+
+        private Dictionary<FPGATypes.FPGAFamily, bool> supportsEastWestSwitchboxes = new Dictionary<FPGATypes.FPGAFamily, bool>() {
+            { FPGATypes.FPGAFamily.UltraScale, true },
+            { FPGATypes.FPGAFamily.Zynq, false },
+            { FPGATypes.FPGAFamily.Virtex7, false},
+            { FPGATypes.FPGAFamily.Virtex6, false},
+            { FPGATypes.FPGAFamily.Virtex5, false},
+            { FPGATypes.FPGAFamily.Virtex4, false},
+            { FPGATypes.FPGAFamily.Virtex2, false},
+            { FPGATypes.FPGAFamily.StratixV, false},
+            { FPGATypes.FPGAFamily.Spartan6, false},
+            { FPGATypes.FPGAFamily.Spartan3, false},
+            { FPGATypes.FPGAFamily.Kintex7, false},
+            { FPGATypes.FPGAFamily.CycloneIVE, false},
+            { FPGATypes.FPGAFamily.Artix7, false},
+            { FPGATypes.FPGAFamily.Undefined, false},
+        };
+
 
         protected override void DoCommandAction()
         {
@@ -46,7 +69,44 @@ namespace GoAhead.Commands.GridStyle
 
         private string GetPortName()
         {
-            string portName = string.Empty;
+            /*
+             * we can define the portNameFormat in goa with the following conditions
+             * use {0} for the first letter of the cardinal direction parameter
+             * use {1} for the length parameter
+             * use {2} for the 'W' or 'E', optional parameter to signify the left or right switchbox for certain architecture families
+             * use {3} for the PortKind parameter
+             * use {4} for the PortIndex
+             * e.g "{0}{0}{1}{2}{3}{4}" would produce WW12_E_BEG0
+             * e.g "{0}.{0}.{0}.{0}-{1}*{2}*{3}^{4} would produce W.W.W.W-12*W*BEG^0
+             * e.g "{0}{0}{1}{3}{4} would produce WW12BEG0 (notice ommitted the 2nd parameter)
+             * 
+             * For ultrascale-like architecture, we have two different portNameSchemas - one for wires of length less
+             * than 12 (which will require the user to specify the second (2) parameter), and other for wires of 
+             * length 12
+             */
+
+            string portNameSchema = VariableManager.Instance.GetValue("portNameSchema"); // Get value from .goa file
+            string portNameSchemaWithOptionForEastWestSwitchbox = string.Empty;
+            string formattedPortName = string.Empty;
+
+            if (supportsEastWestSwitchboxes[FPGA.FPGA.Instance.Family] && Length < 12)
+            {
+                try
+                {
+                    portNameSchemaWithOptionForEastWestSwitchbox = VariableManager.Instance.GetValue("portNameSchemaWithOptionForEastWestSwitchbox"); // Get value from .goa file
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(String.Format("Could not retrieve the portNameSchemaWithOptionForEastWestSwitchbox variable for family {0}. Failed with exception: {1}", FPGA.FPGA.Instance.Family, e.Message));
+                }
+
+                if (EastWestSwitchbox != "E" && EastWestSwitchbox != "W")
+                    throw new ArgumentException(String.Format("Illegal Argument {0} EastWestSwitchbox parameter for family {1} that supports this option", EastWestSwitchbox, FPGA.FPGA.Instance.Family));
+
+                formattedPortName = String.Format(portNameSchemaWithOptionForEastWestSwitchbox, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex); 
+            }
+            else
+                formattedPortName = String.Format(portNameSchema, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex);
 
             //// 7-Series port name has following structure: <WWT|EE|SS|NN><LENGTH><BEG|END><INDEX>
             //portName += CardinalDirection[0].ToString() + CardinalDirection[0].ToString();
@@ -55,20 +115,8 @@ namespace GoAhead.Commands.GridStyle
             //portName += PortIndex.ToString();
 
             // UltraScale/UltraScale+ port name has following structure: <WW|EE|SS|NN><LENGTH>_<W|E>_<BEG|END><INDEX>, <WW|EE|SS|NN>12_<BEG|END><INDEX>
-            portName += CardinalDirection[0].ToString() + CardinalDirection[0].ToString();
-            portName += Length.ToString();
-            if (12 != Length)
-            {
-                portName += "_E_";
-            }
-            else
-            {
-                portName += "_";
-            }
-            portName += PortKind.Substring(0, 3).ToUpper();
-            portName += PortIndex.ToString();
 
-            return portName;
+            return formattedPortName;
         }
 
         private void CheckParameters()
@@ -79,6 +127,10 @@ namespace GoAhead.Commands.GridStyle
                                               CardinalDirection.Equals(DIRECTION_SOUTH) ||
                                               CardinalDirection.Equals(DIRECTION_NORTH);
 
+            bool eastWestSwitchboxIsCorrect = EastWestSwitchbox.Equals(EAST_OPTION_FOR_SWITCHBOX) ||
+                                              EastWestSwitchbox.Equals(WEST_OPTION_FOR_SWITCHBOX) ||
+                                              EastWestSwitchbox.Equals(string.Empty);
+
             bool signalIndexIsCorrect = SignalIndex >= 0;
             bool portIndexIsCorrect = PortIndex >= 0 && PortIndex <= 3;
             bool instanceNameIsCorrect = !string.IsNullOrEmpty(InstanceName);
@@ -86,7 +138,8 @@ namespace GoAhead.Commands.GridStyle
             bool switchboxNameIsCorrect = !string.IsNullOrEmpty(SwitchboxName);
 
             if (!portKindIsCorrect || !cardinalDirectionIsCorrect || !signalIndexIsCorrect || !portIndexIsCorrect ||
-                !instanceNameIsCorrect || !signalNameIsCorrect || !switchboxNameIsCorrect)
+                !instanceNameIsCorrect || !signalNameIsCorrect || !switchboxNameIsCorrect ||
+                !eastWestSwitchboxIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in one of the parameters.");
             }
@@ -116,6 +169,9 @@ namespace GoAhead.Commands.GridStyle
         [Parameter(Comment = "The length of the wire (in terms of number of switchboxes")]
         public int Length = 2;
 
+        [Parameter(Comment = "The switchbox to use. Allowed options are 'E' or 'W'")]
+        public string EastWestSwitchbox = string.Empty;
+
         [Parameter(Comment = "Instance name of the component")]
         public string InstanceName = "inst_ConnMacro";
 
@@ -125,7 +181,8 @@ namespace GoAhead.Commands.GridStyle
         [Parameter(Comment = "The name of the switchbox.")]
         public string SwitchboxName = "INT_R_X41Y9";
 
-
+        //constant dictionary (move constants to a separate class?)
+        
 
     }
 }
