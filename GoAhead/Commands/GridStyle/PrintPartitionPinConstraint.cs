@@ -21,23 +21,6 @@ namespace GoAhead.Commands.GridStyle
         private const string DIRECTION_NORTH = "North";
         private const string DIRECTION_SOUTH = "South";
 
-        private Dictionary<FPGATypes.FPGAFamily, bool> supportsEastWestSwitchboxes = new Dictionary<FPGATypes.FPGAFamily, bool>() {
-            { FPGATypes.FPGAFamily.UltraScale, true },
-            { FPGATypes.FPGAFamily.Zynq, false },
-            { FPGATypes.FPGAFamily.Virtex7, false},
-            { FPGATypes.FPGAFamily.Virtex6, false},
-            { FPGATypes.FPGAFamily.Virtex5, false},
-            { FPGATypes.FPGAFamily.Virtex4, false},
-            { FPGATypes.FPGAFamily.Virtex2, false},
-            { FPGATypes.FPGAFamily.StratixV, false},
-            { FPGATypes.FPGAFamily.Spartan6, false},
-            { FPGATypes.FPGAFamily.Spartan3, false},
-            { FPGATypes.FPGAFamily.Kintex7, false},
-            { FPGATypes.FPGAFamily.CycloneIVE, false},
-            { FPGATypes.FPGAFamily.Artix7, false},
-            { FPGATypes.FPGAFamily.Undefined, false},
-        };
-
 
         protected override void DoCommandAction()
         {
@@ -89,7 +72,7 @@ namespace GoAhead.Commands.GridStyle
             string portNameSchemaWithOptionForEastWestSwitchbox = string.Empty;
             string formattedPortName = string.Empty;
 
-            if (supportsEastWestSwitchboxes[FPGA.FPGA.Instance.Family] && Length < 12)
+            if (FPGATypes.fpgaTypeSupportsEastWestSwitchboxes(FPGA.FPGA.Instance.Family) && Length < 12)
             {
                 try
                 {
@@ -170,7 +153,7 @@ namespace GoAhead.Commands.GridStyle
         public int Length = 2;
 
         [Parameter(Comment = "The switchbox to use. Allowed options are 'E' or 'W'")]
-        public string EastWestSwitchbox = string.Empty;
+        public string EastWestSwitchbox = WEST_OPTION_FOR_SWITCHBOX;
 
         [Parameter(Comment = "Instance name of the component")]
         public string InstanceName = "inst_ConnMacro";

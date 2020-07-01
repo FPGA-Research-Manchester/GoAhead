@@ -58,10 +58,13 @@ namespace GoAhead.Commands.GridStyle
                 string[] sLengths = split[INDEX_LENGTH].Split('-');
                 int[] lengths = Array.ConvertAll(sLengths, s => int.Parse(s));
 
-                string switchboxToUse = string.Empty;
-                
+                string switchboxToUse = "W";
+
                 if (split.Length > INDEX_SWITCHBOX)
+                {
                     switchboxToUse = split[INDEX_SWITCHBOX];
+                    switchboxToUse = switchboxToUse.ToUpper();
+                }
 
                 foreach (int length in lengths)
                 {
