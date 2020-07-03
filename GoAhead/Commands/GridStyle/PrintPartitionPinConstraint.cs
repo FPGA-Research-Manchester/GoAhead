@@ -70,9 +70,11 @@ namespace GoAhead.Commands.GridStyle
 
             string portNameSchema = VariableManager.Instance.GetValue("portNameSchema"); // Get value from .goa file
             string portNameSchemaWithOptionForEastWestSwitchbox = string.Empty;
+            string maxWireLengthForPortNamesWithEastWestSwitchboxOption = string.Empty;
+
             string formattedPortName = string.Empty;
 
-            if (FPGATypes.fpgaTypeSupportsEastWestSwitchboxes(FPGA.FPGA.Instance.Family) && Length < 12)
+            if (FPGATypes.fpgaTypeSupportsEastWestSwitchboxes(FPGA.FPGA.Instance.Family))
             {
                 try
                 {
@@ -80,13 +82,27 @@ namespace GoAhead.Commands.GridStyle
                 }
                 catch (Exception e)
                 {
-                    throw new Exception(String.Format("Could not retrieve the portNameSchemaWithOptionForEastWestSwitchbox variable for family {0}. Failed with exception: {1}", FPGA.FPGA.Instance.Family, e.Message));
+                    throw new Exception(String.Format("Could not retrieve the portNameSchemaWithOptionForEastWestSwitchbox variable for family {0}, which supports this option. Failed with exception: \n{1}", FPGA.FPGA.Instance.Family, e.Message));
                 }
 
-                if (EastWestSwitchbox != "E" && EastWestSwitchbox != "W")
-                    throw new ArgumentException(String.Format("Illegal Argument {0} EastWestSwitchbox parameter for family {1} that supports this option", EastWestSwitchbox, FPGA.FPGA.Instance.Family));
+                try
+                {
+                    maxWireLengthForPortNamesWithEastWestSwitchboxOption = VariableManager.Instance.GetValue("maxWireLengthForPortNamesWithEastWestSwitchboxOption");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(String.Format("Warning: Could not retreive variable maxWireLengthForPortNamesWithEastWestSwitchboxOption due to exception \n{0} \nContinuing with no maxLength for portNameSchemas.", e.Message));
+                }
 
-                formattedPortName = String.Format(portNameSchemaWithOptionForEastWestSwitchbox, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex); 
+
+                if (!string.IsNullOrEmpty(maxWireLengthForPortNamesWithEastWestSwitchboxOption) && Length >= Int32.Parse(maxWireLengthForPortNamesWithEastWestSwitchboxOption))
+                {
+                    formattedPortName = String.Format(portNameSchema, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex);
+                }
+                else
+                {
+                    formattedPortName = String.Format(portNameSchemaWithOptionForEastWestSwitchbox, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex);
+                }
             }
             else
                 formattedPortName = String.Format(portNameSchema, CardinalDirection[0].ToString(), Length, EastWestSwitchbox, PortKind.Substring(0, 3).ToUpper(), PortIndex);
@@ -111,8 +127,7 @@ namespace GoAhead.Commands.GridStyle
                                               CardinalDirection.Equals(DIRECTION_NORTH);
 
             bool eastWestSwitchboxIsCorrect = EastWestSwitchbox.Equals(EAST_OPTION_FOR_SWITCHBOX) ||
-                                              EastWestSwitchbox.Equals(WEST_OPTION_FOR_SWITCHBOX) ||
-                                              EastWestSwitchbox.Equals(string.Empty);
+                                              EastWestSwitchbox.Equals(WEST_OPTION_FOR_SWITCHBOX);
 
             bool signalIndexIsCorrect = SignalIndex >= 0;
             bool portIndexIsCorrect = PortIndex >= 0 && PortIndex <= 3;

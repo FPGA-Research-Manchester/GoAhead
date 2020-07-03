@@ -47,6 +47,7 @@ AddAlias AliasName=DoNotBlockDoubleWestEnd Commands="
 # Testing
 Set Variable=portNameSchema Value="{0}{0}{1}_{3}{4}";
 Set Variable=portNameSchemaWithOptionForEastWestSwitchbox Value="{0}{0}{1}_{2}_{3}{4}";
+Set Variable=maxWireLengthForPortNamesWithEastWestSwitchboxOption Value=12;
 
 Set Variable=A6LUTW Value=IMUX_W((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
 Set Variable=A6LUTE Value=IMUX_E((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
