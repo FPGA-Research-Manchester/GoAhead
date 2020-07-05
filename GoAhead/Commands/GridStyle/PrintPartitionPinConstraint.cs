@@ -64,8 +64,7 @@ namespace GoAhead.Commands.GridStyle
              * e.g "{0}{0}{1}{3}{4} would produce WW12BEG0 (notice ommitted the 2nd parameter)
              * 
              * For ultrascale-like architecture, we have two different portNameSchemas - one for wires of length less
-             * than 12 (which will require the user to specify the second (2) parameter), and other for wires of 
-             * length 12
+             * than maxWireLengthForPortNamesWithEastWestSwitchboxOption (if defined) and other for wires of more than this length.
              */
 
             string portNameSchema = VariableManager.Instance.GetValue("portNameSchema"); // Get value from .goa file
