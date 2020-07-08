@@ -31,9 +31,9 @@ AddBlockerOrder FamilyRegexp=UltraScale DriverRegexp=INT_NODE   SinkRegexp=SDN 	
 # Artix7
 #
 #####################################################################################################################################################
-AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=RAMB18_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=RAMB18_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Artix7 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;
 
 # do not do anything for tiles that match ...
 AddBlockerPortFilter FamilyRegexp=Artix7 Regexp=(CLK)|(END_(N|S)\d_\d);
@@ -59,9 +59,9 @@ AddBlockerOrder FamilyRegexp=Artix7 DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRege
 # Zynq
 #
 #####################################################################################################################################################
-AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=RAMB36_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\BRAM_Blocker_Zynq.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\SLICEX_Blocker_Zynq.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\DSP48_Blocker_Zynq.xdl;	
+# AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=RAMB36_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\BRAM_Blocker_Zynq.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\SLICEX_Blocker_Zynq.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Zynq PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Zynq\DSP48_Blocker_Zynq.xdl;	
 
 # do not do anything for tiles that match ...
 AddBlockerPortFilter FamilyRegexp=Zynq Regexp=(CLK)|(N\d_3$)|(END_S\d_0);
@@ -86,9 +86,9 @@ AddBlockerOrder FamilyRegexp=Zynq DriverRegexp=LOGIC_OUTS(_L){0,1}\d+ SinkRegexp
 # Spartan6
 #
 #####################################################################################################################################################
-AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=RAMB16_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
-AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;	
+# AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=RAMB16_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\BRAM_Blocker_S6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\SLICEX_Blocker_S6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Spartan6 PrimitveRegexp=DSP48_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Spartan6\DSP48_Blocker_S6.xdl;	
 
 # do not do anything for tiles that match REGH
 AddBlockerTileFilter FamilyRegexp=Spartan6 Regexp=REGH;
@@ -116,7 +116,7 @@ AddBlockerOrder FamilyRegexp=Spartan6 DriverRegexp=^RTERM SinkRegexp=^RTERM Conn
 # Note: We could for sure share some BlockerOrders with V5, however for the sake of simplicity, we keep V5 and V6 split
 #
 #####################################################################################################################################################
-AddBlockerPrimitveRegexp FamilyRegexp=Virtex6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex6\SLICEX_Blocker_V6.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Virtex6 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex6\SLICEX_Blocker_V6.xdl;
 
 # do not do anything for tiles that match REGH
 # TODO AddBlockerTileFilter FamilyRegexp=Spartan6 Regexp=REGH;
@@ -146,7 +146,7 @@ AddBlockerOrder FamilyRegexp=Virtex6 DriverRegexp=LOGIC_OUTS\d+ SinkRegexp=^BYP 
 # Note: We could share some BlockerOrders with V6, however for the sake of simplicity, we keep V5 and V6 split
 #
 #####################################################################################################################################################
-AddBlockerPrimitveRegexp FamilyRegexp=Virtex5 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex5\SLICEX_Blocker_V5_new.xdl;
+# AddBlockerPrimitveRegexp FamilyRegexp=Virtex5 PrimitveRegexp=SLICE_X\d+Y\d+ SliceNumberPattern=0 Template=%GOAHEAD_HOME%\Macros\Virtex5\SLICEX_Blocker_V5_new.xdl;
 
 # do not do anything for tiles that match REGH
 # TODO AddBlockerTileFilter FamilyRegexp=Virtex5 Regexp=REGH;
@@ -281,6 +281,9 @@ SetInterconnectIdentifierRegexp FamilyRegexp=Kintex7 IdentifierRegexp="^INT_(L|R
 SetInterconnectIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^INT_";
 SetInterconnectIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^INT_(L|R)";
 SetInterconnectIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^INT_(L|R)";
+
+SetSubInterconnectIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTF";
+
 
 SetColorSetting FamilyRegexp=(StratixV)|(CycloneIVE) IdentifierRegexp="^LAB" Color=Cyan;
 SetColorSetting FamilyRegexp=Spartan6 IdentifierRegexp="^CLEXM" Color=DarkCyan;
