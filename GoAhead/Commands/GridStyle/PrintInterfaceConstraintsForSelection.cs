@@ -43,9 +43,12 @@ namespace GoAhead.Commands.GridStyle
 
                 // filter interconnect tiles from selection
                 foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(
-                         tile => (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)
-                          && !IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect_INTF))))
+                         tile => (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect))))
                 {
+                    if (IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect) && IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        continue;
+                        
+                    
                     intTiles.Add(t.TileKey);
                 }
 
