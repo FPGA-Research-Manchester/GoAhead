@@ -572,7 +572,7 @@ namespace GoAhead.FPGA
             return defaultRegex.IsMatch(block);
         }
 
-        public static bool fpgaTypeSupportsEastWestSwitchboxes(FPGAFamily family)
+        public static bool FpgaTypeSupportsEastWestSwitchboxes(FPGAFamily family)
         {
             if (family == FPGAFamily.UltraScale)
                 return true;

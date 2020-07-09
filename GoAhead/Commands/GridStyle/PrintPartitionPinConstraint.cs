@@ -73,7 +73,7 @@ namespace GoAhead.Commands.GridStyle
 
             string formattedPortName = string.Empty;
 
-            if (FPGATypes.fpgaTypeSupportsEastWestSwitchboxes(FPGA.FPGA.Instance.Family))
+            if (FPGATypes.FpgaTypeSupportsEastWestSwitchboxes(FPGA.FPGA.Instance.Family))
             {
                 try
                 {
