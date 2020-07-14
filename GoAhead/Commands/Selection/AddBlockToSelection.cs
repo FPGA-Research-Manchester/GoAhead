@@ -219,6 +219,8 @@ namespace GoAhead.Commands.Selection
         {
             return 
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB) ||
+                IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB_left) ||
+                IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB_right) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.BRAM) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.DSP);
