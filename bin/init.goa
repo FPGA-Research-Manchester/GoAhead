@@ -264,23 +264,12 @@ SetCLBIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^CLB";
 
 
 ###################################################### ULTRASCALE ################################################################
-SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLE_M_X)|(^CLEM_X)";
-#SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)";
-#SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)";
+SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)";
 
-#SetCLBLeftIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)";
-
-#SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" BlockType="clb" Orientation="right";
+SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" BlockType="clb" Orientation="right";
 SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)" BlockType="clb" Orientation="left";
 
-
 #################################################################################################################################
-
-
-
-
-
-
 
 SetProhibitExcludeFilter FamilyRegexp=Spartan6 IdentifierRegexp="^TIEOFF";
 SetProhibitExcludeFilter FamilyRegexp=Virtex6 IdentifierRegexp="^TIEOFF";
