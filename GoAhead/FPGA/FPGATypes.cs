@@ -572,6 +572,14 @@ namespace GoAhead.FPGA
             return defaultRegex.IsMatch(block);
         }
 
+        public static bool fpgaTypeSupportsEastWestSwitchboxes(FPGAFamily family)
+        {
+            if (family == FPGAFamily.UltraScale)
+                return true;
+
+            return false;
+        }
+
         /// <summary>
         /// SLICE_X0Y0 or RAMB8_X1Y7
         /// </summary>

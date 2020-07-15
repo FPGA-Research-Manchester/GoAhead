@@ -27,6 +27,7 @@ namespace GoAhead.Commands.GridStyle
         private const int INDEX_DIRECTION = 0;
         private const int INDEX_LENGTH = 1;
         private const int INDEX_SIGNAL_NAME = 2;
+        private const int INDEX_SWITCHBOX = 3;
 
         protected override void DoCommandAction()
         {
@@ -42,8 +43,12 @@ namespace GoAhead.Commands.GridStyle
 
                 // filter interconnect tiles from selection
                 foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(
-                         tile => IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
+                         tile => (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect))))
                 {
+                    if (IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect) && IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        continue;
+                        
+                    
                     intTiles.Add(t.TileKey);
                 }
 
@@ -56,6 +61,14 @@ namespace GoAhead.Commands.GridStyle
 
                 string[] sLengths = split[INDEX_LENGTH].Split('-');
                 int[] lengths = Array.ConvertAll(sLengths, s => int.Parse(s));
+
+                string switchboxToUse = "W";
+
+                if (split.Length > INDEX_SWITCHBOX)
+                {
+                    switchboxToUse = split[INDEX_SWITCHBOX];
+                    switchboxToUse = switchboxToUse.ToUpper();
+                }
 
                 foreach (int length in lengths)
                 {
@@ -122,6 +135,7 @@ namespace GoAhead.Commands.GridStyle
                     command.PreventBlocking = PreventWiresFromBlocking;
                     command.Append = append;
                     command.CreateBackupFile = CreateBackupFile;
+                    command.EastWestSwitchbox = switchboxToUse;
                     CommandExecuter.Instance.Execute(command);
 
                     // restore selection
@@ -217,7 +231,7 @@ namespace GoAhead.Commands.GridStyle
             throw new NotImplementedException();
         }
 
-        [Parameter(Comment = "format: <directions>:<wire lengths>:<signal name> :: example; In:2-4:s2p,Out:2-4:p2s")]
+        [Parameter(Comment = "format: <directions>:<wire lengths>:<signal name>:<switchbox to use> :: example; In:2-4:s2p,Out:2-4:p2s:E; where <switchbox to use> is an option for some architecture families and supports the options 'E' and 'W'")]
         public List<string> InterfaceSpecs = new List<string>();
 
         [Parameter(Comment = "The border on the slot (North, East, South, or West)")]
