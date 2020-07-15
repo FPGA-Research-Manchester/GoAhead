@@ -31,6 +31,37 @@ namespace GoAhead.Commands.Selection
                         {
                             expansion.Add(intTile);
                         }
+
+                        //Add any adjacent clb tiles.
+                        foreach (Tile clbTile in FPGATypes.GetCLTile(intTile))
+                        {
+                            if (AddToSelection(clbTile))
+                            {
+                                expansion.Add(clbTile);
+                            }
+                        }
+
+                        //Add any adjacent INT_INTF tiles.
+                        foreach (Tile subIntTile in FPGATypes.GetSubInterconnectTile(intTile))
+                        {
+                            if (AddToSelection(subIntTile))
+                            {
+                                expansion.Add(subIntTile);
+                            }
+                        }
+
+                    }
+                }
+
+                if (IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                {
+                    Tile intTile = FPGATypes.GetInterconnectTile(t);
+                    if (intTile.LocationX == t.LocationX && intTile.LocationY == t.LocationY && IdentifierManager.Instance.IsMatch(intTile.Location, IdentifierManager.RegexTypes.Interconnect))
+                    {
+                        if (AddToSelection(intTile))
+                        {
+                            expansion.Add(intTile);
+                        }
                         foreach (Tile clbTile in FPGATypes.GetCLTile(intTile))
                         {
                             if (AddToSelection(clbTile))
@@ -41,6 +72,7 @@ namespace GoAhead.Commands.Selection
                     }
                 }
 
+           
                 if (IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect))
                 {
                     foreach (Tile clbTile in FPGATypes.GetCLTile(t))

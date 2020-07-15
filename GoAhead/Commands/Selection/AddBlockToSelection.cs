@@ -58,10 +58,21 @@ namespace GoAhead.Commands.Selection
                     }
                 }
             }
-            
+
+                       
             if(ul == null || lr == null)
             {
                 throw new ArgumentException("Could not derive upper left and lower right anchor");
+            }
+
+            //go from INT_INTF to INT
+            if (IdentifierManager.Instance.IsMatch(ul.Location, IdentifierManager.RegexTypes.SubInterconnect))
+            {
+                ul = FPGATypes.GetInterconnectTile(ul);
+            }
+            if (IdentifierManager.Instance.IsMatch(lr.Location, IdentifierManager.RegexTypes.SubInterconnect))
+            {
+                lr = FPGATypes.GetInterconnectTile(lr);
             }
 
 
@@ -219,8 +230,6 @@ namespace GoAhead.Commands.Selection
         {
             return 
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB) ||
-                IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB_left) ||
-                IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB_right) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.BRAM) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.DSP);

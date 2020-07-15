@@ -308,7 +308,7 @@ SetColorSetting FamilyRegexp=Spartan3 IdentifierRegexp="^R\d+C\d+" Color=DarkCya
 SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" Color=Cyan;
 SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)" Color=GreenYellow;
 SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)" Color=DarkCyan;
-SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTERFACE" Color=Yellow;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTF" Color=Yellow;
 SetColorSetting FamilyRegexp=Zynq IdentifierRegexp="^CLB" Color=DarkCyan;
 SetColorSetting FamilyRegexp=.* IdentifierRegexp="^INT" Color=Orange;
 
