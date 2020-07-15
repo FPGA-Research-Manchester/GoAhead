@@ -31,6 +31,24 @@ AddAlias AliasName=DoNotBlockDoubleWestEnd Commands="
 	ExcludePortsFromBlockingInSelection PortName=WW2_W_END3 CheckForExistence=False IncludeAllPorts=True;
 	";		
 
+# define the portNameFormat (and portNameSchemaWithOptionForEastWestSwitchbox) with the following conditions
+# use {0} for the first letter of the cardinal direction parameter
+# use {1} for the length parameter
+# use {2} for the 'W' or 'E', optional parameter to signify the left or right switchbox for certain architecture families
+# use {3} for the PortKind parameter
+# use {4} for the PortIndex
+# e.g "{0}{0}{1}{2}{3}{4}" would produce WW12_E_BEG0
+# e.g "{0}.{0}.{0}.{0}-{1}*{2}*{3}^{4} would produce W.W.W.W-12*W*BEG^0
+# e.g "{0}{0}{1}{3}{4} would produce WW12BEG0 (notice ommitted the 2nd parameter)
+#
+# An alternate schema for architecture families (like Ultrascale) that support EastWestSwitchbox Options can be defined using portNameSchemaWithOptionForEastWestSwitchbox
+# The variable maxWireLengthForPortNamesWithEastWestSwitchboxOption defines the max wire length up till which portNameSchemaWithOptionForEastWestSwitchbox should be used. For wires of this length and above, portNameSchema is used instead. For Ultrascale, this option is set to 12.
+
+# Testing
+Set Variable=portNameSchema Value="{0}{0}{1}_{3}{4}";
+Set Variable=portNameSchemaWithOptionForEastWestSwitchbox Value="{0}{0}{1}_{2}_{3}{4}";
+Set Variable=maxWireLengthForPortNamesWithEastWestSwitchboxOption Value=12;
+
 Set Variable=A6LUTW Value=IMUX_W((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
 Set Variable=A6LUTE Value=IMUX_E((1$)|(5$)|(16$)|(24$)|(32$)|(40$));
 Set Variable=B6LUTW Value=IMUX_W((0$)|(4$)|(17$)|(25$)|(33$)|(41$));
