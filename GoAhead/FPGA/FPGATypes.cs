@@ -491,7 +491,7 @@ namespace GoAhead.FPGA
         /// </summary>
         /// <param name="clbLocatioin"></param>
         /// <returns></returns>
-        public static IEnumerable<Tile> GetSubInterconnectTile(Tile interconnectTile)
+        public static IEnumerable<Tile> GetSubInterconnectTile(Tile tile)
         {
             switch (FPGA.Instance.Family)
             {
@@ -507,11 +507,22 @@ namespace GoAhead.FPGA
                 case FPGAFamily.CycloneIVE:
                     {
                         // TODO
-                        yield return interconnectTile;
+                        yield return tile;
                         break;
                     }
                 case FPGAFamily.UltraScale:
                     {
+                        Tile interconnectTile;
+                        if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB))
+                        {
+                            //Get sub-interconnect from interconnect tile.
+                            interconnectTile = FPGATypes.GetInterconnectTile(tile);
+                        }
+                        else if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect))
+                            interconnectTile = tile;
+                        else
+                            throw new ArgumentException("GetSubInterconnectTile not implemented for tile" + tile.Location + " for " + FPGA.Instance.Family);
+
                         Tile left = FPGA.Instance.GetTile(interconnectTile.TileKey.X - 1, interconnectTile.TileKey.Y);
                         Tile right = FPGA.Instance.GetTile(interconnectTile.TileKey.X + 1, interconnectTile.TileKey.Y);
                         if (IdentifierManager.Instance.IsMatch(left.Location, IdentifierManager.RegexTypes.SubInterconnect))
@@ -526,7 +537,7 @@ namespace GoAhead.FPGA
                     }
                 default:
                     {
-                        throw new ArgumentException("GetSubInterconnectTile not implemented for " + FPGA.Instance.Family);
+                        throw new ArgumentException("GetSubInterconnectTile not implemented for"+ FPGA.Instance.Family);
                     }
             }
         }
