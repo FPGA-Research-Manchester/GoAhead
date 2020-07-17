@@ -268,10 +268,12 @@ SetCLBIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^CLB";
 
 
 ###################################################### ULTRASCALE ################################################################
-SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)";
+SetCLBIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)|(^CLEM_R_X)";
+
+# Orientation = "right" means the tile sits at the right of the interconnect.
 
 SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" BlockType="clb" Orientation="right";
-SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)" BlockType="clb" Orientation="left";
+SetOrientedBlockIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)|(^CLE_M_X)|(^CLEM_X)|(^CLEM_R_X)" BlockType="clb" Orientation="left";
 
 #################################################################################################################################
 
@@ -305,9 +307,9 @@ SetColorSetting FamilyRegexp=Virtex7 IdentifierRegexp="^CLBLL" Color=Cyan;
 SetColorSetting FamilyRegexp=Virtex7 IdentifierRegexp="^CLBLM" Color=DarkCyan;
 SetColorSetting FamilyRegexp=Virtex4 IdentifierRegexp="^CLB_X" Color=DarkCyan;
 SetColorSetting FamilyRegexp=Spartan3 IdentifierRegexp="^R\d+C\d+" Color=DarkCyan;
-SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)" Color=Cyan;
-SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_L_X)" Color=GreenYellow;
-SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)" Color=DarkCyan;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLEL_R_X)|(^CLEL_L_X)" Color=Cyan;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^HDIO_)" Color=GreenYellow;
+SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="(^CLE_M_X)|(^CLEM_X)|(^CLEM_R)|(^CLEM_L)" Color=DarkCyan;
 SetColorSetting FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTF" Color=Yellow;
 SetColorSetting FamilyRegexp=Zynq IdentifierRegexp="^CLB" Color=DarkCyan;
 SetColorSetting FamilyRegexp=.* IdentifierRegexp="^INT" Color=Orange;
