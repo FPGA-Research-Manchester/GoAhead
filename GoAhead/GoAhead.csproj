@@ -244,6 +244,7 @@
     <Compile Include="Commands\Identifier\AddBELRoute.cs" />
     <Compile Include="Commands\Identifier\AddBELOutwireIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\AddBELWireIdentifierRegexp.cs" />
+    <Compile Include="Commands\Identifier\SetSubInterconnectIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\SetOrientedBlockIdentifierRegexp.cs" />
     <Compile Include="Commands\Identifier\SetColumnType.cs" />
     <Compile Include="Commands\Library\AddVivadoConnectionPrimitive.cs" />

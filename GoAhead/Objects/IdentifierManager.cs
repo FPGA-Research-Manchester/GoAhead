@@ -151,6 +151,7 @@ namespace GoAhead.Objects
             CLB_left,
             CLB_right,
             Interconnect,
+            SubInterconnect,
             Interconnect_left,
             Interconnect_right,
             Slice,
