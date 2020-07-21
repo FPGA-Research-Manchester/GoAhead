@@ -583,6 +583,7 @@ namespace GoAhead.GUI
             bool ctrlDown = ModifierKeys == Keys.Control;
             bool altDown = ModifierKeys == Keys.Alt;
             bool altAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Alt);
+            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
             if (!ctrlDown && !altAndCtrlDown)
             {
@@ -633,6 +634,8 @@ namespace GoAhead.GUI
                 //Tile lrt = FPGA.FPGA.Instance.GetTile(lowerRightTile);
                 try
                 {
+                    //Switch to using the INT_XxYy tile.
+
                     AddBlockToSelection addcmd = new AddBlockToSelection(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
                     CommandExecuter.Instance.Execute(addcmd);
                 }
@@ -643,14 +646,16 @@ namespace GoAhead.GUI
             }
             else
             {
+                // Use the fine-tile grid as default.
                 CommandExecuter.Instance.Execute(new AddToSelectionXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y));
             }
 
-            if (StoredPreferences.Instance.ExecuteExpandSelection)
+            if (StoredPreferences.Instance.ExecuteExpandSelection && !ctrlAndShiftDown)
             {
                 CommandExecuter.Instance.Execute(new Commands.Selection.ExpandSelection());
             }
         }
+
 
         private void m_zoomPictBox_MouseMove(object sender, MouseEventArgs e)
         {
@@ -739,12 +744,15 @@ namespace GoAhead.GUI
         private void m_zoomPictBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TileKey clickedKey = GetClickedKey(e.X, e.Y);
+            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
+
             if (FPGA.FPGA.Instance.Contains(clickedKey))
             {
                 OpenTileView cmd = new OpenTileView
                 {
                     X = clickedKey.X,
-                    Y = clickedKey.Y
+                    Y = clickedKey.Y,
+                    doExpand = !ctrlAndShiftDown
                 };
                 CommandExecuter.Instance.Execute(cmd);
             }
