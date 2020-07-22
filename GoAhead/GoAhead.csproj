@@ -182,6 +182,7 @@
     <Compile Include="Code\TCL\TCLProperties.cs" />
     <Compile Include="Code\TCL\TCLRoutingTree.cs" />
     <Compile Include="Code\TCL\TCLRoutingTreeNode.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintCarryPipsInAllCLBs.cs" />
     <Compile Include="Commands\Beep.cs" />
     <Compile Include="Code\VHDL\VHDLSignalDeclaration.cs" />
     <Compile Include="Code\VHDL\VHDLEntity.cs" />
@@ -227,6 +228,10 @@
     <Compile Include="Commands\Debug\PrintTileInfo.cs" />
     <Compile Include="Commands\Debug\PrintTileInfoForSelection.cs" />
     <Compile Include="Commands\Debug\PrintTilesWithPortsExcludedFromBlocking.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintAllTiles.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintAllSwitchMatrixWirelists.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintArchitectureGraph.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintVCCPipsInAllInterconnects.cs" />
     <Compile Include="Commands\GridStyle\AddLUTConnectionPrimitive.cs" />
     <Compile Include="Commands\GridStyle\AnnotateSignalNamesToConnectionPrimitives.cs" />
     <Compile Include="Commands\GridStyle\BlockLUTInputPortsInSelection.cs" />
