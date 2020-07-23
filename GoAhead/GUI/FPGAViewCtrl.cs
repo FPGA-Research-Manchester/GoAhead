@@ -260,12 +260,23 @@ namespace GoAhead.GUI
 
         public void ZoomOut()
         {
+           // m_zoomPictBox.Anchor = (AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right);
             m_zoomPictBox.Zoom *= 0.9F;
             Invalidate();
         }
 
         public void ZoomIn()
         {
+
+            /*
+
+           e.Graphics.Transform.Translate(-AutoScrollPosition.X, -AutoScrollPosition.Y, MatrixOrder.Append);
+           e.Graphics.Transform.Scale(_zoom, _zoom, MatrixOrder.Append);
+           e.Graphics.Transform.Translate(AutoScrollPosition.X, AutoScrollPosition.Y, MatrixOrder.Append);
+           */
+
+            //m_zoomPictBox.Anchor = (AnchorStyles.Left | AnchorStyles.Right);
+            m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
             m_zoomPictBox.Zoom *= 1.1F;
             Invalidate();
         }
@@ -273,10 +284,11 @@ namespace GoAhead.GUI
         #region Toolbar
         private void m_toolStripBtnZoomOut_Click(object sender, EventArgs e)
         {
+            
             ZoomOut();
         }
         private void m_toolStripBtnZoomIn_Click(object sender, EventArgs e)
-        {
+        {   
             ZoomIn();
 
         }
