@@ -35,7 +35,7 @@ namespace GoAhead.GUI
             set
             {
                 _image=value;
-                UpdateScaleFactor();
+                UpdateScaleFactor(false);
                 Invalidate();
 
                 InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -59,7 +59,7 @@ namespace GoAhead.GUI
                 }
 
                 _zoom=value;
-                UpdateScaleFactor();
+                UpdateScaleFactor(true);
                 Invalidate();
             }
         }
@@ -91,7 +91,7 @@ namespace GoAhead.GUI
         /// Calculates the effective size of the image
         /// after zooming and updates the AutoScrollSize accordingly
         /// </summary>
-        private void UpdateScaleFactor()
+        private void UpdateScaleFactor(bool onZoom)
         {
             if (_image == null)
             {
@@ -99,10 +99,16 @@ namespace GoAhead.GUI
             }
             else
             {
-                float scrollX = (-1)* (AutoScrollPosition.X * _zoom / _prevZoom);
-                float scrollY = (-1) *(AutoScrollPosition.Y * _zoom / _prevZoom);
+                if (onZoom)
+                {
+                    float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
+                    float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom - 0.5f);
+                    AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+
+                }
+
                 AutoScrollMinSize = new Size((int)(_image.Width * _zoom + 0.5f), (int)(_image.Height * _zoom + 0.5f));
-                AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+
             }            
         }
 
