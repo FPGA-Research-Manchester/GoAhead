@@ -182,6 +182,7 @@
     <Compile Include="Code\TCL\TCLProperties.cs" />
     <Compile Include="Code\TCL\TCLRoutingTree.cs" />
     <Compile Include="Code\TCL\TCLRoutingTreeNode.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintAllPrimitveConnectionsWirelists.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintCarryPipsInAllCLBs.cs" />
     <Compile Include="Commands\Beep.cs" />
     <Compile Include="Code\VHDL\VHDLSignalDeclaration.cs" />
