@@ -9,176 +9,307 @@ namespace GoAhead.Commands.ArchitectureGraph
 {
     class PrintArchitectureGraph : CommandWithFileOutput
     {
-        private Dictionary<int, WireList> interconnectWirelist = new Dictionary<int, WireList>();
-        private Dictionary<int, WireList> clbConnectionsWirelist = new Dictionary<int, WireList>();
+        //private Dictionary<int, WireList> interconnectWirelist = new Dictionary<int, WireList>();
+        //private Dictionary<int, WireList> clbConnectionsWirelist = new Dictionary<int, WireList>();
 
-        private Dictionary<Tile, int> tileToInterconnectWirelistMapping = new Dictionary<Tile, int>();
-        private Dictionary<Tile, int> tileToClbConnectionsWirelistMapping = new Dictionary<Tile, int>();
+        //private Dictionary<Tile, int> tileToInterconnectWirelistMapping = new Dictionary<Tile, int>();
+        //private Dictionary<Tile, int> tileToClbConnectionsWirelistMapping = new Dictionary<Tile, int>();
 
-        private Dictionary<Tile, List<Tile>> clbTilesForInterconnectTile = new Dictionary<Tile, List<Tile>>();
+        //private Dictionary<Tile, List<Tile>> clbTilesForInterconnectTile = new Dictionary<Tile, List<Tile>>();
+
+
+
+        private Dictionary<Tile, int> interconnectTiles = new Dictionary<Tile, int>();
+        private Dictionary<Tile, int> primitiveTiles = new Dictionary<Tile, int>();
+        private Dictionary<Tile, int> uncommonTiles = new Dictionary<Tile, int>();
+
+        private Dictionary<int, List<int>> interconnectToPrimitiveTiles = new Dictionary<int, List<int>>();
+        private Dictionary<int, Tile> primtiveToInterconnectTiles = new Dictionary<int, Tile>();
+
+        private Dictionary<int, int> interconnectToWirelistHashcode = new Dictionary<int, int>();
+        private Dictionary<int, int> primitiveToWirelistHashcode = new Dictionary<int, int>();
+        private Dictionary<int, int> uncommonTilesToWirelistHashcode = new Dictionary<int, int>();
+
+        private Dictionary<int, WireList> wirelistHashcodeToWirelist = new Dictionary<int, WireList>();
+
+
 
         protected override void DoCommandAction()
         {
             bool checkForSubinterconnects = IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect);
             RAMSelectionManager.Instance.UpdateMapping();
+
             foreach (Tile intTile in FPGA.FPGA.Instance.GetAllTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
-                if (IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect) && IdentifierManager.Instance.IsMatch(intTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(intTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                     continue;
 
-                WireList thisTileWL = new WireList();
-                WireList primitivesConnectionsWirelist = new WireList();
-
-                Dictionary<Tile, int> primtivesForInterconnect = GetPrimitivesForInterconnect(intTile , checkForSubinterconnects);
-                if (primtivesForInterconnect.Count() > 2)
-                    OutputManager.WriteOutput("Error: More than 2 primitives found for " + intTile.Location + ": ");
-
-                clbTilesForInterconnectTile.Add(intTile, primtivesForInterconnect.OrderBy(p => p.Value).Select(x=>x.Key).ToList());
-
+                interconnectTiles.Add(intTile, interconnectTiles.Count());
+                interconnectToPrimitiveTiles.Add(interconnectTiles[intTile], new List<int>());
                 Tile subInterconnect = null;
 
                 foreach (Wire w in intTile.WireList)
                 {
                     Tile target = Navigator.GetDestinationByWire(intTile, w);
-                    short xIncr = (short)(target.LocationX - intTile.LocationX);
-                    short yIncr = (short)(target.LocationY - intTile.LocationY);
 
-
-                    if (xIncr == 0 && yIncr == 0 && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.CLB) && primtivesForInterconnect.ContainsKey(target))
-                    { 
-                        primitivesConnectionsWirelist.Add(new PrimitiveWire(w.LocalPipKey, w.PipOnOtherTileKey, w.LocalPipIsDriver, w.XIncr, w.YIncr, primtivesForInterconnect[target])); 
-                    }
-                    else if (xIncr == 0 && yIncr == 0 && checkForSubinterconnects && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                    if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.SubInterconnect))
                     {
                         subInterconnect = target;
-                        bool foundOneMatchingPortOnRam = false;
 
-                        foreach(Port otherPortOnSubInterconnect in subInterconnect.SwitchMatrix.GetDrivenPorts(new Port(w.PipOnOtherTile)))
+                        foreach (Port otherPortOnSubInterconnect in subInterconnect.SwitchMatrix.GetDrivenPorts(new Port(w.PipOnOtherTile)))
                         {
-                            foreach(Wire intermediateWire in subInterconnect.WireList.GetAllWires(otherPortOnSubInterconnect))
+                            foreach (Wire intermediateWire in subInterconnect.WireList.GetAllWires(otherPortOnSubInterconnect))
                             {
-                                Tile ramTile = Navigator.GetDestinationByWire(subInterconnect, intermediateWire);
-                                xIncr = (short)(ramTile.LocationX - intTile.LocationX);
-                                yIncr = (short)(ramTile.LocationY - intTile.LocationY);
+                                Tile extendedPrimitiveTile = Navigator.GetDestinationByWire(subInterconnect, intermediateWire);
 
-                                if (xIncr != 0 || yIncr != 0 || !primtivesForInterconnect.ContainsKey(ramTile))
+                                if (getCoreRamTile(extendedPrimitiveTile) != null)
                                 {
-                                    OutputManager.WriteOutput("Error: Following subinterconnect wires, did not reach expected ram tile " + ramTile.Location + " interconnect tile " + intTile.Location + " interconnect port = " + w.LocalPip);
-                                    break;
+                                    extendedPrimitiveTile = getCoreRamTile(extendedPrimitiveTile);
                                 }
 
-                                if (foundOneMatchingPortOnRam)
+                                if (!primitiveTiles.ContainsKey(extendedPrimitiveTile))
                                 {
-                                    OutputManager.WriteOutput("More than one matching ports found on ram block for interconnect " + intTile.Location + " and interconnect port " + w.LocalPip);
-                                    break;
+                                    primitiveTiles.Add(extendedPrimitiveTile, primitiveTiles.Count());
+                                    primtiveToInterconnectTiles.Add(primitiveTiles[extendedPrimitiveTile], intTile);
                                 }
-                                primitivesConnectionsWirelist.Add(new PrimitiveWire(w.LocalPipKey, intermediateWire.PipOnOtherTileKey, w.LocalPipIsDriver, xIncr, yIncr, primtivesForInterconnect[ramTile]));
+
+                                if (!interconnectToPrimitiveTiles[interconnectTiles[intTile]].Contains(primitiveTiles[extendedPrimitiveTile]))
+                                {
+                                    interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(primitiveTiles[extendedPrimitiveTile]);
+                                }
                             }
                         }
                     }
+                    else if (IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.Interconnect))
+                        continue;
                     else
                     {
-                        thisTileWL.Add(new Wire(w.LocalPipKey, w.PipOnOtherTileKey, w.LocalPipIsDriver, xIncr, yIncr));
-                    }
-                }
-
-                StoreInterconnectWirelist(thisTileWL, interconnectWirelist);
-                tileToInterconnectWirelistMapping.Add(intTile, thisTileWL.Key);
-
-                foreach (KeyValuePair<Tile, int> pair in primtivesForInterconnect)
-                {
-                    Tile primitive = pair.Key;
-                    foreach(Wire w in primitive.WireList)
-                    {
-                        Tile target = Navigator.GetDestinationByWire(primitive, w);
-                        
-                        if (target.Location == intTile.Location && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.Interconnect))
+                        if (!primitiveTiles.ContainsKey(target))
                         {
-                            primitivesConnectionsWirelist.Add(new PrimitiveWire(w.PipOnOtherTileKey, w.LocalPipKey, !w.LocalPipIsDriver, w.XIncr, w.YIncr, pair.Value));
+                            primitiveTiles.Add(target, primitiveTiles.Count());
+                            primtiveToInterconnectTiles.Add(primitiveTiles[target], intTile);
                         }
-                        else if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        if (!interconnectToPrimitiveTiles[interconnectTiles[intTile]].Contains(primitiveTiles[target]))
                         {
-                            subInterconnect = target;
-                            bool foundOneMatchingPortOnInterconnect = false;
-
-                            foreach (Port otherPortOnSubInterconnect in subInterconnect.SwitchMatrix.GetDrivenPorts(new Port(w.PipOnOtherTile)))
-                            {
-                                foreach (Wire intermediateWire in subInterconnect.WireList.GetAllWires(otherPortOnSubInterconnect))
-                                {
-                                    Tile interconnectTile = Navigator.GetDestinationByWire(subInterconnect, intermediateWire);
-                                    short xIncr = (short)(interconnectTile.LocationX - intTile.LocationX);
-                                    short yIncr = (short)(interconnectTile.LocationY - intTile.LocationY);
-
-                                    if (interconnectTile.Location != intTile.Location)
-                                    {
-                                        OutputManager.WriteOutput("Error: Following subinterconnect wires, did not reach expected interconnect tile " + intTile.Location + " primtive tile " + primitive.Location + " primitive port = " + w.LocalPip);
-                                        break;
-                                    }
-                                    if (foundOneMatchingPortOnInterconnect)
-                                    {
-                                        OutputManager.WriteOutput("More than one matching ports found on interconnect block for ram " + primitive.Location + " and primitive port " + w.LocalPip);
-                                        break;
-                                    }
-                                    primitivesConnectionsWirelist.Add(new PrimitiveWire(intermediateWire.PipOnOtherTileKey, w.LocalPipKey, !w.LocalPipIsDriver, xIncr, yIncr, pair.Value));
-                                }
-                            }
+                            interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(primitiveTiles[target]);
                         }
                     }
                 }
-
-                StoreInterconnectWirelist(primitivesConnectionsWirelist, clbConnectionsWirelist);
-                tileToClbConnectionsWirelistMapping.Add(intTile, primitivesConnectionsWirelist.Key);
             }
 
+            foreach(Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => !interconnectTiles.ContainsKey(t) && !primitiveTiles.ContainsKey(t))) 
+            {
+                if(checkForSubinterconnects && !IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                {
+                    if(tile.WireList.Count() > 0)
+                    {
+                        uncommonTiles.Add(tile, uncommonTiles.Count());
+                    }
+                }
+            }
+
+            OutputManager.WriteOutput("Primitives found.");
+
+            foreach (KeyValuePair<Tile, int> pair in interconnectTiles)
+            {
+                Tile intTile = pair.Key;
+                int intTileHashcode = pair.Value;
+                WireList interconnectTileWireList = new WireList();
+                processWirelistForTile(checkForSubinterconnects, intTile, out interconnectTileWireList);
+
+                StoreInterconnectWirelist(interconnectTileWireList, wirelistHashcodeToWirelist);
+                interconnectToWirelistHashcode.Add(intTileHashcode, interconnectTileWireList.Key);
+            }
+            OutputManager.WriteOutput("interconnect wirelists made.");
+
+            foreach (KeyValuePair<Tile, int> pair in primitiveTiles)
+            {
+                Tile primitiveTile = pair.Key;
+                int primtiveTileHashcode = pair.Value;
+                WireList primitiveTileWireList = new WireList();
+                processWirelistForTile(checkForSubinterconnects, primitiveTile, out primitiveTileWireList);
+
+                StoreInterconnectWirelist(primitiveTileWireList, wirelistHashcodeToWirelist);
+                primitiveToWirelistHashcode.Add(primitiveTiles[primitiveTile], primitiveTileWireList.Key);
+            }
+
+            foreach (KeyValuePair<Tile, int> pair in uncommonTiles)
+            {
+                Tile uncommonTile = pair.Key;
+                int uncommonTileHashcode = pair.Value;
+                WireList uncommonTileWireList = new WireList();
+                processWirelistForTile(checkForSubinterconnects, uncommonTile, out uncommonTileWireList);
+
+                if (uncommonTileWireList.Count() > 0)
+                {
+                    StoreInterconnectWirelist(uncommonTileWireList, wirelistHashcodeToWirelist);
+                    uncommonTilesToWirelistHashcode.Add(uncommonTiles[uncommonTile], uncommonTileWireList.Key);
+                }
+                else
+                {
+                    uncommonTilesToWirelistHashcode.Add(uncommonTiles[uncommonTile], -1);
+                }
+            }
+
+            OutputManager.WriteOutput("Primitive wirelists made.");
+
             PrintAllSwitchMatrixWirelists printWirelists = new PrintAllSwitchMatrixWirelists();
-            printWirelists.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\wirelists";
-            printWirelists.InterconnectWirelists = interconnectWirelist;
+            printWirelists.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\wirelists";
+            printWirelists.InterconnectWirelists = wirelistHashcodeToWirelist;
             CommandExecuter.Instance.Execute(printWirelists);
 
 
-            PrintAllTiles printTiles = new PrintAllTiles();
-            printTiles.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\tiles";
-            printTiles.CLBTilesForInterconnectTile = clbTilesForInterconnectTile;
-            printTiles.WirelistHashcodeForInterconnectTiles = tileToInterconnectWirelistMapping;
-            printTiles.PrimitiveConnectionsWirelistHashcodeForInterconnectTile = tileToClbConnectionsWirelistMapping;
+            PrintAllInterconnectTiles printTiles = new PrintAllInterconnectTiles();
+            printTiles.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\tiles";
+            printTiles.InterconnectTiles = interconnectTiles;
+            printTiles.InterconnectToPrimitiveTiles = interconnectToPrimitiveTiles;
+            printTiles.InterconnectToWirelistHashcode = interconnectToWirelistHashcode;
             CommandExecuter.Instance.Execute(printTiles);
 
-            PrintAllPrimitveConnectionsWirelists printPrimitiveConnections = new PrintAllPrimitveConnectionsWirelists();
-            printPrimitiveConnections.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\primitiveConnections";
-            printPrimitiveConnections.PrimitiveWirelists = clbConnectionsWirelist;
+            PrintAllPrimitveTiles printPrimitiveConnections = new PrintAllPrimitveTiles();
+            printPrimitiveConnections.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\primitiveTiles";
+            printPrimitiveConnections.PrimitiveTiles = primitiveTiles;
+            printPrimitiveConnections.PrimitiveToWirelistHashcode = primitiveToWirelistHashcode;
             CommandExecuter.Instance.Execute(printPrimitiveConnections);
+
+            PrintUncommonTiles printUncommonTiles = new PrintUncommonTiles();
+            printUncommonTiles.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\uncommonTiles";
+            printUncommonTiles.UncommonTiles = uncommonTiles;
+            printUncommonTiles.UncommonToWirelistHashcode = uncommonTilesToWirelistHashcode;
+            CommandExecuter.Instance.Execute(printUncommonTiles);
         }
 
-        public static Dictionary<Tile, int> GetPrimitivesForInterconnect(Tile t, bool checkForSubinterconnects)
+
+        private void AddWireToWirelist(Tile startTile, WireList wirelist, Wire startWire, short xIncr, short yIncr, Wire endWire, Tile endTile)
         {
-            Dictionary<Tile, int> primitives = new Dictionary<Tile, int>();
-            foreach (Tile clbTile in FPGATypes.GetCLTile(t).Where(c => c.LocationX == t.LocationX && c.LocationY == t.LocationY && IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.CLB)))
-                primitives.Add(clbTile, primitives.Count + 1);
-
-            if (checkForSubinterconnects)
+            if (IdentifierManager.Instance.IsMatch(endTile.Location, IdentifierManager.RegexTypes.Interconnect))
             {
-                foreach (Tile subInterconnectTile in FPGATypes.GetSubInterconnectTile(t).Where(c => c.LocationX == t.LocationX && c.LocationY == t.LocationY && IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.SubInterconnect)))
-                {
-                    Tile ramTile = null;
-                    if (RAMSelectionManager.Instance.HasMapping(FPGA.FPGA.Instance.GetTile(subInterconnectTile.TileKey.X - 1, subInterconnectTile.TileKey.Y)))
-                    {
-                        ramTile = FPGA.FPGA.Instance.GetTile(subInterconnectTile.TileKey.X - 1, subInterconnectTile.TileKey.Y);
-                    }
-                    else if (RAMSelectionManager.Instance.HasMapping(FPGA.FPGA.Instance.GetTile(subInterconnectTile.TileKey.X + 1, subInterconnectTile.TileKey.Y)))
-                    {
-                        ramTile = FPGA.FPGA.Instance.GetTile(subInterconnectTile.TileKey.X + 1, subInterconnectTile.TileKey.Y);
-                    }
+                wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, xIncr, yIncr, -1));
+            }
+            else if (interconnectTiles.ContainsKey(startTile) && interconnectToPrimitiveTiles[interconnectTiles[startTile]].Contains(primitiveTiles[endTile]))
+            {
+                int primtiveIndex = interconnectToPrimitiveTiles[interconnectTiles[startTile]].IndexOf(primitiveTiles[endTile]);
 
-                    if (ramTile != null)
+                wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, xIncr, yIncr, primtiveIndex));
+            }
+            else
+            {
+
+                // super hardcoded. better way?
+                try
+                {
+                    Tile interconnectTileOnOtherXY = primtiveToInterconnectTiles[primitiveTiles[endTile]];
+
+                    if (!interconnectToPrimitiveTiles[interconnectTiles[interconnectTileOnOtherXY]].Contains(primitiveTiles[endTile]))
                     {
-                        foreach (Tile mainRamTile in RAMSelectionManager.Instance.GetRamBlockMembers(ramTile).Where(c => IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.BRAM) || IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.DSP)))
-                        {
-                            primitives.Add(mainRamTile, primitives.Count + 1);
-                        }
+                        OutputManager.WriteOutput("BIG ERROR");
+                    }
+                    else
+                    {
+                        int primtiveIndex = interconnectToPrimitiveTiles[interconnectTiles[interconnectTileOnOtherXY]].IndexOf(primitiveTiles[endTile]);
+
+                        wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, xIncr, yIncr, primtiveIndex));
+                    }
+                }
+                catch(Exception e)
+                {
+                    if(uncommonTiles.ContainsKey(endTile))
+                    {
+                        wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, -999, -999, uncommonTiles[endTile]));
+                    }
+                    else
+                    {
+                        uncommonTiles.Add(endTile, uncommonTiles.Count);
+                        wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, -999, -999, uncommonTiles[endTile]));
                     }
                 }
             }
-            return primitives;
+        }
+
+        private void processWirelistForTile(bool checkForSubinterconnects, Tile tile, out WireList wirelist)
+        {
+            Tile subInterconnect = null;
+            wirelist = new WireList();
+            foreach (Wire w in tile.WireList)
+            {
+                Tile target = Navigator.GetDestinationByWire(tile, w);
+
+                short xIncr = (short)(target.LocationX - tile.LocationX);
+                short yIncr = (short)(target.LocationY - tile.LocationY);
+
+                if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                {
+                    subInterconnect = target;
+
+                    foreach (Port otherPortOnSubInterconnect in subInterconnect.SwitchMatrix.GetDrivenPorts(new Port(w.PipOnOtherTile)))
+                    {
+                        foreach (Wire intermediateWire in subInterconnect.WireList.GetAllWires(otherPortOnSubInterconnect))
+                        {
+                            Tile extendedTile = Navigator.GetDestinationByWire(subInterconnect, intermediateWire);
+                            xIncr = (short)(extendedTile.LocationX - tile.LocationX);
+                            yIncr = (short)(extendedTile.LocationY - tile.LocationY);
+                            AddWireToWirelist(tile, wirelist, w, xIncr, yIncr, intermediateWire, extendedTile);
+                        }
+                    }
+                }
+                else
+                {
+                    AddWireToWirelist(tile, wirelist, w, xIncr, yIncr, w, target);
+                }
+
+            }
+        }
+
+
+        //public Dictionary<Tile, int> GetPrimitivesForInterconnect(Tile t, bool checkForSubinterconnects)
+        //{
+        //    Dictionary<Tile, int> primitives = new Dictionary<Tile, int>();
+
+        //    Tile left = FPGA.FPGA.Instance.GetTile(t.TileKey.X - 1, t.TileKey.Y);
+        //    Tile right = FPGA.FPGA.Instance.GetTile(t.TileKey.X + 1, t.TileKey.Y);
+
+        //    processPrimitiveTile(left, t, checkForSubinterconnects, primitives);
+        //    processPrimitiveTile(right, t, checkForSubinterconnects, primitives);
+
+        //    return primitives;
+        //}
+
+        //private void processPrimitiveTile (Tile p, Tile interconnect, bool checkForSubinterconnects, Dictionary<Tile, int> primitives)
+        //{
+        //    if(p.LocationX == interconnect.LocationX && p.LocationY == interconnect.LocationY && IdentifierManager.Instance.IsMatch(p.Location, IdentifierManager.RegexTypes.CLB))
+        //        primitives.Add(p, primitives.Count());
+        //    else if(checkForSubinterconnects && p.LocationX == interconnect.LocationX && p.LocationY == interconnect.LocationY && IdentifierManager.Instance.IsMatch(p.Location, IdentifierManager.RegexTypes.SubInterconnect))
+        //    {
+        //        Tile extendedPrimitiveTile = FPGA.FPGA.Instance.GetTile(p.TileKey.X - 1, p.TileKey.Y).Location != interconnect.Location ? FPGA.FPGA.Instance.GetTile(p.TileKey.X - 1, p.TileKey.Y) : FPGA.FPGA.Instance.GetTile(p.TileKey.X + 1, p.TileKey.Y);
+        //        if (!addRAMTile(extendedPrimitiveTile, primitives))
+        //        {
+        //            // warn
+        //            foreach(Tile target in extendedPrimitiveTile.WireList.Where(w => !primitives.Keys.Contains(Navigator.GetDestinationByWire(extendedPrimitiveTile, w))).Select(w => Navigator.GetDestinationByWire(extendedPrimitiveTile, w))) 
+        //            {
+        //                //warn
+        //                primitives.Add(target, primitives.Count());
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //warn
+        //        primitives.Add(p, primitives.Count());
+        //    }
+
+        //}
+
+        private Tile getCoreRamTile(Tile ramBlockTile)
+        {
+            if (RAMSelectionManager.Instance.HasMapping(ramBlockTile))
+            {
+                foreach (Tile mainRamTile in RAMSelectionManager.Instance.GetRamBlockMembers(ramBlockTile).Where(c => IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.BRAM) || IdentifierManager.Instance.IsMatch(c.Location, IdentifierManager.RegexTypes.DSP)))
+                {
+                    return mainRamTile;
+                }
+            }
+
+            return null;
         }
 
         private void StoreInterconnectWirelist(WireList wirelistToStore, Dictionary<int, WireList> wirelistCollectionToCheckIn)
