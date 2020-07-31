@@ -12,7 +12,7 @@ namespace GoAhead.Commands.ArchitectureGraph
         protected override void DoCommandAction()
         {
             // header line
-            OutputManager.WriteOutput("Tile hashcode,Tile name,primitives,wirelist hashcode,switchmatrix hashcode\n");
+            OutputManager.WriteOutput("Tile name,(wirelist hashcodes),switchmatrix hashcode\n");
 
             StringBuilder buffer = new StringBuilder();
             foreach(KeyValuePair<Tile, int> pair in InterconnectTiles)
@@ -22,7 +22,19 @@ namespace GoAhead.Commands.ArchitectureGraph
                 int intTileWirelistHashcode = InterconnectToWirelistHashcode[intTileHashcode];
                 List<int> primitiveTiles = InterconnectToPrimitiveTiles[intTileHashcode];
 
-                buffer.AppendLine(intTileHashcode + "," + intTile.Location + ",(" + string.Join(",", primitiveTiles) + ")," + intTileWirelistHashcode + "," + intTile.SwitchMatrixHashCode);
+                string leftPrimitiveHashcode, rightPrimitiveHashcode;
+
+                if (primitiveTiles[0] == -999)
+                    leftPrimitiveHashcode = "";
+                else
+                    leftPrimitiveHashcode = PrimitiveToWirelistHashcode[primitiveTiles[0]].ToString();
+
+                if (primitiveTiles[1] == -999)
+                    rightPrimitiveHashcode = "";
+                else
+                    rightPrimitiveHashcode = PrimitiveToWirelistHashcode[primitiveTiles[1]].ToString();
+
+                buffer.AppendLine(intTile.Location + ",(" + leftPrimitiveHashcode + "," + intTileWirelistHashcode + "," + rightPrimitiveHashcode + ")," + intTile.SwitchMatrixHashCode);
             }
 
             OutputManager.WriteOutput(buffer.ToString());
@@ -41,6 +53,8 @@ namespace GoAhead.Commands.ArchitectureGraph
 
         [Parameter(Comment = "Interconnect Tiles Wirelists")]
         public Dictionary<int, int> InterconnectToWirelistHashcode = new Dictionary<int, int>();
-
+        
+        [Parameter(Comment = "Primitive Tiles Wirelists")]
+        internal Dictionary<int, int> PrimitiveToWirelistHashcode;
     }
 }
