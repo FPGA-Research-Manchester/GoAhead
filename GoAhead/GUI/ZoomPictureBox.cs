@@ -68,7 +68,7 @@ namespace GoAhead.GUI
         float _prevZoom = 1.0f;
         [
             Category("Appearance"),
-            Description("The zoom factor. Less than 1 to reduce. More than 1 to magnify.")
+            Description("The previous zoom factor.")
         ]
 
         public float PrevZoom
@@ -86,6 +86,21 @@ namespace GoAhead.GUI
             }
         }
 
+        Point _zoomPoint = new Point(1, 1);
+        [
+            Category("Appearance"),
+            Description("The zoom point. Used to zoom relative to the mouse cursor.")
+        ]
+
+        public Point ZoomPoint
+        {
+            get { return new Point(_zoomPoint.X, _zoomPoint.Y); }
+            set
+            {
+                _zoomPoint = value;
+            }
+        }
+
 
         /// <summary>
         /// Calculates the effective size of the image
@@ -99,12 +114,39 @@ namespace GoAhead.GUI
             }
             else
             {
-                if (onZoom)
+
+               //SystemInformation.HorizontalScrollBarHeight
+                if (onZoom && _zoomPoint.X == 0 && _zoomPoint.Y == 0)
                 {
                     float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
                     float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom - 0.5f);
                     AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+                }
+                else if (onZoom)
+                {
 
+                    // float relativeImageCenterX = (_image.Width * _zoom + AutoScrollPosition.X ) / 2;
+                    // float relativeImageCenterY = (_image.Height * _zoom + AutoScrollPosition.Y) / 2;
+
+                    /*
+                    float relativeImageCenterX = AutoScrollMinSize.Width /2;
+                    float relativeImageCenterY = AutoScrollMinSize.Height / 2;
+
+                    float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom  +  ( relativeImageCenterX - _zoomPoint.X));
+                    float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom  + ( relativeImageCenterY / 2 - _zoomPoint.Y));
+                    */
+     
+                    Console.WriteLine("AutoScroll: " + "(" + AutoScrollPosition.X + "," + AutoScrollPosition.Y + ")");
+                    //AutoScrollPosition = new Point((int) (_zoomPoint.X * _zoom / _prevZoom - 200) , (int)(_zoomPoint.Y * _zoom / _prevZoom - 200));
+
+                    float scrollX = ((-1) * AutoScrollPosition.X + _zoomPoint.X ) - 100;
+                    float scrollY = ((-1) * AutoScrollPosition.Y + _zoomPoint.Y )  -100;
+
+                    AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+
+                    
+                    Console.WriteLine("NewAutoScroll: " + "(" + AutoScrollPosition.X + "," + AutoScrollPosition.Y + ")");
+                    Console.WriteLine("---------------------------------------------------------------------------------");
                 }
 
                 AutoScrollMinSize = new Size((int)(_image.Width * _zoom + 0.5f), (int)(_image.Height * _zoom + 0.5f));
@@ -168,6 +210,10 @@ namespace GoAhead.GUI
                 ControlStyles.DoubleBuffer, true);
             AutoScroll=true;
         }
+
+
+
+
     }
 }
 

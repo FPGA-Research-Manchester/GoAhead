@@ -71,6 +71,8 @@
             this.m_contextMenu.SuspendLayout();
             this.m_toolStripBottom.SuspendLayout();
             this.m_zoomPictBox.SuspendLayout();
+
+            this.m_zoomPictBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.m_zoomPictBox_MouseWheel);
             this.SuspendLayout();
             // 
             // m_statusStrip
