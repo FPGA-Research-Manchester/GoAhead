@@ -279,15 +279,9 @@ namespace GoAhead.GUI
         public void PointZoomIn(Point location, Point relativeLocation)
         {
             int x, y;
-            //x = (int)(location.X * m_zoomPictBox.Zoom * 1.1F) - relativeLocation.X;
-            //y = (int)(location.Y * m_zoomPictBox.Zoom * 1.1F) - relativeLocation.Y;
-            Console.WriteLine("ZoomPoint: " + "(" + location.X + "," + location.Y + ")");
-            Console.WriteLine("Relative Zoom point: " + "(" + relativeLocation.X + "," + relativeLocation.Y + ")");
-            x = (int) location.X;
-            y = (int) location.Y;
-
-            //x = (int)location.X;
-           // y = (int)location.Y;
+   
+            x = (int) (relativeLocation.X * 0.95);
+            y = (int) (relativeLocation.Y * 1.05);
 
             m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
             m_zoomPictBox.ZoomPoint = new Point(x,y);
@@ -804,31 +798,17 @@ namespace GoAhead.GUI
             bool ctrlDown = ModifierKeys == Keys.Control;
             cursorPosition = new Point(e.X, e.Y);
 
-
-            //TileKey focusedKey = GetClickedKey(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X);
-            //currentPixel = new Point(m_mouseDownPosition.X, m_mouseDownPosition.Y);
             currentPixel = new Point(Math.Min(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X) + m_zoomPictBox.HorizontalScroll.Value,
                               Math.Min(m_mouseDownPosition.Y, m_currentMousePositionWithRectangleSelect.Y) + m_zoomPictBox.VerticalScroll.Value);
-            
-            /*
-            double x, y;
-            TileSelectionManager.Instance.GetCenterOfSelection(p => true, out x, out y);
-            float xf = (float)x * TileSize * ZoomPictureBox.Zoom;
-            float yf = (float)y * TileSize * ZoomPictureBox.Zoom;
-            Pen pen = new Pen(Brushes.Black, 4);
-            e.Graphics.DrawLine(pen, 0, 0, xf, yf);
-           */
+ 
 
             if (ctrlDown && e.Delta/120 >=1.0)
             {
                 PointZoomIn(cursorPosition,currentPixel);
-                //Console.WriteLine(e.X+" "+e.Y+"\n");
             }
             else if (ctrlDown && e.Delta / 120 <= 1.0)
             {
-                PointZoomOut(cursorPosition,currentPixel);
-                //Console.WriteLine(e.X + " " + e.Y + "\n");
-
+                PointZoomOut(currentPixel, cursorPosition);
             }
         }
 

@@ -114,8 +114,6 @@ namespace GoAhead.GUI
             }
             else
             {
-
-               //SystemInformation.HorizontalScrollBarHeight
                 if (onZoom && _zoomPoint.X == 0 && _zoomPoint.Y == 0)
                 {
                     float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
@@ -124,31 +122,12 @@ namespace GoAhead.GUI
                 }
                 else if (onZoom)
                 {
+                    float x = _zoomPoint.X * _prevZoom / _zoom;
+                    float y = _zoomPoint.Y * _prevZoom / _zoom;
 
-                    // float relativeImageCenterX = (_image.Width * _zoom + AutoScrollPosition.X ) / 2;
-                    // float relativeImageCenterY = (_image.Height * _zoom + AutoScrollPosition.Y) / 2;
-
-                    /*
-                    float relativeImageCenterX = AutoScrollMinSize.Width /2;
-                    float relativeImageCenterY = AutoScrollMinSize.Height / 2;
-
-                    float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom  +  ( relativeImageCenterX - _zoomPoint.X));
-                    float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom  + ( relativeImageCenterY / 2 - _zoomPoint.Y));
-                    */
-     
-                    Console.WriteLine("AutoScroll: " + "(" + AutoScrollPosition.X + "," + AutoScrollPosition.Y + ")");
-                    //AutoScrollPosition = new Point((int) (_zoomPoint.X * _zoom / _prevZoom - 200) , (int)(_zoomPoint.Y * _zoom / _prevZoom - 200));
-
-                    float scrollX = ((-1) * AutoScrollPosition.X + _zoomPoint.X ) - 100;
-                    float scrollY = ((-1) * AutoScrollPosition.Y + _zoomPoint.Y )  -100;
-
-                    AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
-
-                    
-                    Console.WriteLine("NewAutoScroll: " + "(" + AutoScrollPosition.X + "," + AutoScrollPosition.Y + ")");
-                    Console.WriteLine("---------------------------------------------------------------------------------");
+                    AutoScrollPosition = new Point((int) x , (int) y);
                 }
-
+                 
                 AutoScrollMinSize = new Size((int)(_image.Width * _zoom + 0.5f), (int)(_image.Height * _zoom + 0.5f));
 
             }            
