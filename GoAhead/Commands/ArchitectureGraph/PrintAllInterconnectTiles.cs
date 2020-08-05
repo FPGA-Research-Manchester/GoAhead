@@ -22,19 +22,20 @@ namespace GoAhead.Commands.ArchitectureGraph
                 int intTileWirelistHashcode = InterconnectToWirelistHashcode[intTileHashcode];
                 List<int> primitiveTiles = InterconnectToPrimitiveTiles[intTileHashcode];
 
-                string leftPrimitiveHashcode, rightPrimitiveHashcode;
+                string leftPrimitiveWirelistHashcode, rightPrimitiveWirelistHashcode;
 
+                // empty primitive flagged using -999
                 if (primitiveTiles[0] == -999)
-                    leftPrimitiveHashcode = "";
+                    leftPrimitiveWirelistHashcode = "";
                 else
-                    leftPrimitiveHashcode = PrimitiveToWirelistHashcode[primitiveTiles[0]].ToString();
+                    leftPrimitiveWirelistHashcode = PrimitiveToWirelistHashcode[primitiveTiles[0]].ToString();
 
                 if (primitiveTiles[1] == -999)
-                    rightPrimitiveHashcode = "";
+                    rightPrimitiveWirelistHashcode = "";
                 else
-                    rightPrimitiveHashcode = PrimitiveToWirelistHashcode[primitiveTiles[1]].ToString();
+                    rightPrimitiveWirelistHashcode = PrimitiveToWirelistHashcode[primitiveTiles[1]].ToString();
 
-                buffer.AppendLine(intTile.Location + ",(" + leftPrimitiveHashcode + "," + intTileWirelistHashcode + "," + rightPrimitiveHashcode + ")," + intTile.SwitchMatrixHashCode);
+                buffer.AppendLine(intTile.Location + ",(" + leftPrimitiveWirelistHashcode + "," + intTileWirelistHashcode + "," + rightPrimitiveWirelistHashcode + ")," + intTile.SwitchMatrixHashCode);
             }
 
             OutputManager.WriteOutput(buffer.ToString());

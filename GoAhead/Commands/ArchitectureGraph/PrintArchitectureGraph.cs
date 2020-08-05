@@ -2,6 +2,7 @@
 using GoAhead.Objects;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,31 +11,72 @@ namespace GoAhead.Commands.ArchitectureGraph
 {
     class PrintArchitectureGraph : CommandWithFileOutput
     {
+        // define data structures
         private Dictionary<Tile, int> interconnectTiles = new Dictionary<Tile, int>();
         private Dictionary<Tile, int> primitiveTiles = new Dictionary<Tile, int>();
-        private Dictionary<Tile, int> uncommonTiles = new Dictionary<Tile, int>();
+        private Dictionary<Tile, int> irregularTiles = new Dictionary<Tile, int>();
 
         private Dictionary<int, List<int>> interconnectToPrimitiveTiles = new Dictionary<int, List<int>>();
-        //private Dictionary<int, Tile> primtiveToInterconnectTiles = new Dictionary<int, Tile>();
-
         private Dictionary<int, int> interconnectToWirelistHashcode = new Dictionary<int, int>();
+        
         private Dictionary<int, int> primitiveToWirelistHashcode = new Dictionary<int, int>();
-        private Dictionary<int, int> uncommonTilesToWirelistHashcode = new Dictionary<int, int>();
+        private Dictionary<int, int> irregularTilesToWirelistHashcode = new Dictionary<int, int>();
 
         private Dictionary<int, WireList> wirelistHashcodeToWirelist = new Dictionary<int, WireList>();
 
-        private const int uncommonTilesHashcodeShift = 10;
-        private static string RESOURCE_STRING = "VsL MsL RsL MsD MsL LsL MsL LsL RsL MsmP msL MsL RsL MsD MsL LsL MsL LsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsmFmI";
-        bool checkForSubinterconnects = RESOURCE_STRING.Contains("m");
-        string[] resourceStringChopped = RESOURCE_STRING.Split(' ');
+        private Dictionary<string, int> wireCounts = new Dictionary<string, int>();
 
+        private const int irregularTilesHashcodeShift = 10;
+
+        // hard-coded, should be produced by GoAhead
+        private static string RESOURCE_STRING = "VsL MsL RsL MsD MsL LsL MsL LsL RsL MsmP msL MsL RsL MsD MsL LsL MsL LsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsmFmI";
+
+        // maybe a flag?
+        bool checkForSubinterconnects = RESOURCE_STRING.Contains("m");
+        
+        private string[] resourceStringChopped = RESOURCE_STRING.Split(' ');
+
+        // move to init.goa
         Regex hdio = new Regex("^HDIO_X");
         Regex cm_final_identifier = new Regex("^CM^");
 
         protected override void DoCommandAction()
         {
+            try
+            {
+                Directory.CreateDirectory(FolderName);
+                if (debug && string.IsNullOrEmpty(FileName))
+                    FileName = Path.Combine(FolderName, "debug.ag");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Could not create folder " + FolderName, e);
+            }
+
+            // before starting, make sure all BRAMs/DSPs are updated
             RAMSelectionManager.Instance.UpdateMapping();
 
+            if (debug)
+            {
+                // grab all available wires
+                foreach (Tile startTile in FPGA.FPGA.Instance.GetAllTiles())
+                {
+                    if (startTile.WireList.Count > 0)
+                    {
+                        foreach (Wire w in startTile.WireList)
+                        {
+                            Tile endTile = Navigator.GetDestinationByWire(startTile, w);
+                            string wireCountKey = startTile.Location + "-" + w.LocalPip + "-" + w.PipOnOtherTile + "-" + endTile.Location;
+                            if (wireCounts.ContainsKey(wireCountKey))
+                                wireCounts[wireCountKey] += 1;
+                            else
+                                wireCounts.Add(wireCountKey, 1);
+                        }
+                    }
+                }
+            }
+
+            // goal is to create blocks of LsL or MsL. We go through all the interconnect tiles and find the left and the right tile from it, and count these as the interconnect's primitives
             foreach (Tile intTile in FPGA.FPGA.Instance.GetAllTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
                 if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(intTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
@@ -42,48 +84,32 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                 interconnectTiles.Add(intTile, interconnectTiles.Count());
                 interconnectToPrimitiveTiles.Add(interconnectTiles[intTile], new List<int>());
-                Tile subInterconnect = null;
 
-                Tile leftPrimitive = GetPrimitive(intTile, checkForSubinterconnects, left:true);
+                Tile leftPrimitive = GetPrimitive(intTile, checkForSubinterconnects, left: true);
                 Tile rightPrimitive = GetPrimitive(intTile, checkForSubinterconnects, left: false);
 
-                if (leftPrimitive != null)
-                {
-                    if(!primitiveTiles.Keys.Contains(leftPrimitive))
-                        primitiveTiles.Add(leftPrimitive, primitiveTiles.Count());
-                    
-                    interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(primitiveTiles[leftPrimitive]);
-                }
-                else
-                    interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(-999);
-                if (rightPrimitive != null)
-                {
-                    if (!primitiveTiles.Keys.Contains(rightPrimitive))
-                        primitiveTiles.Add(rightPrimitive, primitiveTiles.Count());
-
-                    interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(primitiveTiles[rightPrimitive]);
-                }
-                else
-                    interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(-999);
-
+                updateDictionariesWithPrimitive(intTile, leftPrimitive);
+                updateDictionariesWithPrimitive(intTile, rightPrimitive);
 
                 if (interconnectToPrimitiveTiles[interconnectTiles[intTile]].Count() > 2)
                 {
-                    OutputManager.WriteOutput("OOOOH ERROR BOI");
+                    OutputManager.WriteOutput("ERROR: found more than 2 primitives - hashcodes " +  string.Join(",", interconnectToPrimitiveTiles[interconnectTiles[intTile]]) + " - for interconnect tile with hashcode " + interconnectTiles[intTile]);
                 }
             }
 
-            foreach(Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => !interconnectTiles.ContainsKey(t) && !primitiveTiles.ContainsKey(t))) 
+            // once all the homogenous blocks have been found, find all the irregular tiles
+            foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => !interconnectTiles.ContainsKey(t) && !primitiveTiles.ContainsKey(t))) 
             {
                 if(checkForSubinterconnects && !IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                 {
+                    // don't include tiles with no wirelists, such as NULL_X0Y0, etc.
                     if(tile.WireList.Count() > 0)
-                        uncommonTiles.Add(tile, uncommonTiles.Count() + uncommonTilesHashcodeShift);
+                        // the irregular tiles hashcode enumeration have a predefined shift. This is so that while creating wires, the numbers from 0 to irregularTilesHashcodeShift can be used to refer back to normal primitives. While parsing, if any wire connects to a primitive greater than irregularTilesHashcodeShift, we should look into the irregular tiles to find the destination tile. 
+                        irregularTiles.Add(tile, irregularTiles.Count() + irregularTilesHashcodeShift);
                 }
             }
 
-            OutputManager.WriteOutput("Primitives found.");
-
+            // process wirelists for all interconnect tiles
             foreach (KeyValuePair<Tile, int> pair in interconnectTiles)
             {
                 Tile intTile = pair.Key;
@@ -91,11 +117,11 @@ namespace GoAhead.Commands.ArchitectureGraph
                 WireList interconnectTileWireList = new WireList();
                 processWirelistForTile(checkForSubinterconnects, intTile, out interconnectTileWireList);
 
-                StoreInterconnectWirelist(interconnectTileWireList, wirelistHashcodeToWirelist);
+                StoreWirelist(interconnectTileWireList, wirelistHashcodeToWirelist);
                 interconnectToWirelistHashcode.Add(intTileHashcode, interconnectTileWireList.Key);
             }
-            OutputManager.WriteOutput("interconnect wirelists made.");
 
+            // process wirelists for all primitive tiles
             foreach (KeyValuePair<Tile, int> pair in primitiveTiles)
             {
                 Tile primitiveTile = pair.Key;
@@ -103,11 +129,12 @@ namespace GoAhead.Commands.ArchitectureGraph
                 WireList primitiveTileWireList = new WireList();
                 processWirelistForTile(checkForSubinterconnects, primitiveTile, out primitiveTileWireList);
 
-                StoreInterconnectWirelist(primitiveTileWireList, wirelistHashcodeToWirelist);
+                StoreWirelist(primitiveTileWireList, wirelistHashcodeToWirelist);
                 primitiveToWirelistHashcode.Add(primitiveTiles[primitiveTile], primitiveTileWireList.Key);
             }
 
-            foreach (KeyValuePair<Tile, int> pair in uncommonTiles.Reverse())
+            // process wirelists for all irregular tiles. Since irregular tiles may be found during processing of the wirelists, we create a copy of the irregularTiles data structure, and then iterate through it.
+            foreach (KeyValuePair<Tile, int> pair in irregularTiles.Reverse())
             {
                 Tile uncommonTile = pair.Key;
                 int uncommonTileHashcode = pair.Value;
@@ -116,50 +143,82 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                 if (uncommonTileWireList.Count() > 0)
                 {
-                    StoreInterconnectWirelist(uncommonTileWireList, wirelistHashcodeToWirelist);
-                    uncommonTilesToWirelistHashcode.Add(uncommonTiles[uncommonTile], uncommonTileWireList.Key);
+                    StoreWirelist(uncommonTileWireList, wirelistHashcodeToWirelist);
+                    irregularTilesToWirelistHashcode.Add(irregularTiles[uncommonTile], uncommonTileWireList.Key);
                 }
                 else
                 {
-                    uncommonTilesToWirelistHashcode.Add(uncommonTiles[uncommonTile], -1);
+                    // if this irregular tile does not have a wirelist, flag it as -1.
+                    irregularTilesToWirelistHashcode.Add(irregularTiles[uncommonTile], -1);
                 }
             }
 
-            foreach(Tile uncommonTile in uncommonTiles.Keys)
+            // make sure to update the wirelist hashcodes for irregular tiles found in the previous loop.
+            foreach(Tile uncommonTile in irregularTiles.Keys)
             {
-                if (!uncommonTilesToWirelistHashcode.ContainsKey(uncommonTiles[uncommonTile]))
-                    uncommonTilesToWirelistHashcode.Add(uncommonTiles[uncommonTile], -1);
+                // we know that new irregular tiles found will have an empty wirelist because if not, they would be found when collecting primitives
+                if (!irregularTilesToWirelistHashcode.ContainsKey(irregularTiles[uncommonTile]))
+                    irregularTilesToWirelistHashcode.Add(irregularTiles[uncommonTile], -1);
             }
 
-            OutputManager.WriteOutput("Primitive wirelists made.");
-
-            PrintAllSwitchMatrixWirelists printWirelists = new PrintAllSwitchMatrixWirelists();
-            printWirelists.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\wirelists";
-            printWirelists.InterconnectWirelists = wirelistHashcodeToWirelist;
+            // output the graph with help of subcommands
+            PrintAllWirelists printWirelists = new PrintAllWirelists();
+            printWirelists.FileName = Path.Combine(FolderName, "wirelists.ag");
+            printWirelists.Wirelists = wirelistHashcodeToWirelist;
             CommandExecuter.Instance.Execute(printWirelists);
 
-
             PrintAllInterconnectTiles printTiles = new PrintAllInterconnectTiles();
-            printTiles.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\tiles";
+            printTiles.FileName = Path.Combine(FolderName, "tiles.ag");
             printTiles.InterconnectTiles = interconnectTiles;
             printTiles.InterconnectToPrimitiveTiles = interconnectToPrimitiveTiles;
             printTiles.InterconnectToWirelistHashcode = interconnectToWirelistHashcode;
             printTiles.PrimitiveToWirelistHashcode = primitiveToWirelistHashcode;
             CommandExecuter.Instance.Execute(printTiles);
 
+            PrintIrregularTiles printIrregularTiles = new PrintIrregularTiles();
+            printIrregularTiles.FileName = Path.Combine(FolderName, "irregularTiles.ag");
+            printIrregularTiles.IrregularTiles = irregularTiles;
+            printIrregularTiles.IrregularTilesToWirelistHashcodes = irregularTilesToWirelistHashcode;
+            CommandExecuter.Instance.Execute(printIrregularTiles);
 
-            PrintUncommonTiles printUncommonTiles = new PrintUncommonTiles();
-            printUncommonTiles.FileName = "C:\\Users\\prabh\\OneDrive\\Documents\\Uni\\Internship\\GoAhead\\AG\\uncommonTiles";
-            printUncommonTiles.UncommonTiles = uncommonTiles;
-            printUncommonTiles.UncommonToWirelistHashcode = uncommonTilesToWirelistHashcode;
-            CommandExecuter.Instance.Execute(printUncommonTiles);
+            if (debug)
+            {
+                foreach (KeyValuePair<string, int> pair in wireCounts)
+                {
+                    if (pair.Value == -999)
+                    {
+                        string[] wireParts = pair.Key.Split('-');
+                        OutputManager.WriteOutput("WARNING: Architecture Graph has a wire from " + wireParts[0] + " " + wireParts[1] + " to " + wireParts[2] + " " + wireParts[3] + " which doesn't exists in the model.");
+                    }
+                    else if (pair.Value != 0)
+                    {
+                        string[] wireParts = pair.Key.Split('-');
+                        OutputManager.WriteOutput("WARNING: Wire starting from tile " + wireParts[0] + " port " + wireParts[1] + " and ending at tile " + wireParts[2] + " port " + wireParts[3] +  " which exists " + pair.Value + " times in the model, was not found in the generated Architecture Graph.");
+                    }
+                }
+            }
         }
 
-        private Tile GetPrimitive(Tile intTile, bool checkForSubinterconnects, bool left)
+        private void updateDictionariesWithPrimitive(Tile intTile, Tile primitive)
         {
+            if (primitive != null)
+            {
+                if (!primitiveTiles.Keys.Contains(primitive))
+                    primitiveTiles.Add(primitive, primitiveTiles.Count());
+
+                interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(primitiveTiles[primitive]);
+            }
+            else
+                // flag to recognize non-existing primitive is -999
+                interconnectToPrimitiveTiles[interconnectTiles[intTile]].Add(-999);
+        }
+
+        private Tile GetPrimitive(Tile intTile, bool skipOverSubInterconnects, bool left)
+        {
+            // get primitive left or right of the intTile. Skip over any subInterconnects, if wanted. If primitive belongs to a BRAM/DSP block, get the core tile of the block.
             Tile tile = FPGA.FPGA.Instance.GetTile(intTile.TileKey.X + (left ? -1 : 1), intTile.TileKey.Y);
 
-            if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+            if (skipOverSubInterconnects && IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
             {
                 tile = FPGA.FPGA.Instance.GetTile(tile.TileKey.X + (left ? -1 : 1), tile.TileKey.Y);
             }
@@ -177,16 +236,19 @@ namespace GoAhead.Commands.ArchitectureGraph
 
         private void AddWireToWirelist(Tile startTile, WireList wirelist, Wire startWire, short xIncr, short yIncr, Wire endWire, Tile endTile)
         {
+            // we need to find the primitive number based on the endTile and the column resource string it is ending on
             string blockString = resourceStringChopped[endTile.LocationX];
             int primitiveNumber = -999;
 
             int index = 0;
+            // some of these cases are logically hardcoded for ultrascale. 
             foreach(char c in blockString)
             {
                 switch(c)
                 {
                     case 's':
                         {
+                            // interconnect is always in the middle (0, 1, 2) of a column
                             index++;
                             if (IdentifierManager.Instance.IsMatch(endTile.Location, IdentifierManager.RegexTypes.Interconnect))
                                 primitiveNumber = 1;
@@ -194,6 +256,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                         }
                     case 'L':
                         {
+                            // check if CLB is left or right - it will always be adacent, so 0 or 2.
                             index++;
                             if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_left))
                                 primitiveNumber = 0;
@@ -217,6 +280,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                         }
                     case 'M':
                         {
+                            // check if CLB is left or right - it will always be adacent, so 0 or 2.
                             index++;
                             if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_left))
                                 primitiveNumber = 0;
@@ -239,6 +303,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                             break;
                         }
                     case 'm':
+                        // skip over subinterconnect tiles
                         break;
                     default:
                         {
@@ -254,18 +319,47 @@ namespace GoAhead.Commands.ArchitectureGraph
 
             if (primitiveNumber == -999)
             {
-                if (!uncommonTiles.ContainsKey(endTile))
-                    uncommonTiles.Add(endTile, uncommonTiles.Count() + uncommonTilesHashcodeShift);
+                // if primitive not found, check in irregular tiles. If not found, add the irregular tile, because we need an entry to represent where this wire is ending.
+                if (!irregularTiles.ContainsKey(endTile))
+                    irregularTiles.Add(endTile, irregularTiles.Count() + irregularTilesHashcodeShift);
                 
-                primitiveNumber = uncommonTiles[endTile];
+                primitiveNumber = irregularTiles[endTile];
             }
 
-            wirelist.Add(new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, xIncr, yIncr, primitiveNumber));
+            PrimitiveWire wire = new PrimitiveWire(startWire.LocalPipKey, endWire.PipOnOtherTileKey, startWire.LocalPipIsDriver, xIncr, yIncr, primitiveNumber);
+            wirelist.Add(wire);
+
+            if (debug)
+            {
+                if (startWire == endWire)
+                {
+                    // not dealing with subinterconnects
+                    updateWireCounts(startTile.Location + "-" + startWire.LocalPip + "-" + endWire.PipOnOtherTile + "-" + endTile.Location);
+                }
+                else
+                {
+                    updateWireCounts(startTile.Location + "-" + startWire.LocalPip + "-" + startWire.PipOnOtherTile + "-" + Navigator.GetDestinationByWire(startTile, startWire).Location);
+                    updateWireCounts(Navigator.GetDestinationByWire(startTile, startWire).Location + "-" + endWire.LocalPip + "-" + endWire.PipOnOtherTile + "-" + endTile.Location);
+
+                }
+            }
+        }
+
+        private void updateWireCounts(string wireCountKey)
+        {
+            if (wireCounts.ContainsKey(wireCountKey))
+            {
+                wireCounts[wireCountKey] = wireCounts[wireCountKey] - 1;
+            }
+            else
+            {
+                // -999 flag to decide the debug message
+                wireCounts.Add(wireCountKey, -999);
+            }
         }
 
         private void processWirelistForTile(bool checkForSubinterconnects, Tile tile, out WireList wirelist)
         {
-            Tile subInterconnect = null;
             wirelist = new WireList();
             foreach (Wire w in tile.WireList)
             {
@@ -276,7 +370,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                 if (checkForSubinterconnects && IdentifierManager.Instance.IsMatch(target.Location, IdentifierManager.RegexTypes.SubInterconnect))
                 {
-                    subInterconnect = target;
+                    Tile subInterconnect = target;
 
                     foreach (Port otherPortOnSubInterconnect in subInterconnect.SwitchMatrix.GetDrivenPorts(new Port(w.PipOnOtherTile)))
                     {
@@ -310,13 +404,13 @@ namespace GoAhead.Commands.ArchitectureGraph
             return null;
         }
 
-        private void StoreInterconnectWirelist(WireList wirelistToStore, Dictionary<int, WireList> wirelistCollectionToCheckIn)
+        public static void StoreWirelist(WireList wirelistToStore, Dictionary<int, WireList> wirelistCollectionToCheckIn)
         {
             bool equalWLFound = false;
 
             foreach (WireList other in wirelistCollectionToCheckIn.Values.Where(wl => wl.Count == wirelistToStore.Count))
             {
-                if (other.Equals(wirelistToStore))
+                if (WirelistsEqual(wirelistToStore, other))
                 {
                     wirelistToStore.Key = other.Key;
                     equalWLFound = true;
@@ -337,10 +431,45 @@ namespace GoAhead.Commands.ArchitectureGraph
             }
         }
 
+        private static bool WirelistsEqual(WireList a, WireList b)
+        {
+            if (a.m_wires.Count != b.m_wires.Count)
+            {
+                return false;
+            }
+
+            foreach (PrimitiveWire w in a)
+            {
+                if (!HasWire(b, w))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private static bool HasWire(WireList wl, PrimitiveWire wire)
+        {
+            int index = wl.m_wires.IndexOf(wire);
+
+            if (index != -1)
+            {
+                return ((PrimitiveWire)wl.m_wires[index]).primitiveNumber == wire.primitiveNumber;
+            }
+
+            return false;
+        }
+
         public override void Undo()
         {
             throw new NotImplementedException();
         }
+
+        [Parameter(Comment = "Print debug information in FileName")]
+        public bool debug = false;
+
+        [Parameter(Comment = "Folder where the Architecture Graph files will be outputted")]
+        public string FolderName = "";
     }
 
     class PrimitiveWire : Wire
@@ -352,5 +481,4 @@ namespace GoAhead.Commands.ArchitectureGraph
             this.primitiveNumber = primitiveNumber;
         }
     }
-
 }

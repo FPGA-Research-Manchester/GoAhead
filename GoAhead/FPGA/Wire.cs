@@ -202,7 +202,7 @@ namespace GoAhead.FPGA
             get { return m_wires.Count; }
         }
 
-        private List<Wire> m_wires = new List<Wire>();
+        public List<Wire> m_wires = new List<Wire>();
         private Dictionary<uint, List<Wire>> m_chache = null;
 
         public Dictionary<uint, Dictionary<uint, Dictionary<int, Dictionary<int, bool>>>> m_wireKeys = new Dictionary<uint, Dictionary<uint, Dictionary<int, Dictionary<int, bool>>>>();
