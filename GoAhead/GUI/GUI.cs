@@ -19,6 +19,7 @@ using GoAhead.GUI.FPGAView;
 using GoAhead.GUI.Macros.XDLGeneration;
 using GoAhead.GUI.UCF;
 using GoAhead.Settings;
+using System.Drawing;
 
 namespace GoAhead.GUI
 {
@@ -766,6 +767,59 @@ namespace GoAhead.GUI
         {
             get { return m_FPGAView; }
         }
+
+        private void GUI_OnMouseMove(object sender, EventArgs e)
+        {
+            SyncViews();
+        }
+
+        private float SharedZoom
+        {
+            get { return m_SharedZoom; }
+            set { m_SharedZoom = value; }
+        }
+        private Point SharedAutoScroll
+        {
+            get { return m_SharedAutoScroll; }
+            set { m_SharedAutoScroll = value; }
+        }
+
+        public void SyncViews()
+        {
+            float viewAllZoom = m_fpgaViewAll.ZoomPictureBox.Zoom;
+            float viewBlockZoom = m_fpgaViewBlock.ZoomPictureBox.Zoom;
+            Point viewBlockAutoScroll = m_fpgaViewBlock.ZoomPictureBox.AutoScrollPosition;
+            Point viewAllAutoScroll = m_fpgaViewAll.ZoomPictureBox.AutoScrollPosition;
+
+            //Sync zoom on both views.
+            if (  Math.Abs( viewAllZoom - this.m_SharedZoom)   < Math.Abs(viewBlockZoom - this.SharedZoom ))
+            {
+                m_fpgaViewAll.ZoomPictureBox.Zoom = viewBlockZoom;
+                m_SharedZoom = viewBlockZoom;    
+            }
+            else if (Math.Abs(viewAllZoom - this.m_SharedZoom) > Math.Abs(viewBlockZoom - this.SharedZoom))
+            {
+                m_fpgaViewBlock.ZoomPictureBox.Zoom = viewAllZoom;
+                m_SharedZoom = viewAllZoom;
+            }      
+            
+            
+       
+            //Only update autoscrolls value.
+            if ( viewBlockAutoScroll == this.SharedAutoScroll && viewAllAutoScroll != this.SharedAutoScroll)
+            {
+                m_fpgaViewBlock.ZoomPictureBox.AutoScrollPosition = new Point((-1) * viewAllAutoScroll.X, (-1) * viewAllAutoScroll.Y);
+                this.SharedAutoScroll = viewAllAutoScroll;
+            }
+            else if( viewAllAutoScroll == this.SharedAutoScroll && viewBlockAutoScroll != this.SharedAutoScroll)
+            {
+                m_fpgaViewAll.ZoomPictureBox.AutoScrollPosition = new Point((-1) * viewBlockAutoScroll.X, (-1) * viewBlockAutoScroll.Y);
+                this.SharedAutoScroll = viewBlockAutoScroll;
+            }
+            
+        }
+
+
 
         private FPGAViewCtrl m_FPGAView = null;
         private List<string> m_formsToLoadOnStartup = new List<string>();

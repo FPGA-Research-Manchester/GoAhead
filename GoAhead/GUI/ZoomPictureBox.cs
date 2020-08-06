@@ -116,12 +116,15 @@ namespace GoAhead.GUI
             {
                 if (onZoom && _zoomPoint.X == 0 && _zoomPoint.Y == 0)
                 {
+                    //Zoom using the zoom buttons.
                     float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
                     float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom - 0.5f);
                     AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+                    
                 }
                 else if (onZoom)
                 {
+                    //Zoom relative to the mouse cursor.
                     float x = _zoomPoint.X * _prevZoom / _zoom;
                     float y = _zoomPoint.Y * _prevZoom / _zoom;
 
