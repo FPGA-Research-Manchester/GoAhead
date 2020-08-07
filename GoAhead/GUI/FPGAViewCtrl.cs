@@ -21,6 +21,32 @@ namespace GoAhead.GUI
 {
     public partial class FPGAViewCtrl : UserControl, Interfaces.IResetable
     {
+
+        bool _sync = false;
+        [
+            Category("Appearance"),
+            Description("Property to disable/enable auto-sync on both fpga views.")
+        ]
+
+        public bool Sync
+        {
+            get { return _sync; }
+            set { _sync = value; }
+        }
+
+        bool _expandSelection = true;
+        [
+            Category("Behavior"),
+            Description("Property to disable/enable auto expand selection.")
+        ]
+
+        public bool ExpandSelection
+        {
+            get { return _expandSelection; }
+            set { _expandSelection = value; }
+        }
+
+
         public FPGAViewCtrl()
         {
             InitializeComponent();
@@ -309,6 +335,13 @@ namespace GoAhead.GUI
             ZoomIn();
 
         }
+        private void m_toolStripBtnExpandSelection_Click(object sender, EventArgs e)
+        {
+            if (this.ExpandSelection)
+                this.ExpandSelection = false;
+            else
+                this.ExpandSelection = true;         
+        }
 
         /// <summary>
         /// Redraw upon enter
@@ -542,13 +575,15 @@ namespace GoAhead.GUI
         {
             if (m_toolStripDrpDownMenuSyncViews.Checked)
             {
-                this.ZoomPictureBox.Sync = true;
+                this.Sync = true;
             }
             else
             {
-                this.ZoomPictureBox.Sync = false;
+                this.Sync = false;
             }
         }
+
+
 
 
 
@@ -628,7 +663,6 @@ namespace GoAhead.GUI
             bool ctrlDown = ModifierKeys == Keys.Control;
             bool altDown = ModifierKeys == Keys.Alt;
             bool altAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Alt);
-            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
             if (!ctrlDown && !altAndCtrlDown)
             {
@@ -695,7 +729,7 @@ namespace GoAhead.GUI
                 CommandExecuter.Instance.Execute(new AddToSelectionXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y));
             }
 
-            if (StoredPreferences.Instance.ExecuteExpandSelection && !ctrlAndShiftDown)
+            if (StoredPreferences.Instance.ExecuteExpandSelection && this.ExpandSelection)
             {
                 CommandExecuter.Instance.Execute(new Commands.Selection.ExpandSelection());
             }

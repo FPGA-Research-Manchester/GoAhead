@@ -46,6 +46,7 @@
             this.m_contextMenuFullZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripBtnZoomIn = new System.Windows.Forms.ToolStripButton();
             this.m_toolStripBtnZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.m_toolStripBtnExpandSelection = new System.Windows.Forms.ToolStripButton();
             this.m_toolStripBtnFind = new System.Windows.Forms.ToolStripButton();
             this.m_toolStripLblFilter = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -195,6 +196,16 @@
             this.m_toolStripBtnZoomOut.Text = "Zoom Out";
             this.m_toolStripBtnZoomOut.Click += new System.EventHandler(this.m_toolStripBtnZoomOut_Click);
             // 
+            // m_toolStripBtnExpandSelection
+            // 
+            this.m_toolStripBtnExpandSelection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_toolStripBtnExpandSelection.Name = "m_toolStripBtnExpandSelection";
+            this.m_toolStripBtnExpandSelection.Size = new System.Drawing.Size(23, 22);
+            this.m_toolStripBtnExpandSelection.Text = "Expand Selection";
+            this.m_toolStripBtnExpandSelection.Click += new System.EventHandler(this.m_toolStripBtnExpandSelection_Click);
+            this.m_toolStripBtnExpandSelection.Checked = true;
+            this.m_toolStripBtnExpandSelection.CheckOnClick = true;
+            // 
             // m_toolStripBtnFind
             // 
             this.m_toolStripBtnFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -343,6 +354,7 @@
             this.m_toolStripBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_toolStripBtnZoomIn,
             this.m_toolStripBtnZoomOut,
+            this.m_toolStripBtnExpandSelection,
             this.m_toolStripBtnFind,
             this.m_toolStripLblFilter,
             this.toolStripSeparator2,
@@ -433,6 +445,7 @@
         private System.Windows.Forms.Panel m_panelSelection;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnZoomIn;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnZoomOut;
+        private System.Windows.Forms.ToolStripButton m_toolStripBtnExpandSelection;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnFind;
         private System.Windows.Forms.ToolStripLabel m_toolStripLblFilter;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;

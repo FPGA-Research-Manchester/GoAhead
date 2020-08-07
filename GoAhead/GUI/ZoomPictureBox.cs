@@ -101,19 +101,6 @@ namespace GoAhead.GUI
             }
         }
 
-        bool _sync = false;
-        [
-            Category("Appearance"),
-            Description("Property to disable/enable auto-sync on both fpga views.")
-        ]
-
-        public bool Sync
-        {
-            get { return _sync; }
-            set { _sync = value;}
-        }
-
-
         /// <summary>
         /// Calculates the effective size of the image
         /// after zooming and updates the AutoScrollSize accordingly
