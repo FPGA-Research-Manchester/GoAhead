@@ -20,6 +20,9 @@ namespace GoAhead.Commands.GUI
         [Parameter(Comment = "GoAhead Y coordinate for a tile.")]
         public int Y;
 
+        [Parameter(Comment = "Check if ExpandSelectionMode is ON.")]
+        public bool doExpand;
+
         public override void Undo()
         {
         }
@@ -31,8 +34,21 @@ namespace GoAhead.Commands.GUI
                 Tile tile = FPGA.FPGA.Instance.GetTile(Location);
                 if (tile != null)
                 {
-                    TileViewForm tileView = new TileViewForm(tile);
-                    tileView.Show();
+                    //Check if expand is activated.
+                    if(doExpand)
+                    {
+                        TileViewForm tileView = new TileViewForm(tile);
+                        tileView.Show();
+                    }
+                    else
+                    {
+                        SingleTileViewForm tileView = new SingleTileViewForm(tile);
+                        tileView.Show();
+
+                    }
+
+
+                    
                     return;
                 }
                 Console.WriteLine("Tile Location=" + Location + " doesn't exist. Attempting to find tile by (X,Y) coordinates...");
@@ -40,8 +56,17 @@ namespace GoAhead.Commands.GUI
 
             if (FPGA.FPGA.Instance.Contains(X, Y))
             {
-                TileViewForm tileView = new TileViewForm(FPGA.FPGA.Instance.GetTile(X, Y));
-                tileView.Show();
+                if(doExpand)
+                {
+                    TileViewForm tileView = new TileViewForm(FPGA.FPGA.Instance.GetTile(X, Y));
+                    tileView.Show();
+                }
+                else
+                {
+                    SingleTileViewForm tileView = new SingleTileViewForm(FPGA.FPGA.Instance.GetTile(X, Y));
+                    tileView.Show();
+                }
+                
             }
             else
             {

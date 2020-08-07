@@ -35,7 +35,7 @@ namespace GoAhead.GUI
             set
             {
                 _image=value;
-                UpdateScaleFactor();
+                UpdateScaleFactor(false);
                 Invalidate();
 
                 InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -59,16 +59,39 @@ namespace GoAhead.GUI
                 }
 
                 _zoom=value;
-                UpdateScaleFactor();
+                UpdateScaleFactor(true);
                 Invalidate();
             }
         }
+
+
+        float _prevZoom = 1.0f;
+        [
+            Category("Appearance"),
+            Description("The zoom factor. Less than 1 to reduce. More than 1 to magnify.")
+        ]
+
+        public float PrevZoom
+        {
+            get { return _prevZoom; }
+            set
+            {
+                if (value < 0 || value < 0.00001)
+                {
+                    value = 0.00001f;
+                }
+
+                _prevZoom = value;
+                
+            }
+        }
+
 
         /// <summary>
         /// Calculates the effective size of the image
         /// after zooming and updates the AutoScrollSize accordingly
         /// </summary>
-        private void UpdateScaleFactor()
+        private void UpdateScaleFactor(bool onZoom)
         {
             if (_image == null)
             {
@@ -76,7 +99,16 @@ namespace GoAhead.GUI
             }
             else
             {
+                if (onZoom)
+                {
+                    float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
+                    float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom - 0.5f);
+                    AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
+
+                }
+
                 AutoScrollMinSize = new Size((int)(_image.Width * _zoom + 0.5f), (int)(_image.Height * _zoom + 0.5f));
+
             }            
         }
 
@@ -95,7 +127,8 @@ namespace GoAhead.GUI
         {
             // do nothing.
         }
-        
+
+
         protected override void OnPaint(PaintEventArgs e)
         {
             //if no image, don't bother
@@ -105,18 +138,23 @@ namespace GoAhead.GUI
                 return;
             }
 
+
             //Set up a zoom matrix
-            Matrix mx=new Matrix(_zoom,0,0,_zoom,0,0);
+            Matrix mx = new Matrix(_zoom, 0, 0, _zoom, 0, 0);
             //now translate the matrix into position for the scrollbars
-            mx.Translate(AutoScrollPosition.X / _zoom, AutoScrollPosition.Y / _zoom);
+            mx.Translate(AutoScrollPosition.X /_zoom, AutoScrollPosition.Y /_zoom);
+            
             //use the transform
             e.Graphics.Transform=mx;
             //and the desired interpolation mode
             e.Graphics.InterpolationMode=_interpolationMode;
             //Draw the image ignoring the images resolution settings.
             e.Graphics.DrawImage(_image,new Rectangle(0,0,_image.Width,_image.Height),0,0,_image.Width, _image.Height,GraphicsUnit.Pixel);
-          
+          //e.Graphics.DrawImage(_image,new Rectangle(0,0,_image.Width,_image.Height), new Rectangle(0, 0, (int)_zoom, (int)_zoom), GraphicsUnit.Pixel);
             base.OnPaint(e);
+
+           
+
         }
 
         public ZoomPicBox()

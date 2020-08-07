@@ -24,12 +24,20 @@ namespace GoAhead.GUI.TileView
             tiles.Add(m_tile);
             if (IdentifierManager.Instance.IsMatch(m_tile.Location, IdentifierManager.RegexTypes.Interconnect))
             {
+                //Add adjacent clb tiles.
                 tiles.AddRange(FPGATypes.GetCLTile(m_tile));
+
+                //Add adjacent sub-interconnect tiles.
+                tiles.AddRange(FPGATypes.GetSubInterconnectTile(m_tile));
             }
             if (IdentifierManager.Instance.IsMatch(m_tile.Location, IdentifierManager.RegexTypes.CLB))
             {
                 Tile interconnect = FPGATypes.GetInterconnectTile(m_tile);
+
+                //Add interconnect.
                 tiles.Add(interconnect);
+
+                // Add clb tiles.
                 foreach(Tile clb in FPGATypes.GetCLTile(interconnect))
                 {
                     if(!tiles.Contains(clb))
@@ -37,8 +45,28 @@ namespace GoAhead.GUI.TileView
                         tiles.Add(clb);
                     }
                 }
+
+                //Add sub-interconnect tiles.
+                tiles.AddRange(FPGATypes.GetSubInterconnectTile(m_tile));
+
             }
-            foreach(Tile t in tiles)
+            if (IdentifierManager.Instance.IsMatch(m_tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+            {
+                Tile interconnect = FPGATypes.GetInterconnectTile(m_tile);
+
+                //Add interconnect.
+                tiles.Add(interconnect);
+
+                // Add clb tiles.
+                foreach (Tile clb in FPGATypes.GetCLTile(interconnect))
+                {
+                    if (!tiles.Contains(clb))
+                    {
+                        tiles.Add(clb);
+                    }
+                }
+            }
+            foreach (Tile t in tiles)
             {
                 TabPage page = new TabPage();
                 page.Text = t.Location;

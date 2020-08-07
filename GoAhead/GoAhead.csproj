@@ -757,6 +757,12 @@
     <Compile Include="GUI\SetVariables\SetVariablesForm.Designer.cs">
       <DependentUpon>SetVariablesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\TileView\SingleTileViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\TileView\SingleTileViewForm.Designer.cs">
+      <DependentUpon>SingleTileViewForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Watch\VariableWatchCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1170,6 +1176,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\SetVariables\SetVariablesForm.resx">
       <DependentUpon>SetVariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\TileView\SingleTileViewForm.resx">
+      <DependentUpon>SingleTileViewForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Watch\VariableWatchCtrl.resx">
       <DependentUpon>VariableWatchCtrl.cs</DependentUpon>

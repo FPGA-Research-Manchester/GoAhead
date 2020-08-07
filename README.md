@@ -9,7 +9,7 @@
 ## Documentation
 For documentation, tutorials, version history etc... visit the following link:
 
-### [GoAhead Wiki](https://nikola-grunchevski.gitbook.io/goahead/)
+### [GoAhead Wiki](https://goahead-uom.gitbook.io/goahead/)
 
 
 ## Installation

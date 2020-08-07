@@ -293,7 +293,7 @@ namespace GoAhead.GUI
                         }
                     case FPGATypes.FPGAFamily.UltraScale:
                         {
-                            widthScale = FPGATypes.GetCLTile(intTile).Count() + 1;
+                            widthScale = FPGATypes.GetCLTile(intTile).Count() + 2;
                             if (FPGATypes.IsOrientedMatch(tile.Location, IdentifierManager.RegexTypes.CLB_left))
                             {
                                 // CLBLL_L_X INT_L_X
@@ -302,10 +302,18 @@ namespace GoAhead.GUI
                             }
                             else
                             {
-                                upperLeftX = (intTile.TileKey.X - (widthScale == 2 ? 0 : 1)) * m_view.TileSize;
-                                upperLeftY = intTile.TileKey.Y * m_view.TileSize;
+                                //If CLEL_R is paired with a subinterconnect, keep its colour.
+                                Tile subinterconnect = FPGA.FPGA.Instance.GetTile(tile.TileKey.X - 2, tile.TileKey.Y);
+
+                                if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                                {
+                                    upperLeftX = (intTile.TileKey.X - (widthScale == 2 ? 0 : 1)) * m_view.TileSize;
+                                    upperLeftY = intTile.TileKey.Y * m_view.TileSize;
+
+                                }
+                                
                                 // double size of the rectangle
-                            }
+                            } 
                             break;
                         }
                 default:
@@ -323,6 +331,12 @@ namespace GoAhead.GUI
                 // interconnect tiles for CLB have no tiles
                 return;
             }
+            else if(IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+            {
+                // Sub-interconnect tiles for CLB have no tiles
+                return;
+
+            }
             else
             {
                 upperLeftX = tile.TileKey.X * m_view.TileSize;
@@ -336,6 +350,12 @@ namespace GoAhead.GUI
             m_rect.Height = (heightScale * (m_view.TileSize - 1) + heightScale) - 2;
 
             // default color maybde overwritten
+
+            //For CLEM tiles, preserve their tile colour along the whole block.
+            if(tile.Location.Contains("CLEM"))
+            {
+                m_sb.Color = ColorSettings.Instance.GetColor(tile);
+            }
             m_sb.Color = m_view.GetColor(tile, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
 
             

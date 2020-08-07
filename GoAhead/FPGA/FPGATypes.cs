@@ -341,6 +341,7 @@ namespace GoAhead.FPGA
 
         /// <summary>
         /// Get the Interconnect Tile that belongs to the clbConnectLocation
+        /// For UltraScale, also get Interconnect tile for the INT_INTF type of tiles.
         /// </summary>
         /// <param name="clbLocatioin"></param>
         /// <returns></returns>
@@ -363,6 +364,33 @@ namespace GoAhead.FPGA
                         return clb;
                     }
                 case FPGAFamily.UltraScale:
+                    {
+                        if (IsOrientedMatch(clb.Location, IdentifierManager.RegexTypes.CLB_left))
+                        {
+                            return FPGA.Instance.GetTile(clb.TileKey.X + 1, clb.TileKey.Y);
+                        }
+                        else if (IsOrientedMatch(clb.Location, IdentifierManager.RegexTypes.CLB_right))
+                        {
+                            return FPGA.Instance.GetTile(clb.TileKey.X - 1, clb.TileKey.Y);
+                        }
+                        //Check to the right of the INT_INTF.
+                        else if (IdentifierManager.Instance.IsMatch(clb.Location, IdentifierManager.RegexTypes.SubInterconnect)
+                                 && IdentifierManager.Instance.IsMatch(FPGA.Instance.GetTile(clb.TileKey.X + 1, clb.TileKey.Y).Location, IdentifierManager.RegexTypes.Interconnect))
+                        {
+                            //Move to the right interconnect.
+                            return FPGA.Instance.GetTile(clb.TileKey.X + 1, clb.TileKey.Y);
+                        }
+                        else if (IdentifierManager.Instance.IsMatch(clb.Location, IdentifierManager.RegexTypes.SubInterconnect)
+                                 && IdentifierManager.Instance.IsMatch(FPGA.Instance.GetTile(clb.TileKey.X - 1, clb.TileKey.Y).Location, IdentifierManager.RegexTypes.Interconnect))
+                        {
+                            //Move to the right interconnect.
+                            return FPGA.Instance.GetTile(clb.TileKey.X - 1, clb.TileKey.Y);
+                        }
+                        else
+                        {
+                            throw new ArgumentException("GetInterconnectTile not implemented for tile " + clb.Location + " in " + FPGA.Instance.Family);
+                        }
+                    }
                 case FPGAFamily.Kintex7:
                 case FPGAFamily.Artix7:
                 case FPGAFamily.Zynq:
@@ -454,6 +482,62 @@ namespace GoAhead.FPGA
                 default:
                     {
                         throw new ArgumentException("GetCBTile not implemented for " + FPGA.Instance.Family);
+                    }
+            }
+        }
+
+        /// <summary>
+        /// Get the INT_INTF that belongs to the interConnectLocation
+        /// </summary>
+        /// <param name="clbLocatioin"></param>
+        /// <returns></returns>
+        public static IEnumerable<Tile> GetSubInterconnectTile(Tile tile)
+        {
+            switch (FPGA.Instance.Family)
+            {
+                case FPGAFamily.Spartan6:
+                case FPGAFamily.Virtex4:
+                case FPGAFamily.Virtex5:
+                case FPGAFamily.Virtex6:
+                case FPGAFamily.Artix7:
+                case FPGAFamily.Kintex7:
+                case FPGAFamily.Virtex7:
+                case FPGAFamily.Zynq:
+                case FPGAFamily.StratixV:
+                case FPGAFamily.CycloneIVE:
+                    {
+                        // TODO
+                        yield return tile;
+                        break;
+                    }
+                case FPGAFamily.UltraScale:
+                    {
+                        Tile interconnectTile;
+                        if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB))
+                        {
+                            //Get sub-interconnect from interconnect tile.
+                            interconnectTile = FPGATypes.GetInterconnectTile(tile);
+                        }
+                        else if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect))
+                            interconnectTile = tile;
+                        else
+                            throw new ArgumentException("GetSubInterconnectTile not implemented for tile" + tile.Location + " for " + FPGA.Instance.Family);
+
+                        Tile left = FPGA.Instance.GetTile(interconnectTile.TileKey.X - 1, interconnectTile.TileKey.Y);
+                        Tile right = FPGA.Instance.GetTile(interconnectTile.TileKey.X + 1, interconnectTile.TileKey.Y);
+                        if (IdentifierManager.Instance.IsMatch(left.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            yield return left;
+                        }
+                        if (IdentifierManager.Instance.IsMatch(right.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            yield return right;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        throw new ArgumentException("GetSubInterconnectTile not implemented for"+ FPGA.Instance.Family);
                     }
             }
         }
