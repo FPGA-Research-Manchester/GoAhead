@@ -88,7 +88,7 @@ namespace GoAhead.GUI
 
         Point _zoomPoint = new Point(1, 1);
         [
-            Category("Appearance"),
+            Category("Mouse"),
             Description("The zoom point. Used to zoom relative to the mouse cursor.")
         ]
 
@@ -99,6 +99,18 @@ namespace GoAhead.GUI
             {
                 _zoomPoint = value;
             }
+        }
+
+        bool _sync = false;
+        [
+            Category("Appearance"),
+            Description("Property to disable/enable auto-sync on both fpga views.")
+        ]
+
+        public bool Sync
+        {
+            get { return _sync; }
+            set { _sync = value;}
         }
 
 

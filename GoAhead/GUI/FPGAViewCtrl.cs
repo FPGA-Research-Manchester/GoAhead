@@ -538,6 +538,20 @@ namespace GoAhead.GUI
             }
         }
 
+        private void m_toolStripDrpDownMenuSyncViews_Click(object sender, EventArgs e)
+        {
+            if (m_toolStripDrpDownMenuSyncViews.Checked)
+            {
+                this.ZoomPictureBox.Sync = true;
+            }
+            else
+            {
+                this.ZoomPictureBox.Sync = false;
+            }
+        }
+
+
+
         private void m_toolStripDrpDownMenuPainting_MouseDown(object sender, MouseEventArgs e)
         {
             m_toolStripDrpDownMenuPaintingToolTips.Checked = StoredPreferences.Instance.ShowToolTips;

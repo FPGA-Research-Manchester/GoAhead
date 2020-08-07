@@ -770,7 +770,8 @@ namespace GoAhead.GUI
 
         private void GUI_OnMouseMove(object sender, EventArgs e)
         {
-            SyncViews();
+            if(m_fpgaViewAll.ZoomPictureBox.Sync && m_fpgaViewBlock.ZoomPictureBox.Sync)
+                SyncViews();
         }
 
         private float SharedZoom

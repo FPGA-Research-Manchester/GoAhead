@@ -57,6 +57,7 @@
             this.m_toolStripDrpDownMenuPaintingPossibleMacroPlacements = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuPaintingToolTips = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuMuteOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripDrpDownMenuSyncViews = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuPaintingSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.m_toolStripLblMacros = new System.Windows.Forms.ToolStripLabel();
@@ -231,7 +232,8 @@
             this.m_toolStripDrpDownMenuPaintingPossibleMacroPlacements,
             this.m_toolStripDrpDownMenuPaintingToolTips,
             this.m_toolStripDrpDownMenuMuteOutput,
-            this.m_toolStripDrpDownMenuPaintingSelection});
+            this.m_toolStripDrpDownMenuPaintingSelection,
+            this.m_toolStripDrpDownMenuSyncViews});
             this.m_toolStripDrpDownMenuPainting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_toolStripDrpDownMenuPainting.Name = "m_toolStripDrpDownMenuPainting";
             this.m_toolStripDrpDownMenuPainting.Size = new System.Drawing.Size(62, 22);
@@ -295,6 +297,14 @@
             this.m_toolStripDrpDownMenuPaintingSelection.Size = new System.Drawing.Size(218, 22);
             this.m_toolStripDrpDownMenuPaintingSelection.Text = "Highligt Selection";
             this.m_toolStripDrpDownMenuPaintingSelection.Click += new System.EventHandler(this.m_toolStripDrpDownMenuPaintingSelection_Click);
+            //
+            // m_toolStripDrpDownMenuSyncViews
+            //
+            this.m_toolStripDrpDownMenuSyncViews.CheckOnClick = true;
+            this.m_toolStripDrpDownMenuSyncViews.Name = "m_toolStripDrpDownMenuSyncViews";
+            this.m_toolStripDrpDownMenuSyncViews.Size = new System.Drawing.Size(218, 22);
+            this.m_toolStripDrpDownMenuSyncViews.Text = "Sync Views";
+            this.m_toolStripDrpDownMenuSyncViews.Click += new System.EventHandler(this.m_toolStripDrpDownMenuSyncViews_Click);
             // 
             // toolStripSeparator1
             // 
@@ -445,6 +455,8 @@
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuCopyIdentifier;
         private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuPaintingToolTips;
         private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuMuteOutput;
+        private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuSyncViews;
+       
         private System.Windows.Forms.ToolStripProgressBar m_toolStripProgressBar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuFullZoom;
