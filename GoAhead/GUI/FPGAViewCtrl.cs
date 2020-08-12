@@ -47,6 +47,7 @@ namespace GoAhead.GUI
         }
 
 
+       
         public FPGAViewCtrl()
         {
             InitializeComponent();
@@ -395,8 +396,9 @@ namespace GoAhead.GUI
 
                     statusString += ") ";
                 }
-                // 2 element buffer
-                m_lastClickedTile = m_currentlyClickedTile;
+                
+                if (!TileSelectionManager.Instance.OngoingIncrementalSelection)
+                    m_lastClickedTile = m_currentlyClickedTile;
                 m_currentlyClickedTile = selectedTile;
             }
 
@@ -673,6 +675,8 @@ namespace GoAhead.GUI
 
             if (shiftDown)
             {
+                TileSelectionManager.Instance.OngoingIncrementalSelection = true;
+
                 TileKey clickedKey = GetClickedKey(m_mouseDownPosition.X, m_mouseDownPosition.Y);
                 if (m_lastClickedTile == null)
                 {
@@ -688,6 +692,8 @@ namespace GoAhead.GUI
             }
             else
             {
+                TileSelectionManager.Instance.OngoingIncrementalSelection = false;
+
                 int upperLeftX = Math.Min(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X);
                 int upperLeftY = Math.Min(m_mouseDownPosition.Y, m_currentMousePositionWithRectangleSelect.Y);
                 int lowerRightX = Math.Max(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X);
@@ -714,7 +720,6 @@ namespace GoAhead.GUI
                 try
                 {
                     //Switch to using the INT_XxYy tile.
-
                     AddBlockToSelection addcmd = new AddBlockToSelection(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
                     CommandExecuter.Instance.Execute(addcmd);
                 }
@@ -727,6 +732,7 @@ namespace GoAhead.GUI
             {
                 // Use the fine-tile grid as default.
                 CommandExecuter.Instance.Execute(new AddToSelectionXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y));
+               
             }
 
             if (StoredPreferences.Instance.ExecuteExpandSelection && this.ExpandSelection)
@@ -825,7 +831,6 @@ namespace GoAhead.GUI
         private void m_zoomPictBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TileKey clickedKey = GetClickedKey(e.X, e.Y);
-            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
             if (FPGA.FPGA.Instance.Contains(clickedKey))
             {
@@ -833,7 +838,7 @@ namespace GoAhead.GUI
                 {
                     X = clickedKey.X,
                     Y = clickedKey.Y,
-                    doExpand = !ctrlAndShiftDown
+                    doExpand = this.ExpandSelection
                 };
                 CommandExecuter.Instance.Execute(cmd);
             }
