@@ -31,6 +31,11 @@ namespace GoAhead.Commands.Selection
             Tile ul = null;
             Tile lr = null;
 
+            UpperLeftX = Math.Min(x1, x2);
+            UpperLeftY = Math.Min(y1, y2);
+            LowerRightX = Math.Max(x1, x2);
+            LowerRightY = Math.Max(y1, y2);
+
             for (int x = startX; x <= endX; x++)
             {
                 for (int y = startY; y <= endY; y++)
@@ -58,8 +63,7 @@ namespace GoAhead.Commands.Selection
                     }
                 }
             }
-
-                       
+               
             if(ul == null || lr == null)
             {
                 throw new ArgumentException("Could not derive upper left and lower right anchor");
@@ -129,11 +133,21 @@ namespace GoAhead.Commands.Selection
             ExpandSelection;
             */
 
+            /*
             int startX = Math.Min(ul.TileKey.X, lr.TileKey.X);
             int endX = Math.Max(ul.TileKey.X, lr.TileKey.X);
 
             int startY = Math.Min(ul.TileKey.Y, lr.TileKey.Y);
             int endY = Math.Max(ul.TileKey.Y, lr.TileKey.Y);
+            */
+
+            int startX = Math.Min(UpperLeftX, LowerRightX);
+            int endX = Math.Max(UpperLeftX, LowerRightX);
+
+            int startY = Math.Min(UpperLeftY, LowerRightY);
+            int endY = Math.Max(UpperLeftY, LowerRightY);
+
+
 
             Regex filter = new Regex(Filter);
 
@@ -248,5 +262,19 @@ namespace GoAhead.Commands.Selection
 
         [Parameter(Comment = "The lower right tile")]
         public string LowerRightTile = "";
+
+        [Parameter(Comment = "The X coordinate of the upper left tile")]
+        private int UpperLeftX = 0;
+
+        [Parameter(Comment = "The Y coordinate of the upper left tile")]
+        private int UpperLeftY = 0;
+
+        [Parameter(Comment = "The X coordinate of the lower right tile")]
+        private int LowerRightX = 0;
+
+        [Parameter(Comment = "The Y coordinate of the lower right tile")]
+        private int LowerRightY = 0;
+
+
     }
 }
