@@ -720,7 +720,7 @@ namespace GoAhead.GUI
                 try
                 {
                     //Switch to using the INT_XxYy tile.
-                    AddBlockToSelection addcmd = new AddBlockToSelection(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
+                    AddToSelectionINTXY addcmd = new AddToSelectionINTXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
                     CommandExecuter.Instance.Execute(addcmd);
                 }
                 catch (Exception e)

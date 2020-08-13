@@ -20,7 +20,7 @@ namespace GoAhead.Commands
             OutputManager.WriteOutput("Execute use cmd /c command");
             OutputManager.WriteOutput("Blockers are generate like TILE/FROM -> TILE/TO");
             OutputManager.WriteOutput("Minimal support for UltraScale");
-            OutputManager.WriteOutput("Fix AddBlockToSelection for Virtex7");
+            OutputManager.WriteOutput("Fix AddToSelectionINTXY for Virtex7");
             OutputManager.WriteOutput("Introduce Prefix in PreRoutePRLink for supprting hierarchical nets");
             OutputManager.WriteOutput("Introduce StepWidth for AnnotateSignalNames for precise mapping (to prevent pins swaps)");
             OutputManager.WriteOutput("Supported for newer devices US,V7,...");

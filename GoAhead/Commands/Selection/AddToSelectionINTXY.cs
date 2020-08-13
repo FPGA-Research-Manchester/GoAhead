@@ -8,13 +8,13 @@ using GoAhead.Objects;
 namespace GoAhead.Commands.Selection
 {
     [CommandDescription(Description = "Add CLBS, INT, DSP, and BRAM tiles in the specified rectangle to the current selection", Wrapper = true)]
-    class AddBlockToSelection : AddToSelectionCommand
+    class AddToSelectionINTXY : AddToSelectionCommand
     {
-        public AddBlockToSelection()
+        public AddToSelectionINTXY()
         { 
         }
 
-        public AddBlockToSelection(int x1, int y1, int x2, int y2)
+        public AddToSelectionINTXY(int x1, int y1, int x2, int y2)
         {
             // run form min to max
             int startX = Math.Min(x1, x2);
@@ -126,10 +126,10 @@ namespace GoAhead.Commands.Selection
             // TODO sort lu kann auch unten links und lr kann auch oben rechts sein
             /*
             ClearSelection;
-            AddBlockToSelection UpperLeftTile=INT_X21Y174 LowerRightTile=INT_X23Y170;
+            AddToSelectionINTXY UpperLeftTile=INT_X21Y174 LowerRightTile=INT_X23Y170;
             ExpandSelection;
             [12:01:34 PM] diko: ClearSelection;
-            AddBlockToSelection UpperLeftTile=INT_X23Y174 LowerRightTile=INT_X21Y170;
+            AddToSelectionINTXY UpperLeftTile=INT_X23Y174 LowerRightTile=INT_X21Y170;
             ExpandSelection;
             */
 
