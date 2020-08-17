@@ -404,7 +404,7 @@
             // 
             // dataGridViewTextBoxColumn0
             // 
-            this.dataGridViewTextBoxColumn0.HeaderText = "LUT-Output";
+            this.dataGridViewTextBoxColumn0.HeaderText = "LUT-Input";
             this.dataGridViewTextBoxColumn0.Name = "dataGridViewTextBoxColumn0";
             this.dataGridViewTextBoxColumn0.ReadOnly = true;
             // 
@@ -422,7 +422,7 @@
             // 
             // dataGridViewTextBoxColumn3
             // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "LUT-Input";
+            this.dataGridViewTextBoxColumn3.HeaderText = "LUT-Output";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
