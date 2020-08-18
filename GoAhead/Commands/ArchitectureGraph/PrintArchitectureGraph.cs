@@ -22,6 +22,8 @@ namespace GoAhead.Commands.ArchitectureGraph
         private Dictionary<int, int> primitiveToWirelistHashcode = new Dictionary<int, int>();
         private Dictionary<int, int> irregularTilesToWirelistHashcode = new Dictionary<int, int>();
 
+        private Dictionary<Tile, WireList> wirelistsToConsider = new Dictionary<Tile, WireList>();
+
         private Dictionary<int, WireList> wirelistHashcodeToWirelist = new Dictionary<int, WireList>();
 
         private Dictionary<string, int> wireCounts = new Dictionary<string, int>();
@@ -35,10 +37,6 @@ namespace GoAhead.Commands.ArchitectureGraph
         bool checkForSubinterconnects = RESOURCE_STRING.Contains("m");
         
         private string[] resourceStringChopped = RESOURCE_STRING.Split(' ');
-
-        // move to init.goa
-        Regex hdio = new Regex("^HDIO_X");
-        Regex cm_final_identifier = new Regex("^CM^");
 
         protected override void DoCommandAction()
         {
@@ -56,9 +54,43 @@ namespace GoAhead.Commands.ArchitectureGraph
             // before starting, make sure all BRAMs/DSPs are updated
             RAMSelectionManager.Instance.UpdateMapping();
 
+            foreach(Tile tile in FPGA.FPGA.Instance.GetAllTiles())
+            {
+                WireList newWirelist = new WireList();
+                if (wirelistsToConsider.ContainsKey(tile))
+                    newWirelist = wirelistsToConsider[tile];
+
+                foreach (Wire w in tile.WireList)
+                {
+                    if (!w.LocalPipIsDriver)
+                    {
+                        Tile target = Navigator.GetDestinationByWire(tile, w);
+                        if(wirelistsToConsider.ContainsKey(target))
+                        {
+                            int xIncr = (tile.TileKey.X - target.TileKey.X);
+                            int yIncr = (tile.TileKey.Y - target.TileKey.Y);
+                            wirelistsToConsider[target].Add(new Wire(w.PipOnOtherTileKey, w.LocalPipKey, !w.LocalPipIsDriver, xIncr, yIncr));
+                        }
+                        else
+                        {
+                            WireList wl = new WireList();
+                            int xIncr = (tile.TileKey.X - target.TileKey.X);
+                            int yIncr = (tile.TileKey.Y - target.TileKey.Y);
+                            wl.Add(new Wire(w.PipOnOtherTileKey, w.LocalPipKey, !w.LocalPipIsDriver, xIncr, yIncr));
+                            wirelistsToConsider[tile] = newWirelist;
+                        }
+                    }
+                    else
+                    {
+                        newWirelist.Add(w);
+                    }
+                }
+                wirelistsToConsider[tile] = newWirelist;
+            }    
+
             if (debug)
             {
-                // grab all available wires
+                // grab all available tiles
                 foreach (Tile startTile in FPGA.FPGA.Instance.GetAllTiles())
                 {
                     if (startTile.WireList.Count > 0)
@@ -181,6 +213,8 @@ namespace GoAhead.Commands.ArchitectureGraph
             printIrregularTiles.IrregularTilesToWirelistHashcodes = irregularTilesToWirelistHashcode;
             CommandExecuter.Instance.Execute(printIrregularTiles);
 
+            PrintMiscInformation printMiscInformation = new PrintMiscInformation();
+
             if (debug)
             {
                 foreach (KeyValuePair<string, int> pair in wireCounts)
@@ -228,7 +262,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                 tile = getCoreRamTile(tile);
             }
             
-            if(IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB) || IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.BRAM) || IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.DSP) || hdio.IsMatch(tile.Location) || cm_final_identifier.IsMatch(tile.Location))
+            if(IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.CLB) || IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.BRAM) || IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.DSP))
                 return tile;
 
             return null;
@@ -249,57 +283,53 @@ namespace GoAhead.Commands.ArchitectureGraph
                     case 's':
                         {
                             // interconnect is always in the middle (0, 1, 2) of a column
-                            index++;
                             if (IdentifierManager.Instance.IsMatch(endTile.Location, IdentifierManager.RegexTypes.Interconnect))
                                 primitiveNumber = 1;
+                            index++;
                             break;
                         }
                     case 'L':
                         {
                             // check if CLB is left or right - it will always be adacent, so 0 or 2.
-                            index++;
                             if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_left))
                                 primitiveNumber = 0;
                             else if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_right))
                                 primitiveNumber = 2;
+                            index++;
                             break;
                         }
                     case 'R':
                         {
-                            index++;
                             if (IdentifierManager.Instance.IsMatch(endTile.Location, IdentifierManager.RegexTypes.BRAM))
                                 primitiveNumber = index;
+                            index++;
                             break;
                         }
                     case 'D':
                         {
-                            index++;
                             if (IdentifierManager.Instance.IsMatch(endTile.Location, IdentifierManager.RegexTypes.DSP))
                                 primitiveNumber = index;
+                            index++;
                             break;
                         }
                     case 'M':
                         {
                             // check if CLB is left or right - it will always be adacent, so 0 or 2.
-                            index++;
                             if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_left))
                                 primitiveNumber = 0;
                             else if (FPGATypes.IsOrientedMatch(endTile.Location, IdentifierManager.RegexTypes.CLB_right))
                                 primitiveNumber = 2;
+                            index++;
                             break;
                         }
                     case 'P':
                         {
-                            index++;
-                            if (hdio.IsMatch(endTile.Location))
-                                primitiveNumber = index;
+                            // skip over hdio tiles because it will be handled by irregular tiles.
                             break;
                         }
                     case 'F':
                         {
-                            index++;
-                            if (cm_final_identifier.IsMatch(endTile.Location))
-                                primitiveNumber = index;
+                            // skip over clock management tiles because it will be handled by irregular tiles.
                             break;
                         }
                     case 'm':
@@ -307,8 +337,8 @@ namespace GoAhead.Commands.ArchitectureGraph
                         break;
                     default:
                         {
-                            index++;
                             primitiveNumber = -999;
+                            index++;
                             break;
                         }
                 }
@@ -361,8 +391,9 @@ namespace GoAhead.Commands.ArchitectureGraph
         private void processWirelistForTile(bool checkForSubinterconnects, Tile tile, out WireList wirelist)
         {
             wirelist = new WireList();
-            foreach (Wire w in tile.WireList)
+            foreach (Wire w in wirelistsToConsider[tile])
             {
+                
                 Tile target = Navigator.GetDestinationByWire(tile, w);
 
                 short xIncr = (short)(target.LocationX - tile.LocationX);

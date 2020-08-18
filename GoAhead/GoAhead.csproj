@@ -182,6 +182,7 @@
     <Compile Include="Code\TCL\TCLProperties.cs" />
     <Compile Include="Code\TCL\TCLRoutingTree.cs" />
     <Compile Include="Code\TCL\TCLRoutingTreeNode.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintMiscInformation.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintPortNames.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintIrregularTiles.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintWirelists.cs" />

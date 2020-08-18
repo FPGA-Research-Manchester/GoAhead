@@ -10,18 +10,17 @@ namespace GoAhead.Commands.ArchitectureGraph
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput("Local Pip,Target Pip,LocalPipIsDriver,RelativeX,RelativeY,Primitive Number\n");
-
+            OutputManager.WriteOutput("Wirelist hashcode,Local Pip,Target Pip,LocalPipIsDriver,RelativeX,RelativeY,Primitive Number");
+            StringBuilder buffer = new StringBuilder();
             foreach (WireList wl in MiniWirelists.Values)
             {
-                OutputManager.WriteOutput("Wirelist hashcode: " + wl.Key);
                 foreach (PrimitiveWire w in wl)
                 {
-                    OutputManager.WriteOutput(string.Join(",", PortMappings[w.LocalPip], PortMappings[w.PipOnOtherTile], w.LocalPipIsDriver, w.XIncr, w.YIncr, w.primitiveNumber));
+                    buffer.AppendLine(wl.Key + "," + string.Join(",", PortMappings[w.LocalPip], PortMappings[w.PipOnOtherTile], w.LocalPipIsDriver, w.XIncr, w.YIncr, w.primitiveNumber));
                 }
-
-                OutputManager.WriteOutput("\n");
             }
+
+            OutputManager.WriteOutput(buffer.ToString());
         }
         public override void Undo()
         {

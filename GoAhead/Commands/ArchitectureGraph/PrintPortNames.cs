@@ -11,7 +11,7 @@ namespace GoAhead.Commands.ArchitectureGraph
         protected override void DoCommandAction()
         {
             // header line
-            OutputManager.WriteOutput("Port Hashcode,Port name\n");
+            OutputManager.WriteOutput("Port Hashcode,Port name");
 
             StringBuilder buffer = new StringBuilder();
             foreach (KeyValuePair<string, int> pair in PortMappings)

@@ -12,7 +12,7 @@ namespace GoAhead.Commands.ArchitectureGraph
         protected override void DoCommandAction()
         {
             // header line
-            OutputManager.WriteOutput("Tile name,(wirelist hashcodes),switchmatrix hashcode\n");
+            OutputManager.WriteOutput("Tile name,(wirelist hashcodes),switchmatrix hashcode");
 
             StringBuilder buffer = new StringBuilder();
             foreach(KeyValuePair<Tile, int> pair in InterconnectTiles)
@@ -35,7 +35,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                 else
                     rightPrimitiveWirelistHashcode = PrimitiveToWirelistHashcode[primitiveTiles[1]].ToString();
 
-                buffer.AppendLine(intTile.Location + ",(" + leftPrimitiveWirelistHashcode + "," + intTileWirelistHashcode + "," + rightPrimitiveWirelistHashcode + ")," + intTile.SwitchMatrixHashCode);
+                buffer.AppendLine(intTile.Location + ",(" + leftPrimitiveWirelistHashcode + ";" + intTileWirelistHashcode + ";" + rightPrimitiveWirelistHashcode + ")," + intTile.SwitchMatrixHashCode);
             }
 
             OutputManager.WriteOutput(buffer.ToString());

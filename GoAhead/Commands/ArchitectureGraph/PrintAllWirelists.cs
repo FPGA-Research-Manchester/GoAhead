@@ -77,10 +77,16 @@ namespace GoAhead.Commands.ArchitectureGraph
                 addToMiniWirelistMappings(leftoverWires, wl.Key);
             }
 
+            OutputManager.WriteOutput("Wirelist Hashcode,Miniwirelists contained");
+            
+            StringBuilder buffer = new StringBuilder();
+
             foreach (WireList wl in Wirelists.Values)
             {
-                OutputManager.WriteOutput(wl.Key + ",(" + string.Join(",", miniWirelistMappings[wl.Key]) + ")");
+                buffer.AppendLine(wl.Key + ",(" + string.Join(";", miniWirelistMappings[wl.Key]) + ")");
             }
+
+            OutputManager.WriteOutput(buffer.ToString());
 
             PrintWirelists printMiniWirelists = new PrintWirelists();
             printMiniWirelists.FileName = Path.Combine(FileName.Substring(0, FileName.LastIndexOf(Path.DirectorySeparatorChar.ToString())), "miniWirelists.ag");

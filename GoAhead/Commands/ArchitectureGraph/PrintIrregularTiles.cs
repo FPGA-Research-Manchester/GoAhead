@@ -11,7 +11,7 @@ namespace GoAhead.Commands.ArchitectureGraph
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput("Tile Hashcode,Tile name,wirelist hashcode\n");
+            OutputManager.WriteOutput("Tile Hashcode,Tile name,wirelist hashcode");
 
             StringBuilder buffer = new StringBuilder();
             foreach (KeyValuePair<Tile, int> pair in IrregularTiles)
