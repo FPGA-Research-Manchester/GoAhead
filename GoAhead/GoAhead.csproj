@@ -421,7 +421,7 @@
     <Compile Include="Commands\RunScript.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\Selection\AddToSelectionINTXY.cs" />
+    <Compile Include="Commands\Selection\AddBlockToSelection.cs" />
     <Compile Include="Commands\Selection\AddToSelection.cs" />
     <Compile Include="Commands\Selection\AddToSelectionByRegexp.cs" />
     <Compile Include="Commands\Selection\AddToSelectionByIdentifier.cs" />

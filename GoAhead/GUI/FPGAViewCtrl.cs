@@ -575,18 +575,8 @@ namespace GoAhead.GUI
 
         private void m_toolStripDrpDownMenuSyncViews_Click(object sender, EventArgs e)
         {
-            if (m_toolStripDrpDownMenuSyncViews.Checked)
-            {
-                this.Sync = true;
-            }
-            else
-            {
-                this.Sync = false;
-            }
+            this.Sync = m_toolStripDrpDownMenuSyncViews.Checked;
         }
-
-
-
 
 
         private void m_toolStripDrpDownMenuPainting_MouseDown(object sender, MouseEventArgs e)
@@ -665,15 +655,16 @@ namespace GoAhead.GUI
             bool ctrlDown = ModifierKeys == Keys.Control;
             bool altDown = ModifierKeys == Keys.Alt;
             bool altAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Alt);
+            bool shiftAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
-            if (!ctrlDown && !altAndCtrlDown)
+            if (!ctrlDown && !altAndCtrlDown && !shiftAndCtrlDown)
             {
                 CommandExecuter.Instance.Execute(new Commands.Selection.ClearSelection());
             }
             TileKey upperLeftTile = null;
             TileKey lowerRightTile = null;
 
-            if (shiftDown)
+            if (shiftDown || shiftAndCtrlDown)
             {
                 TileSelectionManager.Instance.OngoingIncrementalSelection = true;
 
@@ -720,7 +711,7 @@ namespace GoAhead.GUI
                 try
                 {
                     //Switch to using the INT_XxYy tile.
-                    AddToSelectionINTXY addcmd = new AddToSelectionINTXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
+                    AddBlockToSelection addcmd = new AddBlockToSelection(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
                     CommandExecuter.Instance.Execute(addcmd);
                 }
                 catch (Exception e)

@@ -162,7 +162,7 @@ namespace GoAhead.GUI
             // get ram block data            
             if (!m_ramDataValid)
             {
-                m_ramDataValid = FPGATypes.GetRamBlockSize(m_view.TileRegex, out m_ramBlockWidth, out m_ramBlockHeight, out m_ramTiles);
+                m_ramDataValid = FPGATypes.GetRamBlockSize(m_view.TileRegex, out m_ramBlockWidth, out m_ramBlockHeight, out m_ramTiles, out m_BRAM_right, out m_DSP_left, out m_connectsRAM);
             }
 
             foreach (Tile ramTile in m_ramTiles)
@@ -204,6 +204,9 @@ namespace GoAhead.GUI
         
         private bool m_ramDataValid = false;
         private TileSet m_ramTiles = new TileSet();
+        private TileSet m_BRAM_right = new TileSet();
+        private TileSet m_DSP_left = new TileSet();
+        private TileSet m_connectsRAM = new TileSet();
         private int m_ramBlockWidth = 0;
         private int m_ramBlockHeight = 0;
     }

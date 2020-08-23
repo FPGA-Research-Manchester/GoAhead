@@ -25,6 +25,7 @@ namespace GoAhead.Commands.Selection
         protected override void DoCommandAction()
         {
             Regex filter = new Regex(Filter);
+            List<Tile> remove = new List<Tile>();
 
             // run form min to max
             int startX = Math.Min(UpperLeftX, LowerRightX);
@@ -56,13 +57,21 @@ namespace GoAhead.Commands.Selection
                     //deselect or add the selected tile 
                     if (TileSelectionManager.Instance.IsSelected(x, y))
                     {
-                        RemoveAndCheckIfPreviousExpandedSelection(t);
+                        RemoveAndCheckIfPreviousExpandedSelection(t,remove);
                     }
-                    else
+                    else if(!remove.Contains(t))
                     {
                         TileSelectionManager.Instance.AddToSelection(key, false);
                     }
+
+
                 }
+            }
+
+
+            foreach (Tile tile in remove)
+            {
+                TileSelectionManager.Instance.RemoveFromSelection(tile.TileKey, false);
             }
 
             TileSelectionManager.Instance.SelectionChanged();
@@ -73,10 +82,8 @@ namespace GoAhead.Commands.Selection
             throw new NotImplementedException();
         }
 
-        private void RemoveAndCheckIfPreviousExpandedSelection(Tile t)
+        private void RemoveAndCheckIfPreviousExpandedSelection(Tile t, List<Tile> remove)
         {
-
-            List<Tile> remove = new List<Tile>();
 
             if (CheckSelection(t))
             {
@@ -173,14 +180,6 @@ namespace GoAhead.Commands.Selection
                     }
                 }
             }
-
-
-            foreach (Tile tile in remove)
-            {
-                TileSelectionManager.Instance.RemoveFromSelection(tile.TileKey, false);
-            }
-
-
 
         }
 

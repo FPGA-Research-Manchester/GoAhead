@@ -321,9 +321,12 @@ namespace GoAhead.FPGA
         /// <param name="width">the width of a ram block</param>
         /// <param name="height">the height of a ram block</param>
         /// <returns>valididate the out data</returns>
-        public static bool GetRamBlockSize(Regex tileFilter, out int width, out int height, out TileSet ramTiles)
+        public static bool GetRamBlockSize(Regex tileFilter, out int width, out int height, out TileSet ramTiles,  out TileSet BRAM_right, out TileSet DSP_left, out TileSet connectsRAM)
         {
             ramTiles = new TileSet();
+            DSP_left = new TileSet();
+            BRAM_right = new TileSet();
+            connectsRAM = new TileSet();
 
             BRAMDSPSettingsManager.Instance.GetBRAMWidthAndHeight(out width, out height);
 
@@ -331,12 +334,86 @@ namespace GoAhead.FPGA
             {
                 if (Regex.IsMatch(ram.Location, IdentifierManager.Instance.GetRegex(IdentifierManager.RegexTypes.BRAM, IdentifierManager.RegexTypes.DSP)))
                 {
+                    //Add ram tiles.
                     ramTiles.Add(ram);
+                    
+
+                    //Look for sub-interconnect in both left and right directions.
+                    int x_left = ram.TileKey.X - 1;
+                    int x_right = ram.TileKey.X + 1;
+                    int y = ram.TileKey.Y;
+                    
+
+                    // click done out of FPGA range
+                    if (!FPGA.Instance.Contains(x_left, y))
+                    {
+                        continue;
+                    }
+
+                    if (!FPGA.Instance.Contains(x_right, y))
+                    {
+                        continue;
+                    }
+
+                    Tile leftTile = FPGA.Instance.GetTile(x_left, y);
+                    Tile rightTile = FPGA.Instance.GetTile(x_right, y);
+
+                    //Identify sub-interconnect for DSP.
+                    if (IdentifierManager.Instance.IsMatch(ram.Location, IdentifierManager.RegexTypes.DSP))
+                    {
+                        if (IdentifierManager.Instance.IsMatch(leftTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            DSP_left.Add(leftTile);
+                            AddBlock(leftTile, connectsRAM, 0, 2);
+                           
+                            
+
+                        }
+                            
+                        else if (IdentifierManager.Instance.IsMatch(rightTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            DSP_left.Add(rightTile);
+                            AddBlock(rightTile, connectsRAM, 0, 2);
+
+                        }
+                            
+                    }
+
+                    //Identify sub-interconnect for BRAM.
+                    if (IdentifierManager.Instance.IsMatch(ram.Location, IdentifierManager.RegexTypes.BRAM))
+                    {
+                        if (IdentifierManager.Instance.IsMatch(leftTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            BRAM_right.Add(leftTile);
+                            AddBlock(leftTile, connectsRAM, 0, 2);
+                        }
+                            
+                        else if (IdentifierManager.Instance.IsMatch(rightTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                        {
+                            BRAM_right.Add(rightTile);
+                            AddBlock(rightTile, connectsRAM, 0, 2);
+                        }
+                            
+                    }
                 }
             }
 
             // no drawing if we find less than 2 tles
             return ramTiles.Count >= 2;
+        }
+
+        private static void AddBlock(Tile tile, TileSet set, int width, int height)
+        {
+            int x = tile.TileKey.X;
+            int y = tile.TileKey.Y;
+
+            for(int index =0; index< width; index++)
+                for(int index2 =0; index2< height; index2++)
+                {
+                    Tile toAdd = FPGA.Instance.GetTile(x + index, y + index2);
+                    set.Add(toAdd);
+                }
+
         }
 
         /// <summary>
@@ -442,12 +519,12 @@ namespace GoAhead.FPGA
                 case FPGAFamily.UltraScale:
                     {
                         Tile left = FPGA.Instance.GetTile(interconnectTile.TileKey.X - 1, interconnectTile.TileKey.Y);
-                        Tile right= FPGA.Instance.GetTile(interconnectTile.TileKey.X + 1, interconnectTile.TileKey.Y);
-                        if(IdentifierManager.Instance.IsMatch(left.Location, IdentifierManager.RegexTypes.CLB))
+                        Tile right = FPGA.Instance.GetTile(interconnectTile.TileKey.X + 1, interconnectTile.TileKey.Y);
+                        if (IdentifierManager.Instance.IsMatch(left.Location, IdentifierManager.RegexTypes.CLB))
                         {
                             yield return left;
                         }
-                        if(IdentifierManager.Instance.IsMatch(right.Location, IdentifierManager.RegexTypes.CLB))
+                        if (IdentifierManager.Instance.IsMatch(right.Location, IdentifierManager.RegexTypes.CLB))
                         {
                             yield return right;
                         }
@@ -537,7 +614,7 @@ namespace GoAhead.FPGA
                     }
                 default:
                     {
-                        throw new ArgumentException("GetSubInterconnectTile not implemented for"+ FPGA.Instance.Family);
+                        throw new ArgumentException("GetSubInterconnectTile not implemented for" + FPGA.Instance.Family);
                     }
             }
         }
@@ -564,7 +641,7 @@ namespace GoAhead.FPGA
                         info.Port4 = clb.SwitchMatrix.GetFirstDrivenPort(location.Pip);
                     }
                     catch (ArgumentException) { }
-                    
+
                     yield return info;
                 }
             }
@@ -631,7 +708,7 @@ namespace GoAhead.FPGA
             }
 
             Regex defaultRegex = new Regex("");
-            switch(type)
+            switch (type)
             {
                 case IdentifierManager.RegexTypes.CLB_left:
                     defaultRegex = ClbLeft;
