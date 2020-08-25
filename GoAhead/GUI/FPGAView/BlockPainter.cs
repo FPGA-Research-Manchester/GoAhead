@@ -381,24 +381,20 @@ namespace GoAhead.GUI
                             }
                             else
                             {
-                                upperLeftX = tile.TileKey.X * m_view.TileSize;
-                                upperLeftY = tile.TileKey.Y * m_view.TileSize;
-                                
-                                //If CLEL_R is paired with a subinterconnect that does not belong to a RAM tile, keep its colour.
+                                //If CLEL_R is paired with a subinterconnect, keep its colour.
                                 Tile subinterconnect = FPGA.FPGA.Instance.GetTile(tile.TileKey.X - 2, tile.TileKey.Y);
-                                Tile potentialRAM = FPGA.FPGA.Instance.GetTile(tile.TileKey.X - 3, tile.TileKey.Y);
-                                //bool connectsDSP = m_DSP_left.Contains(subinterconnect);
-                                //bool connectsBRAM = m_BRAM_right.Contains(subinterconnect);
 
-                                if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect)
-                                    && !m_connectsRAM.Contains(subinterconnect ))
+                                if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect) && !m_connectsRAM.Contains(subinterconnect))
                                 {
                                     upperLeftX = (intTile.TileKey.X - (widthScale == 2 ? 0 : 1)) * m_view.TileSize;
                                     upperLeftY = intTile.TileKey.Y * m_view.TileSize;
-
                                 }
 
-                                                        
+                                else if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect) && m_connectsRAM.Contains(subinterconnect))
+                                {
+                                    upperLeftX = (intTile.TileKey.X ) * m_view.TileSize;
+                                    upperLeftY = intTile.TileKey.Y * m_view.TileSize;
+                                }
 
                                 // double size of the rectangle
                             } 
@@ -423,7 +419,6 @@ namespace GoAhead.GUI
             {
                 // Sub-interconnect tiles for CLB have no tiles
                 return;
-
             }
             else
             {
@@ -444,10 +439,8 @@ namespace GoAhead.GUI
             {
                 m_sb.Color = ColorSettings.Instance.GetColor(tile);
             }
-            
-                 m_sb.Color = m_view.GetColor(tile, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
 
-            
+            m_sb.Color = m_view.GetColor(tile, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
 
 
             graphicsObj.FillRectangle(m_sb, m_rect);

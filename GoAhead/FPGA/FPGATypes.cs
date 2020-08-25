@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using GoAhead.Code.XDL;
 using GoAhead.Objects;
@@ -364,7 +365,7 @@ namespace GoAhead.FPGA
                         if (IdentifierManager.Instance.IsMatch(leftTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                         {
                             DSP_left.Add(leftTile);
-                            AddBlock(leftTile, connectsRAM, 0, 2);
+                            AddBlock(leftTile, connectsRAM, width, height, false);
                            
                             
 
@@ -373,7 +374,7 @@ namespace GoAhead.FPGA
                         else if (IdentifierManager.Instance.IsMatch(rightTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                         {
                             DSP_left.Add(rightTile);
-                            AddBlock(rightTile, connectsRAM, 0, 2);
+                            AddBlock(rightTile, connectsRAM, width, height, false);
 
                         }
                             
@@ -385,13 +386,13 @@ namespace GoAhead.FPGA
                         if (IdentifierManager.Instance.IsMatch(leftTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                         {
                             BRAM_right.Add(leftTile);
-                            AddBlock(leftTile, connectsRAM, 0, 2);
+                            AddBlock(leftTile, connectsRAM, width, height, true);
                         }
                             
                         else if (IdentifierManager.Instance.IsMatch(rightTile.Location, IdentifierManager.RegexTypes.SubInterconnect))
                         {
                             BRAM_right.Add(rightTile);
-                            AddBlock(rightTile, connectsRAM, 0, 2);
+                            AddBlock(rightTile, connectsRAM, width, height, true);
                         }
                             
                     }
@@ -402,18 +403,24 @@ namespace GoAhead.FPGA
             return ramTiles.Count >= 2;
         }
 
-        private static void AddBlock(Tile tile, TileSet set, int width, int height)
+        private static void AddBlock(Tile tile, TileSet set, int width, int height, bool blockToRight)
         {
             int x = tile.TileKey.X;
             int y = tile.TileKey.Y;
 
-            for(int index =0; index< width; index++)
-                for(int index2 =0; index2< height; index2++)
-                {
-                    Tile toAdd = FPGA.Instance.GetTile(x + index, y + index2);
-                    set.Add(toAdd);
-                }
-
+            if(blockToRight)
+            {
+                for (int index = 0; index < width; index++)
+                    for (int index2 = 0; index2 < height; index2++)
+                    {
+                        if (!FPGA.Instance.Contains(x + index, y - index2))
+                        {
+                            return;
+                        }
+                        Tile toAdd = FPGA.Instance.GetTile(x + index, y - index2);
+                        set.Add(toAdd);
+                    }
+            }
         }
 
         /// <summary>
