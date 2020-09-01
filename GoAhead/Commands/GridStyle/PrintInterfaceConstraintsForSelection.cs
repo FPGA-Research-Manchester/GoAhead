@@ -52,7 +52,7 @@ namespace GoAhead.Commands.GridStyle
                     intTiles.Add(t.TileKey);
                 }
 
-                int indexOffset = 0;
+                int indexOffset = StartIndex;
 
                 string[] split = spec.Split(':');
 
@@ -219,8 +219,9 @@ namespace GoAhead.Commands.GridStyle
             bool instanceNameIsCorrect = !string.IsNullOrEmpty(InstanceName);
             bool signalPrefixIsCorrect = !string.IsNullOrEmpty(SignalPrefix);
             bool filenameIsCorrect = !string.IsNullOrEmpty(FileName);
+            bool startIndexIsCorrect = StartIndex >= 0;
 
-            if(!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect)
+            if (!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect || startIndexIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in one of the parameters.");
             }
@@ -257,5 +258,8 @@ namespace GoAhead.Commands.GridStyle
 
         [Parameter(Comment = "Prevent the interface wires from blocking.")]
         public bool PreventWiresFromBlocking = true;
+
+        [Parameter(Comment = "Provide start index number for enumerating vectorised signals.")]
+        public int StartIndex = 0;
     }
 }
