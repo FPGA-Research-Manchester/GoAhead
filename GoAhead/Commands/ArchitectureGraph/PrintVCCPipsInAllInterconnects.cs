@@ -16,22 +16,26 @@ namespace GoAhead.Commands.ArchitectureGraph
             
             HashSet<int> printedSwitchMatrices = new HashSet<int>();
 
-            foreach (Tile t in FPGA.FPGA.Instance.GetAllTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
+            foreach (WireList wl in FPGA.FPGA.Instance.GetAllWireLists())
             {
-                // filter out interconnects
-                if (IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect) && IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.SubInterconnect))
-                    continue;
-
-                if (printedSwitchMatrices.Contains(t.SwitchMatrixHashCode))
-                    continue;
-
-                foreach (Port p in t.SwitchMatrix.GetDrivenPorts(new Port("VCC_WIRE")))
+                foreach(Wire w in wl)
                 {
-                    OutputManager.WriteOutput(string.Join(",", p.Name, t.SwitchMatrixHashCode));
+                    OutputManager.WriteOutput(w.ToString());
                 }
-                printedSwitchMatrices.Add(t.SwitchMatrixHashCode);
+                // filter out interconnects
+                //if (IdentifierManager.Instance.HasRegexp(IdentifierManager.RegexTypes.SubInterconnect) && IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                //    continue;
 
-                OutputManager.WriteOutput("\n");
+                //if (printedSwitchMatrices.Contains(t.SwitchMatrixHashCode))
+                //    continue;
+
+                //foreach (Port p in t.SwitchMatrix.GetDrivenPorts(new Port("VCC_WIRE")))
+                //{
+                //    OutputManager.WriteOutput(string.Join(",", p.Name, t.SwitchMatrixHashCode));
+                //}
+                //printedSwitchMatrices.Add(t.SwitchMatrixHashCode);
+
+                //OutputManager.WriteOutput("\n");
             }
         }
 

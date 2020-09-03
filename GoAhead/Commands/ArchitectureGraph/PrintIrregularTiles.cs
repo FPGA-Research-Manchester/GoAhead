@@ -11,16 +11,16 @@ namespace GoAhead.Commands.ArchitectureGraph
     {
         protected override void DoCommandAction()
         {
-            OutputManager.WriteOutput("Tile Hashcode,Tile name,wirelist hashcode");
+            OutputManager.WriteOutput("Tile Hashcode,Tile name,wirelist hashcode,incoming wirelist hashcode");
 
             StringBuilder buffer = new StringBuilder();
-            foreach (KeyValuePair<Tile, int> pair in IrregularTiles)
+            foreach (int irregularTileHashcode in IrregularTiles)
             {
-                Tile uncommonTile = pair.Key;
-                int uncommonTileHashcode = pair.Value;
-                int irregularTileWirelistHashcode = IrregularTilesToWirelistHashcodes[uncommonTileHashcode];
+                Tile irregularTile = TileHashcodes[irregularTileHashcode];
+                int irregularTileWirelistHashcode = WirelistHashcodes[irregularTileHashcode];
+                int irregularTileIncomingWirelistHashcode = IncomingWirelistHashcodes[irregularTileHashcode];
 
-                buffer.AppendLine(uncommonTileHashcode + "," + uncommonTile.Location + "," + irregularTileWirelistHashcode);
+                buffer.AppendLine(irregularTileHashcode + "," + irregularTile.Location + "," + irregularTileWirelistHashcode + "," + irregularTileIncomingWirelistHashcode);
             }
 
             OutputManager.WriteOutput(buffer.ToString());
@@ -32,9 +32,16 @@ namespace GoAhead.Commands.ArchitectureGraph
         }
 
         [Parameter(Comment = "Uncommon Tiles")]
-        public Dictionary<Tile, int> IrregularTiles = new Dictionary<Tile, int>();
+        public List<int> IrregularTiles = new List<int>();
 
-        [Parameter(Comment = "Uncommon Tiles Wirelists")]
-        public Dictionary<int, int> IrregularTilesToWirelistHashcodes = new Dictionary<int, int>();
+        [Parameter(Comment = "All tile hashcodes")]
+        public Dictionary<int, Tile> TileHashcodes = new Dictionary<int, Tile>();
+
+        [Parameter(Comment = "Wirelist Hashcodes")]
+        public Dictionary<int, int> WirelistHashcodes = new Dictionary<int, int>();
+
+        [Parameter(Comment = "Incoming Wirelist Hashcodes")]
+        public Dictionary<int, int> IncomingWirelistHashcodes = new Dictionary<int, int>();
+
     }
 }

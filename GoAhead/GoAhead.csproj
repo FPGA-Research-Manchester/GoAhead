@@ -231,7 +231,7 @@
     <Compile Include="Commands\Debug\PrintTileInfo.cs" />
     <Compile Include="Commands\Debug\PrintTileInfoForSelection.cs" />
     <Compile Include="Commands\Debug\PrintTilesWithPortsExcludedFromBlocking.cs" />
-    <Compile Include="Commands\ArchitectureGraph\PrintAllInterconnectTiles.cs" />
+    <Compile Include="Commands\ArchitectureGraph\PrintAllInterconnectBlocks.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintAllWirelists.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintArchitectureGraph.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintVCCPipsInAllInterconnects.cs" />
