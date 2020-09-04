@@ -221,7 +221,7 @@ namespace GoAhead.Commands.GridStyle
             bool filenameIsCorrect = !string.IsNullOrEmpty(FileName);
             bool startIndexIsCorrect = StartIndex >= 0;
 
-            if (!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect || startIndexIsCorrect)
+            if (!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect || !startIndexIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in one of the parameters.");
             }
