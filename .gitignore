@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /GoAhead/VivadoConnection/VivadoConnection.cs
+/binFPGAs
