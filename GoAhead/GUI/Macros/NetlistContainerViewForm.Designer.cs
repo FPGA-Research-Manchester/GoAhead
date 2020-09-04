@@ -38,13 +38,16 @@
             this.m_tabInstantiations = new System.Windows.Forms.TabPage();
             this.macroInstantiationManagerCtrl1 = new GoAhead.GUI.LibraryElementInstantiation.LibraryElementInstantiationManagerCtrl();
             this.m_tabVHDLUCF = new System.Windows.Forms.TabPage();
+            this.m_tabBusInterface = new System.Windows.Forms.TabPage();
             this.m_printVHDLCtrl = new GoAhead.GUI.Macros.VHDL.PrintVHDLCtrl();
+            this.m_printBusInterface = new GoAhead.GUI.Macros.BusInterface.PrintBusInterfaceCtrl();
             this.m_tabCtrlTop.SuspendLayout();
             this.m_tabManager.SuspendLayout();
             this.m_tabLibrary.SuspendLayout();
             this.m_tabPlacer.SuspendLayout();
             this.m_tabInstantiations.SuspendLayout();
             this.m_tabVHDLUCF.SuspendLayout();
+            this.m_tabBusInterface.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_tabCtrlTop
@@ -54,6 +57,7 @@
             this.m_tabCtrlTop.Controls.Add(this.m_tabPlacer);
             this.m_tabCtrlTop.Controls.Add(this.m_tabInstantiations);
             this.m_tabCtrlTop.Controls.Add(this.m_tabVHDLUCF);
+            this.m_tabCtrlTop.Controls.Add(this.m_tabBusInterface);
             this.m_tabCtrlTop.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_tabCtrlTop.Location = new System.Drawing.Point(0, 0);
             this.m_tabCtrlTop.Name = "m_tabCtrlTop";
@@ -137,7 +141,7 @@
             // 
             // m_tabVHDLUCF
             // 
-            this.m_tabVHDLUCF.Controls.Add(this.m_printVHDLCtrl);
+           this.m_tabVHDLUCF.Controls.Add(this.m_printVHDLCtrl);
             this.m_tabVHDLUCF.Location = new System.Drawing.Point(4, 22);
             this.m_tabVHDLUCF.Name = "m_tabVHDLUCF";
             this.m_tabVHDLUCF.Size = new System.Drawing.Size(724, 696);
@@ -153,6 +157,24 @@
             this.m_printVHDLCtrl.Size = new System.Drawing.Size(192, 74);
             this.m_printVHDLCtrl.TabIndex = 0;
             // 
+            // m_tabBusInterface
+            // 
+            this.m_tabBusInterface.Controls.Add(this.m_printBusInterface);
+            this.m_tabBusInterface.Location = new System.Drawing.Point(4, 22);
+            this.m_tabBusInterface.Name = "m_tabBusInterface";
+            this.m_tabBusInterface.Size = new System.Drawing.Size(724, 696);
+            this.m_tabBusInterface.TabIndex = 5;
+            this.m_tabBusInterface.Text = "Bus Interface";
+            this.m_tabBusInterface.UseVisualStyleBackColor = true;
+            //
+            // m_printBusInterface
+            //
+            //
+            this.m_printBusInterface.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_printBusInterface.Location = new System.Drawing.Point(0, 0);
+            this.m_printBusInterface.Name = "m_printBusInterfaceCtrl";
+            this.m_printBusInterface.Size = new System.Drawing.Size(192, 74);
+            this.m_printBusInterface.TabIndex = 0;
             // MacroManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,6 +190,7 @@
             this.m_tabPlacer.ResumeLayout(false);
             this.m_tabInstantiations.ResumeLayout(false);
             this.m_tabVHDLUCF.ResumeLayout(false);
+            this.m_tabBusInterface.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -185,5 +208,8 @@
         private MacroLibrary.LilbraryManagerCtrl m_library;
         private System.Windows.Forms.TabPage m_tabVHDLUCF;
         private Macros.VHDL.PrintVHDLCtrl m_printVHDLCtrl;
+        private System.Windows.Forms.TabPage m_tabBusInterface;
+        private Macros.BusInterface.PrintBusInterfaceCtrl m_printBusInterface;
+
     }
 }
