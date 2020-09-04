@@ -132,7 +132,7 @@ namespace GoAhead.Commands.GridStyle
             throw new NotImplementedException();
         }
 
-        [Parameter(Comment = "The number of signals. Should be a modulus of 4.")]
+        [Parameter(Comment = "The number of signals.")]
         public int NumberOfSignals = 128;
 
         [Parameter(Comment = "Either row-wise or column-wise")]

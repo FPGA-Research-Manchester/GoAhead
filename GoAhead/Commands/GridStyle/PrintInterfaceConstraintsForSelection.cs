@@ -260,7 +260,7 @@ namespace GoAhead.Commands.GridStyle
         [Parameter(Comment = "Whether to create a backup file of FileName with the extension .bak.")]
         public bool CreateBackupFile = true;
 
-        [Parameter(Comment = "The number of signals. Should be a multiple of 4.")]
+        [Parameter(Comment = "The number of signals.")]
         public int NumberOfSignals = 128;
 
         [Parameter(Comment = "Prevent the interface wires from blocking.")]
