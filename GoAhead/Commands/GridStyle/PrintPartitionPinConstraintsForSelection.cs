@@ -70,10 +70,17 @@ namespace GoAhead.Commands.GridStyle
 
                 SwitchboxName = t.Location;
                 StartIndex = startIndex;
+                SignalsForTile = MaxSignalsPerTile;
+
+                if (NumberOfSignals - startIndex < MaxSignalsPerTile)
+                {
+                    SignalsForTile = NumberOfSignals - startIndex;
+                    Console.WriteLine("INFO: There are " + (MaxSignalsPerTile - SignalsForTile) + " signals remaining in " + SwitchboxName);
+                }
 
                 base.DoCommandAction();
 
-                startIndex += SIGNALS_PER_TILE;
+                startIndex += MaxSignalsPerTile;
             }
         }
 

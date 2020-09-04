@@ -136,6 +136,13 @@ namespace GoAhead.Commands.GridStyle
                     command.Append = append;
                     command.CreateBackupFile = CreateBackupFile;
                     command.EastWestSwitchbox = switchboxToUse;
+                    command.MaxSignalsPerTile = SignalsPerTile;
+
+                    if (NumberOfSignals == 1)
+                        command.PrintParameterizedSignal = false;
+                    else
+                        command.PrintParameterizedSignal = true;
+                    
                     CommandExecuter.Instance.Execute(command);
 
                     // restore selection
@@ -146,7 +153,7 @@ namespace GoAhead.Commands.GridStyle
                         TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                     }
 
-                    indexOffset += interfaceTiles.Count * PrintPartitionPinConstraintsForTile.SIGNALS_PER_TILE;
+                    indexOffset += interfaceTiles.Count * SignalsPerTile;
 
                     append = true;
                 }
@@ -221,7 +228,7 @@ namespace GoAhead.Commands.GridStyle
             bool filenameIsCorrect = !string.IsNullOrEmpty(FileName);
             bool startIndexIsCorrect = StartIndex >= 0;
 
-            if (!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect || startIndexIsCorrect)
+            if (!interfaceSpecsIsCorrect || !borderIsCorrect || !instanceNameIsCorrect || !signalPrefixIsCorrect || !filenameIsCorrect || !startIndexIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in one of the parameters.");
             }
@@ -261,5 +268,8 @@ namespace GoAhead.Commands.GridStyle
 
         [Parameter(Comment = "Provide start index number for enumerating vectorised signals.")]
         public int StartIndex = 0;
+
+        [Parameter(Comment = "Signal per tile. Should be less than 8.")]
+        public int SignalsPerTile = 8;
     }
 }
