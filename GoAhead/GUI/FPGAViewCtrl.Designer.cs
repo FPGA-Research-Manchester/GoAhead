@@ -1,4 +1,6 @@
-﻿namespace GoAhead.GUI
+﻿using System.Drawing;
+
+namespace GoAhead.GUI
 {
     public partial class FPGAViewCtrl : GoAhead.Interfaces.IResetable
     {
@@ -46,6 +48,8 @@
             this.m_contextMenuFullZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripBtnZoomIn = new System.Windows.Forms.ToolStripButton();
             this.m_toolStripBtnZoomOut = new System.Windows.Forms.ToolStripButton();
+            this.m_toolStripBtnExpandSelection = new System.Windows.Forms.ToolStripButton();
+            this.m_checkBoxExpandSelection = new System.Windows.Forms.CheckBox();
             this.m_toolStripBtnFind = new System.Windows.Forms.ToolStripButton();
             this.m_toolStripLblFilter = new System.Windows.Forms.ToolStripLabel();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -57,6 +61,7 @@
             this.m_toolStripDrpDownMenuPaintingPossibleMacroPlacements = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuPaintingToolTips = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuMuteOutput = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_toolStripDrpDownMenuSyncViews = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripDrpDownMenuPaintingSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.m_toolStripLblMacros = new System.Windows.Forms.ToolStripLabel();
@@ -71,6 +76,8 @@
             this.m_contextMenu.SuspendLayout();
             this.m_toolStripBottom.SuspendLayout();
             this.m_zoomPictBox.SuspendLayout();
+
+            this.m_zoomPictBox.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.m_zoomPictBox_MouseWheel);
             this.SuspendLayout();
             // 
             // m_statusStrip
@@ -192,6 +199,23 @@
             this.m_toolStripBtnZoomOut.Text = "Zoom Out";
             this.m_toolStripBtnZoomOut.Click += new System.EventHandler(this.m_toolStripBtnZoomOut_Click);
             // 
+            // m_toolStripBtnExpandSelection
+            // 
+
+        
+            this.m_toolStripBtnExpandSelection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.m_toolStripBtnExpandSelection.Name = "m_toolStripBtnExpandSelection";
+            this.m_toolStripBtnExpandSelection.Size = new System.Drawing.Size(23, 22);
+            this.m_toolStripBtnExpandSelection.Text = "Expand Selection";
+            this.m_toolStripBtnExpandSelection.Click += new System.EventHandler(this.m_toolStripBtnExpandSelection_Click);
+            this.m_toolStripBtnExpandSelection.Checked = true;
+            this.m_toolStripBtnExpandSelection.CheckOnClick = true;
+            
+          
+            
+                            
+            
+            // 
             // m_toolStripBtnFind
             // 
             this.m_toolStripBtnFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -229,7 +253,8 @@
             this.m_toolStripDrpDownMenuPaintingPossibleMacroPlacements,
             this.m_toolStripDrpDownMenuPaintingToolTips,
             this.m_toolStripDrpDownMenuMuteOutput,
-            this.m_toolStripDrpDownMenuPaintingSelection});
+            this.m_toolStripDrpDownMenuPaintingSelection,
+            this.m_toolStripDrpDownMenuSyncViews});
             this.m_toolStripDrpDownMenuPainting.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.m_toolStripDrpDownMenuPainting.Name = "m_toolStripDrpDownMenuPainting";
             this.m_toolStripDrpDownMenuPainting.Size = new System.Drawing.Size(62, 22);
@@ -293,6 +318,15 @@
             this.m_toolStripDrpDownMenuPaintingSelection.Size = new System.Drawing.Size(218, 22);
             this.m_toolStripDrpDownMenuPaintingSelection.Text = "Highligt Selection";
             this.m_toolStripDrpDownMenuPaintingSelection.Click += new System.EventHandler(this.m_toolStripDrpDownMenuPaintingSelection_Click);
+            //
+            // m_toolStripDrpDownMenuSyncViews
+            //
+            this.m_toolStripDrpDownMenuSyncViews.CheckOnClick = true;
+            this.m_toolStripDrpDownMenuSyncViews.Name = "m_toolStripDrpDownMenuSyncViews";
+            this.m_toolStripDrpDownMenuSyncViews.Size = new System.Drawing.Size(218, 22);
+            this.m_toolStripDrpDownMenuSyncViews.Text = "Sync Views";
+            this.m_toolStripDrpDownMenuSyncViews.Click += new System.EventHandler(this.m_toolStripDrpDownMenuSyncViews_Click);
+
             // 
             // toolStripSeparator1
             // 
@@ -331,6 +365,7 @@
             this.m_toolStripBottom.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.m_toolStripBtnZoomIn,
             this.m_toolStripBtnZoomOut,
+            this.m_toolStripBtnExpandSelection,
             this.m_toolStripBtnFind,
             this.m_toolStripLblFilter,
             this.toolStripSeparator2,
@@ -421,6 +456,8 @@
         private System.Windows.Forms.Panel m_panelSelection;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnZoomIn;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnZoomOut;
+        private System.Windows.Forms.ToolStripButton m_toolStripBtnExpandSelection;
+        private System.Windows.Forms.CheckBox m_checkBoxExpandSelection;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnFind;
         private System.Windows.Forms.ToolStripLabel m_toolStripLblFilter;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -443,6 +480,8 @@
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuCopyIdentifier;
         private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuPaintingToolTips;
         private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuMuteOutput;
+        private System.Windows.Forms.ToolStripMenuItem m_toolStripDrpDownMenuSyncViews;
+       
         private System.Windows.Forms.ToolStripProgressBar m_toolStripProgressBar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuFullZoom;

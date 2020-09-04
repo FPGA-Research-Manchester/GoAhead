@@ -1,4 +1,5 @@
-﻿namespace GoAhead.GUI
+﻿using System.Drawing;
+namespace GoAhead.GUI
 {
     partial class GUI
     {
@@ -172,6 +173,7 @@
             this.m_fpgaViewAll.Tag = "TilesView";
             this.m_fpgaViewAll.ZoomSelectOngoing = false;
             this.m_fpgaViewAll.ZoomSelectStart = false;
+            
             // 
             // m_menuFile
             // 
@@ -743,6 +745,11 @@
             this.m_menuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+            
+            //Sync views.
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GUI_OnMouseMove);
+            this.SharedZoom = 0.0f;
+            this.SharedAutoScroll = m_fpgaViewBlock.ZoomPictureBox.AutoScrollPosition;
 
         }
 
@@ -820,5 +827,8 @@
         private System.Windows.Forms.ToolStripMenuItem m_menuExtrasHookScripts;
         private System.Windows.Forms.ToolStripMenuItem m_menuFileOpenVivado;
         private System.Windows.Forms.ToolStripMenuItem m_menuFileDebugVivado;
+
+        private float m_SharedZoom;
+        private Point m_SharedAutoScroll;
     }
 }

@@ -11,7 +11,7 @@ namespace GoAhead.Commands.Selection
     class AddBlockToSelection : AddToSelectionCommand
     {
         public AddBlockToSelection()
-        { 
+        {
         }
 
         public AddBlockToSelection(int x1, int y1, int x2, int y2)
@@ -47,7 +47,7 @@ namespace GoAhead.Commands.Selection
             }
 
             // clicked in BRAM/DSP block?
-            if( (ul == null || lr == null) && FPGA.FPGA.Instance.Contains(startX, endY))
+            if ((ul == null || lr == null) && FPGA.FPGA.Instance.Contains(startX, endY))
             {
                 Tile t = FPGA.FPGA.Instance.GetTile(startX, endY);
                 if (RAMSelectionManager.Instance.HasMapping(t))
@@ -59,8 +59,8 @@ namespace GoAhead.Commands.Selection
                 }
             }
 
-                       
-            if(ul == null || lr == null)
+
+            if (ul == null || lr == null)
             {
                 throw new ArgumentException("Could not derive upper left and lower right anchor");
             }
@@ -164,7 +164,7 @@ namespace GoAhead.Commands.Selection
                         {
                             TileSelectionManager.Instance.AddToSelection(t.TileKey, false);
                         }
-                    }                
+                    }
                 }
             }
 
@@ -175,7 +175,7 @@ namespace GoAhead.Commands.Selection
         {
             Tile tile = null;
             if (FPGA.FPGA.Instance.Contains(identifier))
-            {             
+            {
                 tile = FPGA.FPGA.Instance.GetTile(identifier);
             }
             else if (identifier.Contains("_"))
@@ -185,7 +185,7 @@ namespace GoAhead.Commands.Selection
                 string suffix = identifier.Substring(split, identifier.Length - split);
                 tile = FPGA.FPGA.Instance.GetAllTiles().FirstOrDefault(t => t.Location.StartsWith(prefix) && t.Location.EndsWith(suffix));
                 // if we can not resolve the identifer, triggger error handling in Do
-                if(tile==null)
+                if (tile == null)
                 {
                     return null;
                 }
@@ -195,7 +195,7 @@ namespace GoAhead.Commands.Selection
                 return null;
             }
 
-            List<Tile> otherTiles = new List<Tile>();            
+            List<Tile> otherTiles = new List<Tile>();
             otherTiles.Add(tile);
 
             // there might be more left interconnects
@@ -205,12 +205,12 @@ namespace GoAhead.Commands.Selection
             }
             else if (IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect))
             {
-                foreach(Tile o in FPGATypes.GetCLTile(tile))
+                foreach (Tile o in FPGATypes.GetCLTile(tile))
                 {
                     otherTiles.Add(o);
                 }
             }
-            if(dir == FPGATypes.Direction.West)
+            if (dir == FPGATypes.Direction.West)
             {
                 int min = otherTiles.Min(t => t.TileKey.X);
                 return otherTiles.FirstOrDefault(t => t.TileKey.X == min);
@@ -228,7 +228,7 @@ namespace GoAhead.Commands.Selection
 
         private bool Consider(Tile t)
         {
-            return 
+            return
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.CLB) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect) ||
                 IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.BRAM) ||
@@ -240,9 +240,9 @@ namespace GoAhead.Commands.Selection
             throw new NotImplementedException();
         }
 
-        [Parameter(Comment = "Only selected those tiles in the given range that match this filter", PrintParameter=false)]
+        [Parameter(Comment = "Only selected those tiles in the given range that match this filter", PrintParameter = false)]
         public string Filter = ".*";
-        
+
         [Parameter(Comment = "The upper left tile")]
         public string UpperLeftTile = "";
 

@@ -16,10 +16,38 @@ using GoAhead.GUI.TileView;
 using GoAhead.GUI.FPGAView;
 using GoAhead.Commands.GUI;
 
+
 namespace GoAhead.GUI
 {
     public partial class FPGAViewCtrl : UserControl, Interfaces.IResetable
     {
+
+        bool _sync = false;
+        [
+            Category("Appearance"),
+            Description("Property to disable/enable auto-sync on both fpga views.")
+        ]
+
+        public bool Sync
+        {
+            get { return _sync; }
+            set { _sync = value; }
+        }
+
+        bool _expandSelection = true;
+        [
+            Category("Behavior"),
+            Description("Property to disable/enable auto expand selection.")
+        ]
+
+        public bool ExpandSelection
+        {
+            get { return _expandSelection; }
+            set { _expandSelection = value; }
+        }
+
+
+       
         public FPGAViewCtrl()
         {
             InitializeComponent();
@@ -40,7 +68,7 @@ namespace GoAhead.GUI
             Commands.Reset.ObjectsToReset.Add(this);
 
             m_timer.Interval = 1000;
-            m_timer.Tick += ShowToolTipAfterTimerFired;              
+            m_timer.Tick += ShowToolTipAfterTimerFired;
 
             Reset();
 
@@ -60,7 +88,7 @@ namespace GoAhead.GUI
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            if(FPGA.FPGA.Instance.Family.Equals(FPGATypes.FPGAFamily.Undefined))
+            if (FPGA.FPGA.Instance.Family.Equals(FPGATypes.FPGAFamily.Undefined))
             {
                 return;
             }
@@ -88,7 +116,7 @@ namespace GoAhead.GUI
                 float panelWidth = (float)m_zoomPictBox.Image.Width * m_zoomPictBox.Zoom;
                 float panelHeight = (float)m_zoomPictBox.Image.Height * m_zoomPictBox.Zoom;
             }
-            
+
             base.OnPaint(e);
         }
 
@@ -108,7 +136,7 @@ namespace GoAhead.GUI
                     RectanglePenWidth = StoredPreferences.Instance.RectangleWidth;
                     m_rectanglePen = new Pen(Color.Black, RectanglePenWidth);
                 }
-                
+
 
                 //e.Graphics.DrawRectangle(Pens.Black, x, y, width, height);
                 e.Graphics.DrawRectangle(m_rectanglePen, x, y, width, height);
@@ -137,7 +165,7 @@ namespace GoAhead.GUI
         {
             m_zoomPictBox.Image.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
         }
-      
+
         public Regex TileRegex
         {
             get { return m_tileFilter; }
@@ -159,7 +187,7 @@ namespace GoAhead.GUI
             return filter;
         }
 
-        public Color GetColor(Tile tile, bool addIncrementForSelectedTiles, bool addIncrementForUserSelectedTiles) 
+        public Color GetColor(Tile tile, bool addIncrementForSelectedTiles, bool addIncrementForUserSelectedTiles)
         {
             Color c = ColorSettings.Instance.GetColor(tile);
 
@@ -190,9 +218,9 @@ namespace GoAhead.GUI
             return Color.FromArgb((c.R + incR) % 256, (c.G + incG) % 256, (c.B + incB) % 256);
             // saturation
             //return Color.FromArgb(
-                //((c.R + incR) < 255 ? c.R + incR : 255),
-                //((c.G + incG) < 255 ? c.G + incG : 255),
-                //((c.B + incB) < 255 ? c.B + incB : 255));
+            //((c.R + incR) < 255 ? c.R + incR : 255),
+            //((c.G + incG) < 255 ? c.G + incG : 255),
+            //((c.B + incB) < 255 ? c.B + incB : 255));
         }
 
         public TileKey GetClickedKey(int x, int y)
@@ -215,8 +243,8 @@ namespace GoAhead.GUI
         public int TileSize
         {
             //get { return 6; }
-            get { return 16; } 
-        } 
+            get { return 16; }
+        }
 
         #region contextMenu
         private void m_contextMenuStoreAsPartialAreas_Click(object sender, EventArgs e)
@@ -246,7 +274,7 @@ namespace GoAhead.GUI
         }
         private void m_contextMenuCopyIdentifier_Click(object sender, EventArgs e)
         {
-            if(FPGA.FPGA.Instance.Contains(m_rightClickedKey))
+            if (FPGA.FPGA.Instance.Contains(m_rightClickedKey))
             {
                 string location = FPGA.FPGA.Instance.GetTile(m_rightClickedKey).Location;
                 Clipboard.SetText(location);
@@ -261,27 +289,59 @@ namespace GoAhead.GUI
         public void ZoomOut()
         {
             m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
+            m_zoomPictBox.ZoomPoint = new Point(0,0);
             m_zoomPictBox.Zoom *= 0.9F;
             Invalidate();
         }
 
         public void ZoomIn()
-        { 
+        {
             m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
+            m_zoomPictBox.ZoomPoint = new Point(0,0);
             m_zoomPictBox.Zoom *= 1.1F;
+
+            Invalidate();
+        }
+
+        public void PointZoomIn(Point location, Point relativeLocation)
+        {
+            int x, y;
+   
+            x = (int) (relativeLocation.X * 0.95);
+            y = (int) (relativeLocation.Y * 1.05);
+
+            m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
+            m_zoomPictBox.ZoomPoint = new Point(x,y);
+            m_zoomPictBox.Zoom *= 1.2F;
+
+            Invalidate();
+        }
+
+        public void PointZoomOut(Point location, Point relativeLocation)
+        {
+            m_zoomPictBox.PrevZoom = m_zoomPictBox.Zoom;
+            m_zoomPictBox.ZoomPoint = new Point(0, 0);
+            m_zoomPictBox.Zoom *= 0.9F;
             Invalidate();
         }
 
         #region Toolbar
         private void m_toolStripBtnZoomOut_Click(object sender, EventArgs e)
         {
-            
+
             ZoomOut();
         }
         private void m_toolStripBtnZoomIn_Click(object sender, EventArgs e)
-        {   
+        {
             ZoomIn();
 
+        }
+        private void m_toolStripBtnExpandSelection_Click(object sender, EventArgs e)
+        {
+            if (this.ExpandSelection)
+                this.ExpandSelection = false;
+            else
+                this.ExpandSelection = true;         
         }
 
         /// <summary>
@@ -334,13 +394,14 @@ namespace GoAhead.GUI
                         statusString += "...";
                     }
 
-                    statusString += ") ";                
+                    statusString += ") ";
                 }
-                // 2 element buffer
-                m_lastClickedTile = m_currentlyClickedTile;
+                
+                if (!TileSelectionManager.Instance.OngoingIncrementalSelection)
+                    m_lastClickedTile = m_currentlyClickedTile;
                 m_currentlyClickedTile = selectedTile;
-            }          
-          
+            }
+
             // print selection info
             if (StoredPreferences.Instance.PrintSelectionResourceInfo)
             {
@@ -367,7 +428,7 @@ namespace GoAhead.GUI
         }
 
         #endregion Toolbar
-       
+
         #region ToolbarDropDownMenu
         private void m_toolStripDrpDownMenuPaintingRAM_Click(object sender, EventArgs e)
         {
@@ -377,8 +438,8 @@ namespace GoAhead.GUI
                 // turn off -> repaint all
                 TilePaintStrategy.DrawTiles(true, true);
             }
-                        
-            Invalidate();    
+
+            Invalidate();
         }
 
 
@@ -391,7 +452,7 @@ namespace GoAhead.GUI
                 TilePaintStrategy.DrawTiles(true, true);
             }
 
-            Invalidate();    
+            Invalidate();
         }
 
         private void m_toolStripDrpDownMenuPaintingClockRegion_Click(object sender, EventArgs e)
@@ -435,7 +496,7 @@ namespace GoAhead.GUI
             StoredPreferences.Instance.ShowToolTips = m_toolStripDrpDownMenuPaintingToolTips.Checked;
             Invalidate();
         }
-        
+
         private void m_toolStripDrpDownMacro_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (m_toolStripDrpDownMacro.SelectedItem == null)
@@ -508,9 +569,15 @@ namespace GoAhead.GUI
             else
             {
                 UnmuteOutput cmd = new UnmuteOutput();
-                CommandExecuter.Instance.Execute(cmd); 
+                CommandExecuter.Instance.Execute(cmd);
             }
         }
+
+        private void m_toolStripDrpDownMenuSyncViews_Click(object sender, EventArgs e)
+        {
+            this.Sync = m_toolStripDrpDownMenuSyncViews.Checked;
+        }
+
 
         private void m_toolStripDrpDownMenuPainting_MouseDown(object sender, MouseEventArgs e)
         {
@@ -528,17 +595,17 @@ namespace GoAhead.GUI
                 m_zoomPictBox.Image = TilePaintStrategy.TileBitmap;
             }
 
-            FullZoom();                       
+            FullZoom();
             m_zoomPictBox.Invalidate();
             m_panelSelection.Invalidate();
         }
-        
+
         private void m_zoomPictBox_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button.Equals(MouseButtons.Left))
             {
                 SelectedFromMouseDownToCurrent();
-                
+
                 UpdateStatusStrip(GetClickedKey(e.X, e.Y));
                 RectangleSelect = false;
                 ZoomSelectOngoing = false;
@@ -550,6 +617,7 @@ namespace GoAhead.GUI
                 m_rightClickedKey = GetClickedKey(e.X, e.Y);
                 m_contextMenu.Show(this, new Point(e.X, e.Y));
             }
+            /*
             else if(e.Button == MouseButtons.Middle)
             {
                 if (ZoomSelectOngoing)
@@ -563,6 +631,7 @@ namespace GoAhead.GUI
                     m_panelSelection.Invalidate();
                 }
             }
+            */
         }
 
         private void ZoomFromMouseDownToCurrent()
@@ -586,17 +655,19 @@ namespace GoAhead.GUI
             bool ctrlDown = ModifierKeys == Keys.Control;
             bool altDown = ModifierKeys == Keys.Alt;
             bool altAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Alt);
-            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
+            bool shiftAndCtrlDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
-            if (!ctrlDown && !altAndCtrlDown)
+            if (!ctrlDown && !altAndCtrlDown && !shiftAndCtrlDown)
             {
                 CommandExecuter.Instance.Execute(new Commands.Selection.ClearSelection());
             }
             TileKey upperLeftTile = null;
             TileKey lowerRightTile = null;
 
-            if(shiftDown)
+            if (shiftDown || shiftAndCtrlDown)
             {
+                TileSelectionManager.Instance.OngoingIncrementalSelection = true;
+
                 TileKey clickedKey = GetClickedKey(m_mouseDownPosition.X, m_mouseDownPosition.Y);
                 if (m_lastClickedTile == null)
                 {
@@ -612,13 +683,15 @@ namespace GoAhead.GUI
             }
             else
             {
+                TileSelectionManager.Instance.OngoingIncrementalSelection = false;
+
                 int upperLeftX = Math.Min(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X);
                 int upperLeftY = Math.Min(m_mouseDownPosition.Y, m_currentMousePositionWithRectangleSelect.Y);
                 int lowerRightX = Math.Max(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X);
                 int lowerRightY = Math.Max(m_mouseDownPosition.Y, m_currentMousePositionWithRectangleSelect.Y);
 
                 upperLeftTile = GetClickedKey(upperLeftX, upperLeftY);
-                lowerRightTile = GetClickedKey(lowerRightX, lowerRightY);      
+                lowerRightTile = GetClickedKey(lowerRightX, lowerRightY);
             }
 
             if (!string.IsNullOrEmpty(GetTileFilter()))
@@ -638,7 +711,6 @@ namespace GoAhead.GUI
                 try
                 {
                     //Switch to using the INT_XxYy tile.
-
                     AddBlockToSelection addcmd = new AddBlockToSelection(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y);
                     CommandExecuter.Instance.Execute(addcmd);
                 }
@@ -651,9 +723,10 @@ namespace GoAhead.GUI
             {
                 // Use the fine-tile grid as default.
                 CommandExecuter.Instance.Execute(new AddToSelectionXY(upperLeftTile.X, upperLeftTile.Y, lowerRightTile.X, lowerRightTile.Y));
+               
             }
 
-            if (StoredPreferences.Instance.ExecuteExpandSelection && !ctrlAndShiftDown)
+            if (StoredPreferences.Instance.ExecuteExpandSelection && this.ExpandSelection)
             {
                 CommandExecuter.Instance.Execute(new Commands.Selection.ExpandSelection());
             }
@@ -683,7 +756,7 @@ namespace GoAhead.GUI
                 // store position
                 m_timer.Tag = e.Location;
             }
-         }
+        }
 
         private void ShowToolTipAfterTimerFired(object sender, EventArgs e)
         {
@@ -716,7 +789,7 @@ namespace GoAhead.GUI
                     if (Blackboard.Instance.HasToolTipInfo(where))
                     {
                         toolTip += Environment.NewLine + Blackboard.Instance.GetToolTipInfo(where);
-                    }                    
+                    }
                     m_toolTip.Show(toolTip, this, p.X, p.Y + 20, 10000);
                 }
             }
@@ -726,7 +799,8 @@ namespace GoAhead.GUI
         {
             PointToSelection = false;
 
-            if (e.Button.Equals(MouseButtons.Left) || e.Button.Equals(MouseButtons.Middle))
+            //if (e.Button.Equals(MouseButtons.Left) || e.Button.Equals(MouseButtons.Middle))
+            if (e.Button.Equals(MouseButtons.Left))
             {
                 // capture old value for range selection
                 m_mouseDownPosition = e.Location;
@@ -738,16 +812,16 @@ namespace GoAhead.GUI
             {
                 RectangleSelect = true;
             }
+            /*
             if (e.Button.Equals(MouseButtons.Middle))
             {
                 ZoomSelectStart = true;
-            }
+            } */
         }
 
         private void m_zoomPictBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             TileKey clickedKey = GetClickedKey(e.X, e.Y);
-            bool ctrlAndShiftDown = ModifierKeys == (Keys.Control | Keys.Shift);
 
             if (FPGA.FPGA.Instance.Contains(clickedKey))
             {
@@ -755,10 +829,36 @@ namespace GoAhead.GUI
                 {
                     X = clickedKey.X,
                     Y = clickedKey.Y,
-                    doExpand = !ctrlAndShiftDown
+                    doExpand = this.ExpandSelection
                 };
                 CommandExecuter.Instance.Execute(cmd);
             }
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            Point currentPixel, cursorPosition;
+
+            bool ctrlDown = ModifierKeys == Keys.Control;
+            cursorPosition = new Point(e.X, e.Y);
+
+            currentPixel = new Point(Math.Min(m_mouseDownPosition.X, m_currentMousePositionWithRectangleSelect.X) + m_zoomPictBox.HorizontalScroll.Value,
+                              Math.Min(m_mouseDownPosition.Y, m_currentMousePositionWithRectangleSelect.Y) + m_zoomPictBox.VerticalScroll.Value);
+ 
+
+            if (ctrlDown && e.Delta/120 >=1.0)
+            {
+                PointZoomIn(cursorPosition,currentPixel);
+            }
+            else if (ctrlDown && e.Delta / 120 <= 1.0)
+            {
+                PointZoomOut(currentPixel, cursorPosition);
+            }
+        }
+
+        private void m_zoomPictBox_MouseWheel(object sender, MouseEventArgs e)
+        {
+            OnMouseWheel(e);
         }
 
         public ZoomPicBox ZoomPictureBox

@@ -28,6 +28,14 @@ namespace GoAhead.FPGA
 
     public class TileSelectionManager : Interfaces.Subject, Interfaces.IResetable
     {
+        bool m_ongoingIncrementalSelection = false;
+
+        public bool OngoingIncrementalSelection
+        {
+            get { return m_ongoingIncrementalSelection; }
+            set { m_ongoingIncrementalSelection = value; }       
+        }
+        
         private SelectionUpdate m_updateAction = new SelectionUpdate();
 
         private TileSelectionManager()

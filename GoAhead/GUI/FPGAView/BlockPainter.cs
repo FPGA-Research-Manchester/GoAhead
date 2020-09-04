@@ -160,9 +160,10 @@ namespace GoAhead.GUI
             // get ram block data            
             if (!m_ramDataValid)
             {
-                m_ramDataValid = FPGATypes.GetRamBlockSize(m_view.TileRegex, out m_ramBlockWidth, out m_ramBlockHeight, out m_ramTiles);
+                m_ramDataValid = FPGATypes.GetRamBlockSize(m_view.TileRegex, out m_ramBlockWidth, out m_ramBlockHeight, out m_ramTiles, out m_BRAM_right, out m_DSP_left, out m_connectsRAM);
             }
 
+            
             foreach (Tile ramTile in m_ramTiles)
             {
                 if(!m_view.TileRegex.IsMatch(ramTile.Location))
@@ -172,6 +173,29 @@ namespace GoAhead.GUI
 
                 DrawRAMTile(ramTile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
             }
+
+            foreach (Tile tile in m_BRAM_right)
+            {
+                if (!m_view.TileRegex.IsMatch(tile.Location))
+                {
+                    continue;
+                }
+
+                DrawRAMTileSubinterconnectBlock(tile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
+            }
+
+
+            foreach (Tile tile in m_DSP_left)
+            {
+                if (!m_view.TileRegex.IsMatch(tile.Location))
+                {
+                    continue;
+                }
+
+                DrawRAMTileSubinterconnectBlock(tile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
+            }
+
+            
 
             graphicsObj.Dispose();
         }
@@ -183,6 +207,8 @@ namespace GoAhead.GUI
                 return;
             }
             bool ramTile = false;
+            bool bramRightTile = false;
+            bool dspLeftTile = false;
             bool hasMapping = false;
 
             if (m_ramTiles.Contains(tile))
@@ -194,7 +220,18 @@ namespace GoAhead.GUI
                 hasMapping = true;
             }
 
-            if (ramTile)
+            if (m_BRAM_right.Contains(tile))
+                bramRightTile = true;
+            else if (m_DSP_left.Contains(tile))
+                dspLeftTile = true;
+
+           
+            
+            if(bramRightTile || dspLeftTile)
+            {
+                DrawRAMTileSubinterconnectBlock(tile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
+            }
+            else if (ramTile)
             {
                 DrawRAMTile(tile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
             }
@@ -202,6 +239,48 @@ namespace GoAhead.GUI
             {
                 DrawNonRAMTile(tile, graphicsObj, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
             }
+        }
+
+        private void DrawRAMTileSubinterconnectBlock(Tile subInterconnectTile, Graphics graphicsObj, bool addIncrementForSelectedTiles, bool addIncrementForUserSelectedTiles)
+        {
+            int x = -1;
+            int y = -1;
+            switch (FPGA.FPGA.Instance.Family)
+            {
+                case FPGATypes.FPGAFamily.UltraScale:
+                    {
+                        // ram tile are in the bottom right
+                        
+                        x = subInterconnectTile.TileKey.X - (m_ramBlockWidth - 1);
+                        y = subInterconnectTile.TileKey.Y - (m_ramBlockHeight - 1);
+
+                      
+
+                        if (FPGA.FPGA.Instance.Contains(x, y))
+                        {
+                            Tile upperLeft = FPGA.FPGA.Instance.GetTile(x, y);
+
+                            int upperLeftX = upperLeft.TileKey.X * m_view.TileSize;
+                            int upperLeftY = upperLeft.TileKey.Y * m_view.TileSize;
+
+                            
+                            Rectangle rect = new Rectangle();
+                            rect.X = upperLeftX - 1;
+                            rect.Y = upperLeftY - 1;
+                            rect.Width = (m_ramBlockWidth * (m_view.TileSize - 1) + m_ramBlockWidth - 1) - 2;
+                            rect.Height = (m_ramBlockHeight * (m_view.TileSize - 1) + m_ramBlockHeight) - 2;
+
+                            m_sb.Color = m_view.GetColor(subInterconnectTile, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
+                            graphicsObj.FillRectangle(m_sb, rect);
+                        }     
+                        break;
+                       
+                    }
+                default:
+                    {
+                        return;
+                    }
+            }    
         }
 
         private void DrawRAMTile(Tile ramTile, Graphics graphicsObj, bool addIncrementForSelectedTiles, bool addIncrementForUserSelectedTiles)
@@ -305,13 +384,18 @@ namespace GoAhead.GUI
                                 //If CLEL_R is paired with a subinterconnect, keep its colour.
                                 Tile subinterconnect = FPGA.FPGA.Instance.GetTile(tile.TileKey.X - 2, tile.TileKey.Y);
 
-                                if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect))
+                                if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect) && !m_connectsRAM.Contains(subinterconnect))
                                 {
                                     upperLeftX = (intTile.TileKey.X - (widthScale == 2 ? 0 : 1)) * m_view.TileSize;
                                     upperLeftY = intTile.TileKey.Y * m_view.TileSize;
-
                                 }
-                                
+
+                                else if (IdentifierManager.Instance.IsMatch(subinterconnect.Location, IdentifierManager.RegexTypes.SubInterconnect) && m_connectsRAM.Contains(subinterconnect))
+                                {
+                                    upperLeftX = (intTile.TileKey.X ) * m_view.TileSize;
+                                    upperLeftY = intTile.TileKey.Y * m_view.TileSize;
+                                }
+
                                 // double size of the rectangle
                             } 
                             break;
@@ -335,7 +419,6 @@ namespace GoAhead.GUI
             {
                 // Sub-interconnect tiles for CLB have no tiles
                 return;
-
             }
             else
             {
@@ -356,9 +439,10 @@ namespace GoAhead.GUI
             {
                 m_sb.Color = ColorSettings.Instance.GetColor(tile);
             }
+
             m_sb.Color = m_view.GetColor(tile, addIncrementForSelectedTiles, addIncrementForUserSelectedTiles);
 
-            
+
             graphicsObj.FillRectangle(m_sb, m_rect);
         
         }
@@ -371,6 +455,9 @@ namespace GoAhead.GUI
         private Graphics m_graphicsObj = null;
         private bool m_ramDataValid = false;
         private TileSet m_ramTiles = new TileSet();
+        private TileSet m_BRAM_right = new TileSet();
+        private TileSet m_DSP_left = new TileSet();
+        private TileSet m_connectsRAM = new TileSet();
         private int m_ramBlockWidth = 0;
         private int m_ramBlockHeight = 0;       
     }

@@ -268,6 +268,7 @@
     <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
+    <Compile Include="Commands\Misc\PrintTileInformationCSV.cs" />
     <Compile Include="Commands\Misc\PathSearchOnFPGAWithRegexp.cs" />
     <Compile Include="Commands\NetlistContainerGeneration\AddHierarchy.cs" />
     <Compile Include="Commands\NetlistContainerGeneration\MergeBlockerAndConnectClockInNetlistContainer.cs" />

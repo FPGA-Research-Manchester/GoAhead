@@ -68,7 +68,7 @@ namespace GoAhead.GUI
         float _prevZoom = 1.0f;
         [
             Category("Appearance"),
-            Description("The zoom factor. Less than 1 to reduce. More than 1 to magnify.")
+            Description("The previous zoom factor.")
         ]
 
         public float PrevZoom
@@ -86,6 +86,20 @@ namespace GoAhead.GUI
             }
         }
 
+        Point _zoomPoint = new Point(1, 1);
+        [
+            Category("Mouse"),
+            Description("The zoom point. Used to zoom relative to the mouse cursor.")
+        ]
+
+        public Point ZoomPoint
+        {
+            get { return new Point(_zoomPoint.X, _zoomPoint.Y); }
+            set
+            {
+                _zoomPoint = value;
+            }
+        }
 
         /// <summary>
         /// Calculates the effective size of the image
@@ -99,14 +113,23 @@ namespace GoAhead.GUI
             }
             else
             {
-                if (onZoom)
+                if (onZoom && _zoomPoint.X == 0 && _zoomPoint.Y == 0)
                 {
+                    //Zoom using the zoom buttons.
                     float scrollX = (-1) * (AutoScrollPosition.X * _zoom / _prevZoom - 0.5f);
                     float scrollY = (-1) * (AutoScrollPosition.Y * _zoom / _prevZoom - 0.5f);
                     AutoScrollPosition = new Point((int)(scrollX), (int)(scrollY));
-
+                    
                 }
+                else if (onZoom)
+                {
+                    //Zoom relative to the mouse cursor.
+                    float x = _zoomPoint.X * _prevZoom / _zoom;
+                    float y = _zoomPoint.Y * _prevZoom / _zoom;
 
+                    AutoScrollPosition = new Point((int) x , (int) y);
+                }
+                 
                 AutoScrollMinSize = new Size((int)(_image.Width * _zoom + 0.5f), (int)(_image.Height * _zoom + 0.5f));
 
             }            
@@ -168,6 +191,10 @@ namespace GoAhead.GUI
                 ControlStyles.DoubleBuffer, true);
             AutoScroll=true;
         }
+
+
+
+
     }
 }
 
