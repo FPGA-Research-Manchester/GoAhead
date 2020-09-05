@@ -42,10 +42,11 @@ namespace GoAhead.GUI.Macros.BusInterface
             StringBuilder buffer = new StringBuilder();
 
             string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
-            string border = this.m_txtBoxBorder.Text.ToString();
-            string pips = this.m_txtBoxPips.Text.ToString();
-            int wiresType = Int32.Parse( this.m_txtBoxWiresType.Text.ToString());
-            int startIndex = Int32.Parse(this.m_txtBoxStartIndex.Text.ToString());
+            string border = this.m_drpDwnBorder.Text.ToString();
+            string pips = this.m_drpDwnPips.Text.ToString();
+            int wiresType = Int32.Parse( this.m_drpDwnWires.Text.ToString());
+            int startIndex = Int32.Parse(this.m_drpDwnStartIndex.Text.ToString());
+            int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
 
             //Check paramaters are all valid.
             CheckParameters(border, pips, wiresType, startIndex);
@@ -62,6 +63,7 @@ namespace GoAhead.GUI.Macros.BusInterface
             string cmdPart5 = " PreventWiresFromBlocking=True\n"
                             + " InterfaceSpecs=In:";
             string cmdPart6 = " StartIndex=";
+            string cmdPart7 = " SignalsPerTile=";
             
 
             foreach (var record in records)
@@ -73,7 +75,7 @@ namespace GoAhead.GUI.Macros.BusInterface
                                     + cmdPart3 + border + '\n'
                                     + cmdPart4 + record.BusWidth + '\n'
                                     + cmdPart5 + wiresType + ":" + signalNameSuffix +":" + pips + '\n'
-                                    + cmdPart6 + startIndex + ';';
+                                    + cmdPart6 + startIndex + '\n'+ cmdPart7 + signalsPerTile+ ';';
 
                 buffer.Append(formatString + '\n' + '\n');
             }
@@ -110,6 +112,26 @@ namespace GoAhead.GUI.Macros.BusInterface
         }
 
         private void m_labelWiresType_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void domainUpDown1_SelectedItemChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_labelBorder_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
