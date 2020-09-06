@@ -7,13 +7,11 @@ namespace GoAhead.Commands.GridStyle
 {
     class PrintPartitionPinConstraintsForTile : PrintPartitionPinConstraint
     {
-        public static int SIGNALS_PER_TILE = 4;
-
         protected override void DoCommandAction()
         {
             CheckParameters();
 
-            for(int i = 0; i < SIGNALS_PER_TILE; i++)
+            for(int i = 0; i < SignalsForTile; i++)
             {
                 PortIndex = i;
 
@@ -27,8 +25,9 @@ namespace GoAhead.Commands.GridStyle
         private void CheckParameters()
         {
             bool startIndexIsCorrect = StartIndex >= 0;
+            bool signalsForTileIsCorrect = SignalsForTile <= MaxSignalsPerTile;
 
-            if(!startIndexIsCorrect)
+            if (!startIndexIsCorrect || !signalsForTileIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in parameters StartIndex.");
             }
@@ -41,5 +40,8 @@ namespace GoAhead.Commands.GridStyle
 
         [Parameter(Comment = "The start index of the signal")]
         public int StartIndex = 0;
+
+        [Parameter(Comment = "Signals for tile. If this is less than SignalsPerTile, then only these many signals will be printed on this tile")]
+        public int SignalsForTile = 8;
     }
 }

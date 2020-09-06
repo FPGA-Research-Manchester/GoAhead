@@ -146,6 +146,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net40\CsvHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.PowerShell.Commands.Management, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files\Reference Assemblies\Microsoft\WindowsPowerShell\v1.0\Microsoft.PowerShell.Commands.Management.dll</HintPath>
@@ -179,6 +182,7 @@
     <Compile Include="Code\Net.cs" />
     <Compile Include="Code\NetlistElement.cs" />
     <Compile Include="Code\Instance.cs" />
+    <Compile Include="Code\InterfaceConstraintCSV.cs" />
     <Compile Include="Code\PortTreeNode.cs" />
     <Compile Include="Code\NetlistPort.cs" />
     <Compile Include="Code\TCL\TCLContainer.cs" />
@@ -532,6 +536,12 @@
     <Compile Include="FPGA\Slices\V4Slice.cs" />
     <Compile Include="FPGA\Wire.cs" />
     <Compile Include="FPGA\Slices\ZSlice.cs" />
+    <Compile Include="GUI\Macros\BusInterface\PrintBusInterfaceCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Macros\BusInterface\PrintBusInterfaceCtrl.Designer.cs">
+      <DependentUpon>PrintBusInterfaceCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\ReadVivadoFPGADebugger\ReadVivadoFPGADebugger.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1078,6 +1088,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="GUI\Macros\BusInterface\PrintBusInterfaceCtrl.resx">
+      <DependentUpon>PrintBusInterfaceCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\ReadVivadoFPGADebugger\ReadVivadoFPGADebugger.resx">
       <DependentUpon>ReadVivadoFPGADebugger.cs</DependentUpon>
     </EmbeddedResource>
@@ -1279,6 +1292,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="GoAhead_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\DataSources\GoAhead.Objects.InterfaceManager.datasource" />
     <None Include="Properties\DataSources\GoAhead.Objects.MacroInstantiationManager.datasource" />
@@ -1330,6 +1344,7 @@
   <ItemGroup>
     <None Include="Resources\icons8-browse-folder-30.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

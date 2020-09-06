@@ -70,10 +70,17 @@ namespace GoAhead.Commands.GridStyle
 
                 SwitchboxName = t.Location;
                 StartIndex = startIndex;
+                SignalsForTile = MaxSignalsPerTile;
+
+                if (NumberOfSignals - startIndex < MaxSignalsPerTile)
+                {
+                    SignalsForTile = NumberOfSignals - startIndex;
+                    Console.WriteLine("INFO: There are " + (MaxSignalsPerTile - SignalsForTile) + " signals remaining in " + SwitchboxName);
+                }
 
                 base.DoCommandAction();
 
-                startIndex += SIGNALS_PER_TILE;
+                startIndex += MaxSignalsPerTile;
             }
         }
 
@@ -125,7 +132,7 @@ namespace GoAhead.Commands.GridStyle
             throw new NotImplementedException();
         }
 
-        [Parameter(Comment = "The number of signals. Should be a modulus of 4.")]
+        [Parameter(Comment = "The number of signals.")]
         public int NumberOfSignals = 128;
 
         [Parameter(Comment = "Either row-wise or column-wise")]

@@ -42,7 +42,10 @@ namespace GoAhead.Commands.GridStyle
 
         private string GetSignalName()
         {
-            return $"{InstanceName}/{SignalName}[{SignalIndex.ToString()}]";
+            if(PrintParameterizedSignal)
+                return $"{InstanceName}/{SignalName}[{SignalIndex.ToString()}]";
+            else
+                return $"{InstanceName}/{SignalName}";
         }
 
         private string GetLocationAndPortName()
@@ -129,7 +132,7 @@ namespace GoAhead.Commands.GridStyle
                                               EastWestSwitchbox.Equals(WEST_OPTION_FOR_SWITCHBOX);
 
             bool signalIndexIsCorrect = SignalIndex >= 0;
-            bool portIndexIsCorrect = PortIndex >= 0 && PortIndex <= 3;
+            bool portIndexIsCorrect = PortIndex >= 0 && PortIndex <= MaxSignalsPerTile;
             bool instanceNameIsCorrect = !string.IsNullOrEmpty(InstanceName);
             bool signalNameIsCorrect = !string.IsNullOrEmpty(SignalName);
             bool switchboxNameIsCorrect = !string.IsNullOrEmpty(SwitchboxName);
@@ -178,8 +181,10 @@ namespace GoAhead.Commands.GridStyle
         [Parameter(Comment = "The name of the switchbox.")]
         public string SwitchboxName = "INT_R_X41Y9";
 
-        //constant dictionary (move constants to a separate class?)
-        
+        [Parameter(Comment = "Signal per tile. Should be less than 8.")]
+        public int MaxSignalsPerTile = 8;
 
+        [Parameter(Comment = "Include indexes when printing ")]
+        public bool PrintParameterizedSignal = true;
     }
 }
