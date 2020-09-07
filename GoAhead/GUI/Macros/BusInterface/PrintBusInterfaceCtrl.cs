@@ -33,18 +33,24 @@ namespace GoAhead.GUI.Macros.BusInterface
         {
             string outputFilePath = this.m_fileSelectOut.FileName;
             TextReader reader = new StreamReader(fileName);
+            TextWriter write;
             var csvReader = new CsvReader(reader);
 
             csvReader.Configuration.RegisterClassMap<InterfaceConstraintMap>();
             var records = csvReader.GetRecords<InterfaceConstraint>();
 
-            TextWriter write = new StreamWriter(outputFilePath, false);
+            //Check if the append option is selected and append to the outputfile or fully overwrite it.
+            if(m_fileSelectOut.Append)
+                write = new StreamWriter(outputFilePath, true);
+            else
+                write = new StreamWriter(outputFilePath, false);
+
             StringBuilder buffer = new StringBuilder();
 
             string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
-            string border = this.m_drpDwnBorder.Text.ToString();
-            string pips = this.m_drpDwnPips.Text.ToString();
-            int wiresType = Int32.Parse( this.m_drpDwnWires.Text.ToString());
+            string border = this.m_drpDwnBorder.SelectedItem.ToString();
+            string pips = this.m_drpDwnPips.SelectedItem.ToString();
+            int wiresType = Int32.Parse( this.m_drpDwnWires.SelectedItem.ToString());
             int startIndex = Int32.Parse(this.m_drpDwnStartIndex.Text.ToString());
             int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
 

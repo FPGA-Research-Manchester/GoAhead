@@ -32,9 +32,9 @@
             this.m_drpDwnSignals = new System.Windows.Forms.NumericUpDown();
             this.m_drpDwnStartIndex = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.m_drpDwnWires = new System.Windows.Forms.DomainUpDown();
-            this.m_drpDwnPips = new System.Windows.Forms.DomainUpDown();
-            this.m_drpDwnBorder = new System.Windows.Forms.DomainUpDown();
+            this.m_drpDwnWires = new System.Windows.Forms.ComboBox();
+            this.m_drpDwnPips = new System.Windows.Forms.ComboBox();
+            this.m_drpDwnBorder = new System.Windows.Forms.ComboBox();
             this.m_labelBorder = new System.Windows.Forms.Label();
             this.m_labelImport = new System.Windows.Forms.Label();
             this.m_labelPips = new System.Windows.Forms.Label();
@@ -92,6 +92,7 @@
             0,
             0,
             0});
+            this.m_drpDwnSignals.Minimum = 1;
             // 
             // m_drpDwnStartIndex
             // 
@@ -113,34 +114,36 @@
             // 
             // m_drpDwnWires
             // 
-            this.m_drpDwnWires.Items.Add("2");
-            this.m_drpDwnWires.Items.Add("4");
             this.m_drpDwnWires.Location = new System.Drawing.Point(142, 307);
             this.m_drpDwnWires.Name = "m_drpDwnWires";
             this.m_drpDwnWires.Size = new System.Drawing.Size(149, 22);
             this.m_drpDwnWires.TabIndex = 13;
-            this.m_drpDwnWires.Text = "2";
+            this.m_drpDwnWires.Items.Add("2");
+            this.m_drpDwnWires.Items.Add("4");
+            this.m_drpDwnWires.SelectedItem = "2";
+            this.m_drpDwnWires.FormattingEnabled = false;
             // 
             // m_drpDwnPips
             // 
+            this.m_drpDwnPips.Location = new System.Drawing.Point(142, 258);
+            this.m_drpDwnPips.Name = "m_drpDwnPip";
+            this.m_drpDwnPips.Size = new System.Drawing.Size(149, 22);
+            this.m_drpDwnPips.TabIndex = 13;
             this.m_drpDwnPips.Items.Add("W");
             this.m_drpDwnPips.Items.Add("E");
-            this.m_drpDwnPips.Location = new System.Drawing.Point(142, 258);
-            this.m_drpDwnPips.Name = "m_drpDwnPips";
-            this.m_drpDwnPips.Size = new System.Drawing.Size(149, 22);
-            this.m_drpDwnPips.TabIndex = 11;
-            this.m_drpDwnPips.Text = "W";
+            this.m_drpDwnPips.SelectedItem = "W";
+            this.m_drpDwnPips.FormattingEnabled = false;
             // 
             // m_drpDwnBorder
             // 
-            this.m_drpDwnBorder.Items.Add("West");
-            this.m_drpDwnBorder.Items.Add("East");
             this.m_drpDwnBorder.Location = new System.Drawing.Point(142, 211);
             this.m_drpDwnBorder.Name = "m_drpDwnBorder";
             this.m_drpDwnBorder.Size = new System.Drawing.Size(149, 22);
-            this.m_drpDwnBorder.TabIndex = 10;
-            this.m_drpDwnBorder.Text = "West";
-            this.m_drpDwnBorder.SelectedItemChanged += new System.EventHandler(this.domainUpDown1_SelectedItemChanged_1);
+            this.m_drpDwnBorder.TabIndex = 13;
+            this.m_drpDwnBorder.Items.Add("West");
+            this.m_drpDwnBorder.Items.Add("East");
+            this.m_drpDwnBorder.SelectedItem = "West";
+            this.m_drpDwnBorder.FormattingEnabled = false;
             // 
             // m_labelBorder
             // 
@@ -229,7 +232,7 @@
             // 
             // m_fileSelect
             // 
-            this.m_fileSelect.Append = true;
+            this.m_fileSelect.Append = false;
             this.m_fileSelect.FileName = "";
             this.m_fileSelect.Filter = "All CSV files|*.csv";
             this.m_fileSelect.Label = "CSV File";
@@ -281,11 +284,12 @@
         private System.Windows.Forms.Label m_labelStartIndex;
       
         private System.Windows.Forms.Label m_labelTCLPath;
-        private System.Windows.Forms.DomainUpDown m_drpDwnBorder;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DomainUpDown m_drpDwnWires;
-        private System.Windows.Forms.DomainUpDown m_drpDwnPips;
         private System.Windows.Forms.NumericUpDown m_drpDwnStartIndex;
         private System.Windows.Forms.NumericUpDown m_drpDwnSignals;
+
+        private System.Windows.Forms.ComboBox m_drpDwnBorder;
+        private System.Windows.Forms.ComboBox m_drpDwnWires;
+        private System.Windows.Forms.ComboBox m_drpDwnPips;
     }
 }
