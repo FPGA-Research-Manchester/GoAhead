@@ -25,13 +25,22 @@ namespace GoAhead.GUI.Macros.BusInterface
 
         private void m_btnPrintBusInterface_Click(object sender, EventArgs e)
         {
-            string fileName = this.m_fileSelect.FileName;
-            ParseCSV(fileName);
+            string fileName;
+
+            //If the file name is empty, throw error.
+            if (this.m_fileSelect.FileName.Length == 0)
+            {
+                MessageBox.Show("Please provide a valid CSV input file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                fileName = this.m_fileSelect.FileName;
+                ParseCSV(fileName);
+            }        
         }
 
         private void ParseCSV(string fileName)
         {
-            string outputFilePath = this.m_fileSelectOut.FileName;
             TextReader reader = new StreamReader(fileName);
             TextWriter write;
             var csvReader = new CsvReader(reader);
@@ -39,8 +48,17 @@ namespace GoAhead.GUI.Macros.BusInterface
             csvReader.Configuration.RegisterClassMap<InterfaceConstraintMap>();
             var records = csvReader.GetRecords<InterfaceConstraint>();
 
+            //If the output file name is empty, throw error.
+            if (this.m_fileSelectOut.FileName.Length == 0)
+            {
+                MessageBox.Show("Please provide a valid output file path!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            string outputFilePath = this.m_fileSelectOut.FileName;
+
             //Check if the append option is selected and append to the outputfile or fully overwrite it.
-            if(m_fileSelectOut.Append)
+            if (m_fileSelectOut.Append)
                 write = new StreamWriter(outputFilePath, true);
             else
                 write = new StreamWriter(outputFilePath, false);
