@@ -41,86 +41,94 @@ namespace GoAhead.GUI.Macros.BusInterface
 
         private void ParseCSV(string fileName)
         {
-            TextReader reader = new StreamReader(fileName);
-            TextWriter write;
-            var csvReader = new CsvReader(reader);
-
-            csvReader.Configuration.RegisterClassMap<InterfaceConstraintMap>();
-            var records = csvReader.GetRecords<InterfaceConstraint>();
-
-            //If the output file name is empty, throw error.
-            if (this.m_fileSelectOut.FileName.Length == 0)
+            try
             {
-                MessageBox.Show("Please provide a valid output file path!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                using (TextReader reader = new StreamReader(fileName))
+                {
+                    TextWriter write;
+                    var csvReader = new CsvReader(reader);
+
+                    csvReader.Configuration.RegisterClassMap<InterfaceConstraintMap>();
+                    var records = csvReader.GetRecords<InterfaceConstraint>();
+
+                    //If the output file name is empty, throw error.
+                    if (this.m_fileSelectOut.FileName.Length == 0)
+                    {
+                        MessageBox.Show("Please provide a valid output file path!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    string outputFilePath = this.m_fileSelectOut.FileName;
+
+                    //Check if the append option is selected and append to the outputfile or fully overwrite it.
+                    if (m_fileSelectOut.Append)
+                        write = new StreamWriter(outputFilePath, true);
+                    else
+                        write = new StreamWriter(outputFilePath, false);
+
+                    StringBuilder buffer = new StringBuilder();
+
+                    string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
+                    string border = this.m_drpDwnBorder.SelectedItem.ToString();
+                    string pips = this.m_drpDwnPips.SelectedItem.ToString();
+                    int wiresType = Int32.Parse(this.m_drpDwnWires.SelectedItem.ToString());
+                    int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
+
+                    //Check paramaters are all valid.
+                    CheckParameters(border, pips, wiresType);
+
+
+                    string cmdPart1 = "PrintInterfaceConstraintsForSelection\n"
+                                    + " FileName=";
+                    string cmdPart2 = " Append=False\n"
+                                    + " CreateBackupFile=False\n"
+                                    + " SignalPrefix=";
+                    string cmdPart3 = " InstanceName=%InstanceName%\n"
+                                    + " Border=";
+                    string cmdPart4 = " NumberOfSignals=";
+                    string cmdPart5 = " PreventWiresFromBlocking=True\n"
+                                    + " InterfaceSpecs=In:";
+                    string cmdPart6 = " StartIndex=";
+                    string cmdPart7 = " SignalsPerTile=";
+
+
+                    foreach (var record in records)
+                    {
+                        string signalNamePrefix = record.SignalName.Split(new char[] { '_' })[0];
+                        string signalNameSuffix = record.SignalName.Split(new char[] { '_' })[1];
+
+                        string formatString = cmdPart1 + tclFilePath + "\n" + cmdPart2 + signalNamePrefix + "\n"
+                                            + cmdPart3 + border + '\n'
+                                            + cmdPart4 + record.BusWidth + '\n'
+                                            + cmdPart5 + wiresType + ":" + signalNameSuffix + ":" + pips + '\n'
+                                            + cmdPart6 + record.StartIndex + '\n' + cmdPart7 + signalsPerTile + ';';
+
+                        buffer.Append(formatString + '\n' + '\n');
+                    }
+
+                    //Output in text file format.
+                    write.Write(buffer.ToString());
+
+                    reader.Close();
+                    write.Close();
+                }
+            }
+            catch (IOException exp)
+            {
+                MessageBox.Show("Your CSV seems to be used by another process. Make sure you close it and try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            string outputFilePath = this.m_fileSelectOut.FileName;
-
-            //Check if the append option is selected and append to the outputfile or fully overwrite it.
-            if (m_fileSelectOut.Append)
-                write = new StreamWriter(outputFilePath, true);
-            else
-                write = new StreamWriter(outputFilePath, false);
-
-            StringBuilder buffer = new StringBuilder();
-
-            string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
-            string border = this.m_drpDwnBorder.SelectedItem.ToString();
-            string pips = this.m_drpDwnPips.SelectedItem.ToString();
-            int wiresType = Int32.Parse( this.m_drpDwnWires.SelectedItem.ToString());
-            int startIndex = Int32.Parse(this.m_drpDwnStartIndex.Text.ToString());
-            int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
-
-            //Check paramaters are all valid.
-            CheckParameters(border, pips, wiresType, startIndex);
-
-
-            string cmdPart1 = "PrintInterfaceConstraintsForSelection\n"
-                            + " FileName=";
-            string cmdPart2 = " Append=False\n"
-                            + " CreateBackupFile=False\n"
-                            + " SignalPrefix=";
-            string cmdPart3 = " InstanceName=%InstanceName%\n"
-                            + " Border=";
-            string cmdPart4 = " NumberOfSignals=";
-            string cmdPart5 = " PreventWiresFromBlocking=True\n"
-                            + " InterfaceSpecs=In:";
-            string cmdPart6 = " StartIndex=";
-            string cmdPart7 = " SignalsPerTile=";
-            
-
-            foreach (var record in records)
-            {
-                string signalNamePrefix = record.SignalName.Split(new char[] { '_' })[0];
-                string signalNameSuffix = record.SignalName.Split(new char[] { '_' })[1];
-    
-                string formatString = cmdPart1 + tclFilePath + "\n" +cmdPart2 + signalNamePrefix + "\n"
-                                    + cmdPart3 + border + '\n'
-                                    + cmdPart4 + record.BusWidth + '\n'
-                                    + cmdPart5 + wiresType + ":" + signalNameSuffix +":" + pips + '\n'
-                                    + cmdPart6 + startIndex + '\n'+ cmdPart7 + signalsPerTile+ ';';
-
-                buffer.Append(formatString + '\n' + '\n');
-            }
-        
-            //Output in text file format.
-            write.Write(buffer.ToString());
-            
-            reader.Close();
-            write.Close();
-
         }
-        private void CheckParameters(string border, string pips, int wireType, int startIndex)
+        private void CheckParameters(string border, string pips, int wireType)
         {
             bool borderIsCorrect = border.Equals("West") ||
                                    border.Equals("East");
-            bool startIndexIsCorrect = startIndex >= 0;
+         
             bool pipsIsCorrect = pips.Equals("W") ||
                                    pips.Equals("E");
             bool wireTypeIsCorrect = wireType == 2 || wireType == 4;
 
-            if (!borderIsCorrect || !startIndexIsCorrect || !pipsIsCorrect || !wireTypeIsCorrect)
+            if (!borderIsCorrect || !pipsIsCorrect || !wireTypeIsCorrect)
             {
                 throw new ArgumentException("Unexpected format in one of the parameters.");
             }

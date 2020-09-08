@@ -30,7 +30,7 @@
         {
             this.m_grpBox = new System.Windows.Forms.GroupBox();
             this.m_drpDwnSignals = new System.Windows.Forms.NumericUpDown();
-            this.m_drpDwnStartIndex = new System.Windows.Forms.NumericUpDown();
+
             this.label1 = new System.Windows.Forms.Label();
             this.m_drpDwnWires = new System.Windows.Forms.ComboBox();
             this.m_drpDwnPips = new System.Windows.Forms.ComboBox();
@@ -38,7 +38,7 @@
             this.m_labelBorder = new System.Windows.Forms.Label();
             this.m_labelImport = new System.Windows.Forms.Label();
             this.m_labelPips = new System.Windows.Forms.Label();
-            this.m_labelStartIndex = new System.Windows.Forms.Label();
+
             this.m_labelWiresType = new System.Windows.Forms.Label();
             this.m_btnPrintBusInterface = new System.Windows.Forms.Button();
             this.m_labelExport = new System.Windows.Forms.Label();
@@ -49,13 +49,13 @@
             this.m_fileSelectOut = new GoAhead.GUI.FileSelectionCtrl();
             this.m_grpBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_drpDwnSignals)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_drpDwnStartIndex)).BeginInit();
+
             this.SuspendLayout();
             // 
             // m_grpBox
             // 
             this.m_grpBox.Controls.Add(this.m_drpDwnSignals);
-            this.m_grpBox.Controls.Add(this.m_drpDwnStartIndex);
+
             this.m_grpBox.Controls.Add(this.label1);
             this.m_grpBox.Controls.Add(this.m_drpDwnWires);
             this.m_grpBox.Controls.Add(this.m_drpDwnPips);
@@ -63,7 +63,7 @@
             this.m_grpBox.Controls.Add(this.m_labelBorder);
             this.m_grpBox.Controls.Add(this.m_labelImport);
             this.m_grpBox.Controls.Add(this.m_labelPips);
-            this.m_grpBox.Controls.Add(this.m_labelStartIndex);
+
             this.m_grpBox.Controls.Add(this.m_labelWiresType);
             this.m_grpBox.Controls.Add(this.m_btnPrintBusInterface);
             this.m_grpBox.Controls.Add(this.m_labelExport);
@@ -83,7 +83,7 @@
             // 
             // m_drpDwnSignals
             // 
-            this.m_drpDwnSignals.Location = new System.Drawing.Point(142, 405);
+            this.m_drpDwnSignals.Location = new System.Drawing.Point(142, 353);
             this.m_drpDwnSignals.Name = "m_drpDwnSignals";
             this.m_drpDwnSignals.Size = new System.Drawing.Size(149, 22);
             this.m_drpDwnSignals.TabIndex = 17;
@@ -94,18 +94,10 @@
             0});
             this.m_drpDwnSignals.Minimum = 1;
             // 
-            // m_drpDwnStartIndex
-            // 
-            this.m_drpDwnStartIndex.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.m_drpDwnStartIndex.Location = new System.Drawing.Point(142, 353);
-            this.m_drpDwnStartIndex.Name = "m_drpDwnStartIndex";
-            this.m_drpDwnStartIndex.Size = new System.Drawing.Size(149, 22);
-            this.m_drpDwnStartIndex.TabIndex = 16;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 407);
+            this.label1.Location = new System.Drawing.Point(13, 355);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 17);
             this.label1.TabIndex = 15;
@@ -172,16 +164,6 @@
             this.m_labelPips.Size = new System.Drawing.Size(119, 31);
             this.m_labelPips.TabIndex = 6;
             this.m_labelPips.Text = "Group of pips:";
-            // 
-            // m_labelStartIndex
-            // 
-            this.m_labelStartIndex.Location = new System.Drawing.Point(13, 355);
-            this.m_labelStartIndex.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.m_labelStartIndex.Name = "m_labelStartIndex";
-            this.m_labelStartIndex.Size = new System.Drawing.Size(226, 28);
-            this.m_labelStartIndex.TabIndex = 7;
-            this.m_labelStartIndex.Text = "Start index:";
-            // 
             // m_labelWiresType
             // 
             this.m_labelWiresType.Location = new System.Drawing.Point(12, 309);
@@ -194,7 +176,7 @@
             // 
             // m_btnPrintBusInterface
             // 
-            this.m_btnPrintBusInterface.Location = new System.Drawing.Point(19, 590);
+            this.m_btnPrintBusInterface.Location = new System.Drawing.Point(19, 540);
             this.m_btnPrintBusInterface.Margin = new System.Windows.Forms.Padding(4);
             this.m_btnPrintBusInterface.Name = "m_btnPrintBusInterface";
             this.m_btnPrintBusInterface.Size = new System.Drawing.Size(223, 28);
@@ -205,7 +187,7 @@
             // 
             // m_labelExport
             // 
-            this.m_labelExport.Location = new System.Drawing.Point(16, 458);
+            this.m_labelExport.Location = new System.Drawing.Point(12, 407);
             this.m_labelExport.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.m_labelExport.Name = "m_labelExport";
             this.m_labelExport.Size = new System.Drawing.Size(133, 28);
@@ -247,7 +229,7 @@
             this.m_fileSelectOut.FileName = "";
             this.m_fileSelectOut.Filter = "All Txt files|*.txt";
             this.m_fileSelectOut.Label = "Txt File";
-            this.m_fileSelectOut.Location = new System.Drawing.Point(12, 470);
+            this.m_fileSelectOut.Location = new System.Drawing.Point(12, 420);
             this.m_fileSelectOut.Name = "m_fileSelectOut";
             this.m_fileSelectOut.Size = new System.Drawing.Size(400, 100);
             this.m_fileSelectOut.TabIndex = 10;
@@ -263,7 +245,6 @@
             this.m_grpBox.ResumeLayout(false);
             this.m_grpBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_drpDwnSignals)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.m_drpDwnStartIndex)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -281,11 +262,10 @@
         private System.Windows.Forms.Label m_labelBorder;
         private System.Windows.Forms.Label m_labelPips;
         private System.Windows.Forms.Label m_labelWiresType;
-        private System.Windows.Forms.Label m_labelStartIndex;
       
         private System.Windows.Forms.Label m_labelTCLPath;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown m_drpDwnStartIndex;
+      
         private System.Windows.Forms.NumericUpDown m_drpDwnSignals;
 
         private System.Windows.Forms.ComboBox m_drpDwnBorder;
