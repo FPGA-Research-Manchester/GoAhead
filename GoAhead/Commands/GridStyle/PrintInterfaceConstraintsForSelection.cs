@@ -271,5 +271,6 @@ namespace GoAhead.Commands.GridStyle
 
         [Parameter(Comment = "Signal per tile. Should be less than 8.")]
         public int SignalsPerTile = 8;
+
     }
 }

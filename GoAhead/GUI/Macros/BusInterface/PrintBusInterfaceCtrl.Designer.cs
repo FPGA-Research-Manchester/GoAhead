@@ -271,5 +271,10 @@
         private System.Windows.Forms.ComboBox m_drpDwnBorder;
         private System.Windows.Forms.ComboBox m_drpDwnWires;
         private System.Windows.Forms.ComboBox m_drpDwnPips;
+
+
+        private string m_mode = "MODE_COLUMN_WISE";
+        private string m_horizontal = "HORIZONTAL_LEFT_TO_RIGHT";
+        private string m_vertical = "VERTICAL_TOP_DOWN";
     }
 }

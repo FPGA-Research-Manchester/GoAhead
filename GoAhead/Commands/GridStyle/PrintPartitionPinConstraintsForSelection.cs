@@ -3,6 +3,7 @@ using GoAhead.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace GoAhead.Commands.GridStyle
@@ -21,43 +22,7 @@ namespace GoAhead.Commands.GridStyle
         protected override void DoCommandAction()
         {
             CheckParameters();
-
-            List<TileKey> intTiles = new List<TileKey>();
-
-            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(tile => 
-                     IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
-            {
-                intTiles.Add(t.TileKey);
-            }
-
-            var modeClusters =
-                from key in intTiles
-                group key by IsRowWise() ? key.Y : key.X into cluster
-                select cluster;
-
-            List<Tile> tilesInFinalOrder = new List<Tile>();
-
-            // order tiles
-            if (IsRowWise())
-            {
-                foreach (IGrouping<int, TileKey> group in (IsTopDown() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
-                {
-                    foreach (TileKey key in (IsLeftToRight() ? group.OrderBy(k => k.X) : group.OrderBy(k => k.X).Reverse()))
-                    {
-                        tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
-                    }
-                }
-            }
-            else
-            {
-                foreach (IGrouping<int, TileKey> group in (IsLeftToRight() ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
-                {
-                    foreach (TileKey key in (IsTopDown() ? group.OrderBy(k => k.Y) : group.OrderBy(k => k.Y).Reverse()))
-                    {
-                        tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
-                    }
-                }
-            }
+            List<Tile> tilesInFinalOrder = GetTilesInFinalOrder(this.Mode, this.Vertical, this.Horizontal);
 
             int startIndex = IndexOffset;
             int startIndexTemp = 0;
@@ -78,7 +43,7 @@ namespace GoAhead.Commands.GridStyle
                     SignalsForTile = NumberOfSignals - startIndex;
                     Console.WriteLine("INFO: There are " + (MaxSignalsPerTile - SignalsForTile) + " signals remaining in " + SwitchboxName);
                 }*/
-                
+
                 if (NumberOfSignals - startIndexTemp < MaxSignalsPerTile)
                 {
                     SignalsForTile = NumberOfSignals - startIndexTemp;
@@ -92,41 +57,83 @@ namespace GoAhead.Commands.GridStyle
             }
         }
 
-        private bool IsRowWise()
+        public static List<Tile> GetTilesInFinalOrder(string Mode, string Vertical, string Horizontal)
+        {
+            List<TileKey> intTiles = new List<TileKey>();
+
+            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(tile =>
+                     IdentifierManager.Instance.IsMatch(tile.Location, IdentifierManager.RegexTypes.Interconnect)))
+            {
+                intTiles.Add(t.TileKey);
+            }
+
+            var modeClusters =
+                from key in intTiles
+                group key by IsRowWise(Mode) ? key.Y : key.X into cluster
+                select cluster;
+
+            List<Tile> tilesInFinalOrder = new List<Tile>();
+
+            // order tiles
+            if (IsRowWise(Mode))
+            {
+                foreach (IGrouping<int, TileKey> group in (IsTopDown(Vertical) ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
+                {
+                    foreach (TileKey key in (IsLeftToRight(Horizontal) ? group.OrderBy(k => k.X) : group.OrderBy(k => k.X).Reverse()))
+                    {
+                        tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
+                    }
+                }
+            }
+            else
+            {
+                foreach (IGrouping<int, TileKey> group in (IsLeftToRight(Horizontal) ? modeClusters.OrderBy(g => g.Key) : modeClusters.OrderByDescending(g => g.Key)))
+                {
+                    foreach (TileKey key in (IsTopDown(Vertical) ? group.OrderBy(k => k.Y) : group.OrderBy(k => k.Y).Reverse()))
+                    {
+                        tilesInFinalOrder.Add(FPGA.FPGA.Instance.GetTile(key));
+                    }
+                }
+            }
+
+            return tilesInFinalOrder;
+        }
+
+        private static bool IsRowWise(string Mode)
         {
             return Mode.Equals(MODE_ROW_WISE);
         }
 
-        private bool IsColumnWise()
+        private static bool IsColumnWise(string Mode)
         {
             return Mode.Equals(MODE_COLUMN_WISE);
         }
 
-        private bool IsLeftToRight()
+        private static bool IsLeftToRight(string Horizontal)
         {
             return Horizontal.Equals(HORIZONTAL_LEFT_TO_RIGHT);
         }
 		
-        private bool IsRightToLeft()
+        private static bool IsRightToLeft(string Horizontal)
         {
             return Horizontal.Equals(HORIZONTAL_RIGHT_TO_LEFT);
         }
 		
-        private bool IsTopDown()
+        private static bool IsTopDown(string Vertical)
         {
             return Vertical.Equals(VERTICAL_TOP_DOWN);
         }
 		
-        private bool IsBottomUp()
+        private static bool IsBottomUp(string Vertical)
         {
             return Vertical.Equals(VERTICAL_BOTTOM_UP);
         }
 
         private void CheckParameters()
         {
-            bool modeIsCorrect = IsRowWise() || IsColumnWise();
-            bool horizontalIsCorrect = IsLeftToRight() || IsRightToLeft();
-            bool verticalIsCorrect = IsTopDown() || IsBottomUp();
+            bool modeIsCorrect = IsRowWise(Mode) || IsColumnWise(Mode);
+            bool horizontalIsCorrect = IsLeftToRight(Horizontal) || IsRightToLeft(Horizontal);
+            bool verticalIsCorrect = IsTopDown(Vertical) || IsBottomUp(Vertical);
             bool indexOffsetIsCorrect = IndexOffset >= 0;
 
             if(!modeIsCorrect || !horizontalIsCorrect || !verticalIsCorrect || !indexOffsetIsCorrect)

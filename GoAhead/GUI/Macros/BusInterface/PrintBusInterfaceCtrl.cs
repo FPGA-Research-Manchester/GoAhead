@@ -13,6 +13,8 @@ using CsvHelper.Configuration;
 using CsvHelper;
 using System.Runtime.CompilerServices;
 using GoAhead.Commands.Debug;
+using GoAhead.FPGA;
+using GoAhead.Commands.GridStyle;
 
 namespace GoAhead.GUI.Macros.BusInterface
 {
@@ -41,8 +43,11 @@ namespace GoAhead.GUI.Macros.BusInterface
 
         private void ParseCSV(string fileName)
         {
+
             try
             {
+                
+
                 using (TextReader reader = new StreamReader(fileName))
                 {
                     TextWriter write;
@@ -77,10 +82,14 @@ namespace GoAhead.GUI.Macros.BusInterface
                     //Check paramaters are all valid.
                     CheckParameters(border, pips, wiresType);
 
+                    if(File.Exists(tclFilePath))
+                        File.Delete(tclFilePath);
 
+                    List<Tile> tilesInFinalOrder = PrintPartitionPinConstraintsForSelection.GetTilesInFinalOrder(this.m_mode, this.m_vertical, this.m_horizontal);
+                    string cmdPart0 = "ClearSelection;";
                     string cmdPart1 = "PrintInterfaceConstraintsForSelection\n"
                                     + " FileName=";
-                    string cmdPart2 = " Append=False\n"
+                    string cmdPart2 = " Append=True\n"
                                     + " CreateBackupFile=False\n"
                                     + " SignalPrefix=";
                     string cmdPart3 = " InstanceName=%InstanceName%\n"
@@ -90,14 +99,23 @@ namespace GoAhead.GUI.Macros.BusInterface
                                     + " InterfaceSpecs=In:";
                     string cmdPart6 = " StartIndex=";
                     string cmdPart7 = " SignalsPerTile=";
+                    string selectCmd;
 
-
+                    
                     foreach (var record in records)
                     {
                         string signalNamePrefix = record.SignalName.Split(new char[] { '_' })[0];
                         string signalNameSuffix = record.SignalName.Split(new char[] { '_' })[1];
 
-                        string formatString = cmdPart1 + tclFilePath + "\n" + cmdPart2 + signalNamePrefix + "\n"
+                        int numberOfTylesReq = (int)Math.Ceiling((((double)record.BusWidth) / signalsPerTile));
+
+                        selectCmd = GenerateSelectCommand(numberOfTylesReq, ref tilesInFinalOrder);
+
+                        if (selectCmd == "")
+                            return;
+
+                        string formatString = cmdPart0 + "\n" + selectCmd + "\n" 
+                                            + cmdPart1 + tclFilePath + "\n" + cmdPart2 + signalNamePrefix + "\n"
                                             + cmdPart3 + border + '\n'
                                             + cmdPart4 + record.BusWidth + '\n'
                                             + cmdPart5 + wiresType + ":" + signalNameSuffix + ":" + pips + '\n'
@@ -119,6 +137,27 @@ namespace GoAhead.GUI.Macros.BusInterface
                 return;
             }
         }
+
+        private string GenerateSelectCommand(int noOfTilesReq, ref List<Tile> tilesInFinalOrder)
+        {
+            
+            if (noOfTilesReq > tilesInFinalOrder.Count())
+            {
+                MessageBox.Show("Selection does not contain enough physical wires to generate the interface constraints.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return "";
+            }
+
+            Tile topTile = tilesInFinalOrder[0];
+            Tile bottomTile = tilesInFinalOrder[noOfTilesReq - 1];
+
+            //Remove the range from the selected tiles.
+            tilesInFinalOrder.RemoveRange(0, noOfTilesReq);
+
+            
+            return "AddBlockToSelection UpperLeftTile=" + topTile.Location + " LowerRightTile=" + bottomTile.Location + ";";
+
+        }
+
         private void CheckParameters(string border, string pips, int wireType)
         {
             bool borderIsCorrect = border.Equals("West") ||
