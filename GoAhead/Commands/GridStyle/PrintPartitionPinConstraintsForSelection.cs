@@ -63,11 +63,6 @@ namespace GoAhead.Commands.GridStyle
 
             foreach (Tile t in tilesInFinalOrder)
             {
-                if(startIndex >= NumberOfSignals)
-                {
-                    break;
-                }
-
                 SwitchboxName = t.Location;
                 StartIndex = startIndex;
                 SignalsForTile = MaxSignalsPerTile;

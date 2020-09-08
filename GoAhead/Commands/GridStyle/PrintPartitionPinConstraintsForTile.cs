@@ -11,7 +11,7 @@ namespace GoAhead.Commands.GridStyle
         {
             CheckParameters();
 
-            for(int i = 0; i < SignalsForTile; i++)
+            for(int i = 0; i < SignalsForTile + StartIndex ; i++)
             {
                 PortIndex = i;
 
