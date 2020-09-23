@@ -109,7 +109,8 @@ namespace GoAhead.GUI.Macros.BusInterface
 
                         int numberOfTylesReq = (int)Math.Ceiling((((double)record.BusWidth) / signalsPerTile));
 
-                        selectCmd = GenerateSelectCommand(numberOfTylesReq, ref tilesInFinalOrder);
+                        //selectCmd = GenerateSelectCommand(numberOfTylesReq, ref tilesInFinalOrder);
+                        selectCmd = GenerateSelectCommand(numberOfTylesReq + 1, ref tilesInFinalOrder);
 
                         if (selectCmd == "")
                             return;

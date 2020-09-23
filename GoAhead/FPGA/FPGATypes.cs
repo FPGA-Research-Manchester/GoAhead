@@ -470,6 +470,19 @@ namespace GoAhead.FPGA
                             //Move to the right interconnect.
                             return FPGA.Instance.GetTile(clb.TileKey.X - 1, clb.TileKey.Y);
                         }
+                        //Check to the top of the INT_RBRK.
+                        else if (IdentifierManager.Instance.IsMatch(clb.Location, IdentifierManager.RegexTypes.SubInterconnect)
+                                 && IdentifierManager.Instance.IsMatch(FPGA.Instance.GetTile(clb.TileKey.X, clb.TileKey.Y + 1).Location, IdentifierManager.RegexTypes.Interconnect))
+                        {
+                            //Move to the right interconnect.
+                            return FPGA.Instance.GetTile(clb.TileKey.X, clb.TileKey.Y + 1);
+                        }
+                        else if (IdentifierManager.Instance.IsMatch(clb.Location, IdentifierManager.RegexTypes.SubInterconnect)
+                                 && IdentifierManager.Instance.IsMatch(FPGA.Instance.GetTile(clb.TileKey.X, clb.TileKey.Y - 1).Location, IdentifierManager.RegexTypes.Interconnect))
+                        {
+                            //Move to the right interconnect.
+                            return FPGA.Instance.GetTile(clb.TileKey.X, clb.TileKey.Y - 1);
+                        }
                         else
                         {
                             throw new ArgumentException("GetInterconnectTile not implemented for tile " + clb.Location + " in " + FPGA.Instance.Family);
