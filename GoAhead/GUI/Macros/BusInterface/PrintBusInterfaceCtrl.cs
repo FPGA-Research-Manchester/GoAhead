@@ -76,6 +76,12 @@ namespace GoAhead.GUI.Macros.BusInterface
                     string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
                     string border = this.m_drpDwnBorder.SelectedItem.ToString();
                     string pips = this.m_drpDwnPips.SelectedItem.ToString();
+
+                    // Select mode of signal assignment from GUI
+                    string m_mode = this.m_drpDownMode.Text.ToString();
+                    string m_horizontal = this.m_drpDwnHorizontal.Text.ToString();
+                    string m_vertical = this.m_drpDwnVertical.Text.ToString();
+
                     int wiresType = Int32.Parse(this.m_drpDwnWires.SelectedItem.ToString());
                     int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
 
@@ -85,7 +91,8 @@ namespace GoAhead.GUI.Macros.BusInterface
                     if(File.Exists(tclFilePath))
                         File.Delete(tclFilePath);
 
-                    List<Tile> tilesInFinalOrder = PrintPartitionPinConstraintsForSelection.GetTilesInFinalOrder(this.m_mode, this.m_vertical, this.m_horizontal);
+                    //List<Tile> tilesInFinalOrder = PrintPartitionPinConstraintsForSelection.GetTilesInFinalOrder(this.m_mode, this.m_vertical, this.m_horizontal);
+                    List<Tile> tilesInFinalOrder = PrintPartitionPinConstraintsForSelection.GetTilesInFinalOrder(m_mode, m_vertical, m_horizontal);
                     string cmdPart0 = "ClearSelection;";
                     string cmdPart1 = "PrintInterfaceConstraintsForSelection\n"
                                     + " FileName=";
@@ -147,14 +154,20 @@ namespace GoAhead.GUI.Macros.BusInterface
                 MessageBox.Show("Selection does not contain enough physical wires to generate the interface constraints.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
             }
+            // BOTTOM_UP tile assignment
+            //Tile topTile = tilesInFinalOrder[0];
+            //Tile bottomTile = tilesInFinalOrder[noOfTilesReq - 1];
 
-            Tile topTile = tilesInFinalOrder[0];
-            Tile bottomTile = tilesInFinalOrder[noOfTilesReq - 1];
+            ////Remove the range from the selected tiles.
+            //tilesInFinalOrder.RemoveRange(0, noOfTilesReq);
+
+            // TOP_DOWN tile assignment
+            Tile topTile = tilesInFinalOrder[tilesInFinalOrder.Count() - 1];
+            Tile bottomTile = tilesInFinalOrder[tilesInFinalOrder.Count() - noOfTilesReq];
 
             //Remove the range from the selected tiles.
-            tilesInFinalOrder.RemoveRange(0, noOfTilesReq);
+            tilesInFinalOrder.RemoveRange(tilesInFinalOrder.Count() - noOfTilesReq, noOfTilesReq);
 
-            
             return "AddBlockToSelection UpperLeftTile=" + topTile.Location + " LowerRightTile=" + bottomTile.Location + ";";
 
         }
@@ -207,5 +220,6 @@ namespace GoAhead.GUI.Macros.BusInterface
         {
 
         }
+
     }
 }

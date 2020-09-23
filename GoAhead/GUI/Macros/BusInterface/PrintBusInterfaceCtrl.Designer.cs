@@ -29,8 +29,13 @@
         private void InitializeComponent()
         {
             this.m_grpBox = new System.Windows.Forms.GroupBox();
+            this.m_labelVertical = new System.Windows.Forms.Label();
+            this.m_labelHorizontal = new System.Windows.Forms.Label();
+            this.m_labelMode = new System.Windows.Forms.Label();
+            this.m_drpDwnVertical = new System.Windows.Forms.ComboBox();
+            this.m_drpDwnHorizontal = new System.Windows.Forms.ComboBox();
+            this.m_drpDownMode = new System.Windows.Forms.ComboBox();
             this.m_drpDwnSignals = new System.Windows.Forms.NumericUpDown();
-
             this.label1 = new System.Windows.Forms.Label();
             this.m_drpDwnWires = new System.Windows.Forms.ComboBox();
             this.m_drpDwnPips = new System.Windows.Forms.ComboBox();
@@ -38,24 +43,24 @@
             this.m_labelBorder = new System.Windows.Forms.Label();
             this.m_labelImport = new System.Windows.Forms.Label();
             this.m_labelPips = new System.Windows.Forms.Label();
-
             this.m_labelWiresType = new System.Windows.Forms.Label();
             this.m_btnPrintBusInterface = new System.Windows.Forms.Button();
             this.m_labelExport = new System.Windows.Forms.Label();
             this.m_labelTCLPath = new System.Windows.Forms.Label();
             this.m_txtBoxTCLPath = new System.Windows.Forms.TextBox();
-
-            this.m_fileSelect = new GoAhead.GUI.FileSelectionCtrl();
-            this.m_fileSelectOut = new GoAhead.GUI.FileSelectionCtrl();
             this.m_grpBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.m_drpDwnSignals)).BeginInit();
-
             this.SuspendLayout();
             // 
             // m_grpBox
             // 
+            this.m_grpBox.Controls.Add(this.m_labelVertical);
+            this.m_grpBox.Controls.Add(this.m_labelHorizontal);
+            this.m_grpBox.Controls.Add(this.m_labelMode);
+            this.m_grpBox.Controls.Add(this.m_drpDwnVertical);
+            this.m_grpBox.Controls.Add(this.m_drpDwnHorizontal);
+            this.m_grpBox.Controls.Add(this.m_drpDownMode);
             this.m_grpBox.Controls.Add(this.m_drpDwnSignals);
-
             this.m_grpBox.Controls.Add(this.label1);
             this.m_grpBox.Controls.Add(this.m_drpDwnWires);
             this.m_grpBox.Controls.Add(this.m_drpDwnPips);
@@ -63,14 +68,11 @@
             this.m_grpBox.Controls.Add(this.m_labelBorder);
             this.m_grpBox.Controls.Add(this.m_labelImport);
             this.m_grpBox.Controls.Add(this.m_labelPips);
-
             this.m_grpBox.Controls.Add(this.m_labelWiresType);
             this.m_grpBox.Controls.Add(this.m_btnPrintBusInterface);
             this.m_grpBox.Controls.Add(this.m_labelExport);
             this.m_grpBox.Controls.Add(this.m_labelTCLPath);
             this.m_grpBox.Controls.Add(this.m_txtBoxTCLPath);
-            this.m_grpBox.Controls.Add(this.m_fileSelect);
-            this.m_grpBox.Controls.Add(this.m_fileSelectOut);
             this.m_grpBox.Location = new System.Drawing.Point(4, 4);
             this.m_grpBox.Margin = new System.Windows.Forms.Padding(4);
             this.m_grpBox.Name = "m_grpBox";
@@ -81,9 +83,74 @@
             this.m_grpBox.Text = "Print Bus Interface Constraints";
             this.m_grpBox.Enter += new System.EventHandler(this.m_grpBox_Enter);
             // 
+            // m_labelVertical
+            // 
+            this.m_labelVertical.AutoSize = true;
+            this.m_labelVertical.Location = new System.Drawing.Point(542, 310);
+            this.m_labelVertical.Name = "m_labelVertical";
+            this.m_labelVertical.Size = new System.Drawing.Size(59, 17);
+            this.m_labelVertical.TabIndex = 23;
+            this.m_labelVertical.Text = "Vertical:";
+            // 
+            // m_labelHorizontal
+            // 
+            this.m_labelHorizontal.AutoSize = true;
+            this.m_labelHorizontal.Location = new System.Drawing.Point(542, 261);
+            this.m_labelHorizontal.Name = "m_labelHorizontal";
+            this.m_labelHorizontal.Size = new System.Drawing.Size(76, 17);
+            this.m_labelHorizontal.TabIndex = 22;
+            this.m_labelHorizontal.Text = "Horizontal:";
+            // 
+            // m_labelMode
+            // 
+            this.m_labelMode.AutoSize = true;
+            this.m_labelMode.Location = new System.Drawing.Point(542, 214);
+            this.m_labelMode.Name = "m_labelMode";
+            this.m_labelMode.Size = new System.Drawing.Size(47, 17);
+            this.m_labelMode.TabIndex = 21;
+            this.m_labelMode.Text = "Mode:";
+            // 
+            // m_drpDwnVertical
+            // 
+            this.m_drpDwnVertical.FormattingEnabled = true;
+            this.m_drpDwnVertical.Items.AddRange(new object[] {
+            "VERTICAL_TOP_DOWN",
+            "VERTICAL_BOTTOM_UP"});
+            this.m_drpDwnVertical.Location = new System.Drawing.Point(634, 307);
+            this.m_drpDwnVertical.Name = "m_drpDwnVertical";
+            this.m_drpDwnVertical.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDwnVertical.TabIndex = 20;
+            // 
+            // m_drpDwnHorizontal
+            // 
+            this.m_drpDwnHorizontal.FormattingEnabled = true;
+            this.m_drpDwnHorizontal.Items.AddRange(new object[] {
+            "HORIZONTAL_LEFT_TO_RIGHT",
+            "HORIZONTAL_RIGHT_TO_LEFT"});
+            this.m_drpDwnHorizontal.Location = new System.Drawing.Point(634, 259);
+            this.m_drpDwnHorizontal.Name = "m_drpDwnHorizontal";
+            this.m_drpDwnHorizontal.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDwnHorizontal.TabIndex = 19;
+            // 
+            // m_drpDownMode
+            // 
+            this.m_drpDownMode.FormattingEnabled = true;
+            this.m_drpDownMode.Items.AddRange(new object[] {
+            "MODE_COLUMN_WISE",
+            "MODE_ROW_WISE"});
+            this.m_drpDownMode.Location = new System.Drawing.Point(634, 211);
+            this.m_drpDownMode.Name = "m_drpDownMode";
+            this.m_drpDownMode.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDownMode.TabIndex = 18;
+            // 
             // m_drpDwnSignals
             // 
             this.m_drpDwnSignals.Location = new System.Drawing.Point(142, 353);
+            this.m_drpDwnSignals.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.m_drpDwnSignals.Name = "m_drpDwnSignals";
             this.m_drpDwnSignals.Size = new System.Drawing.Size(149, 22);
             this.m_drpDwnSignals.TabIndex = 17;
@@ -92,7 +159,6 @@
             0,
             0,
             0});
-            this.m_drpDwnSignals.Minimum = 1;
             // 
             // label1
             // 
@@ -106,36 +172,33 @@
             // 
             // m_drpDwnWires
             // 
+            this.m_drpDwnWires.Items.AddRange(new object[] {
+            "2",
+            "4"});
             this.m_drpDwnWires.Location = new System.Drawing.Point(142, 307);
             this.m_drpDwnWires.Name = "m_drpDwnWires";
-            this.m_drpDwnWires.Size = new System.Drawing.Size(149, 22);
+            this.m_drpDwnWires.Size = new System.Drawing.Size(149, 24);
             this.m_drpDwnWires.TabIndex = 13;
-            this.m_drpDwnWires.Items.Add("2");
-            this.m_drpDwnWires.Items.Add("4");
-            this.m_drpDwnWires.SelectedItem = "2";
-            this.m_drpDwnWires.FormattingEnabled = false;
             // 
             // m_drpDwnPips
             // 
+            this.m_drpDwnPips.Items.AddRange(new object[] {
+            "W",
+            "E"});
             this.m_drpDwnPips.Location = new System.Drawing.Point(142, 258);
-            this.m_drpDwnPips.Name = "m_drpDwnPip";
-            this.m_drpDwnPips.Size = new System.Drawing.Size(149, 22);
+            this.m_drpDwnPips.Name = "m_drpDwnPips";
+            this.m_drpDwnPips.Size = new System.Drawing.Size(149, 24);
             this.m_drpDwnPips.TabIndex = 13;
-            this.m_drpDwnPips.Items.Add("W");
-            this.m_drpDwnPips.Items.Add("E");
-            this.m_drpDwnPips.SelectedItem = "W";
-            this.m_drpDwnPips.FormattingEnabled = false;
             // 
             // m_drpDwnBorder
             // 
+            this.m_drpDwnBorder.Items.AddRange(new object[] {
+            "West",
+            "East"});
             this.m_drpDwnBorder.Location = new System.Drawing.Point(142, 211);
             this.m_drpDwnBorder.Name = "m_drpDwnBorder";
-            this.m_drpDwnBorder.Size = new System.Drawing.Size(149, 22);
+            this.m_drpDwnBorder.Size = new System.Drawing.Size(149, 24);
             this.m_drpDwnBorder.TabIndex = 13;
-            this.m_drpDwnBorder.Items.Add("West");
-            this.m_drpDwnBorder.Items.Add("East");
-            this.m_drpDwnBorder.SelectedItem = "West";
-            this.m_drpDwnBorder.FormattingEnabled = false;
             // 
             // m_labelBorder
             // 
@@ -164,6 +227,7 @@
             this.m_labelPips.Size = new System.Drawing.Size(119, 31);
             this.m_labelPips.TabIndex = 6;
             this.m_labelPips.Text = "Group of pips:";
+            // 
             // m_labelWiresType
             // 
             this.m_labelWiresType.Location = new System.Drawing.Point(12, 309);
@@ -212,28 +276,6 @@
             this.m_txtBoxTCLPath.TabIndex = 3;
             this.m_txtBoxTCLPath.Text = "..\\..\\static_interface_constraints.tcl";
             // 
-            // m_fileSelect
-            // 
-            this.m_fileSelect.Append = false;
-            this.m_fileSelect.FileName = "";
-            this.m_fileSelect.Filter = "All CSV files|*.csv";
-            this.m_fileSelect.Label = "CSV File";
-            this.m_fileSelect.Location = new System.Drawing.Point(12, 62);
-            this.m_fileSelect.Name = "m_fileSelect";
-            this.m_fileSelect.Size = new System.Drawing.Size(400, 100);
-            this.m_fileSelect.TabIndex = 10;
-            // 
-            // m_fileSelectOut
-            // 
-            this.m_fileSelectOut.Append = true;
-            this.m_fileSelectOut.FileName = "";
-            this.m_fileSelectOut.Filter = "All Txt files|*.txt";
-            this.m_fileSelectOut.Label = "Txt File";
-            this.m_fileSelectOut.Location = new System.Drawing.Point(12, 420);
-            this.m_fileSelectOut.Name = "m_fileSelectOut";
-            this.m_fileSelectOut.Size = new System.Drawing.Size(400, 100);
-            this.m_fileSelectOut.TabIndex = 10;
-            // 
             // PrintBusInterfaceCtrl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -273,8 +315,14 @@
         private System.Windows.Forms.ComboBox m_drpDwnPips;
 
 
-        private string m_mode = "MODE_COLUMN_WISE";
-        private string m_horizontal = "HORIZONTAL_LEFT_TO_RIGHT";
-        private string m_vertical = "VERTICAL_TOP_DOWN";
+        //private string m_mode = "MODE_COLUMN_WISE";
+        //private string m_horizontal = "HORIZONTAL_LEFT_TO_RIGHT";
+        //private string m_vertical = "VERTICAL_TOP_DOWN";
+        private System.Windows.Forms.Label m_labelVertical;
+        private System.Windows.Forms.Label m_labelHorizontal;
+        private System.Windows.Forms.Label m_labelMode;
+        private System.Windows.Forms.ComboBox m_drpDwnVertical;
+        private System.Windows.Forms.ComboBox m_drpDwnHorizontal;
+        private System.Windows.Forms.ComboBox m_drpDownMode;
     }
 }
