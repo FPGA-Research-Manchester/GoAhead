@@ -29,6 +29,12 @@
         private void InitializeComponent()
         {
             this.m_grpBox = new System.Windows.Forms.GroupBox();
+            this.m_labelVertical = new System.Windows.Forms.Label();
+            this.m_labelHorizontal = new System.Windows.Forms.Label();
+            this.m_labelMode = new System.Windows.Forms.Label();
+            this.m_drpDwnVertical = new System.Windows.Forms.ComboBox();
+            this.m_drpDwnHorizontal = new System.Windows.Forms.ComboBox();
+            this.m_drpDownMode = new System.Windows.Forms.ComboBox();
             this.m_drpDwnSignals = new System.Windows.Forms.NumericUpDown();
 
             this.label1 = new System.Windows.Forms.Label();
@@ -53,7 +59,13 @@
             this.SuspendLayout();
             // 
             // m_grpBox
-            // 
+            //
+            this.m_grpBox.Controls.Add(this.m_labelVertical);
+            this.m_grpBox.Controls.Add(this.m_labelHorizontal);
+            this.m_grpBox.Controls.Add(this.m_labelMode);
+            this.m_grpBox.Controls.Add(this.m_drpDwnVertical);
+            this.m_grpBox.Controls.Add(this.m_drpDwnHorizontal);
+            this.m_grpBox.Controls.Add(this.m_drpDownMode);
             this.m_grpBox.Controls.Add(this.m_drpDwnSignals);
 
             this.m_grpBox.Controls.Add(this.label1);
@@ -80,6 +92,65 @@
             this.m_grpBox.TabStop = false;
             this.m_grpBox.Text = "Print Bus Interface Constraints";
             this.m_grpBox.Enter += new System.EventHandler(this.m_grpBox_Enter);
+            // m_labelVertical
+            // 
+            this.m_labelVertical.AutoSize = true;
+            this.m_labelVertical.Location = new System.Drawing.Point(542, 310);
+            this.m_labelVertical.Name = "m_labelVertical";
+            this.m_labelVertical.Size = new System.Drawing.Size(59, 17);
+            this.m_labelVertical.TabIndex = 23;
+            this.m_labelVertical.Text = "Vertical:";
+            // 
+            // m_labelHorizontal
+            // 
+            this.m_labelHorizontal.AutoSize = true;
+            this.m_labelHorizontal.Location = new System.Drawing.Point(542, 261);
+            this.m_labelHorizontal.Name = "m_labelHorizontal";
+            this.m_labelHorizontal.Size = new System.Drawing.Size(76, 17);
+            this.m_labelHorizontal.TabIndex = 22;
+            this.m_labelHorizontal.Text = "Horizontal:";
+            // 
+            // m_labelMode
+            // 
+            this.m_labelMode.AutoSize = true;
+            this.m_labelMode.Location = new System.Drawing.Point(542, 214);
+            this.m_labelMode.Name = "m_labelMode";
+            this.m_labelMode.Size = new System.Drawing.Size(47, 17);
+            this.m_labelMode.TabIndex = 21;
+            this.m_labelMode.Text = "Mode:";
+            // 
+            // m_drpDwnVertical
+            // 
+            this.m_drpDwnVertical.FormattingEnabled = true;
+            this.m_drpDwnVertical.Items.AddRange(new object[] {
+            "VERTICAL_TOP_DOWN",
+            "VERTICAL_BOTTOM_UP"});
+            this.m_drpDwnVertical.Location = new System.Drawing.Point(634, 307);
+            this.m_drpDwnVertical.Name = "m_drpDwnVertical";
+            this.m_drpDwnVertical.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDwnVertical.TabIndex = 20;
+            // 
+            // m_drpDwnHorizontal
+            // 
+            this.m_drpDwnHorizontal.FormattingEnabled = true;
+            this.m_drpDwnHorizontal.Items.AddRange(new object[] {
+            "HORIZONTAL_LEFT_TO_RIGHT",
+            "HORIZONTAL_RIGHT_TO_LEFT"});
+            this.m_drpDwnHorizontal.Location = new System.Drawing.Point(634, 259);
+            this.m_drpDwnHorizontal.Name = "m_drpDwnHorizontal";
+            this.m_drpDwnHorizontal.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDwnHorizontal.TabIndex = 19;
+            // 
+            // m_drpDownMode
+            // 
+            this.m_drpDownMode.FormattingEnabled = true;
+            this.m_drpDownMode.Items.AddRange(new object[] {
+            "MODE_COLUMN_WISE",
+            "MODE_ROW_WISE"});
+            this.m_drpDownMode.Location = new System.Drawing.Point(634, 211);
+            this.m_drpDownMode.Name = "m_drpDownMode";
+            this.m_drpDownMode.Size = new System.Drawing.Size(250, 24);
+            this.m_drpDownMode.TabIndex = 18;
             // 
             // m_drpDwnSignals
             // 
@@ -276,5 +347,11 @@
         private string m_mode = "MODE_COLUMN_WISE";
         private string m_horizontal = "HORIZONTAL_LEFT_TO_RIGHT";
         private string m_vertical = "VERTICAL_TOP_DOWN";
+        private System.Windows.Forms.Label m_labelVertical;
+        private System.Windows.Forms.Label m_labelHorizontal;
+        private System.Windows.Forms.Label m_labelMode;
+        private System.Windows.Forms.ComboBox m_drpDwnVertical;
+        private System.Windows.Forms.ComboBox m_drpDwnHorizontal;
+        private System.Windows.Forms.ComboBox m_drpDownMode;
     }
 }
