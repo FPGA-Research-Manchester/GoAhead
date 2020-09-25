@@ -147,14 +147,19 @@ namespace GoAhead.GUI.Macros.BusInterface
                 MessageBox.Show("Selection does not contain enough physical wires to generate the interface constraints.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return "";
             }
+            // BOTTOM_UP tile assignment
+            //Tile topTile = tilesInFinalOrder[0];
+            //Tile bottomTile = tilesInFinalOrder[noOfTilesReq - 1];
 
-            Tile topTile = tilesInFinalOrder[0];
-            Tile bottomTile = tilesInFinalOrder[noOfTilesReq - 1];
+            ////Remove the range from the selected tiles.
+            //tilesInFinalOrder.RemoveRange(0, noOfTilesReq);
+            // TOP_DOWN tile assignment
+            Tile topTile = tilesInFinalOrder[tilesInFinalOrder.Count() - 1];
+            Tile bottomTile = tilesInFinalOrder[tilesInFinalOrder.Count() - noOfTilesReq];
 
             //Remove the range from the selected tiles.
-            tilesInFinalOrder.RemoveRange(0, noOfTilesReq);
+            tilesInFinalOrder.RemoveRange(tilesInFinalOrder.Count() - noOfTilesReq, noOfTilesReq);
 
-            
             return "AddBlockToSelection UpperLeftTile=" + topTile.Location + " LowerRightTile=" + bottomTile.Location + ";";
 
         }

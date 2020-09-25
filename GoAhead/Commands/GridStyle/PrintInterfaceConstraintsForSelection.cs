@@ -124,8 +124,8 @@ namespace GoAhead.Commands.GridStyle
                     PrintPartitionPinConstraintsForSelection command = new PrintPartitionPinConstraintsForSelection();
                     command.Mode = MODE_ROW_WISE;
                     command.Horizontal = HORIZONTAL_LEFT_TO_RIGHT;
-                    //command.Vertical = VERTICAL_TOP_DOWN;
-                    command.Vertical = VERTICAL_BOTTOM_UP;
+                    command.Vertical = VERTICAL_TOP_DOWN;
+                    //command.Vertical = VERTICAL_BOTTOM_UP;
                     command.CardinalDirection = GetCardinalDirection(Border, direction);
                     command.Length = length;
                     command.IndexOffset = indexOffset;
