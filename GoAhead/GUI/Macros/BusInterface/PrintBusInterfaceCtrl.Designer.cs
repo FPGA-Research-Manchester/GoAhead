@@ -129,6 +129,7 @@
             this.m_drpDwnVertical.Name = "m_drpDwnVertical";
             this.m_drpDwnVertical.Size = new System.Drawing.Size(250, 24);
             this.m_drpDwnVertical.TabIndex = 20;
+            this.m_drpDwnVertical.SelectedItem = "VERTICAL_TOP_DOWN";
             // 
             // m_drpDwnHorizontal
             // 
@@ -140,6 +141,7 @@
             this.m_drpDwnHorizontal.Name = "m_drpDwnHorizontal";
             this.m_drpDwnHorizontal.Size = new System.Drawing.Size(250, 24);
             this.m_drpDwnHorizontal.TabIndex = 19;
+            this.m_drpDwnHorizontal.SelectedItem = "HORIZONTAL_LEFT_TO_RIGHT";
             // 
             // m_drpDownMode
             // 
@@ -151,6 +153,7 @@
             this.m_drpDownMode.Name = "m_drpDownMode";
             this.m_drpDownMode.Size = new System.Drawing.Size(250, 24);
             this.m_drpDownMode.TabIndex = 18;
+            this.m_drpDownMode.SelectedItem = "MODE_ROW_WISE";
             // 
             // m_drpDwnSignals
             // 
