@@ -70,7 +70,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                     if (w.LocalPip.StartsWith("NN"))
                         northWires.Add(w);
-                    else if (w.LocalPip.StartsWith("NN"))
+                    else if (w.LocalPip.StartsWith("SS"))
                         southWires.Add(w);
                     else if (w.LocalPip.StartsWith("EE"))
                         eastWires.Add(w);
