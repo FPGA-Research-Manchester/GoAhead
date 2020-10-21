@@ -11,18 +11,21 @@ using System.Text.RegularExpressions;
 namespace GoAhead.Commands.ArchitectureGraph
 {
     // using struct is more readable, but for better performance, convert this struct to a Dict or Lists
-    struct intBlock
-    {
-        public int intTile;
-        public int leftPrimitive;
-        public int rightPrimitive;
-    }
+    //struct intBlock
+    //{
+    //    public int intTile;
+    //    public int leftPrimitive;
+    //    public int rightPrimitive;
+    //}
 
     class PrintArchitectureGraph : CommandWithFileOutput
     {
         // define data structures
         private Dictionary<Tile, int> tiles = new Dictionary<Tile, int>(); // tiles to hashcode mappings
-        private List<intBlock> interconnectBlocks = new List<intBlock>();
+        // private List<intBlock> interconnectBlocks = new List<intBlock>();
+
+        private Dictionary<int, List<int>> interconnectToPrimitiveMappings = new Dictionary<int, List<int>>();
+
         private List<int> irregularTiles = new List<int>();
         private Dictionary<int, Tile> tileHashcodes = new Dictionary<int, Tile>(); // hashcodes to tiles mapping
 
@@ -97,8 +100,8 @@ namespace GoAhead.Commands.ArchitectureGraph
                 Tile leftPrimitive = GetPrimitive(intTile, checkForSubinterconnects, left: true);
                 Tile rightPrimitive = GetPrimitive(intTile, checkForSubinterconnects, left: false);
 
-                intBlock block = GetIntBlock(intTile, leftPrimitive, rightPrimitive);
-                interconnectBlocks.Add(block);
+                CreatePrimitiveMappings(interconnectToPrimitiveMappings, intTile, leftPrimitive, rightPrimitive);
+                //interconnectBlocks.Add(block);
             }
 
             // once all the homogenous blocks have been found, find all the irregular tiles
@@ -176,7 +179,7 @@ namespace GoAhead.Commands.ArchitectureGraph
             PrintAllInterconnectBlocks printTiles = new PrintAllInterconnectBlocks();
             printTiles.FileName = Path.Combine(FolderName, "tiles.ag");
             printTiles.TileHashcodes = tileHashcodes;
-            printTiles.InterconnectBlocks = interconnectBlocks;
+            printTiles.InterconnectToPrimtivesMappings = interconnectToPrimitiveMappings;
             printTiles.WirelistHashcodes = tileToWirelistHashcodes;
             printTiles.IncomingWirelistHashcodes = tileToIncomingWirelistHashcodes;
             CommandExecuter.Instance.Execute(printTiles);
@@ -249,33 +252,36 @@ namespace GoAhead.Commands.ArchitectureGraph
             }
         }
 
-        private intBlock GetIntBlock(Tile intTile, Tile leftPrim, Tile rightPrim)
+        private void CreatePrimitiveMappings(Dictionary<int, List<int>> primtiveMappings, Tile intTile, Tile leftPrim, Tile rightPrim)
         {
             // create an intBlock from constituent tiles
-            intBlock block = new intBlock();
-            block.intTile = tiles[intTile];
+            //intBlock block = new intBlock();
+            //block.intTile = tiles[intTile];
+
+            int leftPrimHash = -999, rightPrimHash = -999;
+
             if (leftPrim != null)
             {
                 if (!tiles.Keys.Contains(leftPrim))
                     tiles.Add(leftPrim, tiles.Count());
 
-                block.leftPrimitive = tiles[leftPrim];
+                leftPrimHash = tiles[leftPrim];
             }
             else
                 // flag to recognize non-existing primitive is -999
-                block.leftPrimitive = -999;
+                leftPrimHash = -999;
 
             if (rightPrim != null)
             {
                 if (!tiles.Keys.Contains(rightPrim))
                     tiles.Add(rightPrim, tiles.Count());
 
-                block.rightPrimitive = tiles[rightPrim];
+                rightPrimHash = tiles[rightPrim];
             }
             else
-                block.rightPrimitive = -999;
+                rightPrimHash = -999;
 
-            return block;
+            primtiveMappings.Add(tiles[intTile], new List<int>(new int[] { leftPrimHash, rightPrimHash }));
         }
 
         private Tile GetPrimitive(Tile intTile, bool skipOverSubInterconnects, bool left)

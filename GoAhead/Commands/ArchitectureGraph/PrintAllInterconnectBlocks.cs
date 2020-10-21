@@ -15,25 +15,28 @@ namespace GoAhead.Commands.ArchitectureGraph
             OutputManager.WriteOutput("Tile name,(wirelist hashcodes),(incoming wirelist hashcodes),switchmatrix hashcode");
 
             StringBuilder buffer = new StringBuilder();
-            foreach(intBlock block in InterconnectBlocks)
+            foreach(KeyValuePair<int, List<int>> kvp in InterconnectToPrimtivesMappings)
             {
-                Tile intTile = TileHashcodes[block.intTile];
-                string intTileWirelistHashcode = WirelistHashcodes[block.intTile].ToString();
-                string intTileIncomingWirelistHashcode = IncomingWirelistHashcodes[block.intTile].ToString();
+                int interconnectTileHashcode = kvp.Key;
+                List<int> primitiveHashcodes = kvp.Value;
+
+                Tile intTile = TileHashcodes[interconnectTileHashcode];
+                string intTileWirelistHashcode = WirelistHashcodes[interconnectTileHashcode].ToString();
+                string intTileIncomingWirelistHashcode = IncomingWirelistHashcodes[interconnectTileHashcode].ToString();
 
                 string leftPrimitiveWirelistHashcode= "", rightPrimitiveWirelistHashcode = "", leftPrimitiveIncomingWirelistHashcode = "", rightPrimitiveIncomingWirelistHashcode = "";
 
                 // empty primitive flagged using -999
-                if (block.leftPrimitive != -999)
+                if (primitiveHashcodes[0] != -999)
                     
                 {
-                    leftPrimitiveWirelistHashcode = WirelistHashcodes[block.leftPrimitive].ToString();
-                    leftPrimitiveIncomingWirelistHashcode = IncomingWirelistHashcodes[block.leftPrimitive].ToString();
+                    leftPrimitiveWirelistHashcode = WirelistHashcodes[primitiveHashcodes[0]].ToString();
+                    leftPrimitiveIncomingWirelistHashcode = IncomingWirelistHashcodes[primitiveHashcodes[0]].ToString();
                 }
-                if (block.rightPrimitive != -999)
+                if (primitiveHashcodes[1] != -999)
                 {
-                    rightPrimitiveWirelistHashcode = WirelistHashcodes[block.rightPrimitive].ToString();
-                    rightPrimitiveIncomingWirelistHashcode = IncomingWirelistHashcodes[block.rightPrimitive].ToString();
+                    rightPrimitiveWirelistHashcode = WirelistHashcodes[primitiveHashcodes[1]].ToString();
+                    rightPrimitiveIncomingWirelistHashcode = IncomingWirelistHashcodes[primitiveHashcodes[1]].ToString();
                 }
                 
 
@@ -53,8 +56,8 @@ namespace GoAhead.Commands.ArchitectureGraph
         [Parameter(Comment = "All tile hashcodes")]
         public Dictionary<int, Tile> TileHashcodes = new Dictionary<int, Tile>();
 
-        [Parameter(Comment = "Interconnect Tiles Wirelists")]
-        public List<intBlock> InterconnectBlocks = new List<intBlock>();
+        [Parameter(Comment = "Interconnect To Primitives mappings")]
+        public Dictionary<int, List<int>> InterconnectToPrimtivesMappings = new Dictionary<int, List<int>>();
 
         [Parameter(Comment = "Wirelist Hashcodes")]
         public Dictionary<int, int> WirelistHashcodes = new Dictionary<int, int>();
