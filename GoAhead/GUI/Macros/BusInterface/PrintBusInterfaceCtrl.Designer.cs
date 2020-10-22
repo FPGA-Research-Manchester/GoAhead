@@ -34,8 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.m_drpDwnWires = new System.Windows.Forms.ComboBox();
             this.m_drpDwnPips = new System.Windows.Forms.ComboBox();
-            this.m_drpDwnBorder = new System.Windows.Forms.ComboBox();
-            this.m_labelBorder = new System.Windows.Forms.Label();
+            //this.m_drpDwnBorder = new System.Windows.Forms.ComboBox();
+            //this.m_labelBorder = new System.Windows.Forms.Label();
             this.m_labelImport = new System.Windows.Forms.Label();
             this.m_labelPips = new System.Windows.Forms.Label();
 
@@ -59,8 +59,8 @@
             this.m_grpBox.Controls.Add(this.label1);
             this.m_grpBox.Controls.Add(this.m_drpDwnWires);
             this.m_grpBox.Controls.Add(this.m_drpDwnPips);
-            this.m_grpBox.Controls.Add(this.m_drpDwnBorder);
-            this.m_grpBox.Controls.Add(this.m_labelBorder);
+            //this.m_grpBox.Controls.Add(this.m_drpDwnBorder);
+            //this.m_grpBox.Controls.Add(this.m_labelBorder);
             this.m_grpBox.Controls.Add(this.m_labelImport);
             this.m_grpBox.Controls.Add(this.m_labelPips);
 
@@ -125,27 +125,27 @@
             this.m_drpDwnPips.Items.Add("E");
             this.m_drpDwnPips.SelectedItem = "W";
             this.m_drpDwnPips.FormattingEnabled = false;
-            // 
-            // m_drpDwnBorder
-            // 
-            this.m_drpDwnBorder.Location = new System.Drawing.Point(142, 211);
-            this.m_drpDwnBorder.Name = "m_drpDwnBorder";
-            this.m_drpDwnBorder.Size = new System.Drawing.Size(149, 22);
-            this.m_drpDwnBorder.TabIndex = 13;
-            this.m_drpDwnBorder.Items.Add("West");
-            this.m_drpDwnBorder.Items.Add("East");
-            this.m_drpDwnBorder.SelectedItem = "West";
-            this.m_drpDwnBorder.FormattingEnabled = false;
-            // 
-            // m_labelBorder
-            // 
-            this.m_labelBorder.Location = new System.Drawing.Point(13, 213);
-            this.m_labelBorder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.m_labelBorder.Name = "m_labelBorder";
-            this.m_labelBorder.Size = new System.Drawing.Size(231, 28);
-            this.m_labelBorder.TabIndex = 4;
-            this.m_labelBorder.Text = "Border:\r\n";
-            this.m_labelBorder.Click += new System.EventHandler(this.m_labelBorder_Click);
+            //// 
+            //// m_drpDwnBorder
+            //// 
+            //this.m_drpDwnBorder.Location = new System.Drawing.Point(142, 211);
+            //this.m_drpDwnBorder.Name = "m_drpDwnBorder";
+            //this.m_drpDwnBorder.Size = new System.Drawing.Size(149, 22);
+            //this.m_drpDwnBorder.TabIndex = 13;
+            //this.m_drpDwnBorder.Items.Add("West");
+            //this.m_drpDwnBorder.Items.Add("East");
+            //this.m_drpDwnBorder.SelectedItem = "West";
+            //this.m_drpDwnBorder.FormattingEnabled = false;
+            //// 
+            //// m_labelBorder
+            //// 
+            //this.m_labelBorder.Location = new System.Drawing.Point(13, 213);
+            //this.m_labelBorder.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            //this.m_labelBorder.Name = "m_labelBorder";
+            //this.m_labelBorder.Size = new System.Drawing.Size(231, 28);
+            //this.m_labelBorder.TabIndex = 4;
+            //this.m_labelBorder.Text = "Border:\r\n";
+            //this.m_labelBorder.Click += new System.EventHandler(this.m_labelBorder_Click);
             // 
             // m_labelImport
             // 
@@ -259,7 +259,7 @@
 
         private System.Windows.Forms.Label m_labelImport;
         private System.Windows.Forms.Label m_labelExport;
-        private System.Windows.Forms.Label m_labelBorder;
+        //private System.Windows.Forms.Label m_labelBorder;
         private System.Windows.Forms.Label m_labelPips;
         private System.Windows.Forms.Label m_labelWiresType;
       
@@ -268,7 +268,7 @@
       
         private System.Windows.Forms.NumericUpDown m_drpDwnSignals;
 
-        private System.Windows.Forms.ComboBox m_drpDwnBorder;
+        //private System.Windows.Forms.ComboBox m_drpDwnBorder;
         private System.Windows.Forms.ComboBox m_drpDwnWires;
         private System.Windows.Forms.ComboBox m_drpDwnPips;
 

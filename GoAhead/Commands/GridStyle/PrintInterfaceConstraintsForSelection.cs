@@ -12,6 +12,7 @@ namespace GoAhead.Commands.GridStyle
         private const string MODE_ROW_WISE = "row-wise";
         private const string HORIZONTAL_LEFT_TO_RIGHT = "left-to-right";
         private const string VERTICAL_TOP_DOWN = "top-down";
+        private const string VERTICAL_BOTTOM_UP = "bottom-up";
 
         private const string NORTH = "North";
         private const string EAST = "East";
@@ -123,7 +124,8 @@ namespace GoAhead.Commands.GridStyle
                     PrintPartitionPinConstraintsForSelection command = new PrintPartitionPinConstraintsForSelection();
                     command.Mode = MODE_ROW_WISE;
                     command.Horizontal = HORIZONTAL_LEFT_TO_RIGHT;
-                    command.Vertical = VERTICAL_TOP_DOWN;
+                    //command.Vertical = VERTICAL_TOP_DOWN;
+                    command.Vertical = VERTICAL_BOTTOM_UP;
                     command.CardinalDirection = GetCardinalDirection(Border, direction);
                     command.Length = length;
                     command.IndexOffset = indexOffset;

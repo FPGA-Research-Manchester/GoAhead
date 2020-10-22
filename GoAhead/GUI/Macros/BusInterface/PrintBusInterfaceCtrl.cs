@@ -20,6 +20,9 @@ namespace GoAhead.GUI.Macros.BusInterface
 {
     public partial class PrintBusInterfaceCtrl : UserControl
     {
+        private const string VERTICAL_TOP_DOWN = "top-down";
+        private const string VERTICAL_BOTTOM_UP = "bottom-up";
+   
         public PrintBusInterfaceCtrl()
         {
             InitializeComponent();
@@ -74,15 +77,15 @@ namespace GoAhead.GUI.Macros.BusInterface
                     StringBuilder buffer = new StringBuilder();
 
                     string tclFilePath = this.m_txtBoxTCLPath.Text.ToString();
-                    string border = this.m_drpDwnBorder.SelectedItem.ToString();
+                    //string border = this.m_drpDwnBorder.SelectedItem.ToString();                    
                     string pips = this.m_drpDwnPips.SelectedItem.ToString();
                     int wiresType = Int32.Parse(this.m_drpDwnWires.SelectedItem.ToString());
                     int signalsPerTile = Int32.Parse(this.m_drpDwnSignals.Text.ToString());
 
                     //Check paramaters are all valid.
-                    CheckParameters(border, pips, wiresType);
+                    //CheckParameters(border, pips, wiresType);
 
-                    if(File.Exists(tclFilePath))
+                    if (File.Exists(tclFilePath))
                         File.Delete(tclFilePath);
 
                     List<Tile> tilesInFinalOrder = PrintPartitionPinConstraintsForSelection.GetTilesInFinalOrder(this.m_mode, this.m_vertical, this.m_horizontal);
@@ -106,10 +109,16 @@ namespace GoAhead.GUI.Macros.BusInterface
                     {
                         string signalNamePrefix = record.SignalName.Split(new char[] { '_' })[0];
                         string signalNameSuffix = record.SignalName.Split(new char[] { '_' })[1];
+                        string border = record.Border.ToString();
+                        string assignment_order = record.Assignment.ToString();
+                        string startTile = record.StartTile.ToString();
+
+                        int startTile_Y = Convert.ToInt32(startTile.Split(new char[] { 'Y' })[1]);
 
                         int numberOfTylesReq = (int)Math.Ceiling((((double)record.BusWidth) / signalsPerTile));
 
-                        selectCmd = GenerateSelectCommand(numberOfTylesReq, ref tilesInFinalOrder);
+                        //selectCmd = GenerateSelectCommand(numberOfTylesReq, ref tilesInFinalOrder);
+                        selectCmd = GenerateSelectCommand_csv(numberOfTylesReq, startTile, assignment_order);
 
                         if (selectCmd == "")
                             return;
@@ -156,6 +165,20 @@ namespace GoAhead.GUI.Macros.BusInterface
             
             return "AddBlockToSelection UpperLeftTile=" + topTile.Location + " LowerRightTile=" + bottomTile.Location + ";";
 
+        }
+
+        private string GenerateSelectCommand_csv(int noOfTilesReq, string startTile, string assignment_order)
+        {
+            int end_tile;
+            string startTile_X = startTile.Split(new char[] { 'Y' })[0];
+            int start_tile = Convert.ToInt32(startTile.Split(new char[] { 'Y' })[1]);
+
+            if (assignment_order.Equals(VERTICAL_BOTTOM_UP))
+                end_tile = start_tile + noOfTilesReq;
+            else
+                end_tile = start_tile - (noOfTilesReq + 1);
+
+            return "AddBlockToSelection UpperLeftTile=" + startTile + " LowerRightTile=" + startTile_X + "Y" + end_tile.ToString() + ";";
         }
 
         private void CheckParameters(string border, string pips, int wireType)
