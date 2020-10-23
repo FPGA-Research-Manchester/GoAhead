@@ -99,12 +99,31 @@ namespace GoAhead.GUI.Macros.BusInterface
                                     + " Border=";
                     string cmdPart4 = " NumberOfSignals=";
                     string cmdPart5 = " PreventWiresFromBlocking=True\n"
-                                    + " InterfaceSpecs=In:";
+                                    + " InterfaceSpecs=";
+                    //+ " InterfaceSpecs=In:";
+
                     string cmdPart6 = " StartIndex=";
                     string cmdPart7 = " SignalsPerTile=";
                     string selectCmd;
 
-                    
+                    string cmdInstConnPrimPart0 = "InstantiateConnectionPrimitives\n"
+                                                + " LibraryElementName=LUTConnectionPrimitive";
+                    string cmdInstConnPrimPart1 = " InstanceName=";
+                    string cmdInstConnPrimPart2 = " NumberOfPrimitives=";
+
+                    string cmdAnnSigNamesToConnPrim0 = "AnnotateSignalNamesToConnectionPrimitives\n"
+                                                     + " InstantiationFilter=";
+                    string cmdAnnSigNamesToConnPrim1 = " InputMappingKind=";
+                    string cmdAnnSigNamesToConnPrim2 = " OutputMappingKind=";
+                    string cmdAnnSigNamesToConnPrim3 = " SignalPrefix=";
+                    string cmdAnnSigNamesToConnPrim4 = " InputSignalName=";
+                    string cmdAnnSigNamesToConnPrim5 = " OutputSignalName=";
+                    string cmdAnnSigNamesToConnPrim6 = " LookupTableInputPort=3;";
+
+                    string internalMapping = "internal";
+                    string externalMapping = "external";
+                    string constValueOne = "1";
+
                     foreach (var record in records)
                     {
                         string signalNamePrefix = record.SignalName.Split(new char[] { '_' })[0];
@@ -114,6 +133,13 @@ namespace GoAhead.GUI.Macros.BusInterface
                         string startTile = record.StartTile.ToString();
 
                         int startTile_Y = Convert.ToInt32(startTile.Split(new char[] { 'Y' })[1]);
+
+                        string instSignalName = "inst_" + record.SignalName + "_" + border + "_" + record.Direction;
+                        string dummySignalName = "dummy_" + signalNameSuffix + "_" + border + "_" + record.Direction;
+                        string inputMappingKind = "";
+                        string outputMappingKind = "";
+                        string inputSignalName = "";
+                        string outputSignalName = "";
 
                         int numberOfTylesReq = (int)Math.Ceiling((((double)record.BusWidth) / signalsPerTile));
 
@@ -127,8 +153,39 @@ namespace GoAhead.GUI.Macros.BusInterface
                                             + cmdPart1 + tclFilePath + "\n" + cmdPart2 + signalNamePrefix + "\n"
                                             + cmdPart3 + border + '\n'
                                             + cmdPart4 + record.BusWidth + '\n'
-                                            + cmdPart5 + wiresType + ":" + signalNameSuffix + ":" + pips + '\n'
+                                            + cmdPart5 + record.Direction + ":" + wiresType + ":" + signalNameSuffix + ":" + pips + '\n'
                                             + cmdPart6 + record.StartIndex + '\n' + cmdPart7 + signalsPerTile + ';';
+
+                        buffer.Append(formatString + '\n' + '\n');
+
+                        formatString = cmdInstConnPrimPart0 + "\n"
+                                        + cmdInstConnPrimPart1 + instSignalName + "\n"
+                                        + cmdInstConnPrimPart2 + record.BusWidth + ';';
+
+                        buffer.Append(formatString + '\n' + '\n');
+
+                        if (record.Direction == "In")
+                        {
+                            inputMappingKind = internalMapping;
+                            outputMappingKind = externalMapping;
+                            inputSignalName = constValueOne;
+                            outputSignalName = signalNameSuffix;
+                        }
+                        else
+                        {
+                            inputMappingKind = externalMapping;
+                            outputMappingKind = internalMapping;
+                            inputSignalName = signalNameSuffix;
+                            outputSignalName = dummySignalName;
+                        }
+
+                        formatString = cmdAnnSigNamesToConnPrim0 + instSignalName + ".*" + "\n"
+                                        + cmdAnnSigNamesToConnPrim1 + inputMappingKind + "\n"
+                                        + cmdAnnSigNamesToConnPrim2 + outputMappingKind + "\n"
+                                        + cmdAnnSigNamesToConnPrim3 + signalNamePrefix + "\n"
+                                        + cmdAnnSigNamesToConnPrim4 + inputSignalName + "\n"
+                                        + cmdAnnSigNamesToConnPrim5 + outputSignalName + "\n"
+                                        + cmdAnnSigNamesToConnPrim6;
 
                         buffer.Append(formatString + '\n' + '\n');
                     }
@@ -176,7 +233,7 @@ namespace GoAhead.GUI.Macros.BusInterface
             if (assignment_order.Equals(VERTICAL_BOTTOM_UP))
                 end_tile = start_tile + noOfTilesReq;
             else
-                end_tile = start_tile - (noOfTilesReq + 1);
+                end_tile = start_tile - noOfTilesReq;
 
             return "AddBlockToSelection UpperLeftTile=" + startTile + " LowerRightTile=" + startTile_X + "Y" + end_tile.ToString() + ";";
         }
