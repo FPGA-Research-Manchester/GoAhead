@@ -20,6 +20,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
     class PrintArchitectureGraph : CommandWithFileOutput
     {
+        private List<string> timings = new List<string>();
         // define data structures
         private Dictionary<Tile, int> tiles = new Dictionary<Tile, int>(); // tiles to hashcode mappings
         // private List<intBlock> interconnectBlocks = new List<intBlock>();
@@ -41,8 +42,8 @@ namespace GoAhead.Commands.ArchitectureGraph
 
         // hard-coded for ZU3EG, should be produced by GoAhead or given as an argument
         // resource string must be space separated
-        //private static string RESOURCE_STRING = "VsL MsL RsL MsD MsL LsL MsL LsL RsL MsmP msL MsL RsL MsD MsL LsL MsL LsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsmFmI";
-        private static string RESOURCE_STRING = "EmsL MsD MsL MsL MsL MsL RsL MsmP msL MsL RsL MsD MsL MsL MsD MsL MsD MsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsD MsL MsL MsL MsL MsL MsD MsL RsL MsmP msL MsL RsL MsL MsL MsD MsL MsmE";
+        private static string RESOURCE_STRING = "VsL MsL RsL MsD MsL LsL MsL LsL RsL MsmP msL MsL RsL MsD MsL LsL MsL LsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsmFmI";
+        //private static string RESOURCE_STRING = "EmsL MsD MsL MsL MsL MsL RsL MsmP msL MsL RsL MsD MsL MsL MsD MsL MsD MsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsD MsL MsL MsL MsL MsL MsD MsL RsL MsmP msL MsL RsL MsL MsL MsD MsL MsmE";
 
         bool checkForSubinterconnects = RESOURCE_STRING.Contains("m");
         
@@ -64,7 +65,10 @@ namespace GoAhead.Commands.ArchitectureGraph
             // before starting, make sure all BRAMs/DSPs are updated
             RAMSelectionManager.Instance.UpdateMapping();
 
+            var watch = System.Diagnostics.Stopwatch.StartNew();
             resolveWiresInOppositeDirections();
+            watch.Stop();
+            timings.Add("Time taken to resolveWiresInOppositeDirections = " + watch.ElapsedMilliseconds);
 
             if (debug)
             {
@@ -89,6 +93,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                 }
             }
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // goal is to create blocks of LsL or MsL. We go through all the interconnect tiles and find the left and the right tile from it, and count these as the interconnect's primitives
             foreach (Tile intTile in FPGA.FPGA.Instance.GetAllTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
@@ -103,7 +108,10 @@ namespace GoAhead.Commands.ArchitectureGraph
                 CreatePrimitiveMappings(interconnectToPrimitiveMappings, intTile, leftPrimitive, rightPrimitive);
                 //interconnectBlocks.Add(block);
             }
+            watch.Stop();
+            timings.Add("Time taken to CreatePrimitiveMappings = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // once all the homogenous blocks have been found, find all the irregular tiles
             foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => !tiles.ContainsKey(t))) // Dict tiles at this point contains every tile that has been identified as belonging to a block
             {
@@ -117,7 +125,10 @@ namespace GoAhead.Commands.ArchitectureGraph
                     }  
                 }
             }
+            watch.Stop();
+            timings.Add("Time taken to find IrregularTiles = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // process wirelists for all tiles
             foreach (KeyValuePair<Tile, int> pair in tiles.Reverse())
             {
@@ -137,7 +148,10 @@ namespace GoAhead.Commands.ArchitectureGraph
                     tileToWirelistHashcodes.Add(tileHashcode, -1);
                 }
             }
+            watch.Stop();
+            timings.Add("Time taken to find Process all outgoing wirelists = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // store incoming wirelists for all tiles
             foreach (KeyValuePair<Tile, WireList> pair in incomingWirelists)
             {
@@ -155,7 +169,10 @@ namespace GoAhead.Commands.ArchitectureGraph
                     tileToIncomingWirelistHashcodes.Add(tileHashcode, -1);
                 }
             }
+            watch.Stop();
+            timings.Add("Time taken to find Process all incoming wirelists = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // make sure there's no tiles left with no wirelist hashcodes
             foreach (Tile tile in tiles.Keys)
             {
@@ -165,17 +182,26 @@ namespace GoAhead.Commands.ArchitectureGraph
                 if (!tileToIncomingWirelistHashcodes.ContainsKey(tiles[tile]))
                     tileToIncomingWirelistHashcodes.Add(tiles[tile], -1);
             }
+            watch.Stop();
+            timings.Add("Time taken to make sure there's no tiles left with no wirelist hashcodes = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // populate the other direction of tiles dict
             foreach (KeyValuePair<Tile, int> pair in tiles)
                 tileHashcodes.Add(pair.Value, pair.Key);
+            watch.Stop();
+            timings.Add("Time taken to populate the other direction of tiles dict = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             // output the graph with help of subcommands
             PrintAllWirelists printWirelists = new PrintAllWirelists();
             printWirelists.FileName = Path.Combine(FolderName, "wirelists.ag");
             printWirelists.Wirelists = wirelistHashcodeToWirelist;
             CommandExecuter.Instance.Execute(printWirelists);
+            watch.Stop();
+            timings.Add("Total time taken to PrintAllWirelists = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintAllInterconnectBlocks printTiles = new PrintAllInterconnectBlocks();
             printTiles.FileName = Path.Combine(FolderName, "tiles.ag");
             printTiles.TileHashcodes = tileHashcodes;
@@ -183,7 +209,10 @@ namespace GoAhead.Commands.ArchitectureGraph
             printTiles.WirelistHashcodes = tileToWirelistHashcodes;
             printTiles.IncomingWirelistHashcodes = tileToIncomingWirelistHashcodes;
             CommandExecuter.Instance.Execute(printTiles);
+            watch.Stop();
+            timings.Add("Total time taken to PrintAllInterconnectBlocks = " + watch.ElapsedMilliseconds);
 
+            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintIrregularTiles printIrregularTiles = new PrintIrregularTiles();
             printIrregularTiles.FileName = Path.Combine(FolderName, "irregularTiles.ag");
             printIrregularTiles.IrregularTiles = irregularTiles;
@@ -191,6 +220,8 @@ namespace GoAhead.Commands.ArchitectureGraph
             printIrregularTiles.TileHashcodes = tileHashcodes;
             printIrregularTiles.IncomingWirelistHashcodes = tileToIncomingWirelistHashcodes;
             CommandExecuter.Instance.Execute(printIrregularTiles);
+            watch.Stop();
+            timings.Add("Total time taken to PrintIrregularTiles = " + watch.ElapsedMilliseconds);
 
             // perhaps this can be used to print the resource string, arch family in a separate file. Currently, it's hardcoded.
             PrintMiscInformation printMiscInformation = new PrintMiscInformation();
@@ -212,6 +243,8 @@ namespace GoAhead.Commands.ArchitectureGraph
                     }
                 }
             }
+
+            System.IO.File.WriteAllLines(@"C:\Users\prabh\OneDrive\Desktop\timings\AG.txt", timings);
         }
 
         private void resolveWiresInOppositeDirections()
