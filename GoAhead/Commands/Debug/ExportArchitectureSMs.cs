@@ -28,8 +28,6 @@ namespace GoAhead.Commands
             for (int k = 0; k < ColumnWidth * Columns.Length - 2; k++) dashLine += "-";
 
             Dictionary<string, string> entriesDic;
-            //List<string> lines = new List<string>();
-            StreamWriter sw = new StreamWriter("result.txt", Append);
 
             foreach (var tile in tiles)
             {
@@ -73,14 +71,8 @@ namespace GoAhead.Commands
                 if (FormattingMethod)
                     line += "" + NL + NL;
 
-                sw.Write(line);
-                //lines.Add(line);
-            }
-
-            sw.Close();
-            // Write file
-            //foreach (var l in lines)
-            //    OutputManager.WriteOutput(l);
+                OutputManager.WriteOutput(line);
+            }  
         }
 
         private bool SkipArc(Port pi, Port po, Tile tile)

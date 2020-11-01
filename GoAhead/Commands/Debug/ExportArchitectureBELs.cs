@@ -25,7 +25,6 @@ namespace GoAhead.Commands
             for (int k = 0; k < ColumnWidth * Columns.Length - 2; k++) dashLine += "-";
 
             Dictionary<string, string> entriesDic;
-            List<string> lines = new List<string>();
 
             foreach (var tile in tiles)
             {
@@ -76,12 +75,8 @@ namespace GoAhead.Commands
                     }
                 }
 
-                lines.Add(line);
-            }
-
-            // Write file
-            foreach (var l in lines)
-                OutputManager.WriteOutput(l);
+                OutputManager.WriteOutput(line);
+            }                
         }
     }
 

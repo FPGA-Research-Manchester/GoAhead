@@ -28,8 +28,6 @@ namespace GoAhead.Commands
             for (int k = 0; k < ColumnWidth * Columns.Length - 2; k++) dashLine += "-";
 
             Dictionary<string, string> entriesDic;
-            //List<string> lines = new List<string>();
-            StreamWriter sw = new StreamWriter("result.txt", Append);
 
             foreach (var tile in tiles)
             {
@@ -75,14 +73,8 @@ namespace GoAhead.Commands
                 if (FormattingMethod)
                     line += "" + NL + NL;
 
-                //lines.Add(line);
-                //OutputManager.WriteOutput(line);
-                sw.Write(line);
+                OutputManager.WriteOutput(line);
             }
-            sw.Close();
-            // Write file
-            //foreach (var l in lines)
-            //    OutputManager.WriteOutput(l);
         }
 
         private bool SkipWire(Wire wire, Tile tile)
