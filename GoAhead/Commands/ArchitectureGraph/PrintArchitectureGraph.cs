@@ -42,7 +42,8 @@ namespace GoAhead.Commands.ArchitectureGraph
         // hard-coded for ZU3EG, should be produced by GoAhead or given as an argument
         // resource string must be space separated
         //private static string RESOURCE_STRING = "VsL MsL RsL MsD MsL LsL MsL LsL RsL MsmP msL MsL RsL MsD MsL LsL MsL LsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsmFmI";
-        private static string RESOURCE_STRING = "EmsL MsD MsL MsL MsL MsL RsL MsmP msL MsL RsL MsD MsL MsL MsD MsL MsD MsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsD MsL MsL MsL MsL MsL MsD MsL RsL MsmP msL MsL RsL MsL MsL MsD MsL MsmE";
+        //private static string RESOURCE_STRING = "EmsL MsD MsL MsL MsL MsL RsL MsmP msL MsL RsL MsD MsL MsL MsD MsL MsD MsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsL RsL MsD MsL MsL MsD MsL MsU sL MsL MsD MsL MsL MsL RsL MsD MsL MsL ITBmsL MsL RsL MsD MsL MsL MsU sL MsL MsL MsL MsL MsL MsL MsL MsD MsL RsL MsD MsL MsL MsL MsL MsL MsD MsL RsL MsmP msL MsL RsL MsL MsL MsD MsL MsmE";
+        private static string RESOURCE_STRING = "ImsL MsL RsL MsD MsL MsL RsL MsD MsL MsD MsL MsL RsL MsD MsL MsL RsL MsD MsL MsD MsL MsL RsL MsD MsL MsL RsL MsD MsL MsD MsL MsL RsL MsD MsL MsD MsL MsD MsL MsL RsL MsD MsL MsL RsL MsD MsL MsL RsL MsD MsL MsD MsL MsL RsL MsL RsL MsmP msL MsD MsL MsD MsL MsL RsL MsN";
 
         bool checkForSubinterconnects = RESOURCE_STRING.Contains("m");
         
