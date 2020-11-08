@@ -12,7 +12,7 @@ namespace GoAhead.Commands.ArchitectureGraph
     {
         // each wirelist is broken down into miniwirelists based on the start port
 
-        List<string> timings = new List<string>();
+        private Dictionary<int, byte[]> wirelistMD5Hashes = new Dictionary<int, byte[]>();
         Dictionary<int, List<int>> miniWirelistMappings = new Dictionary<int, List<int>>();
         Dictionary<int, WireList> miniWirelists = new Dictionary<int, WireList>();
 
@@ -22,10 +22,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
         protected override void DoCommandAction()
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             DecomposeWirelistsIntoMiniWirelists();
-            watch.Stop();
-            timings.Add("Time taken to DecomposeWirelistsIntoMiniWirelists = " + watch.ElapsedMilliseconds);
 
             OutputManager.WriteOutput("Wirelist Hashcode,Miniwirelists contained");
 
@@ -38,24 +35,16 @@ namespace GoAhead.Commands.ArchitectureGraph
 
             OutputManager.WriteOutput(buffer.ToString());
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintWirelists printMiniWirelists = new PrintWirelists();
             printMiniWirelists.FileName = Path.Combine(FileName.Substring(0, FileName.LastIndexOf(Path.DirectorySeparatorChar.ToString())), "miniWirelists.ag");
             printMiniWirelists.MiniWirelists = miniWirelists;
             printMiniWirelists.PortMappings = portMappings;
             CommandExecuter.Instance.Execute(printMiniWirelists);
-            watch.Stop();
-            timings.Add("Total time taken to printMiniWirelists = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintPortNames printPortNames = new PrintPortNames();
             printPortNames.FileName = Path.Combine(FileName.Substring(0, FileName.LastIndexOf(Path.DirectorySeparatorChar.ToString())), "portNames.ag");
             printPortNames.PortMappings = portMappings;
             CommandExecuter.Instance.Execute(printPortNames);
-            watch.Stop();
-            timings.Add("Total time taken to printPortNames = " + watch.ElapsedMilliseconds);
-
-            System.IO.File.WriteAllLines(@"C:\Users\prabh\OneDrive\Desktop\timings\AllWirelists.txt", timings);
         }
 
         private void DecomposeWirelistsIntoMiniWirelists()
@@ -113,7 +102,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
             if (miniWireList.Count > 0)
             {
-                PrintArchitectureGraph.StoreWirelist(miniWireList, miniWirelists);
+                PrintArchitectureGraph.StoreWirelist(miniWireList, miniWirelists, wirelistMD5Hashes);
 
                 if (!miniWirelistMappings[mainWireListKey].Contains(miniWireList.Key))
                     miniWirelistMappings[mainWireListKey].Add(miniWireList.Key);

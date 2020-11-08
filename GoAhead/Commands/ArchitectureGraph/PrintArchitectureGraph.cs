@@ -20,7 +20,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
     class PrintArchitectureGraph : CommandWithFileOutput
     {
-        private List<string> timings = new List<string>();
+        private static System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
         // define data structures
         private Dictionary<Tile, int> tiles = new Dictionary<Tile, int>(); // tiles to hashcode mappings
         // private List<intBlock> interconnectBlocks = new List<intBlock>();
@@ -37,6 +37,7 @@ namespace GoAhead.Commands.ArchitectureGraph
         private Dictionary<Tile, WireList> incomingWirelists = new Dictionary<Tile, WireList>();
 
         private Dictionary<int, WireList> wirelistHashcodeToWirelist = new Dictionary<int, WireList>();
+        private Dictionary<int, byte[]> wirelistMD5Hashes = new Dictionary<int, byte[]>();
 
         private Dictionary<string, int> wireCounts = new Dictionary<string, int>();
 
@@ -65,10 +66,7 @@ namespace GoAhead.Commands.ArchitectureGraph
             // before starting, make sure all BRAMs/DSPs are updated
             RAMSelectionManager.Instance.UpdateMapping();
 
-            var watch = System.Diagnostics.Stopwatch.StartNew();
             resolveWiresInOppositeDirections();
-            watch.Stop();
-            timings.Add("Time taken to resolveWiresInOppositeDirections = " + watch.ElapsedMilliseconds);
 
             if (debug)
             {
@@ -93,7 +91,6 @@ namespace GoAhead.Commands.ArchitectureGraph
                 }
             }
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // goal is to create blocks of LsL or MsL. We go through all the interconnect tiles and find the left and the right tile from it, and count these as the interconnect's primitives
             foreach (Tile intTile in FPGA.FPGA.Instance.GetAllTiles().Where(t => IdentifierManager.Instance.IsMatch(t.Location, IdentifierManager.RegexTypes.Interconnect)))
             {
@@ -108,10 +105,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                 CreatePrimitiveMappings(interconnectToPrimitiveMappings, intTile, leftPrimitive, rightPrimitive);
                 //interconnectBlocks.Add(block);
             }
-            watch.Stop();
-            timings.Add("Time taken to CreatePrimitiveMappings = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // once all the homogenous blocks have been found, find all the irregular tiles
             foreach (Tile tile in FPGA.FPGA.Instance.GetAllTiles().Where(t => !tiles.ContainsKey(t))) // Dict tiles at this point contains every tile that has been identified as belonging to a block
             {
@@ -125,10 +119,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                     }  
                 }
             }
-            watch.Stop();
-            timings.Add("Time taken to find IrregularTiles = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // process wirelists for all tiles
             foreach (KeyValuePair<Tile, int> pair in tiles.Reverse())
             {
@@ -139,7 +130,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                 if (wl.Count() > 0)
                 {
-                    StoreWirelist(wl, wirelistHashcodeToWirelist);
+                    StoreWirelist(wl, wirelistHashcodeToWirelist, wirelistMD5Hashes);
                     tileToWirelistHashcodes.Add(tileHashcode, wl.Key);
                 }
                 else
@@ -148,10 +139,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                     tileToWirelistHashcodes.Add(tileHashcode, -1);
                 }
             }
-            watch.Stop();
-            timings.Add("Time taken to find Process all outgoing wirelists = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // store incoming wirelists for all tiles
             foreach (KeyValuePair<Tile, WireList> pair in incomingWirelists)
             {
@@ -161,7 +149,7 @@ namespace GoAhead.Commands.ArchitectureGraph
 
                 if (incomingWirelist.Count() > 0)
                 {
-                    StoreWirelist(incomingWirelist, wirelistHashcodeToWirelist);
+                    StoreWirelist(incomingWirelist, wirelistHashcodeToWirelist, wirelistMD5Hashes);
                     tileToIncomingWirelistHashcodes.Add(tileHashcode, incomingWirelist.Key);
                 }
                 else
@@ -169,10 +157,7 @@ namespace GoAhead.Commands.ArchitectureGraph
                     tileToIncomingWirelistHashcodes.Add(tileHashcode, -1);
                 }
             }
-            watch.Stop();
-            timings.Add("Time taken to find Process all incoming wirelists = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // make sure there's no tiles left with no wirelist hashcodes
             foreach (Tile tile in tiles.Keys)
             {
@@ -182,26 +167,17 @@ namespace GoAhead.Commands.ArchitectureGraph
                 if (!tileToIncomingWirelistHashcodes.ContainsKey(tiles[tile]))
                     tileToIncomingWirelistHashcodes.Add(tiles[tile], -1);
             }
-            watch.Stop();
-            timings.Add("Time taken to make sure there's no tiles left with no wirelist hashcodes = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // populate the other direction of tiles dict
             foreach (KeyValuePair<Tile, int> pair in tiles)
                 tileHashcodes.Add(pair.Value, pair.Key);
-            watch.Stop();
-            timings.Add("Time taken to populate the other direction of tiles dict = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             // output the graph with help of subcommands
             PrintAllWirelists printWirelists = new PrintAllWirelists();
             printWirelists.FileName = Path.Combine(FolderName, "wirelists.ag");
             printWirelists.Wirelists = wirelistHashcodeToWirelist;
             CommandExecuter.Instance.Execute(printWirelists);
-            watch.Stop();
-            timings.Add("Total time taken to PrintAllWirelists = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintAllInterconnectBlocks printTiles = new PrintAllInterconnectBlocks();
             printTiles.FileName = Path.Combine(FolderName, "tiles.ag");
             printTiles.TileHashcodes = tileHashcodes;
@@ -209,10 +185,7 @@ namespace GoAhead.Commands.ArchitectureGraph
             printTiles.WirelistHashcodes = tileToWirelistHashcodes;
             printTiles.IncomingWirelistHashcodes = tileToIncomingWirelistHashcodes;
             CommandExecuter.Instance.Execute(printTiles);
-            watch.Stop();
-            timings.Add("Total time taken to PrintAllInterconnectBlocks = " + watch.ElapsedMilliseconds);
 
-            watch = System.Diagnostics.Stopwatch.StartNew();
             PrintIrregularTiles printIrregularTiles = new PrintIrregularTiles();
             printIrregularTiles.FileName = Path.Combine(FolderName, "irregularTiles.ag");
             printIrregularTiles.IrregularTiles = irregularTiles;
@@ -220,8 +193,6 @@ namespace GoAhead.Commands.ArchitectureGraph
             printIrregularTiles.TileHashcodes = tileHashcodes;
             printIrregularTiles.IncomingWirelistHashcodes = tileToIncomingWirelistHashcodes;
             CommandExecuter.Instance.Execute(printIrregularTiles);
-            watch.Stop();
-            timings.Add("Total time taken to PrintIrregularTiles = " + watch.ElapsedMilliseconds);
 
             // perhaps this can be used to print the resource string, arch family in a separate file. Currently, it's hardcoded.
             PrintMiscInformation printMiscInformation = new PrintMiscInformation();
@@ -244,7 +215,6 @@ namespace GoAhead.Commands.ArchitectureGraph
                 }
             }
 
-            System.IO.File.WriteAllLines(@"C:\Users\prabh\OneDrive\Desktop\timings\AG.txt", timings);
         }
 
         private void resolveWiresInOppositeDirections()
@@ -464,11 +434,11 @@ namespace GoAhead.Commands.ArchitectureGraph
             return null;
         }
 
-        public static void StoreWirelist(WireList wirelistToStore, Dictionary<int, WireList> wirelistCollectionToCheckIn)
+        public static void StoreWirelist(WireList wirelistToStore, Dictionary<int, WireList> wirelistCollectionToCheckIn, Dictionary<int, byte[]> wirelistMD5Hashes)
         {
             bool equalWLFound = false;
-
-            foreach (WireList other in wirelistCollectionToCheckIn.Values.Where(wl => wl.Count == wirelistToStore.Count))
+            byte[] md5Hash = md5.ComputeHash(new UTF8Encoding().GetBytes(string.Join(",", wirelistToStore)));
+            foreach (WireList other in wirelistCollectionToCheckIn.Values.Where(wl => wirelistMD5Hashes[wl.Key].SequenceEqual(md5Hash)))
             {
                 if (WirelistsEqual(wirelistToStore, other))
                 {
@@ -488,6 +458,7 @@ namespace GoAhead.Commands.ArchitectureGraph
             if (!wirelistCollectionToCheckIn.ContainsKey(wirelistToStore.Key))
             {
                 wirelistCollectionToCheckIn.Add(wirelistToStore.Key, wirelistToStore);
+                wirelistMD5Hashes.Add(wirelistToStore.Key, md5Hash);
             }
         }
 
