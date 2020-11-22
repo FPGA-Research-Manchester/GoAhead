@@ -168,7 +168,8 @@ namespace GoAhead.GUI.Macros.BusInterface
                         {
                             inputMappingKind = internalMapping;
                             outputMappingKind = externalMapping;
-                            inputSignalName = constValueOne;
+                            //inputSignalName = constValueOne;
+                            inputSignalName = dummySignalName;
                             outputSignalName = signalNameSuffix;
                         }
                         else
