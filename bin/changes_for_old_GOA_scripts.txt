@@ -1,0 +1,14 @@
+#*** for Zynq-7000
+#* init.goa --> set SetSubInterconnectIdentifierRegexp for Zynq family
+SetSubInterconnectIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^INT_INTF";
+
+#* Zynq.goa --> add DefineBELType for ByteType LUT6
+DefineBELType
+	Name="LUT6"
+	VHDLGenericMap="generic map ( INIT => X\"ABCDABCDABCDABCD\" )"
+	OutputPorts="O"
+	InputPorts="I0","I1","I2","I3","I4","I5"
+	InputsConstantValue=false
+	;
+
+#* in the script --> remove the Reset command after the OpenBinFPGA one

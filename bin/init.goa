@@ -295,7 +295,7 @@ SetInterconnectIdentifierRegexp FamilyRegexp=Artix7 IdentifierRegexp="^INT_(L|R)
 SetInterconnectIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^INT_(L|R)";
 
 SetSubInterconnectIdentifierRegexp FamilyRegexp=UltraScale IdentifierRegexp="^INT_INTF";
-
+SetSubInterconnectIdentifierRegexp FamilyRegexp=Zynq IdentifierRegexp="^INT_INTF";
 
 SetColorSetting FamilyRegexp=(StratixV)|(CycloneIVE) IdentifierRegexp="^LAB" Color=Cyan;
 SetColorSetting FamilyRegexp=Spartan6 IdentifierRegexp="^CLEXM" Color=DarkCyan;

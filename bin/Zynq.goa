@@ -1,0 +1,49 @@
+AddAlias AliasName=DoNotBlockDoubleEastBegin Commands="ExcludePortsFromBlockingInSelection PortName=EE2BEG0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2BEG1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2BEG2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2BEG3 CheckForExistence=False IncludeAllPorts=True;";
+AddAlias AliasName=DoNotBlockDoubleEastEnd Commands="ExcludePortsFromBlockingInSelection PortName=EE2END0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2END1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2END2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE2END3 CheckForExistence=False IncludeAllPorts=True;";
+AddAlias AliasName=DoNotBlockDoubleWestBegin Commands="ExcludePortsFromBlockingInSelection PortName=WW2BEG0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2BEG1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2BEG2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2BEG3 CheckForExistence=False IncludeAllPorts=True;";
+AddAlias AliasName=DoNotBlockDoubleWestEnd Commands="ExcludePortsFromBlockingInSelection PortName=WW2END0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2END1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2END2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW2END3 CheckForExistence=False IncludeAllPorts=True;";
+
+AddAlias AliasName=DoNotBlockQuadWestEnd Commands="ExcludePortsFromBlockingInSelection PortName=WW4END0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4END1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4END2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4END3 CheckForExistence=False IncludeAllPorts=True;";
+AddAlias AliasName=DoNotBlockQuadWestBegin Commands="ExcludePortsFromBlockingInSelection PortName=WW4BEG0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4BEG1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4BEG2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=WW4BEG3 CheckForExistence=False IncludeAllPorts=True;";
+
+AddAlias AliasName=DoNotBlockDoubleEast Commands="DoNotBlockDoubleEastBegin; DoNotBlockDoubleEastEnd;";
+AddAlias AliasName=DoNotBlockDoubleWest Commands="DoNotBlockDoubleWestBegin; DoNotBlockDoubleWestEnd;";
+
+# DoNotBlockQuadEastEnd Alias
+AddAlias AliasName=DoNotBlockQuadEastEnd Commands="ExcludePortsFromBlockingInSelection PortName=EE4END0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4END1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4END2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4END3 CheckForExistence=False IncludeAllPorts=True;";
+
+# DoNotBlockQuadEastBegin Alias
+AddAlias AliasName=DoNotBlockQuadEastBegin Commands="ExcludePortsFromBlockingInSelection PortName=EE4BEG0 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4BEG1 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4BEG2 CheckForExistence=False IncludeAllPorts=True; ExcludePortsFromBlockingInSelection PortName=EE4BEG3 CheckForExistence=False IncludeAllPorts=True;";
+
+# DoNotBlockQuadEast Alias
+AddAlias AliasName=DoNotBlockQuadEast Commands="DoNotBlockQuadEastBegin; DoNotBlockQuadEastEnd;";
+AddAlias AliasName=DoNotBlockQuadWest Commands="DoNotBlockQuadWestBegin; DoNotBlockQuadWestEnd;";
+
+# derived by 
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=EE2END\d$ TargetPortRegexp=_L_A\d MaxDepth=3 FileName=c:/temp/zynq_paths_a.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=EE2END\d$ TargetPortRegexp=_L_B\d MaxDepth=3 FileName=c:/temp/zynq_paths_b.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=EE2END\d$ TargetPortRegexp=_L_C\d MaxDepth=3 FileName=c:/temp/zynq_paths_c.txt Append=False;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=EE2END\d$ TargetPortRegexp=_L_D\d MaxDepth=3 FileName=c:/temp/zynq_paths_d.txt Append=False;
+
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=WW2END\d$ TargetPortRegexp=_L_A\d MaxDepth=3 FileName=c:/temp/zynq_paths_a.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=WW2END\d$ TargetPortRegexp=_L_B\d MaxDepth=3 FileName=c:/temp/zynq_paths_b.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=WW2END\d$ TargetPortRegexp=_L_C\d MaxDepth=3 FileName=c:/temp/zynq_paths_c.txt Append=True;
+# PathSearchOnFPGAWithRegexp StartLocation=INT_L_X8Y89 TargetLocation=CLBLM_L_X8Y89 StartPortRegexp=WW2END\d$ TargetPortRegexp=_L_D\d MaxDepth=3 FileName=c:/temp/zynq_paths_d.txt Append=True;
+DefineBELType
+	Name="LUT6"
+	VHDLGenericMap="generic map ( INIT => X\"ABCDABCDABCDABCD\" )"
+	OutputPorts="O"
+	InputPorts="I0","I1","I2","I3","I4","I5"
+	InputsConstantValue=false
+	;
+	
+AddVivadoConnectionPrimitive
+	Name=VivadoConnectionPrimitive
+	BELs=A6LUT,B6LUT,C6LUT,D6LUT
+	InputBEL=C6LUT
+	StopOverPorts=BYP_ALT4,BYP_BOUNCE4
+	InputBELinputPortPrefix=_L_A,_L_B,_L_C,_L_D
+	BELOutputPorts=A,B,C,D
+	BELType=LUT6
+	SliceNumber=1
+	;
