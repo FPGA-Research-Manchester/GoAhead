@@ -45,7 +45,7 @@ namespace GoAhead.Commands
         public int MaxSolutions = 5;
 
         [Parameter(Comment = "The max path length")]
-        public int MaxDepth = 5;
+        public int MaxDepth = 7;
 
         [Parameter(Comment = "Print Banner")]
         public bool PrintBanner = true;
@@ -56,6 +56,9 @@ namespace GoAhead.Commands
         [Parameter(Comment = "Sort the paths found by the latency attribute")]
         public string SortByAttribute = "";
 
+        // EXPERIMENTAL
+        [Parameter(Comment = "Toggle exact regex matching for ports")]
+        public bool ExactPortMatch = false;
 
         public List<List<Location>> m_paths = new List<List<Location>>();
         private LatencyManager LatencyMan;
@@ -67,15 +70,28 @@ namespace GoAhead.Commands
             List<Tile> startTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).ToList();
             List<Tile> targetTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TargetLocation)).OrderBy(t => t.Location).ToList();
 
+            if (startTiles.Count == 0)
+                OutputManager.WriteOutput("No start tiles were found matching the supplied regex.");
+            if (targetTiles.Count == 0)
+                OutputManager.WriteOutput("No target tiles were found matching the supplied regex.");
+
             // All matched regex start tiles
             for (int i = 0; i < startTiles.Count; i++)
             {
-                List<Port> startPorts = startTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, StartPort)).OrderBy(p => p.Name).ToList();
+                string startPortRegex = ExactPortMatch ? "^" + StartPort + "$" : StartPort;
+                List<Port> startPorts = startTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, startPortRegex)).OrderBy(p => p.Name).ToList();
+
+                if (startPorts.Count == 0)
+                    OutputManager.WriteOutput("No ports were found on the start tile matching the supplied regex.");
 
                 // All matched regex target tiles
                 for (int j = 0; j < targetTiles.Count; j++)
                 {
-                    List<Port> targetPorts = targetTiles[j].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, TargetPort)).OrderBy(p => p.Name).ToList();
+                    string targetPortRegex = ExactPortMatch ? "^" + TargetPort + "$" : TargetPort;
+                    List<Port> targetPorts = targetTiles[j].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, targetPortRegex)).OrderBy(p => p.Name).ToList();
+
+                    if (targetPorts.Count == 0)
+                        OutputManager.WriteOutput("No ports were found on the target tile matching the supplied regex.");
 
                     // All matched regex start ports
                     for (int k = 0; k < startPorts.Count; k++)
@@ -148,7 +164,7 @@ namespace GoAhead.Commands
 
             if (m_paths.Count == 0)
             {
-                OutputManager.WriteOutput("No path found");
+                OutputManager.WriteOutput("No path found. Try raising the MaxDepth parameter.");
             }
             else if (OutputMode.ToUpper().Equals("CHAIN"))
             {
@@ -257,11 +273,12 @@ namespace GoAhead.Commands
 
             // Sorting by attribute
             Dictionary<StringBuilder, float> pathStringsAndLatencies = new Dictionary<StringBuilder, float>();
-
+            int pathNum = 1;
             foreach (List<Location> path in paths.OrderBy(l => l.Count))
             {
                 StringBuilder buffer = new StringBuilder();
                 LatencyMan.StartLatencyRecorder();
+                buffer.Append(pathNum++.ToString() + ". ");
 
                 for (int i = 0; i < path.Count; i++)
                 {
@@ -293,7 +310,6 @@ namespace GoAhead.Commands
                         }
                     }*/
                     buffer.Append(nextLine);
-
                 }
                 if (path.Count != 0)
                 {

@@ -163,6 +163,15 @@ namespace GoAhead.Commands
                     //Location next = tuple.Item1;
                     if (targetLocation.Equals(next))
                     {
+                        /* Previously, if the targetLocation was found then the function would 
+                         * bypass depth checks and simply add the destination to the path.
+                         * Now, if the depth were to exceed the MaxDepth setting, the path would
+                         * be invalid and the program would attempt to find a new path.
+                         */
+                        if(depth + 1 > maxDepth)
+                        {
+                            continue;
+                        }
                         List<Location> revPath = locMan.GetPath(startLocations, currentLocation);
                         revPath.Add(next);
                         yield return revPath;
@@ -404,6 +413,7 @@ namespace GoAhead.Commands
             if (m_parent.ContainsKey(currentLocation))
             {
                 Location pre = m_parent[currentLocation];
+                depth++;
                 while (!pre.Equals(m_startLocation))
                 {
                     if (depth > maxDepth)

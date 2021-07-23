@@ -8,6 +8,9 @@ namespace GoAhead.Commands
     [CommandDescription(Description = "Export Architecture", Wrapper = false, Publish = true)]
     abstract class ExportArchitectureCommand : CommandWithFileOutput
     {
+        [Parameter(Comment = "The name of the file to save the architecture to.")]
+        public string FileName = "";
+
         public bool Scope = true; // false = all
         public bool FormattingMethod = false; // false = compact
         public int ColumnWidth;

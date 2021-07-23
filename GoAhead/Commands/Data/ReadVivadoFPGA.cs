@@ -120,6 +120,7 @@ namespace GoAhead.Commands.Data
             {
                 case "xcku":
                 case "xcvu":
+                case "xczu":
                 case "xqku": { FPGA.FPGA.Instance.Family = FPGATypes.FPGAFamily.UltraScale; break; }
                 case "xc7k": { FPGA.FPGA.Instance.Family = FPGATypes.FPGAFamily.Kintex7; break; }
                 case "xc7a":
