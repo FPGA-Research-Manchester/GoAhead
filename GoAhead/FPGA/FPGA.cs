@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Linq;
+using System.Text.RegularExpressions;
+using GoAhead.Objects;
 
 namespace GoAhead.FPGA
 {
@@ -235,6 +237,21 @@ namespace GoAhead.FPGA
         public IEnumerable<Tile> GetAllTiles()
         {
             return m_tiles;
+        }
+
+        // Be very careful using this, it's not pretty and it's not quick.
+        // It does however simplify PathSearchOnFPGA a heck of a lot as I can skip
+        // straight to searching locations rather than faffing about splitting the
+        // incoming location (which could also be a regex!!!!) into a Tile and Port.
+        public IEnumerable<Location> GetAllLocations()
+        {
+            foreach(Tile t in GetAllTiles().Where(t => !Regex.IsMatch(t.ToString(), "NULL")))
+            {
+                foreach(Port p in t.SwitchMatrix.Ports)
+                {
+                    yield return new Location(t, p);
+                }
+            }
         }
 
         public IEnumerable<SwitchMatrix> GetAllSwitchMatrices()

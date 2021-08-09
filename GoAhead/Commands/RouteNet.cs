@@ -64,7 +64,7 @@ namespace GoAhead.Commands
                 Location targetLocation = targetQueue.Dequeue();
 
                 Watch.Start("route");
-                List<Location> revPath = Route(SearchMode, true, startLocations, targetLocation, 0, 100, false).FirstOrDefault();
+                List<Location> revPath = Route(SearchMode, true, startLocations, targetLocation, 0, 100, 0, false).FirstOrDefault();
                 Watch.Stop("route");
 
                 // extend net
@@ -79,7 +79,7 @@ namespace GoAhead.Commands
             netToRoute.BlockUsedResources();
         }
 
-        public IEnumerable<List<Location>> Route(string searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, bool keepPathsIndependet)
+        public IEnumerable<List<Location>> Route(string searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, bool keepPathsIndependet)
         {
             if (startLocations.Count() == 0)
             {
@@ -109,14 +109,14 @@ namespace GoAhead.Commands
 
             if (!keepPathsIndependet)
             {
-                foreach (List<Location> l in RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, locMan))
+                foreach (List<Location> l in RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, locMan))
                 {
                     yield return l;
                 }
             }
             else
             {
-                foreach (List<Location> l in RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, startLocation, locMan))
+                foreach (List<Location> l in RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, startLocation, locMan))
                 {
                     yield return l;
                 }
@@ -127,7 +127,7 @@ namespace GoAhead.Commands
             //throw new ArgumentException("Could not route from " + startTile.Location + "." + startPip + " to " + targetTile + "." + targetPip);
         }
 
-        private IEnumerable<List<Location>> RouteClassic(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, LocationManager locMan)
+        private IEnumerable<List<Location>> RouteClassic(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, LocationManager locMan)
         {
             Tile intTile = targetLocation.Tile;// FPGATypes.GetInterconnectTile(targetLocation.Tile);
 
@@ -168,7 +168,7 @@ namespace GoAhead.Commands
                          * Now, if the depth were to exceed the MaxDepth setting, the path would
                          * be invalid and the program would attempt to find a new path.
                          */
-                        if(depth + 1 > maxDepth)
+                        if(depth + 1 > maxDepth || depth + 1 < minDepth)
                         {
                             continue;
                         }
@@ -192,7 +192,7 @@ namespace GoAhead.Commands
             }
         }
 
-        private IEnumerable<List<Location>> RouteLocal(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, Location startLocation, LocationManager locMan)
+        private IEnumerable<List<Location>> RouteLocal(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, Location startLocation, LocationManager locMan)
         {
             while (locMan.LocationsLeft())
             {

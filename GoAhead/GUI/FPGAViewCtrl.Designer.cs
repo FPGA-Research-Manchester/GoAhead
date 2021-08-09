@@ -44,6 +44,7 @@ namespace GoAhead.GUI
             this.m_contextMenuInvertSelection = new System.Windows.Forms.ToolStripMenuItem();
             this.m_contextMenuSelectAll = new System.Windows.Forms.ToolStripMenuItem();
             this.m_contextMenuCopyIdentifier = new System.Windows.Forms.ToolStripMenuItem();
+            this.m_contextMenuWriteWireListToCSV = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.m_contextMenuFullZoom = new System.Windows.Forms.ToolStripMenuItem();
             this.m_toolStripBtnZoomIn = new System.Windows.Forms.ToolStripButton();
@@ -104,6 +105,7 @@ namespace GoAhead.GUI
             this.m_contextMenuInvertSelection,
             this.m_contextMenuSelectAll,
             this.m_contextMenuCopyIdentifier,
+            this.m_contextMenuWriteWireListToCSV,
             this.toolStripSeparator3,
             this.m_contextMenuFullZoom});
             this.m_contextMenu.Name = "m_contextMenu";
@@ -166,6 +168,13 @@ namespace GoAhead.GUI
             this.m_contextMenuCopyIdentifier.Size = new System.Drawing.Size(268, 22);
             this.m_contextMenuCopyIdentifier.Text = "Copy Identifier";
             this.m_contextMenuCopyIdentifier.Click += new System.EventHandler(this.m_contextMenuCopyIdentifier_Click);
+            //
+            // m_contextMenuWriteWireListToCSV
+            //
+            this.m_contextMenuWriteWireListToCSV.Name = "m_contextMenuWriteWireListToCSV";
+            this.m_contextMenuWriteWireListToCSV.Size = new System.Drawing.Size(268, 22);
+            this.m_contextMenuWriteWireListToCSV.Text = "Write wire connections to CSV...";
+            this.m_contextMenuWriteWireListToCSV.Click += new System.EventHandler(this.m_contextMenuWriteWireListToCSV_Click);
             // 
             // toolStripSeparator3
             // 
@@ -452,6 +461,7 @@ namespace GoAhead.GUI
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuStore;
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuStoreAsPartialAreas;
         private System.Windows.Forms.ToolStripMenuItem m_contextMenuStoreAsUserDefinedName;
+        private System.Windows.Forms.ToolStripMenuItem m_contextMenuWriteWireListToCSV;
         private ZoomPicBox m_zoomPictBox;
         private System.Windows.Forms.Panel m_panelSelection;
         private System.Windows.Forms.ToolStripButton m_toolStripBtnZoomIn;

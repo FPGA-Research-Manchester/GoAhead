@@ -15,7 +15,7 @@ using GoAhead.Objects;
 using GoAhead.GUI.TileView;
 using GoAhead.GUI.FPGAView;
 using GoAhead.Commands.GUI;
-
+using GoAhead.Commands.Misc;
 
 namespace GoAhead.GUI
 {
@@ -247,6 +247,18 @@ namespace GoAhead.GUI
         }
 
         #region contextMenu
+        private void m_contextMenuWriteWireListToCSV_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+
+            if(saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                WireListToCSV cmd = new WireListToCSV();
+                cmd.FileName = saveFileDialog.FileName;
+                CommandExecuter.Instance.Execute(cmd);
+            }
+        }
         private void m_contextMenuStoreAsPartialAreas_Click(object sender, EventArgs e)
         {
             StoreCurrentSelectionAs cmd = new StoreCurrentSelectionAs();

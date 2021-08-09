@@ -13,7 +13,8 @@ namespace GoAhead.Commands
 {
     [CommandDescription(Description = "Look for the specified path and write it to file", Wrapper = true)]
     class PathSearchOnFPGA : CommandWithFileOutput
-	{
+    {
+        #region Parameters
         [Parameter(Comment = "The path search module (BFS, DFS, A*)")]
         public string SearchMode = "BFS";
 
@@ -32,12 +33,14 @@ namespace GoAhead.Commands
         [Parameter(Comment = "Location string where to start")]
         public string StartLocation = "";
 
+        // Uses legacy method if specified.
         [Parameter(Comment = "Start port")]
         public string StartPort = "";
 
         [Parameter(Comment = "Location string where to go")]
         public string TargetLocation = "";
 
+        // Uses legacy method if specified.
         [Parameter(Comment = "Target port")]
         public string TargetPort = "";
 
@@ -46,6 +49,9 @@ namespace GoAhead.Commands
 
         [Parameter(Comment = "The max path length")]
         public int MaxDepth = 7;
+
+        [Parameter(Comment = "The min path length")]
+        public int MinDepth = 0;
 
         [Parameter(Comment = "Print Banner")]
         public bool PrintBanner = true;
@@ -56,9 +62,14 @@ namespace GoAhead.Commands
         [Parameter(Comment = "Sort the paths found by the latency attribute")]
         public string SortByAttribute = "";
 
-        // EXPERIMENTAL
+        // Uses legacy method if specified.
         [Parameter(Comment = "Toggle exact regex matching for ports")]
         public bool ExactPortMatch = false;
+
+        [Parameter(Comment = "Explicit legacy setting.")]
+        public bool LegacyMode = false;
+
+        #endregion
 
         public List<List<Location>> m_paths = new List<List<Location>>();
         private LatencyManager LatencyMan;
@@ -67,48 +78,76 @@ namespace GoAhead.Commands
 
         protected override void DoCommandAction()
         {
-            List<Tile> startTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).ToList();
-            List<Tile> targetTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TargetLocation)).OrderBy(t => t.Location).ToList();
-
-            if (startTiles.Count == 0)
-                OutputManager.WriteOutput("No start tiles were found matching the supplied regex.");
-            if (targetTiles.Count == 0)
-                OutputManager.WriteOutput("No target tiles were found matching the supplied regex.");
-
-            // All matched regex start tiles
-            for (int i = 0; i < startTiles.Count; i++)
+            if(StartPort != "" || TargetPort != "" || ExactPortMatch || LegacyMode)
             {
-                string startPortRegex = ExactPortMatch ? "^" + StartPort + "$" : StartPort;
-                List<Port> startPorts = startTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, startPortRegex)).OrderBy(p => p.Name).ToList();
+                List<Tile> startTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).ToList();
+                List<Tile> targetTiles = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TargetLocation)).OrderBy(t => t.Location).ToList();
 
-                if (startPorts.Count == 0)
-                    OutputManager.WriteOutput("No ports were found on the start tile matching the supplied regex.");
-
-                // All matched regex target tiles
-                for (int j = 0; j < targetTiles.Count; j++)
+                // All matched regex start tiles
+                for (int i = 0; i < startTiles.Count; i++)
                 {
-                    string targetPortRegex = ExactPortMatch ? "^" + TargetPort + "$" : TargetPort;
-                    List<Port> targetPorts = targetTiles[j].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, targetPortRegex)).OrderBy(p => p.Name).ToList();
+                    string startPortRegex = ExactPortMatch ? "^" + StartPort + "$" : StartPort;
+                    List<Port> startPorts = startTiles[i].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, startPortRegex)).OrderBy(p => p.Name).ToList();
 
-                    if (targetPorts.Count == 0)
-                        OutputManager.WriteOutput("No ports were found on the target tile matching the supplied regex.");
+                    if (startPorts.Count == 0)
+                        OutputManager.WriteOutput("No ports were found on the start tile matching the supplied regex.");
 
-                    // All matched regex start ports
-                    for (int k = 0; k < startPorts.Count; k++)
+                    // All matched regex target tiles
+                    for (int j = 0; j < targetTiles.Count; j++)
                     {
-                        Location startLocation = new Location(startTiles[i], startPorts[k]);
+                        string targetPortRegex = ExactPortMatch ? "^" + TargetPort + "$" : TargetPort;
+                        List<Port> targetPorts = targetTiles[j].SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, targetPortRegex)).OrderBy(p => p.Name).ToList();
 
-                        // All matched regex target ports
-                        for (int l = 0; l < targetPorts.Count; l++)
+                        if (targetPorts.Count == 0)
+                            OutputManager.WriteOutput("No ports were found on the target tile matching the supplied regex.");
+
+                        // All matched regex start ports
+                        for (int k = 0; k < startPorts.Count; k++)
                         {
-                            Location targetLocation = new Location(targetTiles[j], targetPorts[l]);
+                            Location startLocation = new Location(startTiles[i], startPorts[k]);
 
-                            ExecutePathSearch(startLocation, targetLocation);
+                            // All matched regex target ports
+                            for (int l = 0; l < targetPorts.Count; l++)
+                            {
+                                Location targetLocation = new Location(targetTiles[j], targetPorts[l]);
+
+                                ExecutePathSearch(startLocation, targetLocation);
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                if (StartLocation.Contains("|"))
+                {
+                    StartLocation = ProcessMultipleLocations(StartLocation);
+                }
+                if (TargetLocation.Contains("|"))
+                {
+                    TargetLocation = ProcessMultipleLocations(TargetLocation);
+                }
 
+                Console.WriteLine("Finding start location/s...");
+                List<Location> startLocations = FPGA.FPGA.Instance.GetAllLocations().Where(loc => Regex.IsMatch(loc.ToString(), StartLocation)).ToList();
+                Console.WriteLine("Finding target location/s...");
+                List<Location> targetLocations = FPGA.FPGA.Instance.GetAllLocations().Where(loc => Regex.IsMatch(loc.ToString(), TargetLocation)).ToList();
+                Console.WriteLine("All locations found.");
+
+                if (startLocations.Count == 0)
+                    OutputManager.WriteOutput("No start locations were found matching the supplied regex.");
+                if (targetLocations.Count == 0)
+                    OutputManager.WriteOutput("No target locations were found matching the supplied regex.");
+
+                foreach (Location startLoc in startLocations)
+                {
+                    foreach (Location targetLoc in targetLocations)
+                    {
+                        ExecutePathSearch(startLoc, targetLoc);
+                    }
+                }
+            }
+            
             if (OutputMode.ToUpper().Equals("TCL"))
             {
                 TclDLL.Tcl_SetObjResult(Program.mainInterpreter.ptr, TclAPI.Cs2Tcl(TCL_output));
@@ -136,7 +175,7 @@ namespace GoAhead.Commands
             RouteNet routeCmd = new RouteNet();
             routeCmd.Watch = Watch;
 
-            foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, KeepPathsIndependet))
+            foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, MinDepth, KeepPathsIndependet))
             {
                 if (!PathAlreadyFound(path, m_paths))
                 {
@@ -188,7 +227,7 @@ namespace GoAhead.Commands
             if (PrintLatency.Where(l => !string.IsNullOrEmpty(l)).Count() > 0 || !string.IsNullOrEmpty(SortByAttribute))
                 banner += LatencyMan.GetLatencyBanner();
 
-            return banner;            
+            return banner;
         }
 
         public static string GetBanner(Location start, Location sink)
@@ -240,7 +279,7 @@ namespace GoAhead.Commands
                 {
                     ip.InstanceName = s.SliceName;
                 }
-            }         
+            }
 
             int netCount = 0;
             StringBuilder buffer = new StringBuilder();
@@ -286,10 +325,10 @@ namespace GoAhead.Commands
 
                     // Attempt printing latency
                     string latency = LatencyMan.RecordLatencyForPathSegment(
-                        Forward ? (i == 0 ? null : path[i - 1]) : path[i], 
+                        Forward ? (i == 0 ? null : path[i - 1]) : path[i],
                         Forward ? path[i] : (i == 0 ? null : path[i - 1]));
                     if (!"".Equals(latency)) nextLine += " " + latency;
-                    
+
                     nextLine = nextLine.PadRight(maxSegmentLength[i]);
                     nextLine += (i < path.Count - 1 ? " -> " : "");
 
@@ -327,10 +366,10 @@ namespace GoAhead.Commands
         private void AddToTCLOutput(List<List<Location>> paths)
         {
             List<List<string>> convertedFormat = new List<List<string>>();
-            for(int i=0; i<paths.Count; i++)
+            for (int i = 0; i < paths.Count; i++)
             {
                 List<string> path = new List<string>();
-                for(int j=0; j<paths[i].Count; j++)
+                for (int j = 0; j < paths[i].Count; j++)
                 {
                     path.Add(paths[i][j].ToString());
                 }
@@ -339,6 +378,18 @@ namespace GoAhead.Commands
 
             if (TCL_output == null) TCL_output = new List<object>();
             TCL_output.Add(convertedFormat);
+        }
+
+        private string ProcessMultipleLocations(string locationRegex)
+        {
+            StringBuilder sb = new StringBuilder();
+            string[] locations = locationRegex.Split('|');
+            foreach (string location in locations)
+            {
+                sb.Append($"^{location.Trim()}$|");
+            }
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
         }
 
         public static bool PathAlreadyFound(List<Location> path, List<List<Location>> foundPaths)

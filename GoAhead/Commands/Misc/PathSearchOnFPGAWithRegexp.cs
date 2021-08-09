@@ -11,6 +11,49 @@ namespace GoAhead.Commands.Misc
     [CommandDescription(Description = "Helper command for PrintLUTRouting", Wrapper = true, Publish = true)]
     class PathSearchOnFPGAWithRegexp : CommandWithFileOutput
     {
+        [Parameter(Comment = "Location string where to start")]
+        public string StartLocation = "INT_X9Y39";
+
+        [Parameter(Comment = "Start ports")]
+        public List<string> StartPortRegexps = new List<string>();
+
+        [Parameter(Comment = "Location string where to go")]
+        public string TargetLocation = "INT_X11Y39";
+
+        [Parameter(Comment = "Target port")]
+        public string TargetPortRegexp = "_L_C";
+
+        [Parameter(Comment = "The max path length")]
+        public int MaxDepth = 7;
+
+        [Parameter(Comment = "The path search module (BFS, DFS, A*)")]
+        public string SearchMode = "BFS";
+
+        [Parameter(Comment = "Whether to search in forward (true) or backward direction (false)")]
+        public bool Forward = true;
+
+        [Parameter(Comment = "Whether to block used ports after finding a path (set to true for incremental search)")]
+        public bool BlockUsedPorts = false;
+
+        [Parameter(Comment = "How to print out the results (XDL, CHAIN, TCL)")]
+        public string OutputMode = "CHAIN";
+
+        [Parameter(Comment = "Stop after the first MaxSolutions path")]
+        public int MaxSolutions = 1;
+
+        [Parameter(Comment = "Print Banner")]
+        public bool PrintBanner = true;
+
+        [Parameter(Comment = "Print Latency")]
+        public List<string> PrintLatency = new List<string>();
+
+        [Parameter(Comment = "Sort the paths found by the latency attribute")]
+        public string SortByAttribute = "";
+
+        // EXPERIMENTAL
+        [Parameter(Comment = "Toggle exact regex matching for ports")]
+        public bool ExactPortMatch = false;
+
         protected override void DoCommandAction()
         {
             Tile startTile = FPGA.FPGA.Instance.GetTile(StartLocation);
@@ -30,15 +73,16 @@ namespace GoAhead.Commands.Misc
                 foreach (Port targetPort in targetTile.SwitchMatrix.GetDrivenPorts().Where(p => Regex.IsMatch(p.Name, TargetPortRegexp)).OrderBy(p => p.Name))
                 {
                     PathSearchOnFPGA searchCmd = new PathSearchOnFPGA();
-                    searchCmd.Forward = true;
+                    searchCmd.Forward = Forward;
                     searchCmd.MaxDepth = MaxDepth;
-                    searchCmd.MaxSolutions = 1;
-                    searchCmd.SearchMode = "BFS";
+                    searchCmd.MaxSolutions = MaxSolutions;
+                    searchCmd.SearchMode = SearchMode;
                     searchCmd.StartLocation = startTile.Location;
                     searchCmd.StartPort = startPort.Name;
                     searchCmd.TargetLocation = targetTile.Location;
                     searchCmd.TargetPort = targetPort.Name;
-                    searchCmd.PrintBanner = false;
+                    searchCmd.PrintBanner = PrintBanner;
+                    searchCmd.BlockUsedPorts = BlockUsedPorts;
                     CommandExecuter.Instance.Execute(searchCmd);
                     m_paths.AddRange(searchCmd.m_paths);
                     // copy output
@@ -53,6 +97,7 @@ namespace GoAhead.Commands.Misc
 
             return;
 
+            #region Unreachable code
             List<Tuple<Tuple<Location, Location>, List<Location>>> solutionSet = new List<Tuple<Tuple<Location, Location>, List<Location>>>();
             foreach (List<Location> p in m_paths)
             {
@@ -131,7 +176,7 @@ namespace GoAhead.Commands.Misc
                 
                // List<Location> westImuxes = west.
             }
-
+            #endregion
         }
 
         private bool IsUnique(IEnumerable<Tuple<Tuple<Location, Location>, List<Location>>> set)
@@ -166,21 +211,5 @@ namespace GoAhead.Commands.Misc
         {
             throw new NotImplementedException();
         }
-
-        [Parameter(Comment = "Location string where to start")]
-        public string StartLocation = "INT_X9Y39";
-
-        [Parameter(Comment = "Start ports")]
-        public List<string> StartPortRegexps = new List<string>();
-
-        [Parameter(Comment = "Location string where to go")]
-        public string TargetLocation = "INT_X11Y39";
-
-        [Parameter(Comment = "Target port")]
-        public string TargetPortRegexp = "_L_C";
-
-
-        [Parameter(Comment = "The max path length")]
-        public int MaxDepth = 5;
     }
 }

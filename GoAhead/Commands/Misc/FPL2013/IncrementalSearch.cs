@@ -80,7 +80,7 @@ namespace GoAhead.Commands.Misc.FPL2013
                 }
 
                 Watch.Start("search");
-                foreach (List<Location> path in routeCmd.Route("BFS", true, initialSearchFront, sink, 100, MaxDepth, false))
+                foreach (List<Location> path in routeCmd.Route("BFS", true, initialSearchFront, sink, 100, MaxDepth, 0, false))
                 {
                     if (!PathSearchOnFPGA.PathAlreadyFound(path, paths))
                     {
