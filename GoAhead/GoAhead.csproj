@@ -146,8 +146,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>..\packages\CsvHelper.27.1.1\lib\net47\CsvHelper.dll</HintPath>
+    <Reference Include="CsvHelper, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\packages\CsvHelper.2.16.3.0\lib\net45\CsvHelper.dll</HintPath>
     </Reference>
     <Reference Include="Dijkstra.NET, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Dijkstra.NET.1.2.1\lib\net40\Dijkstra.NET.dll</HintPath>
@@ -273,6 +273,7 @@
     <Compile Include="Commands\ArchitectureGraph\PrintAllWirelists.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintArchitectureGraph.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintVCCPipsInAllInterconnects.cs" />
+    <Compile Include="Commands\DijkstraRouteNet.cs" />
     <Compile Include="Commands\GridStyle\AddLUTConnectionPrimitive.cs" />
     <Compile Include="Commands\GridStyle\AnnotateSignalNamesToConnectionPrimitives.cs" />
     <Compile Include="Commands\GridStyle\BlockLUTInputPortsInSelection.cs" />
@@ -297,7 +298,9 @@
     <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
+    <Compile Include="Commands\Misc\DijkstraOnFPGA.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />
+    <Compile Include="Commands\Misc\SetPortCosts.cs" />
     <Compile Include="Commands\Misc\WireListToCSV.cs" />
     <Compile Include="Commands\Misc\PrintTileInformationCSV.cs" />
     <Compile Include="Commands\Misc\PathSearchOnFPGAWithRegexp.cs" />
