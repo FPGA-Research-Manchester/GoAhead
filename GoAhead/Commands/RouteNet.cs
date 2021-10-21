@@ -6,6 +6,8 @@ using GoAhead.Code.XDL;
 using GoAhead.Commands.NetlistContainerGeneration;
 using GoAhead.FPGA;
 using GoAhead.Objects;
+using Dijkstra.NET.Graph;
+using Dijkstra.NET.ShortestPath;
 
 namespace GoAhead.Commands
 {
@@ -79,7 +81,7 @@ namespace GoAhead.Commands
             netToRoute.BlockUsedResources();
         }
 
-        public IEnumerable<List<Location>> Route(string searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, bool keepPathsIndependet)
+        public IEnumerable<List<Location>> Route(string searchMode, bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, bool keepPathsIndependet, bool useUserSelection = false)
         {
             if (startLocations.Count() == 0)
             {
@@ -87,47 +89,58 @@ namespace GoAhead.Commands
             }
 
             Location startLocation = startLocations.First();
-
-            LocationManager locMan = null;
-            // how to route
-            switch (searchMode)
+            if (searchMode != "Dijkstra")
             {
-                case "BFS":
-                    locMan = new QueueLocationManager(startLocation);
-                    break;
-                case "DFS":
-                    locMan = new StackLocationManager(startLocation);
-                    break;
-                case "A*":
-                    locMan = new SortedQLocationManager(startLocation, targetLocation.Tile);
-                    break;
-                default:
-                    throw new ArgumentException("SearchMode " + searchMode + " not supported. See paramter SearchMode for posible values.");
-            }
-
-            locMan.Add(startLocations);
-
-            if (!keepPathsIndependet)
-            {
-                foreach (List<Location> l in RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, locMan))
+                LocationManager locMan = null;
+                // how to route
+                switch (searchMode)
                 {
-                    yield return l;
+                    case "BFS":
+                        locMan = new QueueLocationManager(startLocation);
+                        break;
+                    case "DFS":
+                        locMan = new StackLocationManager(startLocation);
+                        break;
+                    case "A*":
+                        locMan = new SortedQLocationManager(startLocation, targetLocation.Tile);
+                        break;
+                    default:
+                        throw new ArgumentException("SearchMode " + searchMode + " not supported. See paramter SearchMode for posible values.");
                 }
+
+                locMan.Add(startLocations);
+
+                if (!keepPathsIndependet)
+                {
+                    foreach (List<Location> l in RouteClassic(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, locMan, useUserSelection))
+                    {
+                        yield return l;
+                    }
+                }
+                else
+                {
+                    foreach (List<Location> l in RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, startLocation, locMan, useUserSelection))
+                    {
+                        yield return l;
+                    }
+                }
+
+                locMan.Clear();
             }
             else
             {
-                foreach (List<Location> l in RouteLocal(forward, startLocations, targetLocation, distanceLimit, maxDepth, minDepth, startLocation, locMan))
+                DijkstraLocationManager locMan = new DijkstraLocationManager(startLocation, targetLocation);
+                Console.WriteLine("Initialisation complete.");
+                List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
+                foreach(Location loc in result)
                 {
-                    yield return l;
+                    Console.WriteLine(loc.ToString());
                 }
             }
-
-            locMan.Clear();
-
             //throw new ArgumentException("Could not route from " + startTile.Location + "." + startPip + " to " + targetTile + "." + targetPip);
         }
 
-        private IEnumerable<List<Location>> RouteClassic(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, LocationManager locMan)
+        private IEnumerable<List<Location>> RouteClassic(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, LocationManager locMan, bool useUserSelection)
         {
             Tile intTile = targetLocation.Tile;// FPGATypes.GetInterconnectTile(targetLocation.Tile);
 
@@ -158,7 +171,7 @@ namespace GoAhead.Commands
 
                 foreach (Tuple<Location, int> tuple in reachables.OrderByDescending(t => t.Item2))
                  * */
-                foreach (Location next in GetReachableLocations(currentLocation, forward))
+                foreach (Location next in GetReachableLocations(currentLocation, forward, useUserSelection))
                 {
                     //Location next = tuple.Item1;
                     if (targetLocation.Equals(next))
@@ -192,7 +205,7 @@ namespace GoAhead.Commands
             }
         }
 
-        private IEnumerable<List<Location>> RouteLocal(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, Location startLocation, LocationManager locMan)
+        private IEnumerable<List<Location>> RouteLocal(bool forward, IEnumerable<Location> startLocations, Location targetLocation, int distanceLimit, int maxDepth, int minDepth, Location startLocation, LocationManager locMan, bool useUserSelection)
         {
             while (locMan.LocationsLeft())
             {
@@ -273,18 +286,22 @@ namespace GoAhead.Commands
             }
         }
 
-        private IEnumerable<Location> GetReachableLocations(Location currentLocation, bool forward)
+        private IEnumerable<Location> GetReachableLocations(Location currentLocation, bool forward, bool useUserSelection = false)
         {
             if (forward)
             {
                 foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => FollowPort(currentLocation.Tile, p)))
                 {
                     Location next = new Location(currentLocation.Tile, pip);
+                    if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                        continue;
                     yield return next;
                 }
 
                 foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip).Where(loc => FollowPort(loc.Tile, loc.Pip)))
                 {
+                    if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                        continue;
                     yield return next;
                 }
             }
@@ -293,11 +310,15 @@ namespace GoAhead.Commands
                 foreach (Tuple<Port, Port> arc in currentLocation.Tile.SwitchMatrix.GetAllArcs().Where(a => a.Item2.Name.Equals(currentLocation.Pip.Name) && FollowPort(currentLocation.Tile, a.Item1)))
                 {
                     Location next = new Location(currentLocation.Tile, arc.Item1);
+                    if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                        continue;
                     yield return next;
                 }
 
                 foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip, false).Where(loc => FollowPort(loc.Tile, loc.Pip)))
                 {
+                    if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                        continue;
                     yield return next;
                 }
             }
@@ -581,7 +602,7 @@ namespace GoAhead.Commands
         {
             return m_locationQueue.Dequeue();
         }
-                        
+        
         public override int Count()
         {
             return m_locationQueue.Count;
@@ -594,6 +615,109 @@ namespace GoAhead.Commands
 
         private Queue<Location> m_locationQueue = new Queue<Location>(2000000);
     }
+    /*
+    class DijkstraLocationManager
+    {
+        public DijkstraLocationManager(Location start, Location end)
+        {
+            m_startNodeKey = m_graph.AddNode(start);
+            m_startNode = start;
+            m_locKeys.Add(start, m_startNodeKey);
 
+            m_targetNodeKey = m_graph.AddNode(end);
+            m_targetNode = end;
+            m_locKeys.Add(end, m_targetNodeKey);
 
+            InitGraph();
+        }
+
+        public void InitGraph()
+        {
+            foreach(Location loc in FPGA.FPGA.Instance.GetAllLocations())
+            {
+                List<Location> reachableLocations = GetReachableLocations(loc).ToList();
+                Tile fromTile = loc.Tile;
+                if(!m_locKeys.ContainsKey(loc))
+                {
+                    m_locKeys.Add(loc, m_graph.AddNode(loc));
+                }
+                foreach (Location connectedLocation in reachableLocations)
+                {
+                    Tile toTile = connectedLocation.Tile;
+                    int diffX = fromTile.TileKey.X - toTile.TileKey.X;
+                    int diffY = fromTile.TileKey.Y - toTile.TileKey.Y;
+                    if (!m_locKeys.ContainsKey(connectedLocation))
+                    {
+                        m_locKeys.Add(connectedLocation, m_graph.AddNode(connectedLocation));
+                    }
+                    m_graph.Connect(m_locKeys[loc], m_locKeys[connectedLocation], Pythagoras(diffX, diffY), $"{loc} -> {connectedLocation}");
+                }
+            }
+        }
+
+        private IEnumerable<Location> GetReachableLocations(Location currentLocation)
+        {
+            foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => FollowPort(currentLocation.Tile, p)))
+            {
+                Location next = new Location(currentLocation.Tile, pip);
+                yield return next;
+            }
+
+            foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip).Where(loc => FollowPort(loc.Tile, loc.Pip)))
+            {
+                yield return next;
+            }
+        }
+
+        public List<Location> GetShortestPath(Location from, Location to, int depth)
+        {
+            List<Location> path = new List<Location>();
+            ShortestPathResult result = DijkstraExtensions.Dijkstra(m_graph, m_startNodeKey, m_targetNodeKey, depth);
+
+            foreach(uint locKey in result.GetPath())
+            {
+                path.Add(m_locKeys.FirstOrDefault(pair => pair.Value == locKey).Key);
+            }
+
+            return path;
+        }
+
+        private int Pythagoras(int x, int y)
+        {
+            return (int)Math.Round(Math.Sqrt(x * x + y * y));
+        }
+
+        public uint AddToGraph(Location locToAdd)
+        {
+            uint key = m_graph.AddNode(locToAdd);
+            m_locKeys.Add(locToAdd, key);
+            return key;
+        }
+
+        public void ConnectPorts(Location loc1, Location loc2)
+        {
+            m_graph.Connect(m_locKeys[loc1], m_locKeys[loc2], loc1.Pip.Cost + loc2.Pip.Cost, "");
+        }
+
+        private bool FollowPort(Tile t, Port p)
+        {
+            if (t.IsPortBlocked(p))
+            {
+                if (t.IsPortBlocked(p, Tile.BlockReason.Stopover))
+                    return true;
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private Location m_startNode;
+        private Location m_targetNode;
+        private uint m_startNodeKey;
+        private uint m_targetNodeKey;
+        private Graph<Location, string> m_graph = new Graph<Location, string>();
+        private Dictionary<Location, uint> m_locKeys = new Dictionary<Location, uint>();
+    }
+    */
 }

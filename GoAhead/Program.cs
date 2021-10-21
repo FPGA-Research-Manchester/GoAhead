@@ -133,9 +133,21 @@ namespace GoAhead
                             commandMode = true;
                             break;
                         case "-server":
-                            portNumber = int.Parse(args[i+1]);
-                            i++;
-                            break;                   
+                            try
+                            {
+                                portNumber = int.Parse(args[i + 1]);
+                                i++;
+                                serverMode = true;
+
+                            }
+                            catch (IndexOutOfRangeException ex)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("No port number supplied for server mode!");
+                                Console.ResetColor();
+                                serverMode = false;
+                            }
+                            break;
                         default:
                             if (args[i].EndsWith(".goa") && File.Exists(args[i]))
                             {
@@ -207,11 +219,12 @@ namespace GoAhead
             else
             {
                 Console.WriteLine("No switch found. Start GoAhead with one of the following options:");
-                Console.WriteLine("GoAhead -gui             : Open GoAhead in GUI-Mode");
-                Console.WriteLine("GoAhead -exec script.goa : Execute script.goa");
-                Console.WriteLine("GoAhead script.goa       : Execute script.goa");
-                Console.WriteLine("GoAhead -shell           : Start GoAhead shell (interactive Command mode)");
-                Console.WriteLine("GoAhead -command(s)      : Execute GoAhead commands (e.g GoAhead -command \"FixS6XDLBug XDLInFile=in.xdl XDLOutFile=out.xdl;\"");
+                Console.WriteLine("GoAhead -gui                     : Open GoAhead in GUI-Mode");
+                Console.WriteLine("GoAhead -exec script.goa         : Execute script.goa");
+                Console.WriteLine("GoAhead script.goa               : Execute script.goa");
+                Console.WriteLine("GoAhead -shell                   : Start GoAhead shell (interactive Command mode)");
+                Console.WriteLine("GoAhead -command(s)              : Execute GoAhead commands (e.g GoAhead -command \"FixS6XDLBug XDLInFile=in.xdl XDLOutFile=out.xdl;\"");
+                Console.WriteLine("GoAhead.exe -server portNumber   : Execute GoAhead in server mode on the specified port");
             }
 
             // save settings

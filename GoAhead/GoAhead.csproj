@@ -298,7 +298,6 @@
     <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
-    <Compile Include="Commands\Misc\DijkstraOnFPGA.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />
     <Compile Include="Commands\Misc\SetPortCosts.cs" />
     <Compile Include="Commands\Misc\WireListToCSV.cs" />
@@ -564,6 +563,7 @@
     <Compile Include="FPGA\Slices\V7Slice.cs" />
     <Compile Include="FPGA\TileSet.cs" />
     <Compile Include="FPGA\Slices\V4Slice.cs" />
+    <Compile Include="FPGA\TileWire.cs" />
     <Compile Include="FPGA\Wire.cs" />
     <Compile Include="FPGA\Slices\ZSlice.cs" />
     <Compile Include="GUI\Macros\BusInterface\PrintBusInterfaceCtrl.cs">
@@ -1304,6 +1304,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\TileView\TileViewCtrl.resx">
       <DependentUpon>TileViewCtrl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Watch\VariableWatchForm.resx">
       <DependentUpon>VariableWatchForm.cs</DependentUpon>

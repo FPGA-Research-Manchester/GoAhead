@@ -335,6 +335,8 @@ namespace GoAhead.Commands.Data
                 string fromTile = left.Substring(0, slashIndexLeft);
                 string fromPip = left.Substring(slashIndexLeft + 1);//, left.Length - slashIndexLeft-1);
 
+                
+
                 if (string.IsNullOrEmpty(currentTileName))
                 {
                     currentTileName = fromTile;
@@ -357,23 +359,34 @@ namespace GoAhead.Commands.Data
                 int slashIndexRight = right.IndexOf("/");
                 string toTile = right.Substring(0, slashIndexRight);
                 string toPip = right.Substring(slashIndexRight + 1);//, right.Length - slashIndexRight - 1);
+                /*
+                if (fromTile == "INT_X6Y121" && toTile == "CLEM_X6Y121")
+                {
 
+                }
+                */
                 Tile tile = FPGA.FPGA.Instance.GetTile(fromTile);
                 Tile target = FPGA.FPGA.Instance.GetTile(toTile);
 
-                uint localPipKey = FPGA.FPGA.Instance.IdentifierListLookup.GetKey(fromPip);
+                Port fromPort = new Port(fromPip);
+                Port toPort = new Port(toPip);
+
+                //uint localPipKey = FPGA.FPGA.Instance.IdentifierListLookup.GetKey(fromPip);
 
                 if (WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.WiresTrajectoriesData)) 
-                    tile.AddWireTrajectoryData(localPipKey, FPGA.FPGA.Instance.IdentifierListLookup.GetKey(toTile));
+                    tile.AddWireTrajectoryData(fromPort.NameKey, FPGA.FPGA.Instance.IdentifierListLookup.GetKey(toTile));
                 
                 if (!currentTile.SwitchMatrix.Contains(fromPip))
                 {
+                    currentTile.SwitchMatrix.Add(fromPort, toPort);
+                    /*
                     if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELOutWires) ||
                         !wireHelper.IsBELOutPip(currentTile, fromPip))
                     {
                         ReadVivadoFPGADebugger.DebugWire(fromTile, fromPip, toTile, toPip);
                         continue;
                     }
+                    */
                 }
 
                 short xIncr = (short)(target.TileKey.X - currentTile.TileKey.X);
@@ -390,19 +403,22 @@ namespace GoAhead.Commands.Data
 
                 if (!target.SwitchMatrix.Contains(toPip))
                 {
+                    target.SwitchMatrix.Add(fromPort, toPort);
+                    /*
                     if (!WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.BELInWires) ||
                         !wireHelper.IsBELInPip(target, toPip))
                     {
                         ReadVivadoFPGADebugger.DebugWire(fromTile, fromPip, toTile, toPip);
                         continue;
                     }
+                    */
                 }
 
-                uint pipOnOtherTileKey = FPGA.FPGA.Instance.IdentifierListLookup.GetKey(toPip);
-                Port from = new Port(fromPip);
+                //uint pipOnOtherTileKey = FPGA.FPGA.Instance.IdentifierListLookup.GetKey(toPip);
+                //Port from = new Port(fromPip);
                 //Port to = new Port(toPip);
-                bool fromIsBegin = currentTile.SwitchMatrix.ContainsRight(from);
-                Wire w = new Wire(localPipKey, pipOnOtherTileKey, fromIsBegin, xIncr, yIncr);
+                bool fromIsBegin = currentTile.SwitchMatrix.ContainsRight(fromPort);
+                Wire w = new Wire(fromPort.NameKey, toPort.NameKey, fromIsBegin, xIncr, yIncr);
                 wl.Add(w);
 
                 if (WireHelper.GetIncludeFlag(WireHelper.IncludeFlag.IncomingWires))

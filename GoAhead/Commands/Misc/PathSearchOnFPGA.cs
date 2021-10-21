@@ -172,51 +172,74 @@ namespace GoAhead.Commands
                 OutputManager.WriteOutput(GetBannerWithLatency(startLocation, targetLocation));
             }
 
-            RouteNet routeCmd = new RouteNet();
-            routeCmd.Watch = Watch;
-
-            foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, MinDepth, KeepPathsIndependet))
+            if(SearchMode == "Dijkstra")
             {
-                if (!PathAlreadyFound(path, m_paths))
+                DijkstraRouteNet routeCmd = new DijkstraRouteNet();
+                routeCmd.Watch = Watch;
+                foreach (List<Location> path in routeCmd.Route(startLocation, targetLocation, MaxDepth))
                 {
-                    m_paths.Add(path);
-
-                    if (BlockUsedPorts)
+                    StringBuilder sb = new StringBuilder();
+                    for (int x = 0; x < path.Count; x++)
                     {
-                        foreach (Location l in path)
+                        sb.Append(path[x].ToString());
+                        if (x + 1 != path.Count)
                         {
-                            if (!l.Tile.IsPortBlocked(l.Pip))
-                            {
-                                l.Tile.BlockPort(l.Pip, Tile.BlockReason.Blocked);
-                            }
+                            sb.Append(" --> ");
                         }
                     }
 
-                    ProgressInfo.Progress = ProgressStart + (int)(m_paths.Count / (double)MaxSolutions * ProgressShare);
-
-                    if (m_paths.Count >= MaxSolutions)
-                    {
-                        break;
-                    }
+                    Console.WriteLine(sb.ToString());
                 }
             }
+            else
+            {
+                RouteNet routeCmd = new RouteNet();
+                routeCmd.Watch = Watch;
 
-            if (m_paths.Count == 0)
-            {
-                OutputManager.WriteOutput("No path found. Try raising the MaxDepth parameter.");
+                foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, MinDepth, KeepPathsIndependet))
+                {
+                    if (!PathAlreadyFound(path, m_paths))
+                    {
+                        m_paths.Add(path);
+
+                        if (BlockUsedPorts)
+                        {
+                            foreach (Location l in path)
+                            {
+                                if (!l.Tile.IsPortBlocked(l.Pip))
+                                {
+                                    l.Tile.BlockPort(l.Pip, Tile.BlockReason.Blocked);
+                                }
+                            }
+                        }
+
+                        ProgressInfo.Progress = ProgressStart + (int)(m_paths.Count / (double)MaxSolutions * ProgressShare);
+
+                        if (m_paths.Count >= MaxSolutions)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (m_paths.Count == 0)
+                {
+                    OutputManager.WriteOutput("No path found. Try raising the MaxDepth parameter.");
+                }
+                else if (OutputMode.ToUpper().Equals("CHAIN"))
+                {
+                    PrintAsChain(m_paths);
+                }
+                else if (OutputMode.ToUpper().Equals("XDL"))
+                {
+                    OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
+                }
+                else if (OutputMode.ToUpper().Equals("TCL"))
+                {
+                    AddToTCLOutput(m_paths);
+                }
             }
-            else if (OutputMode.ToUpper().Equals("CHAIN"))
-            {
-                PrintAsChain(m_paths);
-            }
-            else if (OutputMode.ToUpper().Equals("XDL"))
-            {
-                OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
-            }
-            else if (OutputMode.ToUpper().Equals("TCL"))
-            {
-                AddToTCLOutput(m_paths);
-            }
+            
         }
 
         public string GetBannerWithLatency(Location start, Location sink)

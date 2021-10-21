@@ -315,6 +315,14 @@ namespace GoAhead.FPGA
             return ToString().CompareTo(obj.ToString());
         }
 
+        public static int CompareByDistance(Wire wire1, Wire wire2)
+        {
+            double dist1 = Math.Sqrt(Math.Pow(wire1.XIncr, 2) + Math.Pow(wire1.YIncr, 2));
+            double dist2 = Math.Sqrt(Math.Pow(wire2.XIncr, 2) + Math.Pow(wire2.YIncr, 2));
+
+            return dist1.CompareTo(dist2);
+        }
+
         private readonly uint m_localPipKey;
         private readonly uint m_pipOnOtherTileKey;
         private readonly int m_xIncr;

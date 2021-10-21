@@ -626,7 +626,14 @@ namespace GoAhead.FPGA
             }
         }
 
-        public static IEnumerable<LUTRoutingInfo> GetLUTRouting(Tile clb)
+        public enum LUTRoutingType
+        {
+            LUTRoutingAll,
+            LUTRoutingIn,
+            LUTRoutingOut
+        }
+
+        public static IEnumerable<LUTRoutingInfo> GetLUTRouting(Tile clb, LUTRoutingType type = LUTRoutingType.LUTRoutingAll)
         {
             // go to left interconnet tile
             if (!IdentifierManager.Instance.IsMatch(clb.Location, IdentifierManager.RegexTypes.CLB))
@@ -636,34 +643,40 @@ namespace GoAhead.FPGA
             Tile interConnect = GetInterconnectTile(clb);
 
             // "", in, out, lutIn
-            foreach (Tuple<Port, Port> arc in interConnect.SwitchMatrix.GetAllArcs())
+            if (type == LUTRoutingType.LUTRoutingIn || type == LUTRoutingType.LUTRoutingAll)
             {
-                foreach (Location location in Navigator.GetDestinations(interConnect, arc.Item2).Where(loc => loc.Tile.Location.Equals(clb.Location)))
+                foreach (Tuple<Port, Port> arc in interConnect.SwitchMatrix.GetAllArcs())
                 {
-                    LUTRoutingInfo info = new LUTRoutingInfo();
-                    info.Port2 = arc.Item1;
-                    info.Port3 = arc.Item2;
-                    try
+                    foreach (Location location in Navigator.GetDestinations(interConnect, arc.Item2).Where(loc => loc.Tile.Location.Equals(clb.Location)))
                     {
-                        info.Port4 = clb.SwitchMatrix.GetFirstDrivenPort(location.Pip);
-                    }
-                    catch (ArgumentException) { }
+                        LUTRoutingInfo info = new LUTRoutingInfo();
+                        info.Port2 = arc.Item1;
+                        info.Port3 = arc.Item2;
+                        try
+                        {
+                            info.Port4 = clb.SwitchMatrix.GetFirstDrivenPort(location.Pip);
+                        }
+                        catch (ArgumentException) { }
 
-                    yield return info;
+                        yield return info;
+                    }
                 }
             }
 
-            foreach (Tuple<Port, Port> arc in clb.SwitchMatrix.GetAllArcs())
+            if(type == LUTRoutingType.LUTRoutingOut || type == LUTRoutingType.LUTRoutingAll)
             {
-                foreach (Location location in Navigator.GetDestinations(clb, arc.Item2).Where(loc => loc.Tile.Location.Equals(interConnect.Location)))
+                foreach (Tuple<Port, Port> arc in clb.SwitchMatrix.GetAllArcs())
                 {
-                    foreach (Port p in interConnect.SwitchMatrix.GetDrivenPorts(location.Pip))
+                    foreach (Location location in Navigator.GetDestinations(clb, arc.Item2).Where(loc => loc.Tile.Location.Equals(interConnect.Location)))
                     {
-                        LUTRoutingInfo info = new LUTRoutingInfo();
-                        info.Port1 = arc.Item1;
-                        info.Port2 = location.Pip;
-                        info.Port3 = p;
-                        yield return info;
+                        foreach (Port p in interConnect.SwitchMatrix.GetDrivenPorts(location.Pip))
+                        {
+                            LUTRoutingInfo info = new LUTRoutingInfo();
+                            info.Port1 = arc.Item1;
+                            info.Port2 = location.Pip;
+                            info.Port3 = p;
+                            yield return info;
+                        }
                     }
                 }
             }

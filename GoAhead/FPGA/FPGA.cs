@@ -254,6 +254,17 @@ namespace GoAhead.FPGA
             }
         }
 
+        public IEnumerable<Location> GetAllLocationsInSelection()
+        {
+            foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles().Where(t => !Regex.IsMatch(t.ToString(), "NULL")))
+            {
+                foreach (Port p in t.SwitchMatrix.Ports)
+                {
+                    yield return new Location(t, p);
+                }
+            }
+        }
+
         public IEnumerable<SwitchMatrix> GetAllSwitchMatrices()
         {
             foreach (SwitchMatrix sm in m_matrices.Values)
