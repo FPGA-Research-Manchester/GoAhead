@@ -299,6 +299,7 @@
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />
+    <Compile Include="Commands\Misc\SetEdgeCosts.cs" />
     <Compile Include="Commands\Misc\SetPortCosts.cs" />
     <Compile Include="Commands\Misc\WireListToCSV.cs" />
     <Compile Include="Commands\Misc\PrintTileInformationCSV.cs" />

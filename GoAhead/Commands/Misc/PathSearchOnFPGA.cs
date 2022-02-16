@@ -166,12 +166,7 @@ namespace GoAhead.Commands
             else
                 LatencyMan = new LatencyManager(PrintLatency, SortByAttribute);
 
-            // print results
-            if (PrintBanner && !OutputMode.ToUpper().Equals("TCL"))
-            {
-                OutputManager.WriteOutput(GetBannerWithLatency(startLocation, targetLocation));
-            }
-
+            
             if(SearchMode == "Dijkstra")
             {
                 DijkstraRouteNet routeCmd = new DijkstraRouteNet();
@@ -195,6 +190,13 @@ namespace GoAhead.Commands
             {
                 RouteNet routeCmd = new RouteNet();
                 routeCmd.Watch = Watch;
+
+                // print results
+                if (PrintBanner && !OutputMode.ToUpper().Equals("TCL"))
+                {
+                    OutputManager.WriteOutput(GetBannerWithLatency(startLocation, targetLocation));
+                }
+
 
                 foreach (List<Location> path in routeCmd.Route(SearchMode, Forward, Enumerable.Repeat(startLocation, 1), targetLocation, 1000, MaxDepth, MinDepth, KeepPathsIndependet))
                 {

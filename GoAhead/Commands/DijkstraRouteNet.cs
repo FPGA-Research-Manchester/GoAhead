@@ -92,7 +92,6 @@ namespace GoAhead.Commands
             }
 
             DijkstraLocationManager locMan = new DijkstraLocationManager(startLocation, targetLocation);
-            Console.WriteLine("Initialisation complete.");
             for (int x = 0; x < 5; x++)
             {
                 List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
@@ -121,12 +120,21 @@ namespace GoAhead.Commands
     {
         public DijkstraLocationManager(Location start, Location end)
         {
+            InitGraph(start, end);
+        }
+
+        public void InitGraph(Location start, Location end)
+        {
+            m_graph = new Graph<Location, string>();
+            m_locKeys = new Dictionary<Location, uint>();
+
             m_startNodeKey = m_graph.AddNode(start);
             m_startNode = start;
-            m_locKeys.Add(start, m_startNodeKey);
 
             m_targetNodeKey = m_graph.AddNode(end);
             m_targetNode = end;
+
+            m_locKeys.Add(start, m_startNodeKey);
             m_locKeys.Add(end, m_targetNodeKey);
 
             int startX = Math.Min(m_startNode.Tile.TileKey.X, m_targetNode.Tile.TileKey.X);
@@ -144,14 +152,30 @@ namespace GoAhead.Commands
 
             AddToSelectionXY selectionCmd = new AddToSelectionXY(x1, y1, x2, y2);
             selectionCmd.Do();
-
-            InitGraph();
-        }
-
-        public void InitGraph()
-        {
+            ExpandSelection expandCmd = new ExpandSelection();
+            expandCmd.Do();
+            
             foreach (Location loc in FPGA.FPGA.Instance.GetAllLocationsInSelection())
             {
+                if (!m_locKeys.ContainsKey(loc))
+                {
+                    m_locKeys.Add(loc, m_graph.AddNode(loc));
+                }
+
+                Tile fromTile = loc.Tile;
+                WireList wireList = fromTile.WireList;
+
+                foreach(Wire w in wireList)
+                {
+                    Location toLoc = new Location(fromTile.GetTileAtWireEnd(w), new Port(w.PipOnOtherTile));
+                    if (!m_locKeys.ContainsKey(toLoc))
+                    {
+                        m_locKeys.Add(toLoc, m_graph.AddNode(toLoc));
+                    }
+                    m_graph.Connect(m_locKeys[loc], m_locKeys[toLoc], w.Cost, $"{loc} -> {toLoc}");
+                }
+
+                /*
                 List<Location> reachableLocations = GetReachableLocations(loc).ToList();
                 Tile fromTile = loc.Tile;
                 if (!m_locKeys.ContainsKey(loc))
@@ -161,17 +185,20 @@ namespace GoAhead.Commands
                 foreach (Location connectedLocation in reachableLocations)
                 {
                     Tile toTile = connectedLocation.Tile;
-                    int diffX = fromTile.TileKey.X - toTile.TileKey.X;
-                    int diffY = fromTile.TileKey.Y - toTile.TileKey.Y;
+                    diffX = fromTile.TileKey.X - toTile.TileKey.X;
+                    diffY = fromTile.TileKey.Y - toTile.TileKey.Y;
                     if (!m_locKeys.ContainsKey(connectedLocation))
                     {
                         m_locKeys.Add(connectedLocation, m_graph.AddNode(connectedLocation));
                     }
                     m_graph.Connect(m_locKeys[loc], m_locKeys[connectedLocation], Pythagoras(diffX, diffY) + loc.Pip.Cost, $"{loc} -> {connectedLocation}");
                 }
+                */
             }
+            isInitialised = true;
         }
 
+        /*
         private IEnumerable<Location> GetReachableLocations(Location currentLocation)
         {
             foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => FollowPort(currentLocation.Tile, p)))
@@ -186,10 +213,12 @@ namespace GoAhead.Commands
                     yield return next;
             }
         }
+        */
 
         public List<Location> GetShortestPath(Location from, Location to, int depth)
         {
             List<Location> path = new List<Location>();
+            InitGraph(from, to);
             ShortestPathResult result = DijkstraExtensions.Dijkstra(m_graph, m_startNodeKey, m_targetNodeKey, depth);
             List<Tile> tileList = TileSelectionManager.Instance.GetSelectedTiles().ToList();
 
@@ -200,15 +229,17 @@ namespace GoAhead.Commands
                 tileList.Where(t => t.Equals(loc.Tile)).First().SwitchMatrix.Ports.Where(p => p.Equals(loc.Pip)).First().Cost = 1000;
             }
 
-            DoPostSearchTasks();
+            //DoPostSearchTasks();
 
             return path;
         }
 
+        /*
         private int Pythagoras(int x, int y)
         {
             return (int)Math.Round(Math.Sqrt(x * x + y * y));
         }
+        */
 
         public uint AddToGraph(Location locToAdd)
         {
@@ -222,12 +253,7 @@ namespace GoAhead.Commands
             m_graph.Connect(m_locKeys[loc1], m_locKeys[loc2], loc1.Pip.Cost + loc2.Pip.Cost, "");
         }
 
-        private void DoPostSearchTasks()
-        {
-            m_locKeys = null;
-            m_graph = null;
-        }
-
+        /*
         private bool FollowPort(Tile t, Port p)
         {
             if (t.IsPortBlocked(p))
@@ -240,7 +266,9 @@ namespace GoAhead.Commands
 
             return true;
         }
+        */
 
+        private bool isInitialised = false;
         private int m_maxDist = 20;
         private Location m_startNode;
         private Location m_targetNode;

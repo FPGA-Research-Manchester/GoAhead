@@ -239,6 +239,16 @@ namespace GoAhead.FPGA
             m_yIncr = yIncr;
         }
 
+        public Wire(uint localPipKey, uint pipOnOtherTileKey, bool localPipIsDriver, int xIncr, int yIncr, int cost)
+        {
+            m_localPipKey = localPipKey;
+            m_pipOnOtherTileKey = pipOnOtherTileKey;
+            m_localPipIsDriver = localPipIsDriver;
+            m_xIncr = xIncr;
+            m_yIncr = yIncr;
+            m_cost = cost;
+        }
+
         public uint LocalPipKey
         {
             get { return m_localPipKey; }
@@ -272,6 +282,12 @@ namespace GoAhead.FPGA
         public int YIncr
         {
             get { return m_yIncr; }
+        }
+
+        public int Cost
+        {
+            get { return m_cost; }
+            set { m_cost = value; }
         }
 
         public override int GetHashCode()
@@ -328,5 +344,6 @@ namespace GoAhead.FPGA
         private readonly int m_xIncr;
         private readonly int m_yIncr;
         public bool m_localPipIsDriver;
+        private int m_cost;
     }
 }
