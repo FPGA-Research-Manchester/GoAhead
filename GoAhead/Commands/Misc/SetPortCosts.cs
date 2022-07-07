@@ -24,12 +24,14 @@ namespace GoAhead.Commands.Misc
         protected override void DoCommandAction()
         {
             List<Tile> tileList = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, TileLocation)).OrderBy(t => t.Location).ToList();
-            foreach(Tile t in tileList)
+            foreach (Tile t in tileList)
             {
-                List<Port> portList = t.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, PortLocation)).OrderBy(p => p.Name).ToList();
-                foreach(Port p in portList)
+                foreach (Wire w in t.WireList)
                 {
-                    p.Cost = NewCost;
+                    if (w.LocalPip.Equals(PortLocation))
+                    {
+                        w.Cost = NewCost;
+                    }
                 }
             }
         }

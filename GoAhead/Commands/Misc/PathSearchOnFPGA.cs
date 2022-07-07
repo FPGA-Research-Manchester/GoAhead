@@ -15,7 +15,7 @@ namespace GoAhead.Commands
     class PathSearchOnFPGA : CommandWithFileOutput
     {
         #region Parameters
-        [Parameter(Comment = "The path search module (BFS, DFS, A*)")]
+        [Parameter(Comment = "The path search module (BFS, DFS, A*, Dijkstra)")]
         public string SearchMode = "BFS";
 
         [Parameter(Comment = "Whether to search in forward (true) or backward direction (false)")]
@@ -69,6 +69,9 @@ namespace GoAhead.Commands
         [Parameter(Comment = "Explicit legacy setting.")]
         public bool LegacyMode = false;
 
+        [Parameter(Comment = "Toggle whether the command should stop when a path has been found for one match.")]
+        public bool CheckAllMatches = true;
+
         #endregion
 
         public List<List<Location>> m_paths = new List<List<Location>>();
@@ -113,8 +116,14 @@ namespace GoAhead.Commands
 
                                 ExecutePathSearch(startLocation, targetLocation);
                             }
+                            if (!CheckAllMatches && m_paths.Count > 0)
+                                break;
                         }
+                        if (!CheckAllMatches && m_paths.Count > 0)
+                            break;
                     }
+                    if (!CheckAllMatches && m_paths.Count > 0)
+                        break;
                 }
             }
             else
@@ -128,10 +137,12 @@ namespace GoAhead.Commands
                     TargetLocation = ProcessMultipleLocations(TargetLocation);
                 }
 
+                var locations = FPGA.FPGA.Instance.GetAllLocations();
+
                 Console.WriteLine("Finding start location/s...");
-                List<Location> startLocations = FPGA.FPGA.Instance.GetAllLocations().Where(loc => Regex.IsMatch(loc.ToString(), StartLocation)).ToList();
+                List<Location> startLocations = locations.Where(loc => Regex.IsMatch(loc.ToString(), StartLocation)).ToList();
                 Console.WriteLine("Finding target location/s...");
-                List<Location> targetLocations = FPGA.FPGA.Instance.GetAllLocations().Where(loc => Regex.IsMatch(loc.ToString(), TargetLocation)).ToList();
+                List<Location> targetLocations = locations.Where(loc => Regex.IsMatch(loc.ToString(), TargetLocation)).ToList();
                 Console.WriteLine("All locations found.");
 
                 if (startLocations.Count == 0)
@@ -171,20 +182,7 @@ namespace GoAhead.Commands
             {
                 DijkstraRouteNet routeCmd = new DijkstraRouteNet();
                 routeCmd.Watch = Watch;
-                foreach (List<Location> path in routeCmd.Route(startLocation, targetLocation, MaxDepth))
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int x = 0; x < path.Count; x++)
-                    {
-                        sb.Append(path[x].ToString());
-                        if (x + 1 != path.Count)
-                        {
-                            sb.Append(" --> ");
-                        }
-                    }
-
-                    Console.WriteLine(sb.ToString());
-                }
+                m_paths.Add(routeCmd.Route(startLocation, targetLocation, MaxDepth));
             }
             else
             {
@@ -223,25 +221,23 @@ namespace GoAhead.Commands
                         }
                     }
                 }
-
-                if (m_paths.Count == 0)
-                {
-                    OutputManager.WriteOutput("No path found. Try raising the MaxDepth parameter.");
-                }
-                else if (OutputMode.ToUpper().Equals("CHAIN"))
-                {
-                    PrintAsChain(m_paths);
-                }
-                else if (OutputMode.ToUpper().Equals("XDL"))
-                {
-                    OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
-                }
-                else if (OutputMode.ToUpper().Equals("TCL"))
-                {
-                    AddToTCLOutput(m_paths);
-                }
             }
-            
+            if (m_paths.Count == 0)
+            {
+                OutputManager.WriteOutput("No path found. Try raising the MaxDepth parameter.");
+            }
+            else if (OutputMode.ToUpper().Equals("CHAIN"))
+            {
+                PrintAsChain(m_paths);
+            }
+            else if (OutputMode.ToUpper().Equals("XDL"))
+            {
+                OutputManager.WriteOutput(PathToString(startLocation, targetLocation, m_paths));
+            }
+            else if (OutputMode.ToUpper().Equals("TCL"))
+            {
+                AddToTCLOutput(m_paths);
+            }
         }
 
         public string GetBannerWithLatency(Location start, Location sink)

@@ -203,6 +203,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\DesignParser.cs" />
+    <Compile Include="Code\Dijkstra\Graph.cs" />
+    <Compile Include="Code\Dijkstra\Node.cs" />
     <Compile Include="Code\HelperMethodsLibrary.cs" />
     <Compile Include="Code\Net.cs" />
     <Compile Include="Code\NetlistElement.cs" />

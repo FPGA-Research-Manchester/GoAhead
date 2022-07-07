@@ -237,6 +237,7 @@ namespace GoAhead.FPGA
             m_localPipIsDriver = localPipIsDriver;
             m_xIncr = xIncr;
             m_yIncr = yIncr;
+            m_cost = 0;
         }
 
         public Wire(uint localPipKey, uint pipOnOtherTileKey, bool localPipIsDriver, int xIncr, int yIncr, int cost)
@@ -284,7 +285,7 @@ namespace GoAhead.FPGA
             get { return m_yIncr; }
         }
 
-        public int Cost
+        public double Cost
         {
             get { return m_cost; }
             set { m_cost = value; }
@@ -315,7 +316,8 @@ namespace GoAhead.FPGA
                 m_localPipKey == other.m_localPipKey &&
                 m_pipOnOtherTileKey == other.m_pipOnOtherTileKey &&
                 m_xIncr == other.m_xIncr &&
-                m_yIncr == other.m_yIncr;
+                m_yIncr == other.m_yIncr &&
+                m_cost == other.m_cost;
 
             //bool equal = this.GetStringForSerialization().Equals(other.GetStringForSerialization());
             //return equal;
@@ -344,6 +346,6 @@ namespace GoAhead.FPGA
         private readonly int m_xIncr;
         private readonly int m_yIncr;
         public bool m_localPipIsDriver;
-        private int m_cost;
+        private double m_cost;
     }
 }

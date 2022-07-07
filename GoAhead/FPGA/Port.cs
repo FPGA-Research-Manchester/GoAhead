@@ -26,12 +26,6 @@ namespace GoAhead.FPGA
             get { return m_nameKey; }
         }
 
-        public int Cost
-        {
-            get { return m_cost; }
-            set { m_cost = value; }
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is Port))
@@ -52,7 +46,6 @@ namespace GoAhead.FPGA
         [DataMember]
         private readonly uint m_nameKey;
 
-        private int m_cost;
         //private readonly String m_name;
     }
 }

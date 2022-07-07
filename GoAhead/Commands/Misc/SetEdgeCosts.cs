@@ -27,7 +27,7 @@ namespace GoAhead.Commands.Misc
             public string EndPort = "";
 
             [Parameter(Comment = "The latency value")]
-            public int NewCost;
+            public double NewCost = 0;
 
             protected override void DoCommandAction()
             {
@@ -45,7 +45,10 @@ namespace GoAhead.Commands.Misc
                         }
                     }
                 }
-                Console.WriteLine($"{wiresUpdated} wires were updated with the new cost.");
+                if (wiresUpdated == 0)
+                    Console.WriteLine("No wire was found from start location to target location.");
+                else
+                    Console.WriteLine($"{wiresUpdated} wires were updated with the new cost.");
             }
             public override void Undo()
             {

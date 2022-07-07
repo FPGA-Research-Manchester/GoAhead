@@ -21,9 +21,6 @@ namespace GoAhead.Commands.Misc
         [Parameter(Comment = "The end tile of the rectangular selection")]
         public string ToTile = "";
 
-        [Parameter(Comment = "Whether to specify tiles or use GUI selection. If both FromTile and ToTile are empty but this argument is False or omitted then it will be treated as True.")]
-        public bool UseSelection = false;
-
         protected override void DoCommandAction()
         {
             List<Tile> tileList = new List<Tile>();
@@ -31,7 +28,7 @@ namespace GoAhead.Commands.Misc
             {
                 throw new ArgumentException("Output CSV filename must be provided.");
             }
-            if (UseSelection || (FromTile == "" && ToTile == ""))
+            if (FromTile == "" || ToTile == "")
             {
                 if(TileSelectionManager.Instance.GetSelectedTiles().Count() == 0)
                 {
