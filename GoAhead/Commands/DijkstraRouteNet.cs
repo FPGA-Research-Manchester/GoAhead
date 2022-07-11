@@ -19,7 +19,7 @@ namespace GoAhead.Commands
     {
         protected override void DoCommandAction()
         {
-            // Not fully sure about this.
+            // Not fully sure about what this whole function body does.
             FPGATypes.AssertBackendType(FPGATypes.BackendType.ISE);
 
             // what to route
@@ -91,14 +91,11 @@ namespace GoAhead.Commands
                 throw new ArgumentException("No start locations given");
             }
 
+            // Create new location manager which contains the majority of the logic.
             DijkstraLocationManager locMan = new DijkstraLocationManager(startLocation, targetLocation);
             List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
+
             return result;
-            //throw new ArgumentException("Could not route from " + startTile.Location + "." + startPip + " to " + targetTile + "." + targetPip);
-        }
-        private int Distance(Tile from, Tile to)
-        {
-            return Math.Abs(from.LocationX - to.LocationX) + Math.Abs(from.LocationY - to.LocationY);
         }
 
         public override void Undo()
@@ -163,7 +160,7 @@ namespace GoAhead.Commands
                 expandCmd.Do();
             }
 
-            List<Tuple<Location, Location>> locPairs = new List<Tuple<Location, Location>>();
+            List<Tuple<Location, Location, double>> locPairs = new List<Tuple<Location, Location, double>>();
 
             foreach (Location loc in FPGA.FPGA.Instance.GetAllLocationsInSelection())
             {
@@ -182,14 +179,14 @@ namespace GoAhead.Commands
                     {
                         m_locKeys.Add(toLoc, m_graph.AddNode(toLoc));
                     }
-                    locPairs.Add(new Tuple<Location, Location>(loc, toLoc));
+                    locPairs.Add(new Tuple<Location, Location, double>(loc, toLoc, w.Cost));
                 }
             }
 
             Random random = new Random();
-            foreach (Tuple<Location, Location> locPair in locPairs)
+            foreach (Tuple<Location, Location, double> locTuple in locPairs)
             {
-                m_graph.Connect(m_locKeys[locPair.Item1], m_locKeys[locPair.Item2], GetRandomNumber(0.5, 2.5, random)); // proof of concept. random edge weighting.
+                m_graph.Connect(m_locKeys[locTuple.Item1], m_locKeys[locTuple.Item2], locTuple.Item3); // proof of concept. random edge weighting.
             }
 
             isInitialised = true;
