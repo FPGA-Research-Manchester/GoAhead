@@ -84,6 +84,11 @@ namespace GoAhead.FPGA
             return m_matrices.ContainsKey(hashCode);
         }
 
+        public bool Contains(Tile tile)
+        {
+            return m_tiles.Contains(tile);
+        }
+
         public bool Contains(WireList wires)
         {
             return m_wires.ContainsKey(wires.GetHashCode());

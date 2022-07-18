@@ -14,14 +14,12 @@ namespace GoAhead.Code.Dijkstra
         {
             _nodes = new List<Node<T>>();
             _isDirected = isDirected;
-            _isInitialised = false;
         }
 
         public uint AddNode(T node)
         {
             uint index = (uint)_nodes.Count;
             _nodes.Add(new Node<T>(index, node));
-            _isInitialised = false;
             return index;
         }
 
