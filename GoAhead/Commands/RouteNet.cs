@@ -131,7 +131,7 @@ namespace GoAhead.Commands
             {
                 DijkstraLocationManager locMan = new DijkstraLocationManager(startLocation, targetLocation);
                 Console.WriteLine("Initialisation complete.");
-                List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
+                List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth).Path;
                 foreach(Location loc in result)
                 {
                     Console.WriteLine(loc.ToString());

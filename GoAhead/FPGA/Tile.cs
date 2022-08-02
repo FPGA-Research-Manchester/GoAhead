@@ -96,9 +96,12 @@ namespace GoAhead.FPGA
         public readonly List<string> WiresTrajectoriesData_vals = new List<string>();
     }
 
+    
+
     [Serializable]
     public class Tile
     {
+
         public enum BlockReason { Blocked = 0, ExcludedFromBlocking = 1, OccupiedByMacro = 2, Stopover = 3, ToBeBlocked = 4 };
 
         private List<Tile> m_subTiles = null;
@@ -143,6 +146,28 @@ namespace GoAhead.FPGA
         private readonly int m_locationX;
         private readonly int m_locationY;
         private string m_clockRegion;
+
+        private Dictionary<Tuple<Location, Location>, int> m_dijkstraWires;
+
+        public void AddConnection(Location from, Location to, int cost)
+        {
+            m_dijkstraWires.Add(new Tuple<Location, Location>(from, to), cost);
+        }
+        public int? GetConnectionCost (Location from, Location to)
+        {
+            try
+            {
+                return m_dijkstraWires[new Tuple<Location, Location>(from, to)];
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return null;
+            }
+        }
+        public void SetConnectionCost (Location from, Location to, int newCost)
+        {
+            m_dijkstraWires[new Tuple<Location, Location>(from, to)] = newCost;
+        }
 
         private static Regex m_tileMatch = new Regex(@"X\d+Y\d+", RegexOptions.Compiled);
         private static Regex m_tileMatchS3 = new Regex(@"^R\d+C\d+", RegexOptions.Compiled);
@@ -206,6 +231,7 @@ namespace GoAhead.FPGA
             SwitchMatrixHashCode = rawTile.SwitchMatrixHashCode;
             WireListHashCode = rawTile.WireListHashCode;
             IncomingWireListHashCode = rawTile.IncomingWireListHashCode;
+            m_dijkstraWires = new Dictionary<Tuple<Location, Location>, int> ();
             // vivado
             m_clockRegion = rawTile.ClockRegion != null ? rawTile.ClockRegion : "unknown";
             // location in of form LEFTPART_X\d+Y\d+
@@ -270,6 +296,7 @@ namespace GoAhead.FPGA
         {
             m_key = key;
             m_location = location;
+            m_dijkstraWires = new Dictionary<Tuple<Location, Location>, int> ();
 
             // location in of form LEFTPART_X\d+Y\d+
             // and left part may contain X. extract x and y digits from tight part

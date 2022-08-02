@@ -191,7 +191,7 @@ namespace GoAhead.Objects
             }
         }
 
-        private static TileKey GetTargetLocation(Tile start, Wire wire, bool forward = true)
+        public static TileKey GetTargetLocation(Tile start, Wire wire, bool forward = true)
         {
             int x = wire.XIncr;
             int y = wire.YIncr;

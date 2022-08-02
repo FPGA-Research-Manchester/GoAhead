@@ -9,6 +9,8 @@ using GoAhead.FPGA;
 using GoAhead.Objects;
 using GoAhead.Code;
 using GoAhead.Code.XDL;
+using GoAhead.Commands.NetlistContainerGeneration;
+using GoAhead.Commands.Selection;
 
 namespace GoAhead.Commands.Misc
 {
@@ -30,48 +32,42 @@ namespace GoAhead.Commands.Misc
             }
             if (FromTile == "" || ToTile == "")
             {
-                if(TileSelectionManager.Instance.GetSelectedTiles().Count() == 0)
-                {
-                    throw new ArgumentException("No tiles found in the selection.");
-                }
-                foreach (Tile t in TileSelectionManager.Instance.GetSelectedTiles())
-                {
-                    tileList.Add(t);
-                }
+                // Uses current user selection if a required argument is not supplied.
+                tileList = TileSelectionManager.Instance.GetSelectedTiles().ToList();
             }
             else
             {
+                // Find tiles represented by input strings.
                 Tile fromTile = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, FromTile)).OrderBy(t => t.Location).ToList().FirstOrDefault();
                 Tile toTile = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, ToTile)).OrderBy(t => t.Location).ToList().FirstOrDefault();
 
+                // Calculate the vertices of the tile selection.
                 int startX = Math.Min(fromTile.TileKey.X, toTile.TileKey.X);
                 int endX = Math.Max(fromTile.TileKey.X, toTile.TileKey.X);
 
                 int startY = Math.Min(fromTile.TileKey.Y, toTile.TileKey.Y);
                 int endY = Math.Max(fromTile.TileKey.Y, toTile.TileKey.Y);
 
-                for (int x = startX; x <= endX; x++)
-                {
-                    for (int y = startY; y <= endY; y++)
-                    {
-                        TileKey tk = new TileKey(x, y);
-                        if (FPGA.FPGA.Instance.Contains(tk))
-                        {
-                            Tile t = FPGA.FPGA.Instance.GetTile(tk);
-                            if (!tileList.Contains(t))
-                            {
-                                tileList.Add(t);
-                            }
-                        }
-                    }
-                }
+                AddToSelectionXY selectionCmd = new AddToSelectionXY(startX, startY, endX, endY);
+                selectionCmd.Do();
+                ExpandSelection expandCmd = new ExpandSelection();
+                expandCmd.Do();
+
+                tileList = TileSelectionManager.Instance.GetSelectedTiles().ToList();
+            }
+            // If selection is empty...
+            if (tileList.Count() == 0)
+            {
+                throw new ArgumentException("No tiles found in the selection.");
             }
             StringBuilder csv = new StringBuilder();
             int numTilesWritten = 0;
             foreach (Tile t in tileList)
             {
+                // Avoids outputting useless tiles.
                 if(!t.ToString().Contains("NULL"))
                 {
+                    // Outputs tile name, then information on every wire in the tile's WireList object.
                     csv.AppendLine(t.ToString());
                     csv.AppendLine("Local Pip,Local Pip Is Driver,Pip On Other Tile,XIncr,YIncr,Target Pip");
                     foreach (Wire w in t.WireList)
@@ -84,11 +80,13 @@ namespace GoAhead.Commands.Misc
                 }
             }
 
+            // Output contents of StringBuilder to specified file location, overwriting any file that is present in that location with the same name.
             using (StreamWriter sw = File.CreateText(FileName))
             {
                 sw.Write(csv);
             }
 
+            // Write helpful success message.
             Console.WriteLine($"Wire information for {numTilesWritten} tiles written to {Directory.GetCurrentDirectory() + "\\" + FileName}.");
 
         }

@@ -47,16 +47,16 @@ namespace GoAhead.Commands.Misc
 
         protected override void DoCommandAction()
         {
-
+            // If MaxPips is 0 or negative, just use a very large integer instead
             MaxPips = MaxPips < 1 ? 9999999 : MaxPips;
             if (!PrintInColour)
             {
                 colours = new List<ConsoleColor>() { ConsoleColor.Gray };
             }
             string startPortRegex = "^" + StartPort + "$";
-            Tile tile = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).First();
-            Port startPort = tile.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, startPortRegex)).OrderBy(p => p.Name).First();
-            BuildNet(tile);
+            Tile tile = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartLocation)).OrderBy(t => t.Location).First(); // Get start tile
+            Port startPort = tile.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, startPortRegex)).OrderBy(p => p.Name).First(); // Get start port
+            //BuildNet(tile); 
             Location location = new Location(tile, startPort);
             currentPath = new List<Location>() { location };
 
@@ -122,9 +122,10 @@ namespace GoAhead.Commands.Misc
             }
             Console.WriteLine($"There are {startLUTs.Count} starting locations and {endLUTs.Count} end locations");
             List<List<Location>> paths = new List<List<Location>>();
-            foreach(Location startLoc in startLUTs)
-            {
-                foreach(Location endLoc in endLUTs)
+            //foreach(Location startLoc in startLUTs)
+            //{
+            Location startLoc = new Location(tile, tile.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, "^" + StartPort + "$")).OrderBy(p => p.Name).First());
+                foreach (Location endLoc in endLUTs)
                 {
                     /*
                     PathSearchOnFPGA cmd = new PathSearchOnFPGA();
@@ -135,7 +136,7 @@ namespace GoAhead.Commands.Misc
                     cmd.Do();
                     */
                     RouteNet cmd = new RouteNet();
-                    foreach(List<Location> route in cmd.Route("BFS", true, Enumerable.Repeat(startLoc, 1), endLoc, 1000, 20, 0, false, true)) 
+                    foreach(List<Location> route in cmd.Route("BFS", true, Enumerable.Repeat(startLoc, 1), endLoc, 1000, 20, 0, false)) 
                     {
                         StringBuilder sb = new StringBuilder();
                         foreach (Location loc in route)
@@ -146,7 +147,7 @@ namespace GoAhead.Commands.Misc
                         break;
                     }
                 }
-            }
+            //}
             
         }
 
@@ -243,7 +244,7 @@ namespace GoAhead.Commands.Misc
                 }
             }
         }
-
+        /*
         private class Node
         {
             public Node(Location loc, bool connected) 
@@ -262,6 +263,7 @@ namespace GoAhead.Commands.Misc
             }
 
         }
+        */
         private void DepthFirstSearch(Location startLoc)
         {
             int maxDepth = FPGA.FPGA.Instance.GetAllLocationsInSelection().Count();

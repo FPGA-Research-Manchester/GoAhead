@@ -183,6 +183,11 @@ namespace GoAhead.Commands
                 DijkstraRouteNet routeCmd = new DijkstraRouteNet();
                 routeCmd.Watch = Watch;
                 m_paths.Add(routeCmd.Route(startLocation, targetLocation, MaxDepth));
+
+                if (PrintBanner && !OutputMode.ToUpper().Equals("TCL"))
+                {
+                    OutputManager.WriteOutput(GetBannerWithLatency(startLocation, targetLocation));
+                }
             }
             else
             {

@@ -93,9 +93,11 @@ namespace GoAhead.Commands
 
             // Create new location manager which contains the majority of the logic.
             DijkstraLocationManager locMan = new DijkstraLocationManager(startLocation, targetLocation);
-            List<Location> result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
+            var result = locMan.GetShortestPath(startLocation, targetLocation, maxDepth);
 
-            return result;
+            Console.WriteLine($"A path was found with distance {result.Distance}");
+
+            return result.Path;
         }
 
         public override void Undo()
@@ -117,17 +119,17 @@ namespace GoAhead.Commands
             m_graph = new Graph<Location>();
             m_locKeys = new Dictionary<Location, uint>();
 
-            m_startNodeKey = m_graph.AddNode(start);
+            //m_startNodeKey = m_graph.AddNode(start);
             m_startNode = start;
 
-            m_targetNodeKey = m_graph.AddNode(end);
+            //m_targetNodeKey = m_graph.AddNode(end);
             m_targetNode = end;
 
-            m_locKeys.Add(start, m_startNodeKey);
-            m_locKeys.Add(end, m_targetNodeKey);
+            m_locKeys.Add(start, m_graph.AddNode(start));
+            m_locKeys.Add(end, m_graph.AddNode(end));
 
             var locations = FPGA.FPGA.Instance.GetAllLocationsInSelection();
-
+            
             if (locations.Count() == 0 || !locations.Contains(m_startNode) || !locations.Contains(m_targetNode))
             {
                 int startX = Math.Min(m_startNode.Tile.TileKey.X, m_targetNode.Tile.TileKey.X);
@@ -138,10 +140,10 @@ namespace GoAhead.Commands
                 int endY = Math.Max(m_startNode.Tile.TileKey.Y, m_targetNode.Tile.TileKey.Y);
                 int diffY = endY - startY;
 
-                int x1 = startX - diffX;
-                int x2 = endX + diffX;
-                int y1 = startY - diffY;
-                int y2 = endY + diffY;
+                int x1 = startX;
+                int x2 = endX;
+                int y1 = startY;
+                int y2 = endY;
 
                 if(diffX*diffY >= 4)
                 {
@@ -161,36 +163,66 @@ namespace GoAhead.Commands
             }
 
             List<Tuple<Location, Location, double>> locPairs = new List<Tuple<Location, Location, double>>();
+            locations = FPGA.FPGA.Instance.GetAllLocationsInSelection();
 
-            foreach (Location loc in FPGA.FPGA.Instance.GetAllLocationsInSelection())
+            var locMan = new QueueLocationManager(start);
+            locMan.Add(start);
+
+            while (locMan.LocationsLeft())
             {
-                if (!m_locKeys.ContainsKey(loc))
-                {
-                    m_locKeys.Add(loc, m_graph.AddNode(loc));
-                }
+                Location currentLocation = locMan.GetNext();
 
-                Tile fromTile = loc.Tile;
-                WireList wireList = fromTile.WireList;
-
-                foreach (Wire w in wireList)
+                foreach (Location next in GetReachableLocations(currentLocation).Where(l => locations.Contains(l)))
                 {
-                    Location toLoc = new Location(fromTile.GetTileAtWireEnd(w), new Port(w.PipOnOtherTile));
-                    if (!m_locKeys.ContainsKey(toLoc))
+                    //Location next = tuple.Item1;
+                    //bool close = LocationLeadsCloserToTarget(currentLocation, next, targetLocation.Tile, distanceLimit);
+
+                    //if (!visited.ContainsKey(next) && close)
+                    if (!locMan.WasAlreadyVisited(next))
                     {
-                        m_locKeys.Add(toLoc, m_graph.AddNode(toLoc));
+                        locMan.MarkAsVisited(next, currentLocation);
+                        //parent.Add(next, currentLocation);
+                        locMan.Add(next);
+                        if(!next.Equals(end) && !next.Equals(start))
+                            m_locKeys.Add(next, m_graph.AddNode(next));
                     }
-                    locPairs.Add(new Tuple<Location, Location, double>(loc, toLoc, w.Cost));
+
+                    int? connection = next.Tile.GetConnectionCost(currentLocation, next);
+
+                    m_graph.Connect(m_locKeys[currentLocation], m_locKeys[next], connection ?? 0);
                 }
             }
 
-            Random random = new Random();
-            foreach (Tuple<Location, Location, double> locTuple in locPairs)
+            Console.WriteLine("Graph initialised.");
+        }
+
+        private IEnumerable<Location> GetReachableLocations(Location currentLocation, bool useUserSelection = false)
+        {
+            foreach (Port pip in currentLocation.Tile.SwitchMatrix.GetDrivenPorts(currentLocation.Pip).Where(p => FollowPort(currentLocation.Tile, p)))
             {
-                m_graph.Connect(m_locKeys[locTuple.Item1], m_locKeys[locTuple.Item2], locTuple.Item3); // proof of concept. random edge weighting.
+                Location next = new Location(currentLocation.Tile, pip);
+                if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                    continue;
+                yield return next;
             }
 
-            isInitialised = true;
-            Console.WriteLine("Graph initialised.");
+            foreach (Location next in Navigator.GetDestinations(currentLocation.Tile, currentLocation.Pip).Where(loc => FollowPort(loc.Tile, loc.Pip)))
+            {
+                if (useUserSelection && !FPGA.FPGA.Instance.GetAllLocationsInSelection().Contains(next))
+                    continue;
+                yield return next;
+            }
+        }
+        private bool FollowPort(Tile t, Port p)
+        {
+            if (t.IsPortBlocked(p))
+            {
+                if (t.IsPortBlocked(p, Tile.BlockReason.Stopover))
+                    return true;
+
+                return false;
+            }
+            return true;
         }
 
         private double GetRandomNumber(double minimum, double maximum, Random random)
@@ -198,14 +230,10 @@ namespace GoAhead.Commands
             return random.NextDouble() * (maximum - minimum) + minimum;
         }
 
-        public List<Location> GetShortestPath(Location from, Location to, int depth)
+        public DijkstraResult<Location> GetShortestPath(Location from, Location to, int depth)
         {
-            DijkstraResult<Location> result = m_graph.FindPath(m_startNodeKey, m_targetNodeKey);
-
-            //DoPostSearchTasks();
-            List<Location> path = result.Path;
-            //Console.WriteLine(result.GetPathString());
-            return path;
+            DijkstraResult<Location> result = m_graph.FindPath(0, 1);
+            return result;
         }
 
         public uint AddToGraph(Location locToAdd)
@@ -230,12 +258,8 @@ namespace GoAhead.Commands
         }
         */
 
-        private bool isInitialised = false;
-        private int m_maxDist = 20;
         private Location m_startNode;
         private Location m_targetNode;
-        private uint m_startNodeKey;
-        private uint m_targetNodeKey;
         private Graph<Location> m_graph;
         private Dictionary<Location, uint> m_locKeys = new Dictionary<Location, uint>();
     }

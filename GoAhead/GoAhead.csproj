@@ -222,6 +222,7 @@
     <Compile Include="Code\TCL\TCLProperties.cs" />
     <Compile Include="Code\TCL\TCLRoutingTree.cs" />
     <Compile Include="Code\TCL\TCLRoutingTreeNode.cs" />
+    <Compile Include="Code\Tree.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintMiscInformation.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintPortNames.cs" />
     <Compile Include="Commands\ArchitectureGraph\PrintIrregularTiles.cs" />
@@ -300,8 +301,10 @@
     <Compile Include="Commands\Library\AddVivadoLibraryElement.cs" />
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
+    <Compile Include="Commands\Misc\GenerateRoutingConstraint.cs" />
+    <Compile Include="Commands\Misc\GetOutgoingEdges.cs" />
+    <Compile Include="Commands\Misc\GetIncomingEdges.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />
-    <Compile Include="Commands\Misc\SetEdgeCosts.cs" />
     <Compile Include="Commands\Misc\SetPortCosts.cs" />
     <Compile Include="Commands\Misc\WireListToCSV.cs" />
     <Compile Include="Commands\Misc\PrintTileInformationCSV.cs" />
