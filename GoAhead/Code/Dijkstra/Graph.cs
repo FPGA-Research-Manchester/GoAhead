@@ -85,10 +85,6 @@ namespace GoAhead.Code.Dijkstra
 
                 foreach (var distTuple in _nodes[(int)u].Neighbours)
                 {
-                    if(_nodes[(int)u].Neighbours.Count > 1)
-                    {
-
-                    }
                     int dist1 = distances[(int)u];
                     int dist2 = distances[(int)distTuple.Item1.Index];
                     int alt = distances[(int)u] + distTuple.Item2;
