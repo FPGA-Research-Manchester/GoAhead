@@ -18,7 +18,7 @@
 x64/
 x86/
 bld/
-[Bb]in/
+# [Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -261,3 +261,10 @@ __pycache__/
 *.pyc
 /GoAhead/VivadoConnection/VivadoConnection.cs
 /binFPGAs
+
+# random file I have
+goa_reportgen_diff.patch
+
+# init scripts
+init.goa
+bin/init.goa

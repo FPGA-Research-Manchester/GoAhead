@@ -6,8 +6,6 @@ using GoAhead.Code.XDL;
 using GoAhead.Commands.NetlistContainerGeneration;
 using GoAhead.FPGA;
 using GoAhead.Objects;
-using Dijkstra.NET.Graph;
-using Dijkstra.NET.ShortestPath;
 
 namespace GoAhead.Commands
 {

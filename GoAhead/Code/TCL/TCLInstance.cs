@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 
 namespace GoAhead.Code.TCL
 {

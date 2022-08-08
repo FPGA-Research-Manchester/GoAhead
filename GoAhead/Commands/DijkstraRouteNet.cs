@@ -10,8 +10,6 @@ using GoAhead.Commands.Selection;
 using GoAhead.FPGA;
 using GoAhead.Objects;
 using GoAhead.Code.Dijkstra;
-using Dijkstra.NET.Graph;
-using Dijkstra.NET.ShortestPath;
 
 namespace GoAhead.Commands
 {
