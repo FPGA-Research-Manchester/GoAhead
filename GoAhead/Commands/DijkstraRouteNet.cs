@@ -185,8 +185,7 @@ namespace GoAhead.Commands
                             m_locKeys.Add(next, m_graph.AddNode(next));
                     }
 
-                    int? connection = next.Tile.GetConnectionCost(currentLocation, next);
-
+                    int? connection = FPGA.FPGA.Instance.m_tiles.GetConnectionCost(currentLocation, next);
                     m_graph.Connect(m_locKeys[currentLocation], m_locKeys[next], connection ?? 0);
                 }
             }

@@ -302,7 +302,7 @@
     <Compile Include="Commands\Misc\GetOutgoingEdges.cs" />
     <Compile Include="Commands\Misc\GetIncomingEdges.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />
-    <Compile Include="Commands\Misc\SetPortCosts.cs" />
+    <Compile Include="Commands\Misc\SetEdgeCosts.cs" />
     <Compile Include="Commands\Misc\WireListToCSV.cs" />
     <Compile Include="Commands\Misc\PrintTileInformationCSV.cs" />
     <Compile Include="Commands\Misc\PathSearchOnFPGAWithRegexp.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoAhead.Objects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -131,6 +132,39 @@ namespace GoAhead.FPGA
             }
         }
 
+        public void AddConnection(Location from, Location to, int cost)
+        {
+            if (m_dijkstraWires == null)
+            {
+                m_dijkstraWires = new Dictionary<Tuple<Location, Location>, int>();
+            }
+            try
+            {
+                m_dijkstraWires.Add(new Tuple<Location, Location>(from, to), cost);
+            }
+            catch (ArgumentException ex)
+            {
+                SetConnectionCost(from, to, cost);
+            }
+        }
+        public int? GetConnectionCost(Location from, Location to)
+        {
+            try
+            {
+                return m_dijkstraWires[new Tuple<Location, Location>(from, to)];
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return null;
+            }
+        }
+        private void SetConnectionCost(Location from, Location to, int newCost)
+        {
+            m_dijkstraWires[new Tuple<Location, Location>(from, to)] = newCost;
+        }
+
         private Dictionary<int, Dictionary<int, Tile>> m_tiles = new Dictionary<int, Dictionary<int, Tile>>();
+
+        private Dictionary<Tuple<Location, Location>, int> m_dijkstraWires = new Dictionary<Tuple<Location, Location>, int>();
     }
 }
