@@ -270,6 +270,14 @@ namespace GoAhead.FPGA
             }
         }
 
+        public IEnumerable<Location> GetAllLocationsFromTile(Tile t)
+        {
+            foreach(Port p in t.SwitchMatrix.Ports)
+            {
+                yield return new Location(t, p);
+            }
+        }
+
         public IEnumerable<SwitchMatrix> GetAllSwitchMatrices()
         {
             foreach (SwitchMatrix sm in m_matrices.Values)

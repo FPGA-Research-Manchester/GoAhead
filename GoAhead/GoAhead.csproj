@@ -299,6 +299,7 @@
     <Compile Include="Commands\Library\AddLUTFlopVivadoConnectionPrimitive.cs" />
     <Compile Include="Commands\Library\DefineBELType.cs" />
     <Compile Include="Commands\Misc\GenerateRoutingConstraint.cs" />
+    <Compile Include="Commands\Misc\GetEdgeCosts.cs" />
     <Compile Include="Commands\Misc\GetOutgoingEdges.cs" />
     <Compile Include="Commands\Misc\GetIncomingEdges.cs" />
     <Compile Include="Commands\Misc\PowerHammering.cs" />

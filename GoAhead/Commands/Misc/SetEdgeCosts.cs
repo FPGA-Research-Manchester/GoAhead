@@ -30,43 +30,65 @@ namespace GoAhead.Commands.Misc
         protected override void DoCommandAction()
         {
             // Find the tiles where the tile string supplied matches the tile's name.
-            List<Tile> tileList = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartTile)).OrderBy(t => t.Location).ToList();
+            List<Tile> tileList = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, StartTile) && !Regex.IsMatch(t.Location, "NULL")).OrderBy(t => t.Location).ToList();
+            List<Tile> endtileList = FPGA.FPGA.Instance.GetAllTiles().Where(t => Regex.IsMatch(t.Location, EndTile) && !Regex.IsMatch(t.Location, "NULL")).OrderBy(t => t.Location).ToList();
+            /*
             Tile endTile = FPGA.FPGA.Instance.GetAllTiles().Where(t => t.Location.ToString() == EndTile).FirstOrDefault();
             if (endTile == null && (EndTile != "" || EndPort != ""))
             {
                 Console.WriteLine("Error when setting cost. Location may not exist.");
                 return;
+            }*/
+            List<Location> endLocs = new List<Location>();
+            foreach(Tile tile in endtileList)
+            {
+                List<Port> endPorts = tile.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, EndPort)).OrderBy(p => p.Name).ToList();
+                foreach(Port p in endPorts)
+                {
+                    endLocs.Add(new Location(tile, p));
+                }
             }
-            Location endLoc = new Location(endTile, new Port(EndPort));
-
+            //Location endLoc = new Location(endTile, new Port(EndPort));
+            int count = 0;
             foreach (Tile t in tileList)
             {
-                Location fromLoc = new Location(t, new Port(StartPort));
-                if(!FPGA.FPGA.Instance.GetAllLocations().Contains(fromLoc))
+                List<Location> locs = FPGA.FPGA.Instance.GetAllLocationsFromTile(t).ToList();
+                List<Port> startPorts = t.SwitchMatrix.Ports.Where(p => Regex.IsMatch(p.Name, StartPort)).OrderBy(p => p.Name).ToList();
+                foreach (Port startPort in startPorts)
                 {
-                    continue;
-                }
-                foreach (Wire w in t.WireList)
-                {
-                    Location toLoc = new Location(t.GetTileAtWireEnd(w), new Port(w.PipOnOtherTile));
-                    // Update wire cost if it originates at the right port.
-                    if (w.LocalPip.Equals(StartPort) && (EndTile == "" || EndPort == "" || toLoc.Equals(endLoc)))
+                    Location fromLoc = new Location(t, startPort);
+                    List<Location> test = new List<Location>();
+
+                    if(!locs.Contains(fromLoc))
                     {
-                        w.Cost = NewCost;
-                        FPGA.FPGA.Instance.m_tiles.AddConnection(fromLoc, toLoc, NewCost);
-                        //t.AddConnection(fromLoc, toLoc, NewCost);
+                        continue;
                     }
-                }
-                // For locations that you can get to without using wires.
-                foreach(Location toLoc in GetReachableLocations(fromLoc)) 
-                {
-                    if (EndTile == "" || EndPort == "" || toLoc.Equals(endLoc))
+                    /*
+                    foreach (Wire w in t.WireList)
                     {
-                        FPGA.FPGA.Instance.m_tiles.AddConnection(fromLoc, toLoc, NewCost);
-                        //t.AddConnection(fromLoc, toLoc, NewCost);
+                        Location toLoc = new Location(t.GetTileAtWireEnd(w), new Port(w.PipOnOtherTile));
+                        // Update wire cost if it originates at the right port.
+                        if (w.LocalPip.Equals(StartPort) && (EndTile == "" || EndPort == "" || toLoc.Equals(endLoc)))
+                        {
+                            w.Cost = NewCost;
+                            FPGA.FPGA.Instance.m_tiles.AddConnection(fromLoc, toLoc, NewCost);
+                            //t.AddConnection(fromLoc, toLoc, NewCost);
+                        }
+                    }
+                    */
+                    // For locations that you can get to without using wires.
+                    foreach (Location toLoc in GetReachableLocations(fromLoc))
+                    {
+                        if (EndTile == "" || EndPort == "" || endLocs.Contains(toLoc))
+                        {
+                            FPGA.FPGA.Instance.m_tiles.AddConnection(fromLoc, toLoc, NewCost);
+                            count++;
+                            //t.AddConnection(fromLoc, toLoc, NewCost);
+                        }
                     }
                 }
             }
+            Console.WriteLine($"{count} wires were updated.");
         }
         private IEnumerable<Location> GetReachableLocations(Location currentLocation, bool useUserSelection = false)
         {

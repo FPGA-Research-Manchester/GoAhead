@@ -186,7 +186,7 @@ namespace GoAhead.Commands
                     }
 
                     int? connection = FPGA.FPGA.Instance.m_tiles.GetConnectionCost(currentLocation, next);
-                    m_graph.Connect(m_locKeys[currentLocation], m_locKeys[next], connection ?? 0);
+                    m_graph.Connect(m_locKeys[currentLocation], m_locKeys[next], connection ?? 1);
                 }
             }
 
