@@ -149,6 +149,10 @@ namespace GoAhead.FPGA
         }
         public int? GetConnectionCost(Location from, Location to)
         {
+            if (m_dijkstraWires == null)
+            {
+                m_dijkstraWires = new Dictionary<Tuple<Location, Location>, int>();
+            }
             try
             {
                 return m_dijkstraWires[new Tuple<Location, Location>(from, to)];

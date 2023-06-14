@@ -53,14 +53,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GoAhead.exe" size="1413632">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GoAhead.exe" size="1414144">
       <assemblyIdentity name="GoAhead" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>o6KUC8VN2VmoZ+KXwS02qlVKe9VITJCSa6U2xOf5GsI=</dsig:DigestValue>
+        <dsig:DigestValue>oa1fBlyzwQNkzKcCnoGox+AYlG6dPP/BAZYZ78dMYfc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

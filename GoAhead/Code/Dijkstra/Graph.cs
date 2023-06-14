@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GoAhead.FPGA;
+using GoAhead.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,13 @@ namespace GoAhead.Code.Dijkstra
             _nodes = new List<Node<T>>();
         }
 
+        internal Graph(bool uniquePortNames)
+        {
+            _nodes = new List<Node<T>>();
+            _uniquePortNames = uniquePortNames;
+        }
+
+        private bool _uniquePortNames = false;
         /// <summary>
         /// Adds a node to the graph and returns the node's uint representation (index within _nodes).
         /// </summary>
@@ -90,8 +99,24 @@ namespace GoAhead.Code.Dijkstra
                     int alt = distances[(int)u] + distTuple.Item2;
                     if (alt < distances[(int)distTuple.Item1.Index] && (distances[(int)u] != int.MaxValue))
                     {
+                        if (_uniquePortNames)
+                        {
+                            switch (_nodes[(int)u].Path[0])
+                            {
+                                case Location l:
+                                    List<string> ports = ((IEnumerable<Location>)_nodes[(int)u].Path).Select(p => p.Pip.ToString()).ToList();
+                                    string nextPort = (_nodes[(int)distTuple.Item1.Index].Value as Location).Pip.ToString();
+                                    if (ports.Contains(nextPort))
+                                        continue;
+                                    break;
+                            }
+                        }
                         distances[(int)distTuple.Item1.Index] = alt;
                         previous[(int)distTuple.Item1.Index] = u;
+                        if (_uniquePortNames)
+                        {
+                            _nodes[(int)distTuple.Item1.Index].Path.AddRange(_nodes[(int)u].Path);
+                        }
                     }
                 }
             }

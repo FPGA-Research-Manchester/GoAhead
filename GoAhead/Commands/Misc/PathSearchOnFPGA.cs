@@ -72,6 +72,9 @@ namespace GoAhead.Commands
         [Parameter(Comment = "Toggle whether the command should stop when a path has been found for one match.")]
         public bool CheckAllMatches = true;
 
+        [Parameter(Comment = "Toggle whether paths must contain unique port names at each step.")]
+        public bool UniquePortNames = false;
+
         #endregion
 
         public List<List<Location>> m_paths = new List<List<Location>>();

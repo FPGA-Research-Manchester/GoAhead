@@ -15,13 +15,20 @@ namespace GoAhead.Code.Dijkstra
         public T Value { get; }
         public uint Index { get; }
         public List<Tuple<Node<T>, int>> Neighbours { get; }
+        public List<T> Path { get; set; }
 
         public Node(uint index, T value)
         {
             Value = value;
             Index = index;
-            Neighbours = new List<Tuple<Node<T>, int>>();
-            Neighbours.Add(new Tuple<Node<T>, int>(this, 0));
+            Neighbours = new List<Tuple<Node<T>, int>>
+            {
+                new Tuple<Node<T>, int>(this, 0)
+            };
+            Path = new List<T>
+            {
+                Value
+            };
         }
 
         /// <summary>
